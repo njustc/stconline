@@ -1,20 +1,25 @@
 package com.example.stc.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "ENTRUST")
 public class Entrust {
 
-	/** 
-	 * 项目Id
-	 */
+    /**
+     * 项目Id
+     */
     @Id
+    @Column(name = "pid")
     private Integer pid;
-    
+
     /**
      * 存储测试文档整体
      */
+    @Column(name = "consignation")
     private String consignation;
 
     /**
@@ -25,7 +30,7 @@ public class Entrust {
     /**
      * 软件名称
      */
-    private String  sotfwareName;
+    private String sotfwareName;
 
     /**
      * 版本号
@@ -55,12 +60,12 @@ public class Entrust {
     /**
      * 软件用户对象
      */
-    private String  user_Description;
+    private String user_Description;
 
     /**
      * 主要功能及用途简介
      */
-    private String  func_Description;
+    private String func_Description;
 
     /**
      * 测试依据 多选
@@ -70,7 +75,7 @@ public class Entrust {
     /**
      * 需要测试的技术指标 多选
      */
-    private String test_Specification ;
+    private String test_Specification;
 
     /**
      * 软件规模-功能数
@@ -134,7 +139,7 @@ public class Entrust {
      * 运行环境 - 服务器端 - 硬件 - 架构
      */
     private String server_Frame;
-    
+
     /**
      * 运行环境 - 服务器端 - 硬件 - 内存要求
      */
@@ -179,7 +184,7 @@ public class Entrust {
      * 运行环境 - 服务器端 - 软件 - 构架
      */
     private String server_soft_Frame;
-    
+
     /**
      * 运行环境 - 服务器端 - 软件 - 中间件
      */
@@ -263,7 +268,7 @@ public class Entrust {
     /**
      * 材料检查 - 测试样品
      */
-    private String otherSample ;
+    private String otherSample;
 
     /**
      * 材料检查 - 需求文档
@@ -273,12 +278,12 @@ public class Entrust {
     /**
      * 材料检查 - 用户文档
      */
-    private  String otherUSERDOC;
+    private String otherUSERDOC;
 
     /**
      * 材料检查 - 操作文档
      */
-    private  String otherOPDOC;
+    private String otherOPDOC;
 
     /**
      * 材料检查 - 其它
@@ -288,17 +293,17 @@ public class Entrust {
     /**
      * 确认意见
      */
-    private  String otherCheck;
+    private String otherCheck;
 
     /**
      * 受理意见
      */
-    private  String otherDeal;
+    private String otherDeal;
 
     /**
      * 测试项目编号
      */
-    private  String otherProjectId;
+    private String otherProjectId;
 
     /**
      * 用户信息

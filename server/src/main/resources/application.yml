@@ -6,3 +6,7 @@ spring:
     username: root
     password: lfm
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update # 数据库自动与jpa同步
+    show-sql: true
