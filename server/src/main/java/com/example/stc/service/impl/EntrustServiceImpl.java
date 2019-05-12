@@ -24,7 +24,7 @@ public class EntrustServiceImpl implements EntrustService {
     @Override
     public Entrust findEntrustById(String pid) {
         return entrustRepository.findById(pid)
-                .orElseThrow(() -> new RuntimeException());
+                .orElseThrow(RuntimeException::new);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public Entrust updateEntrust(String pid, Entrust record) {
-        entrustRepository.findById(pid).orElseThrow(() -> new RuntimeException());
+        entrustRepository.findById(pid).orElseThrow(RuntimeException::new);
         return entrustRepository.save(record);
     }
 }
