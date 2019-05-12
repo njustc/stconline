@@ -5,7 +5,9 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 /**
+ * 实体类基类, 持有基本的实体类属性
  *
+ * @author : lfm
  */
 @MappedSuperclass
 public class BasicEntity {
