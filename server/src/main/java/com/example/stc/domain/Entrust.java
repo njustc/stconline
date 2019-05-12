@@ -6,15 +6,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ENTRUST")
+@Table(name = "TBL_SYS_ENTRUST")
 public class Entrust {
 
     /**
      * 项目Id
+     * 2019512
      */
     @Id
     @Column(name = "pid")
-    private Integer pid;
+    private String pid;
 
     /**
      * 存储测试文档整体
