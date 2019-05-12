@@ -11,7 +11,6 @@ public class Entrust {
 
     /**
      * 项目Id
-     * 2019512
      */
     @Id
     @Column(name = "pid")
@@ -313,4 +312,10 @@ public class Entrust {
      */
     //private Project project;
 
+	public String getPid() {
+		return pid;
+	}
+	public void setPid(String pid) {
+		this.pid = pid;
+	}
 }
