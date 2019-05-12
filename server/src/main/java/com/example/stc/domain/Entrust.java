@@ -10,7 +10,7 @@ public class Entrust {
 	 * 项目Id
 	 */
     @Id
-    private Integer pid;
+    private String pid;
     
     /**
      * 存储测试文档整体
@@ -87,7 +87,6 @@ public class Entrust {
      */
     private String codeLine;
 
-
     /**
      * 软件类型 - 系统软件
      */
@@ -103,7 +102,6 @@ public class Entrust {
      */
     private String softApp;
 
-
     /**
      * 软件类型 - 其他
      */
@@ -112,7 +110,6 @@ public class Entrust {
     /**
      * 运行环境 - 客户端 - 操作系统
      */
-
     private String client_Sys;
 
     /**
