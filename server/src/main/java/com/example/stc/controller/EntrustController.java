@@ -1,5 +1,8 @@
 package com.example.stc.controller;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +23,7 @@ public class EntrustController {
 
 	@Autowired 
 	private EntrustRepository entrustRepository;
-	
+
 	// 客户：/api/customers/{cid}/...
 
 	/**

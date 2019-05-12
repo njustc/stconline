@@ -30,7 +30,7 @@ public class Entrust {
     /**
      * 软件名称
      */
-    private String sotfwareName;
+    private String softwareName;
 
     /**
      * 版本号
