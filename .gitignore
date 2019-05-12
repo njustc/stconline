@@ -27,3 +27,4 @@ HELP.md
 
 ### VS Code ###
 .vscode/
+server/target/classes/com/example/stc/controller/ServiceController.class
