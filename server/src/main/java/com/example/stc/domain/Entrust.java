@@ -23,7 +23,7 @@ public class Entrust {
     private String consignation;
 
     /**
-     * 测试类型
+     * 测试类型（多选）
      */
     private String testType;
 
@@ -40,12 +40,12 @@ public class Entrust {
     /**
      * 委托单位(英文)
      */
-    private String company_En;
+    private String companyEn;
 
     /**
      * 委托单位(中文)
      */
-    private String company_Ch;
+    private String companyCh;
 
     /**
      * 开发单位
@@ -53,39 +53,39 @@ public class Entrust {
     private String developer;
 
     /**
-     * 单位性质
+     * 单位性质（单选）
      */
     private String unitProperty;
 
     /**
      * 软件用户对象
      */
-    private String user_Description;
+    private String userDescription;
 
     /**
      * 主要功能及用途简介
      */
-    private String func_Description;
+    private String funcDescription;
 
     /**
-     * 测试依据 多选
+     * 测试依据（多选）
      */
-    private String test_Basis;
+    private String testBasis;
 
     /**
-     * 需要测试的技术指标 多选
+     * 需要测试的技术指标（多选）
      */
-    private String test_Specification;
+    private String testSpecification;
 
     /**
-     * 软件规模-功能数
+     * 软件规模 - 功能数
      */
-    private String func_num;
+    private String funcNum;
 
     /**
      * 软件规模 - 功能点数
      */
-    private String fp_num;
+    private String fpNum;
 
     /**
      * 软件规模 - 代码行数
@@ -93,104 +93,89 @@ public class Entrust {
     private String codeLine;
 
     /**
-     * 软件类型 - 系统软件
+     * 软件类型（单选）
      */
-    private String softSys;
+    private String softwareType;
 
     /**
-     * 软件类型 - 支持软件
+     * 运行环境 - 客户端 - 操作系统（多选）
      */
-    private String softSupport;
-
-    /**
-     * 软件类型 - 应用软件
-     */
-    private String softApp;
-
-    /**
-     * 软件类型 - 其他
-     */
-    private String softOther;
-
-    /**
-     * 运行环境 - 客户端 - 操作系统
-     */
-    private String client_Sys;
+    private String clientSystem;
 
     /**
      * 运行环境 - 客户端 - 内存要求
      */
-    private String client_inStorage;
+    private String clientInStorage;
 
     /**
      * 运行环境 - 客户端 - 硬盘要求
      */
-    private String client_exStorage;
+    private String clientExStorage;
 
     /**
      * 运行环境 - 客户端 - 其它要求
      */
-    private String client_other;
+    private String clientOther;
 
     /**
-     * 运行环境 - 服务器端 - 硬件 - 架构
+     * 运行环境 - 服务器端 - 硬件 - 架构（多选）
      */
-    private String server_Frame;
+    private String serverHardFrame;
 
     /**
      * 运行环境 - 服务器端 - 硬件 - 内存要求
      */
-    private String server_inStorage;
+    private String serverInStorage;
 
     /**
      * 运行环境 - 服务器端 - 硬件 - 硬盘要求
      */
-    private String server_exStorage;
+    private String serverExStorage;
 
     /**
      * 运行环境 - 服务器端 - 硬件 - 其它要求
      */
-    private String server_other;
+    private String serverHardOther;
 
     /**
      * 运行环境 - 服务器端 - 软件 - 操作系统
      */
-    private String server_Sys;
-
-    /**
-     * 运行环境 - 服务器端 - 软件 - 编程语言
-     */
-    private String server_lan;
-
-    /**
-     * 运行环境 - 服务器端 - 软件 - 数据库
-     */
-    private String server_Data;
-
-    /**
-     * 运行环境 - 服务器端 - 软件 - 其它支撑软件
-     */
-    private String server_support;
+    private String serverSystem;
 
     /**
      * 运行环境 - 服务器端 - 软件 - 版本
      */
-    private String server_soft_version;
+    private String serverSoftVersion;
 
     /**
-     * 运行环境 - 服务器端 - 软件 - 构架
+     * 运行环境 - 服务器端 - 软件 - 编程语言
      */
-    private String server_soft_Frame;
+    private String serverLanguage;
+
+    /**
+     * 运行环境 - 服务器端 - 软件 - 构架（多选）
+     */
+    private String serverSoftFrame;
+
+    /**
+     * 运行环境 - 服务器端 - 软件 - 数据库
+     */
+    private String serverDataBase;
 
     /**
      * 运行环境 - 服务器端 - 软件 - 中间件
      */
-    private String server_soft_MidW;
+    private String serverSoftMidW;
+
+    /**
+     * 运行环境 - 服务器端 - 软件 - 其它支撑软件
+     */
+    private String serverSupport;
 
     /**
      * 运行环境 - 网络环境
      */
-    private String webEnv;
+    private String webEnvironment;
 
     /**
      * 样品和数量 - 软件介质
@@ -203,104 +188,79 @@ public class Entrust {
     private String sampleFile;
 
     /**
-     * 提交的样品（硬拷贝资料、硬件）五年保存期满：由本实验室销毁还是退还
+     * 提交的样品五年保存期满：由本实验室销毁还是退还（单选）
      */
     private String sampleChoice;
 
     /**
      * 希望测试完成时间
      */
-    private String sampleTime;
+    private String expectedDeadline;
 
     /**
      * 委托单位信息 - 电话
      */
-    private String consignTEL;
+    private String infoTEL;
 
     /**
      * 委托单位信息 - 传真
      */
-    private String consignFAX;
+    private String infoFAX;
 
     /**
      * 委托单位信息 - 地址
      */
-    private String consignAddr;
+    private String infoAddr;
 
     /**
      * 委托单位信息 - 邮编
      */
-    private String consignCODE;
+    private String infoPostcode;
 
     /**
      * 委托单位信息 - 联系人
      */
-    private String consignName;
+    private String infoName;
 
     /**
      * 委托单位信息 - 手机
      */
-    private String consignPhone;
+    private String infoPhone;
 
     /**
      * 委托单位信息 - E-mail
      */
-    private String consignEmail;
+    private String infoEmail;
 
     /**
      * 委托单位信息 - 网址
      */
-    private String consignWEB;
+    private String infoURL;
 
     /**
-     * 密级
+     * 密级（单选）
      */
-    private String otherEncrypt;
+    private String encryptionLev;
 
     /**
-     * 查杀病毒
+     * 查杀病毒（单选）
      */
-    private String otherVirus;
+    private String antiVirus;
 
     /**
-     * 材料检查 - 测试样品
+     * 材料检查（多选）
      */
-    private String otherSample;
+    private String checkSample;
 
     /**
-     * 材料检查 - 需求文档
+     * 确认意见（单选）
      */
-    private String othererREDOC;
+    private String opinions;
 
     /**
-     * 材料检查 - 用户文档
+     * 受理意见（单选）
      */
-    private String otherUSERDOC;
-
-    /**
-     * 材料检查 - 操作文档
-     */
-    private String otherOPDOC;
-
-    /**
-     * 材料检查 - 其它
-     */
-    private String otherOther;
-
-    /**
-     * 确认意见
-     */
-    private String otherCheck;
-
-    /**
-     * 受理意见
-     */
-    private String otherDeal;
-
-    /**
-     * 测试项目编号
-     */
-    private String otherProjectId;
+    private String acceptOpinions;
 
     /**
      * 用户信息
