@@ -33,11 +33,11 @@ public class EntrustServiceImpl implements EntrustService {
     }
 
     @Override
-    public String insertEntrust(Entrust entrust) {
+    public Entrust insertEntrust(Entrust entrust) {
         //根据某一个算法增加新的id
         entrust.setPid("new id");
         entrustRepository.save(entrust);
-        return entrust.getPid();
+        return entrust;
     }
 
     @Override

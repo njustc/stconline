@@ -28,8 +28,10 @@ public interface EntrustService {
 
     /**
      * 插入单个委托记录
+     *
+     * @return
      * */
-    String insertEntrust(Entrust entrust);
+    Entrust insertEntrust(Entrust entrust);
 
     /**
      * 修改单个委托记录
