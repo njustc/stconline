@@ -8,7 +8,11 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "TBL_SYS_PROJECT")
-public class Project extends BasicEntity {
+public class Project {
+	
+	@Id
+    @Column(name = "pid")
+    private Integer pid;
 
 //    /**
 //     * 该Project对应的用户
