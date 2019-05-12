@@ -9,8 +9,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author :lfm
  */
 public interface EntrustRepository extends JpaRepository<Entrust, String> {
-    /**
-     * 根据id查询委托
-     */
-    Entrust findEntrustById(String id);
 }
