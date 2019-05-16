@@ -1,5 +1,4 @@
 package com.example.stc.framework.core.web;
-
 import com.alibaba.fastjson.JSON;
 import com.example.stc.framework.enums.ResponseType;
 import org.springframework.hateoas.Link;
@@ -63,7 +62,7 @@ public class Response {
      */
     public static JSON success(Object data) {
         BasicResponse response = new BasicResponse(data, 200, "success");
-        return (JSON) JSON.toJSON(new Resource<>(response));
+        return (JSON) JSON.toJSON(response);
     }
 
     /**
@@ -85,6 +84,6 @@ public class Response {
      */
     public static JSON fail(ResponseType responseType) {
         BasicResponse response = new BasicResponse(null, responseType.getStatus(), responseType.getMessage());
-        return (JSON) JSON.toJSON(new Resource<>(response));
+        return (JSON) JSON.toJSON(response);
     }
 }
