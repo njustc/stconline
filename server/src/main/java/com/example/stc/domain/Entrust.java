@@ -1,7 +1,8 @@
 package com.example.stc.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -9,17 +10,21 @@ import javax.persistence.Table;
 @Table(name = "TBL_SYS_ENTRUST")
 public class Entrust {
 
+	/**
+	 * 自动生成的Id
+	 */
+	@Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+	private long id;
+	
     /**
      * 项目Id
      */
-    @Id
-    @Column(name = "pid")
     private String pid;
 
     /**
      * 存储测试文档整体
      */
-    @Column(name = "consignation")
     private String consignation;
 
     /**
