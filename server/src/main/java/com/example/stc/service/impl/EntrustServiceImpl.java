@@ -1,6 +1,7 @@
 package com.example.stc.service.impl;
 
 import com.example.stc.domain.Entrust;
+import com.example.stc.exception.EntrustNotFoundException;
 import com.example.stc.repository.EntrustRepository;
 import com.example.stc.service.EntrustService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class EntrustServiceImpl implements EntrustService {
     @Override
     public Entrust findEntrustById(String pid) {
         return entrustRepository.findById(pid)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new EntrustNotFoundException(pid));
     }
 
     @Override
@@ -42,7 +43,7 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public Entrust updateEntrust(String pid, Entrust record) {
-        entrustRepository.findById(pid).orElseThrow(RuntimeException::new);
+        entrustRepository.findById(pid).orElseThrow(() -> new EntrustNotFoundException(pid));
         return entrustRepository.save(record);
     }
 }
