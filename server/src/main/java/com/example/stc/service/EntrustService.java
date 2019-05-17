@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author lfm
  */
-public interface EntrustService {
+public interface EntrustService extends BaseService<Entrust> {
     /**
      * 获取全部的委托
      * 需要进行分页

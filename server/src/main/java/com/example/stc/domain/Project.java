@@ -8,10 +8,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "TBL_SYS_PROJECT")
-public class Project {
-	
-	@Id
-    @Column(name = "pid")
+public class Project extends BaseEntity {
+
     private Integer pid;
 
 //    /**

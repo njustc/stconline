@@ -1,4 +1,6 @@
 package com.example.stc.service;
 
-public interface ProjectService {
+import com.example.stc.domain.Project;
+
+public interface ProjectService extends BaseService<Project> {
 }

@@ -8,15 +8,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "TBL_SYS_ENTRUST")
-public class Entrust {
+public class Entrust extends BaseEntity {
 
-	/**
-	 * 自动生成的Id
-	 */
-	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-	private long id;
-	
     /**
      * 项目Id
      */

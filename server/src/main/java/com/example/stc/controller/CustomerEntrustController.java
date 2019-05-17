@@ -21,9 +21,9 @@ import com.example.stc.domain.Entrust;
  * 客户类用户的委托相关接口
  */
 @RestController
-@RequestMapping(path = "/api/customers") // 当前不考虑登录问题
+//@RequestMapping(path = "/api/customers") // 当前不考虑登录问题
 //@RequestMapping(path="/api/customers/{cid}") //考虑登录问题时的接口前缀
-public class CustomerEntrustController {
+public class CustomerEntrustController extends BaseController {
 
     @Autowired
     private EntrustService entrustService;
