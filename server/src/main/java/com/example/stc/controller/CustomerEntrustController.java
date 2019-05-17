@@ -3,15 +3,16 @@ package com.example.stc.controller;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.alibaba.fastjson.JSON;
-import com.example.stc.framework.core.web.Response;
-import com.example.stc.framework.enums.ResponseType;
 import com.example.stc.service.EntrustService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.stc.domain.Entrust;
@@ -42,35 +43,25 @@ public class CustomerEntrustController {
      */
     @GetMapping(path = "/projects")
     public @ResponseBody
-    JSON getAllEntrust() {
-        try {
-            List<Resource<Entrust>> list = entrustService.findAllEntrusts().stream()
-                    .map(entrust -> toResource(entrust))
-                    .collect(Collectors.toList());
-            return Response.success(list);
-        } catch (Exception e) {
-            return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
-        }
-
+    Resources<Resource<Entrust>> getAllEntrust() {
+        List<Resource<Entrust>> entrusts = entrustService.findAllEntrusts().stream()
+                .map(entrust -> toResource(entrust))
+                .collect(Collectors.toList());
+        return new Resources<>(entrusts,
+        	      linkTo(methodOn(CustomerEntrustController.class).getAllEntrust()).withSelfRel());
     }
 
     /**
      * 新建委托
      *
      * @return
+     * @throws URISyntaxException 
      */
     @PostMapping(path = "/projects")
     public @ResponseBody
-    JSON addNewEntrust(@RequestBody Entrust entrust) {
-        try {
-
-            entrust = entrustService.insertEntrust(entrust);
-            return Response.success(entrust);
-        } catch (RuntimeException e) {
-            return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
-        } catch (Exception e) {
-            return Response.fail(ResponseType.UNKNOWN_ERROR);
-        }
+    ResponseEntity<?> addNewEntrust(@RequestBody Entrust entrust) throws URISyntaxException {
+    	Resource<Entrust> resource = toResource(entrustService.insertEntrust(entrust));
+    	return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
     /**
@@ -78,35 +69,21 @@ public class CustomerEntrustController {
      */
     @GetMapping(path = "/projects/{pid}/entrust")
     public @ResponseBody
-    JSON getOneEntrust(@PathVariable String pid) {
-        try {
-
-            Entrust entrust = entrustService.findEntrustById(pid);
-            return Response.success(entrust
-                    , linkTo(methodOn(CustomerEntrustController.class).getOneEntrust(entrust.getPid())).withSelfRel()
-                    , linkTo(methodOn(CustomerEntrustController.class).getAllEntrust()).withSelfRel()
-            );
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
-        } catch (Exception e) {
-            return Response.fail(ResponseType.UNKNOWN_ERROR);
-        }
+    Resource<Entrust> getOneEntrust(@PathVariable String pid) {
+        Entrust entrust = entrustService.findEntrustById(pid);
+        return toResource(entrust);
     }
 
     /**
      * 修改单个委托
+     * @throws URISyntaxException 
      */
     @PutMapping(path = "/projects/{pid}/entrust")
     public @ResponseBody
-    JSON replaceEntrust(@PathVariable String pid, @RequestBody Entrust entrust) {
-        try {
-            Entrust item = entrustService.updateEntrust(pid, entrust);
-            return Response.success(item);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.fail(ResponseType.UNKNOWN_ERROR);
-        }
+    ResponseEntity<?> replaceEntrust(@PathVariable String pid, @RequestBody Entrust entrust) throws URISyntaxException {
+    	Entrust updatedEntrust = entrustService.updateEntrust(pid, entrust);
+    	Resource<Entrust> resource = toResource(updatedEntrust);
+        return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
     /**
@@ -114,16 +91,8 @@ public class CustomerEntrustController {
      */
     @DeleteMapping(path = "/projects/{pid}/entrust")
     public @ResponseBody
-    JSON deleteEntrust(@PathVariable String pid) {
-        try {
-            entrustService.deleteEntrustById(pid);
-            return Response.success(null);
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.fail(ResponseType.UNKNOWN_ERROR);
-        }
+    ResponseEntity<?> deleteEntrust(@PathVariable String pid) {
+        entrustService.deleteEntrustById(pid);
+        return ResponseEntity.noContent().build();
     }
 }
