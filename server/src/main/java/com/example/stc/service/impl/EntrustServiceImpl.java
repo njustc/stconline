@@ -27,15 +27,23 @@ public class EntrustServiceImpl implements EntrustService {
     }
 
     @Override
-    public Entrust findEntrustById(String pid) {
-        return entrustRepository.findById(pid)
-                .orElseThrow(() -> new EntrustNotFoundException(pid));
+    public Entrust findEntrustById(String id) {
+        return entrustRepository.findById(id)
+                .orElseThrow(() -> new EntrustNotFoundException(id));
     }
 
     @Override
-    public void deleteEntrustById(String pid) {
-        entrustRepository.deleteById(pid);
+    public Entrust findEntrustByPid(String pid) {
+        return entrustRepository.findByPid(pid);
     }
+
+    @Override
+    public void deleteEntrustById(String id) {
+        entrustRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteEntrustByPid(String pid) { entrustRepository.deleteByPid(pid); }
 
     @Override
     public Entrust insertEntrust(Entrust entrust) {

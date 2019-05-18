@@ -17,14 +17,24 @@ public interface EntrustService extends BaseService<Entrust> {
     List<Entrust> findAllEntrusts();
 
     /**
-     * 通过ID查询单个委托记录
+     * 通过主键ID查询单个委托记录
      */
-    Entrust findEntrustById(String pid);
+    Entrust findEntrustById(String id);
 
     /**
-     * 通过ID删除单个委托记录
+     * 通过委托ID查询单个委托记录
      */
-    void deleteEntrustById(String pid);
+    Entrust findEntrustByPid(String pid);
+
+    /**
+     * 通过主键ID删除单个委托记录
+     */
+    void deleteEntrustById(String id);
+
+    /**
+     * 通过委托ID删除单个委托记录
+     */
+    void deleteEntrustByPid(String pid);
 
     /**
      * 插入单个委托记录
@@ -34,7 +44,7 @@ public interface EntrustService extends BaseService<Entrust> {
     Entrust insertEntrust(Entrust entrust);
 
     /**
-     * 修改单个委托记录
+     * 通过委托ID修改单个委托记录
      * 若委托记录不存在，将报异常
      * */
     Entrust updateEntrust(String pid, Entrust record);

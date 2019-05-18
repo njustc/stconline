@@ -12,4 +12,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EntrustRepository extends BaseRepository<Entrust> {
+
+    Entrust findByPid(String pid);
+
+    void deleteByPid(String pid);
+
 }
