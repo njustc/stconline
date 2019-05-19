@@ -18,7 +18,7 @@ public class Entrust extends BaseEntity {
     /**
      * 存储测试文档整体
      */
-    private String consignation;
+    private String entrustEntity;
 
     /**
      * 测试类型（多选）
