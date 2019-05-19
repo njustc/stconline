@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table(name = "TBL_SYS_PROJECT")
 public class Project extends BaseEntity {
 
-    private Entrust entrust;
+//    private Entrust entrust;
 
 //    /**
 //     * 该Project对应的用户
