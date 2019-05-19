@@ -1,6 +1,10 @@
 HELP.md
 /target/
+
 /client/node_modules
+
+server/target
+
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
@@ -28,3 +32,4 @@ HELP.md
 
 ### VS Code ###
 .vscode/
+server/target/classes/com/example/stc/controller/ServiceController.class
