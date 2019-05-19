@@ -10,12 +10,22 @@ import com.example.stc.exception.EntrustNotFoundException;
 
 @ControllerAdvice
 public class EntrustNotFoundAdvice {
-	
-	@ResponseBody
-	@ExceptionHandler(EntrustNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	private String entrustNotFoundHandler(EntrustNotFoundException e) {
-		return e.getMessage();
-	}
-	
+
+    @ResponseBody
+    @ExceptionHandler(EntrustNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    private String entrustNotFoundHandler(EntrustNotFoundException e) {
+        return e.getMessage();
+    }
+
+    /**
+     * 未知错误
+     * */
+    @ResponseBody
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    private String exceptionHandler(Exception e) {
+        return e.getMessage();
+    }
+
 }

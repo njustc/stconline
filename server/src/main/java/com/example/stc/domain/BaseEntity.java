@@ -1,9 +1,10 @@
 package com.example.stc.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @MappedSuperclass
-public class BaseEntity {
+public class BaseEntity implements Serializable {
     /**
      * 自动生成的Id
      */

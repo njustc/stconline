@@ -48,20 +48,20 @@ public class CustomerEntrustController extends BaseController {
                 .map(entrust -> toResource(entrust))
                 .collect(Collectors.toList());
         return new Resources<>(entrusts,
-        	      linkTo(methodOn(CustomerEntrustController.class).getAllEntrust()).withSelfRel());
+                linkTo(methodOn(CustomerEntrustController.class).getAllEntrust()).withSelfRel());
     }
 
     /**
      * 新建委托
      *
      * @return
-     * @throws URISyntaxException 
+     * @throws URISyntaxException
      */
     @PostMapping(path = "/projects")
     public @ResponseBody
     ResponseEntity<?> addNewEntrust(@RequestBody Entrust entrust) throws URISyntaxException {
-    	Resource<Entrust> resource = toResource(entrustService.insertEntrust(entrust));
-    	return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
+        Resource<Entrust> resource = toResource(entrustService.insertEntrust(entrust));
+        return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
     /**
@@ -70,19 +70,20 @@ public class CustomerEntrustController extends BaseController {
     @GetMapping(path = "/projects/{pid}/entrust")
     public @ResponseBody
     Resource<Entrust> getOneEntrust(@PathVariable String pid) {
-        Entrust entrust = entrustService.findEntrustById(pid);
+        Entrust entrust = entrustService.findEntrustByPid(pid);
         return toResource(entrust);
     }
 
     /**
      * 修改单个委托
-     * @throws URISyntaxException 
+     *
+     * @throws URISyntaxException
      */
     @PutMapping(path = "/projects/{pid}/entrust")
     public @ResponseBody
     ResponseEntity<?> replaceEntrust(@PathVariable String pid, @RequestBody Entrust entrust) throws URISyntaxException {
-    	Entrust updatedEntrust = entrustService.updateEntrust(pid, entrust);
-    	Resource<Entrust> resource = toResource(updatedEntrust);
+        Entrust updatedEntrust = entrustService.updateEntrust(pid, entrust);
+        Resource<Entrust> resource = toResource(updatedEntrust);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
