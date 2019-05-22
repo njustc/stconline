@@ -60,7 +60,7 @@ public class CustomerEntrustController extends BaseController {
     @PostMapping(path = "/projects")
     public @ResponseBody
     ResponseEntity<?> addNewEntrust(@RequestBody Entrust entrust) throws URISyntaxException {
-        Resource<Entrust> resource = toResource(entrustService.insertEntrust(entrust));
+        Resource<Entrust> resource = toResource(entrustService.newEntrust(entrust));
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
