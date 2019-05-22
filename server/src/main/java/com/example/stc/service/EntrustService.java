@@ -41,7 +41,7 @@ public interface EntrustService extends BaseService<Entrust> {
      *
      * @return
      * */
-    Entrust insertEntrust(Entrust entrust);
+    Entrust newEntrust(Entrust entrust);
 
     /**
      * 通过委托ID修改单个委托记录

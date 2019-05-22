@@ -1,13 +1,15 @@
 package com.example.stc.service.impl;
 
 import com.example.stc.domain.Entrust;
-import com.example.stc.exception.EntrustNotFoundException;
+import com.example.stc.framework.exception.EntrustNotFoundException;
+import com.example.stc.framework.util.DateUtils;
 import com.example.stc.repository.EntrustRepository;
 import com.example.stc.repository.ProjectRepository;
 import com.example.stc.service.EntrustService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +22,9 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Autowired
     private ProjectRepository projectRepository;
+
+    @Autowired
+    private DateUtils dateUtils;
 
     @Override
     public List<Entrust> findAllEntrusts() {
@@ -46,9 +51,9 @@ public class EntrustServiceImpl implements EntrustService {
     public void deleteEntrustByPid(String pid) { entrustRepository.deleteByPid(pid); }
 
     @Override
-    public Entrust insertEntrust(Entrust entrust) {
+    public Entrust newEntrust(Entrust entrust) {
         //根据某一个算法增加新的id
-        entrust.setPid("new id");
+        entrust.setPid(dateUtils.dateToStr(new Date(),"yyyyMMddHHmmss"));
         return entrustRepository.save(entrust);
     }
 

@@ -4,10 +4,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="processEngineConfiguration" class="org.activiti.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration">
-        <property name="jdbcUrl" value="jdbc:mysql://106.14.140.93:3306/njustc?useUnicode=true&characterEncoding=utf-8"/>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/njustc?useUnicode=true&characterEncoding=utf-8"/>
         <property name="jdbcDriver" value="com.mysql.cj.jdbc.Driver"/>
         <property name="jdbcUsername" value="root"/>
-        <property name="jdbcPassword" value="lfm"/>
+        <property name="jdbcPassword" value="mysql"/>
         <property name="databaseSchemaUpdate" value="true" />
     </bean>
     <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">

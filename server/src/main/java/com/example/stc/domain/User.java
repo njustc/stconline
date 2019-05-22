@@ -1,4 +1,11 @@
 package com.example.stc.domain;
 
-public class User {
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "TBL_SYS_USER")
+public class User extends NamedEntity {
+
 }

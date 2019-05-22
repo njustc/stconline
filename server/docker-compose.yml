@@ -1,0 +1,15 @@
+version: '3.2'
+
+services:
+  mysql:
+    image: 'mysql:5.7.21'
+    container_name: 'mysql'
+    ports:
+      - '3306:3306'
+#    volumes:
+#      - './mysql/:/var/lib/mysql/'
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_DATABASE=njustc
+    command: mysqld --lower_case_table_names=1 --skip-ssl
+
