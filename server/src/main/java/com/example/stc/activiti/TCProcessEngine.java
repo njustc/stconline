@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 根据BaseOperation中的状态分类定义了两类TaskOperation，如针对待审核状态的通过操作
+ * 根据BaseOperation中的状态分类定义了两类Operation
  * 定义了创建具体流程实例的接口
  */
 @Service
@@ -33,10 +33,10 @@ public class TCProcessEngine {
     @Autowired
     private BaseOperation baseOperation;
 
-    enum TaskOperationnoGate {
+    enum noGateOperation {
         Submit, Write, Implement, Send, Done, Fil, Satisfact
     }
-    enum TaskOperationwithGate{
+    enum GateOperation{
         Review, Confirm, Approve
     }
 
