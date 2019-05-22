@@ -3,7 +3,7 @@ package com.example.stc.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
+import javax.persistence.Column;
 
 /**
  * 用户账号类
