@@ -1,7 +1,7 @@
 package com.example.stc.service.impl;
 
 import com.example.stc.domain.Entrust;
-import com.example.stc.exception.EntrustNotFoundException;
+import com.example.stc.framework.exception.EntrustNotFoundException;
 import com.example.stc.framework.util.DateUtils;
 import com.example.stc.repository.EntrustRepository;
 import com.example.stc.repository.ProjectRepository;
