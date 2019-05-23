@@ -72,9 +72,11 @@
   "engines": {
     "node": ">=8.0.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint-staged"
+  "//": {
+    "husky": {
+      "hooks": {
+        "pre-commit": "npm run lint-staged"
+      }
     }
   }
 }

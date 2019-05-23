@@ -65,14 +65,14 @@ export default {
         //   icon: 'block',
         // },
         {
-          name: 'basic-form',
-          icon: 'dashboard',
+          //name: 'basic-form',
+          //icon: 'dashboard',
           path: '/basic-form',
           component: './entrust/basic-form',
         },
         //entrustlist
         {
-          name: 'basic-list',
+          name: '您的委托',
           icon: 'pie-chart',
           path: '/basic-list',
           component: './entrust/basic-list/entrustlist',
