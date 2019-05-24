@@ -1,13 +1,14 @@
 // ref: https://umijs.org/config/
-import { primaryColor } from '../src/defaultSettings';
+import {primaryColor} from '../src/defaultSettings';
+
 export default {
   plugins: [
     [
       'umi-plugin-react',
       {
         antd: true,
-        dva: { hmr: true },
-        targets: { ie: 11 },
+        dva: {hmr: true},
+        targets: {ie: 11},
         locale: {
           enable: true,
           // default false
@@ -16,7 +17,7 @@ export default {
           baseNavigator: true,
         },
         // default true, when it is true, will use `navigator.language` overwrite default
-        dynamicImport: { loadingComponent: './components/PageLoading/index' },
+        dynamicImport: {loadingComponent: './components/PageLoading/index'},
       },
     ],
     [
@@ -29,7 +30,7 @@ export default {
       },
     ],
   ],
-  targets: { ie: 11 },
+  targets: {ie: 11},
   /**
    * 路由相关配置
    */
@@ -88,11 +89,11 @@ export default {
   /**
    * webpack 相关配置
    */
-  define: { APP_TYPE: process.env.APP_TYPE || '' },
+  define: {APP_TYPE: process.env.APP_TYPE || ''},
   // Theme for antd
   // https://ant.design/docs/react/customize-theme-cn
-  theme: { 'primary-color': primaryColor },
-  externals: { '@antv/data-set': 'DataSet' },
+  theme: {'primary-color': primaryColor},
+  externals: {'@antv/data-set': 'DataSet'},
   ignoreMomentLocale: true,
-  lessLoaderOptions: { javascriptEnabled: true },
+  lessLoaderOptions: {javascriptEnabled: true}
 };
