@@ -268,6 +268,7 @@ export default {
 
   'basic-form.form.submit': '提交',
   'basic-form.form.save': '保存',
+  'basic-form.form.delete': '删除',
 
   'basic-form.date.required': '请选择日期',
   'basic-form.date.label': '希望测试完成时间',
@@ -287,6 +288,7 @@ export default {
 
   'form.test_number.label':'测试项目编号',
   'form.test_number.placeholder':' ',
+  'validation.test_number.required':'请输入测试项目编号',
 
   'form.remarks.label': '备注',
   'form.remarks.placeholder': ' ',
@@ -294,9 +296,11 @@ export default {
 
   'form.acceptee_signature.label': '受理人签名',
   'form.acceptee_signature.placeholder': ' ',
+  'validation.acceptee_signature.required': '请受理人签名',
 
   'form.acceptee_signature_time.label': '日期',
   'form.acceptee_signature_time.placeholder': ' ',
+  'validation.acceptee_signature_time.required': '请填写日期',
 
   'form.client.label': '委托人填写',
   'form.client.placeholder': ' ',
@@ -304,9 +308,11 @@ export default {
 
   'form.client_signature.label': '委托人签名',
   'form.client_signature.placeholder': ' ',
+  'validation.client_signature.required': '请委托人签名',
 
   'form.client_signature_time.label': '日期',
   'form.client_signature_time.placeholder': ' ',
+  'validation.client_signature_time.required': '请填写日期',
 
 
   // 'basic-form.email.required': '请输入邮箱地址！',

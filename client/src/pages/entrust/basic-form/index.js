@@ -1045,6 +1045,10 @@ class BasicForm extends PureComponent {
               <Button style={{ marginLeft: 8 }}>
                 <FormattedMessage id="basic-form.form.save" />
               </Button>
+			  <Button style={{ marginLeft: 8}}
+			  type="danger">
+				<FormattedMessage id="basic-form.form.delete" />
+			  </Button>
             </FormItem>
           </Form>
         </Card>

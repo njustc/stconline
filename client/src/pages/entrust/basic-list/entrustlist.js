@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import {Table,Select,Input} from 'antd';
+import {Table,Select,Input,Button} from 'antd';
 const Search = Input.Search;
 import { connect } from 'dva';
+import Link from 'umi/link'
 
 const namespace = 'entrustlist';
 
@@ -39,6 +40,12 @@ export default class EntrustList extends Component {
             style={{marginLeft:100,width: 200 }}
         />
         <Table  style={{marginTop:50 }} columns={this.props.listdata.columns} dataSource={this.props.listdata.data} />
+		<Button
+		style={{ marginLeft: 400 }}
+		type="primary"
+		href="/basic-form">
+		新建委托
+		</Button>
       </div>
     );
   }
