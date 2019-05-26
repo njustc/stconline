@@ -12,6 +12,7 @@ import {
   Radio,
   Icon,
   Tooltip,
+  Breadcrumb
 } from 'antd';
 import PageHeaderWrapper from './components/PageHeaderWrapper';
 import styles from './style.less';
@@ -77,11 +78,14 @@ class BasicForm extends PureComponent {
     };
 
     return (
+	<Breadcrumb>
+			<Breadcrumb.Item href="/basic-list">委托列表</Breadcrumb.Item>
+			<Breadcrumb.Item href="/basic-form">编辑委托</Breadcrumb.Item>
+		<h1></h1>
       <PageHeaderWrapper
         title={<FormattedMessage id="basic-form.basic.title" />}
         content={<FormattedMessage id="basic-form.basic.description" />}
       >
-        <Button type="primary" onClick={this.submit}>click me</Button>
         <Card bordered={false}>
           <FormItem
             {...formItemLayout}
@@ -1053,6 +1057,7 @@ class BasicForm extends PureComponent {
           </Form>
         </Card>
       </PageHeaderWrapper>
+	</Breadcrumb>
     );
   }
 }
