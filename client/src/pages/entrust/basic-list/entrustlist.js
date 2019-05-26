@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Table,Select,Input,Button} from 'antd';
+import {Table,Select,Input,Button ,Breadcrumb} from 'antd';
 const Search = Input.Search;
 import { connect } from 'dva';
 import Link from 'umi/link'
@@ -29,6 +29,9 @@ export default class EntrustList extends Component {
   render() {
     return (
       <div> 
+	  <Breadcrumb>
+		<Breadcrumb.Item hr ="/basic-list">委托列表</Breadcrumb.Item>
+	  </Breadcrumb>
         <Select
           style={{ width: 200  }}
           defaultValue="1"

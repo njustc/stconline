@@ -1,4 +1,4 @@
-import {Card,Table, Divider, Tag,Input,Button} from 'antd';
+import {Card,Table, Divider, Tag,Input,Button , Breadcrumb} from 'antd';
 export default () => {
 
   const style={
@@ -52,6 +52,10 @@ export default () => {
   ];
   return (
     <div>
+		<Breadcrumb>
+			<Breadcrumb.Item href="/basic-list">委托列表</Breadcrumb.Item>
+			<Breadcrumb.Item href="/basic-check">委托详情</Breadcrumb.Item>
+		</Breadcrumb>
       <div><h3>NST-04-JS002-2011-软件项目委托测试申请表(只读)</h3></div>
       <Card style={{ width: 300 }}>
         <p>测试类型：软件确认测试，成果技术鉴定测试</p>
