@@ -12,6 +12,7 @@ import {
   Radio,
   Icon,
   Tooltip,
+  Modal
 } from 'antd';
 import PageHeaderWrapper from './components/PageHeaderWrapper';
 import styles from './style.less';
@@ -20,6 +21,43 @@ const FormItem = Form.Item;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
+const confirm=Modal.confirm;
+//#endregion
+
+//删除按钮的对话框方法，点击“确认删除”调取delete方法
+function showDeleteConfirm() {
+  confirm({
+    title: '您是否要删除本委托?',
+    content: '委托一旦删除不可恢复',
+    okText: '确认删除',
+    okType: 'danger',
+    cancelText: '取消',
+    onOk() {
+      console.log('OK');
+      //在此方法里使用delete
+    },
+    onCancel() {
+      console.log('Cancel');
+    },
+  });
+}
+
+//提交按钮的对话框方法，点击“提交”调取提交方法
+function showConfirm() {
+  confirm({
+    title: '您是否要提交本委托?',
+    content: '委托一旦提交，将无法从线上更改，但您可以在“委托列表”查看本委托详情。提交的委托将由工作人员进行核对。',
+    okText: '提交',
+    cancelText: '取消',
+    onOk() {
+      console.log('OK');
+      //在此方法里提交
+    },
+    onCancel() {
+      console.log('Cancel');
+    },
+  });
+}
 
 @connect(({ loading }) => ({
   submitting: loading.effects['basicForm/submitRegularForm'],
@@ -49,6 +87,7 @@ class BasicForm extends PureComponent {
       payload: values,
     });
   };
+
 
 
   render() {
@@ -81,7 +120,6 @@ class BasicForm extends PureComponent {
         title={<FormattedMessage id="basic-form.basic.title" />}
         content={<FormattedMessage id="basic-form.basic.description" />}
       >
-        <Button type="primary" onClick={this.submit}>click me</Button>
         <Card bordered={false}>
           <FormItem
             {...formItemLayout}
@@ -1039,13 +1077,13 @@ class BasicForm extends PureComponent {
             </FormItem>
 
             <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
-              <Button type="primary" htmlType="submit" loading={submitting}>
+              <Button type="primary" onClick={showConfirm}>
                 <FormattedMessage id="basic-form.form.submit" />
               </Button>
               <Button style={{ marginLeft: 8 }}>
                 <FormattedMessage id="basic-form.form.save" />
               </Button>
-			  <Button style={{ marginLeft: 8}}
+			  <Button onClick={showDeleteConfirm} style={{ marginLeft: 8}}
 			  type="danger">
 				<FormattedMessage id="basic-form.form.delete" />
 			  </Button>
