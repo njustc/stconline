@@ -28,6 +28,7 @@ public interface EntrustService extends BaseService<Entrust> {
 
     /**
      * 通过主键ID删除单个委托记录
+     * 如果不存在,就报错
      */
     void deleteEntrustById(Long id);
 

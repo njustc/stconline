@@ -48,12 +48,17 @@ public class EntrustServiceImpl implements EntrustService {
     }
 
     @Override
-    public void deleteEntrustByPid(String pid) { entrustRepository.deleteByPid(pid); }
+    public void deleteEntrustByPid(String pid) {
+        int n = entrustRepository.deleteByPid(pid);
+        if (0 == n) {
+            throw new EntrustNotFoundException("record not found");
+        }
+    }
 
     @Override
     public Entrust newEntrust(Entrust entrust) {
         //根据某一个算法增加新的id
-        entrust.setPid(dateUtils.dateToStr(new Date(),"yyyyMMddHHmmss"));
+        entrust.setPid(dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         return entrustRepository.save(entrust);
     }
 

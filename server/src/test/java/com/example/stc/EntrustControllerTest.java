@@ -1,7 +1,9 @@
 package com.example.stc;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.stc.controller.CustomerEntrustController;
+import com.example.stc.domain.Entrust;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -18,8 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -43,9 +44,10 @@ public class EntrustControllerTest {
 
     /**
      * 接口测试
+     * 委托
      */
     @Test
-    public void httpTest() throws Exception {
+    public void httpPostTest() throws Exception {
         mockMvc.perform(get("/api/customers/projects"))
                 .andExpect(status().isOk());
         Map<String, Object> reqBody = new HashMap<>();
@@ -57,6 +59,18 @@ public class EntrustControllerTest {
                 .contentType("application/json"))
                 .andExpect(status().isCreated())
                 .andReturn();
-
+        String content = result.getResponse().getContentAsString();
+        Entrust record = JSONObject.toJavaObject(JSONObject.parseObject(content), Entrust.class);
+        //删除刚刚新建的委托内容
+        mockMvc.perform(delete("/api/customers/projects" + "/" + record.getPid() + "/entrust")
+                .contentType("application/json"))
+                .andExpect(status().isNoContent()) // 删除成功,返回204
+                .andReturn();
+        //再次删除,需要返回的是404
+        mockMvc.perform(delete("/api/customers/projects" + "/" + record.getPid() + "/entrust")
+                .contentType("application/json"))
+                .andExpect(status().isNotFound()) // 删除成功,返回204
+                .andReturn();
     }
+
 }
