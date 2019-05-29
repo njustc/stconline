@@ -32,7 +32,7 @@ public class EntrustServiceImpl implements EntrustService {
     }
 
     @Override
-    public Entrust findEntrustById(String id) {
+    public Entrust findEntrustById(Long id) {
         return entrustRepository.findById(id)
                 .orElseThrow(() -> new EntrustNotFoundException(id));
     }
@@ -43,7 +43,7 @@ public class EntrustServiceImpl implements EntrustService {
     }
 
     @Override
-    public void deleteEntrustById(String id) {
+    public void deleteEntrustById(Long id) {
         entrustRepository.deleteById(id);
     }
 
@@ -59,6 +59,6 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public Entrust updateEntrust(String pid, Entrust record) {
-        return entrustRepository.findById(pid).orElseThrow(() -> new EntrustNotFoundException(pid));
+        return entrustRepository.findByPid(pid); // .orElseThrow(() -> new EntrustNotFoundException(pid));
     }
 }
