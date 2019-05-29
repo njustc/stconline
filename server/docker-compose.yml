@@ -6,6 +6,7 @@ services:
     container_name: 'mysql'
     ports:
       - '3306:3306'
+    restart: 'always'
 #    volumes:
 #      - './mysql/:/var/lib/mysql/'
     environment:

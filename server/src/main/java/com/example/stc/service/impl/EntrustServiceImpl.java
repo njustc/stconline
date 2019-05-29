@@ -32,7 +32,7 @@ public class EntrustServiceImpl implements EntrustService {
     }
 
     @Override
-    public Entrust findEntrustById(String id) {
+    public Entrust findEntrustById(Long id) {
         return entrustRepository.findById(id)
                 .orElseThrow(() -> new EntrustNotFoundException(id));
     }
@@ -43,22 +43,27 @@ public class EntrustServiceImpl implements EntrustService {
     }
 
     @Override
-    public void deleteEntrustById(String id) {
+    public void deleteEntrustById(Long id) {
         entrustRepository.deleteById(id);
     }
 
     @Override
-    public void deleteEntrustByPid(String pid) { entrustRepository.deleteByPid(pid); }
+    public void deleteEntrustByPid(String pid) {
+        int n = entrustRepository.deleteByPid(pid);
+        if (0 == n) {
+            throw new EntrustNotFoundException("record not found");
+        }
+    }
 
     @Override
     public Entrust newEntrust(Entrust entrust) {
         //根据某一个算法增加新的id
-        entrust.setPid(dateUtils.dateToStr(new Date(),"yyyyMMddHHmmss"));
+        entrust.setPid(dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         return entrustRepository.save(entrust);
     }
 
     @Override
     public Entrust updateEntrust(String pid, Entrust record) {
-        return entrustRepository.findById(pid).orElseThrow(() -> new EntrustNotFoundException(pid));
+        return entrustRepository.findByPid(pid); // .orElseThrow(() -> new EntrustNotFoundException(pid));
     }
 }
