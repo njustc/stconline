@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1558854172960" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
+  <process id="entrust_process" isClosed="false" isExecutable="true" name="EntrustProcess" processType="None">
+    <startEvent id="start" name="StartAnEntrust"/>
+    <userTask activiti:candidateGroups="${CustomersGroup}" activiti:exclusive="true" id="to_submit" name="Edit"/>
+    <userTask activiti:candidateGroups="${StaffGroup}" activiti:exclusive="true" id="to_accept" name="Review"/>
+    <sequenceFlow id="_2" sourceRef="start" targetRef="to_submit"/>
+    <sequenceFlow id="_3" name="Submit" sourceRef="to_submit" targetRef="to_accept"/>
+    <sequenceFlow id="_4" name="Refuse" sourceRef="to_accept" targetRef="to_submit"/>
+    <endEvent id="_5" name="EndEntrustProcess"/>
+    <sequenceFlow id="_6" name="Accept" sourceRef="to_accept" targetRef="_5"/>
+  </process>
+  <bpmndi:BPMNDiagram documentation="background=#FFFFFF;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
+    <bpmndi:BPMNPlane bpmnElement="entrust_process">
+      <bpmndi:BPMNShape bpmnElement="start" id="Shape-start">
+        <omgdc:Bounds height="32.0" width="32.0" x="335.0" y="125.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="to_submit" id="Shape-to_submit">
+        <omgdc:Bounds height="55.0" width="155.0" x="275.0" y="230.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="155.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="to_accept" id="Shape-to_accept">
+        <omgdc:Bounds height="55.0" width="155.0" x="280.0" y="340.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="155.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" id="Shape-_5">
+        <omgdc:Bounds height="32.0" width="32.0" x="340.0" y="450.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_2" id="BPMNEdge__2" sourceElement="start" targetElement="edit">
+        <omgdi:waypoint x="351.0" y="157.0"/>
+        <omgdi:waypoint x="351.0" y="230.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="12.0" width="0.0" x="0.0" y="-1.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_3" id="BPMNEdge__3" sourceElement="edit" targetElement="to_accept">
+        <omgdi:waypoint x="320.0" y="285.0"/>
+        <omgdi:waypoint x="320.0" y="315.0"/>
+        <omgdi:waypoint x="320.0" y="340.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="3.0" width="0.0" x="0.0" y="-25.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4" id="BPMNEdge__4" sourceElement="to_accept" targetElement="edit">
+        <omgdi:waypoint x="385.0" y="340.0"/>
+        <omgdi:waypoint x="385.0" y="315.0"/>
+        <omgdi:waypoint x="385.0" y="285.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="3.0" width="0.0" x="0.0" y="-25.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6" id="BPMNEdge__6" sourceElement="to_accept" targetElement="_5">
+        <omgdi:waypoint x="356.0" y="395.0"/>
+        <omgdi:waypoint x="356.0" y="450.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
