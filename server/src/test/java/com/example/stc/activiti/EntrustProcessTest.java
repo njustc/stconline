@@ -104,42 +104,42 @@ public class EntrustProcessTest {
         System.out.println("流程定义ID:" + processInstance.getProcessDefinitionId());// 流程定义ID
     }
 
-    /** 认领任务 */
-    @Test
-    public void claimTasks() {
-        TaskService taskService = processEngine.getTaskService();
-        Task customerTask = taskService.createTaskQuery().taskCandidateGroup("Customers").singleResult();
-        taskService.claim(customerTask.getId(), "C1");
-        System.out.println("流程实例ID:" + customerTask.getProcessInstanceId());// 流程实例ID
-        System.out.println("流程定义ID:" + customerTask.getProcessDefinitionId());// 流程定义ID
-        System.out.println("任务：" + customerTask.getId() + "  " + customerTask.getName());
-        System.out.println("成功认领");
-    }
-
-    /** 解除认领 */
-    @Test
-    public void declaimTasks() {
-        TaskService taskService = processEngine.getTaskService();
-        Task customerTask = taskService.createTaskQuery().taskCandidateOrAssigned("C1").singleResult();
-        taskService.setAssignee(customerTask.getId(), null);
-        System.out.println("流程实例ID:" + customerTask.getProcessInstanceId());// 流程实例ID
-        System.out.println("流程定义ID:" + customerTask.getProcessDefinitionId());// 流程定义ID
-        System.out.println("任务：" + customerTask.getId() + "  " + customerTask.getName());
-        System.out.println("解除认领");
-    }
-
-    /** 完成任务 */
-    @Test
-    public void completeTasks() {
-        TaskService taskService = processEngine.getTaskService();
-        Task customerTask = taskService.createTaskQuery().taskAssignee("C1").singleResult();
-        taskService.addComment(customerTask.getId(), customerTask.getProcessInstanceId(), "提交委托");
-        taskService.complete(customerTask.getId());
-        System.out.println("流程实例ID:" + customerTask.getProcessInstanceId());// 流程实例ID
-        System.out.println("流程定义ID:" + customerTask.getProcessDefinitionId());// 流程定义ID
-        System.out.println("任务：" + customerTask.getId() + "  " + customerTask.getName());
-        System.out.println("完成任务，认领者：" + customerTask.getAssignee());
-    }
+//    /** 认领任务 */
+//    @Test
+//    public void claimTasks() {
+//        TaskService taskService = processEngine.getTaskService();
+//        Task customerTask = taskService.createTaskQuery().taskCandidateGroup("Customers").singleResult();
+//        taskService.claim(customerTask.getId(), "C1");
+//        System.out.println("流程实例ID:" + customerTask.getProcessInstanceId());// 流程实例ID
+//        System.out.println("流程定义ID:" + customerTask.getProcessDefinitionId());// 流程定义ID
+//        System.out.println("任务：" + customerTask.getId() + "  " + customerTask.getName());
+//        System.out.println("成功认领");
+//    }
+//
+//    /** 解除认领 */
+//    @Test
+//    public void declaimTasks() {
+//        TaskService taskService = processEngine.getTaskService();
+//        Task customerTask = taskService.createTaskQuery().taskCandidateOrAssigned("C1").singleResult();
+//        taskService.setAssignee(customerTask.getId(), null);
+//        System.out.println("流程实例ID:" + customerTask.getProcessInstanceId());// 流程实例ID
+//        System.out.println("流程定义ID:" + customerTask.getProcessDefinitionId());// 流程定义ID
+//        System.out.println("任务：" + customerTask.getId() + "  " + customerTask.getName());
+//        System.out.println("解除认领");
+//    }
+//
+//    /** 完成任务 */
+//    @Test
+//    public void completeTasks() {
+//        TaskService taskService = processEngine.getTaskService();
+//        Task customerTask = taskService.createTaskQuery().taskAssignee("C1").singleResult();
+//        taskService.addComment(customerTask.getId(), customerTask.getProcessInstanceId(), "提交委托");
+//        taskService.complete(customerTask.getId());
+//        System.out.println("流程实例ID:" + customerTask.getProcessInstanceId());// 流程实例ID
+//        System.out.println("流程定义ID:" + customerTask.getProcessDefinitionId());// 流程定义ID
+//        System.out.println("任务：" + customerTask.getId() + "  " + customerTask.getName());
+//        System.out.println("完成任务，认领者：" + customerTask.getAssignee());
+//    }
 
     /** 查询当前任务 */
     @Test

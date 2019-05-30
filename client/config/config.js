@@ -2,10 +2,12 @@
 import {primaryColor} from '../src/defaultSettings';
 
 export default {
-  exportStatic:{},
-  base:'/stconline',
-  publicPath: 'https://benjamin15122.github.io/stconline/',
-  exportStatic: true,
+  base:'/',
+  publicPath: 'http://localhost:8080/',
+  treeShaking: true,
+  exportStatic:{
+    htmlSuffix:true,
+  },
   plugins: [
     [
       'umi-plugin-react',
