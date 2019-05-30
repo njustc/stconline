@@ -2,6 +2,10 @@
 import {primaryColor} from '../src/defaultSettings';
 
 export default {
+  exportStatic:{},
+  base:'/stconline',
+  publicPath: 'https://benjamin15122.github.io/stconline/',
+  exportStatic: true,
   plugins: [
     [
       'umi-plugin-react',
@@ -34,18 +38,7 @@ export default {
   /**
    * 路由相关配置
    */
-  routes: [
-    {
-      path: '/user',
-      component: '../layouts/UserLayout',
-      routes: [
-        {
-          path: '/user',
-          component: './Welcome',
-        },
-      ],
-    },
-    {
+  routes: [{
       path: '/',
       component: '../layouts/BasicLayout',
       routes: [
