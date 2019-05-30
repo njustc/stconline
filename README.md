@@ -1,8 +1,8 @@
 # 测试中心在线业务系统
 
 - 采用前后端分离的模式，前端开源框架：[umi](https://gitee.com/smallc/Sword) (基于 React、Ant Design)
-- 后端采用Springboot全家桶，并同时对其基础组件做了高度的封装，单独开源出一个框架：[BladeTool](https://github.com/chillzhuang/blade-tool)
-- 集成Activiti从流量控制、熔断降级、系统负载等多个维度保护服务的稳定性。
+- 后端采用Springboot
+- 集成Activiti
 
 ## 项目架构
 
