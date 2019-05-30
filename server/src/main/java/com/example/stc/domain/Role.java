@@ -18,7 +18,7 @@ public class Role extends BaseEntity{
     private String roleName;
 
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "TBL_SYS_ROLE_FUNCTIONS", joinColumns = {
             @JoinColumn(name = "ROLE_ID", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
     }, inverseJoinColumns = {
