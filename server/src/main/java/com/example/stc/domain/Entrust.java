@@ -259,7 +259,7 @@ public class Entrust extends BaseEntity {
     /**
      * 用户信息
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
     //@JSONField(serialize = false)
     private User user;
