@@ -48,7 +48,7 @@ public class User extends NamedEntity {
      * 用户的委托列表
      */
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID",foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT))
+ //   @JoinColumn(name = "USER_ID",foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT))
     @JSONField(serialize = false)
     private List<Entrust> entrusts;
 
@@ -56,7 +56,7 @@ public class User extends NamedEntity {
      * 用户的项目列表
      */
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID",foreignKey = @ForeignKey(name = "none",value = ConstraintMode.NO_CONSTRAINT))
+ //   @JoinColumn(name = "USER_ID",foreignKey = @ForeignKey(name = "none",value = ConstraintMode.NO_CONSTRAINT))
     @JSONField(serialize = false)
     private List<Project> projects;
 
