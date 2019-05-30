@@ -19,7 +19,7 @@ public interface EntrustService extends BaseService<Entrust> {
     /**
      * 通过主键ID查询单个委托记录
      */
-    Entrust findEntrustById(String id);
+    Entrust findEntrustById(Long id);
 
     /**
      * 通过委托ID查询单个委托记录
@@ -28,8 +28,9 @@ public interface EntrustService extends BaseService<Entrust> {
 
     /**
      * 通过主键ID删除单个委托记录
+     * 如果不存在,就报错
      */
-    void deleteEntrustById(String id);
+    void deleteEntrustById(Long id);
 
     /**
      * 通过委托ID删除单个委托记录

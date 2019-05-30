@@ -93,7 +93,7 @@ public class CustomerEntrustController extends BaseController {
     @DeleteMapping(path = "/projects/{pid}/entrust")
     public @ResponseBody
     ResponseEntity<?> deleteEntrust(@PathVariable String pid) {
-        entrustService.deleteEntrustById(pid);
+        entrustService.deleteEntrustByPid(pid);
         return ResponseEntity.noContent().build();
     }
 }
