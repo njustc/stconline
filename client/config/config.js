@@ -79,8 +79,27 @@ export default {
           component: './entrust/basic-list/entrustlist',
         },
         {
+		  //name: '委托详情',
           path: '/basic-check',
           component: './entrust/basic-check',
+        },
+		{
+          name: '您的合同详情',
+          icon: 'pie-chart',
+		  path: '/contract_detail',
+		  component: './contract/contract_detail',
+        },
+		{
+          name: '您的合同列表',
+          icon: 'pie-chart',
+		  path: '/contract_list',
+		  component: './contract/contract_list',
+        },
+		{
+          name: '您的合同编辑',
+          icon: 'pie-chart',
+		  path: '/contract_edit',
+		  component: './contract/contract_edit',
         },
       ],
     },
