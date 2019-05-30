@@ -29,7 +29,7 @@ public class User extends NamedEntity {
     /**
      * 联接表：用户与角色，多对多
      */
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "TBL_SYS_ROLE_USERS", joinColumns =
             {
                     @JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
@@ -47,7 +47,7 @@ public class User extends NamedEntity {
     /**
      * 用户的委托列表
      */
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
  //   @JoinColumn(name = "USER_ID",foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT))
     @JSONField(serialize = false)
     private List<Entrust> entrusts;
@@ -55,7 +55,7 @@ public class User extends NamedEntity {
     /**
      * 用户的项目列表
      */
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
  //   @JoinColumn(name = "USER_ID",foreignKey = @ForeignKey(name = "none",value = ConstraintMode.NO_CONSTRAINT))
     @JSONField(serialize = false)
     private List<Project> projects;
