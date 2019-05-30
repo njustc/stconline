@@ -25,7 +25,11 @@ public class User extends NamedEntity {
     @Column(name = "PASSWORD")
     private String password;
 
-
+//    /**
+//     * 用户id
+//     */
+//    @Column(name = "UID")
+//    private String uid;
     /**
      * 联接表：用户与角色，多对多
      */

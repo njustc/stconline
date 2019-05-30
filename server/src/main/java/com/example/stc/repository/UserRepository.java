@@ -1,9 +1,11 @@
 package com.example.stc.repository;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 
 import com.example.stc.domain.User;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 账号的仓库接口类
@@ -17,10 +19,11 @@ public interface UserRepository extends BaseRepository<User> {
      */
     User findByUsername(String username);
 
-    /**
-     * 通过ID查找对应的账号
-     * @param id 待查询账号的ID
-     * @return 对应的账号
-     */
-    User findById(String id);
+
+//    /**
+//     * 通过ID查找对应的账号
+//     * @param uid 待查询账号的ID
+//     * @return 对应的账号
+//     */
+//    User findByUid(String uid);
 }
