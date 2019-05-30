@@ -2,7 +2,7 @@ package com.example.stc;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.stc.controller.CustomerEntrustController;
+import com.example.stc.controller.EntrustController;
 import com.example.stc.domain.Entrust;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +32,7 @@ public class EntrustControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private CustomerEntrustController entrustController;
+    private EntrustController entrustController;
 
     private static final Logger logger = LoggerFactory.getLogger(EntrustControllerTest.class);
 
