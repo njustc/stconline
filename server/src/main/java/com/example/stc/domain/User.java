@@ -4,6 +4,7 @@ package com.example.stc.domain;
 import com.alibaba.fastjson.annotation.JSONField;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,13 +60,71 @@ public class User extends NamedEntity {
     @JSONField(serialize = false)
     private List<Project> projects;
 
-    public List<Project> getProjects(){
-        return projects;
-    }
-
     /**
      * 用户权限组
      */
     @Transient
     private List<Function> functions;
+
+    public List<Entrust> getEntrusts() { return entrusts; }
+
+    public void setEntrusts(List<Entrust> entrusts) { this.entrusts = entrusts; }
+
+    public List<Project> getProjects(){
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects){
+        this.projects = projects;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    //根据用户的角色给用户赋功能
+    public List<Function> getFunctions()
+    {
+        List<Role> roles = this.roles;
+
+        if(roles != null && roles.size() != 0)
+        {
+            List<Function> functions = new ArrayList<Function>();
+
+            for(Role role : roles)
+            {
+                List<Function> subFunctions = role.getFunctions();
+
+                functions.addAll(subFunctions);
+            }
+
+            return functions;
+        }
+
+        return this.functions;
+    }
+
+    public void setFunctions(List<Function> functions) {
+        this.functions = functions;
+    }
 }
