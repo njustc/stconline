@@ -17,6 +17,13 @@ import java.util.List;
 @Entity
 @Table(name = "TBL_SYS_USER")
 public class User extends BaseEntity {
+
+    /**
+     * 用户ID
+     */
+    @Column(name = "USERID")
+    private String uid;
+
     /**
      * 用户名
      */
@@ -84,6 +91,14 @@ public class User extends BaseEntity {
 
     public void setProjects(List<Project> projects){
         this.projects = projects;
+    }
+
+    public String getUserID() {
+        return uid;
+    }
+
+    public void setUserID(String uid) {
+        this.uid = uid;
     }
 
     public String getUsername() {

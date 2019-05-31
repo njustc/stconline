@@ -34,4 +34,18 @@ public interface UserService extends BaseService<User>{
      * @return
      */
     public User getUserByUsername(String username);
+
+    /**
+     * 根据用户uid查找用户
+     * @param uid
+     * @return
+     */
+    public User findUserByUid(String uid);
+
+    /**
+     * 根据用户uid删除用户
+     * @param uid
+     * @return
+     */
+    public int deleteUserByUid(String uid);
 }

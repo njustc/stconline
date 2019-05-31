@@ -74,5 +74,15 @@ public class UserServiceImpl implements UserService {
         }
         return user;
     }
+
+    @Override
+    public User findUserByUid(String uid) {
+        return userRepository.findByUid(uid);
+    }
+
+    @Override
+    public int deleteUserByUid(String uid) {
+        return userRepository.deleteByUid(uid);
+    }
 }
 
