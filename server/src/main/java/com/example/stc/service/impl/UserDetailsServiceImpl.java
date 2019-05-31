@@ -20,7 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        com.example.stc.domain.User user = userService.findByUsername(s);
+        com.example.stc.domain.User user = userService.getUserByUsername(s);
         return new User(s, user.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList("USER"));
     }
 }
