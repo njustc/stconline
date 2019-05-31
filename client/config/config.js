@@ -2,6 +2,12 @@
 import {primaryColor} from '../src/defaultSettings';
 
 export default {
+  base:'/',
+  publicPath: 'http://localhost:8080/',
+  treeShaking: true,
+  exportStatic:{
+    htmlSuffix:true,
+  },
   plugins: [
     [
       'umi-plugin-react',
@@ -34,18 +40,7 @@ export default {
   /**
    * 路由相关配置
    */
-  routes: [
-    {
-      path: '/user',
-      component: '../layouts/UserLayout',
-      routes: [
-        {
-          path: '/user',
-          component: './Welcome',
-        },
-      ],
-    },
-    {
+  routes: [{
       path: '/',
       component: '../layouts/BasicLayout',
       routes: [

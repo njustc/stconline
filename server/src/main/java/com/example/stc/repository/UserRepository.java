@@ -1,12 +1,29 @@
 package com.example.stc.repository;
 
-import com.example.stc.domain.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
+
+import com.example.stc.domain.User;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * 账号的仓库接口类
+ */
 @Repository
 public interface UserRepository extends BaseRepository<User> {
+    /**
+     * 通过用户名查找对应的账号
+     * @param username 待查询的账号的用户名
+     * @return 对应的账号
+     */
+    User findByUsername(String username);
 
-    public User findByUsername(String username);
+
+//    /**
+//     * 通过ID查找对应的账号
+//     * @param uid 待查询账号的ID
+//     * @return 对应的账号
+//     */
+//    User findByUid(String uid);
 }

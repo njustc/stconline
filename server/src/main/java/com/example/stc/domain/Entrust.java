@@ -1,10 +1,6 @@
 package com.example.stc.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "TBL_SYS_ENTRUST")
@@ -263,7 +259,11 @@ public class Entrust extends BaseEntity {
     /**
      * 用户信息
      */
-    //private User user;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
+    //@JSONField(serialize = false)
+    private User user;
+
 
     /**
      * 委托所在的项目
