@@ -1,6 +1,8 @@
 package com.example.stc.framework.exception;
 
-public class EntrustNotFoundException extends RuntimeException {
+import javax.persistence.EntityNotFoundException;
+
+public class EntrustNotFoundException extends EntityNotFoundException {
 
 	public EntrustNotFoundException(String pid) {
 		super("Could not find entrust with pid(String) = " + pid);

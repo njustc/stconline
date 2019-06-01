@@ -1,6 +1,8 @@
 package com.example.stc.framework.exception;
 
-public class RoleNotFoundException extends RuntimeException {
+import javax.persistence.EntityNotFoundException;
+
+public class RoleNotFoundException extends EntityNotFoundException {
     public RoleNotFoundException(long id) {
         super("Could not find entrust with id(long) = " + id);
     }
