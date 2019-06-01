@@ -34,24 +34,24 @@ public class StcApplicationTests {
      * */
     @Test
     public void deployment() {
-        ProcessEngine processEngine =
-                ProcessEngines.getDefaultProcessEngine();
-        Deployment deployment =
-                processEngine.getRepositoryService()
-                        .createDeployment()
-                        .addClasspathResource("processes/Consign.bpmn20.xml")
-                        .deploy();
-        System.out.println("id = " + deployment.getId());
-        System.out.println("name = " + deployment.getName());
-        System.out.println("key = " + deployment.getKey());
+//        ProcessEngine processEngine =
+//                ProcessEngines.getDefaultProcessEngine();
+//        Deployment deployment =
+//                processEngine.getRepositoryService()
+//                        .createDeployment()
+//                        .addClasspathResource("processes/Consign.bpmn20.xml")
+//                        .deploy();
+//        System.out.println("id = " + deployment.getId());
+//        System.out.println("name = " + deployment.getName());
+//        System.out.println("key = " + deployment.getKey());
     }
 
     //启动流程
     @Test
     public void startProcess() {
-        ProcessEngine processEngine =
-                ProcessEngines.getDefaultProcessEngine();
-        ProcessInstance pi = processEngine.getRuntimeService().startProcessInstanceByKey("myservice");
+//        ProcessEngine processEngine =
+//                ProcessEngines.getDefaultProcessEngine();
+//        ProcessInstance pi = processEngine.getRuntimeService().startProcessInstanceByKey("myservice");
     }
 
 }

@@ -15,10 +15,10 @@ public class Project extends BaseEntity {
 //    /**
 //     * 该Project对应的用户
 //     */
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
-//    //@JSONField(serialize = false)
-//    private User user;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
+    //@JSONField(serialize = false)
+    private User user;
 //
 //
 //    public User getUser() {
