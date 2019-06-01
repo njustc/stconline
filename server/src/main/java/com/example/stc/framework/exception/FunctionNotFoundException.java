@@ -1,6 +1,8 @@
 package com.example.stc.framework.exception;
 
-public class FunctionNotFoundException extends RuntimeException {
+import javax.persistence.EntityNotFoundException;
+
+public class FunctionNotFoundException extends EntityNotFoundException {
     public FunctionNotFoundException(long id) {
         super("Could not find entrust with id(long) = " + id);
     }
