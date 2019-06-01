@@ -19,6 +19,12 @@ public interface UserRepository extends BaseRepository<User> {
      */
     User findByUsername(String username);
 
+    User findByUid(String uid);
+
+    @Modifying(flushAutomatically = true)
+    @Transactional
+    int deleteByUid(String uid);
+
 
 //    /**
 //     * 通过ID查找对应的账号

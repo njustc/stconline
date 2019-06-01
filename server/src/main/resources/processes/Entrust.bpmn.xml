@@ -3,7 +3,7 @@
   <process id="entrust" isClosed="false" isExecutable="true" name="委托" processType="None">
     <startEvent id="start" name="开始">
       <extensionElements>
-        <activiti:formProperty id="entrustID" name="ID of entrust" type="String" required="true"/>
+        <activiti:formProperty id="EntrustID" name="ID of entrust" type="String" required="true"/>
       </extensionElements>
     </startEvent>
     <userTask activiti:exclusive="true" id="submitEntrust" name="委托待提交" activiti:assignee="${ClientID}">

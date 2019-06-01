@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "TBL_SYS_ENTRUST")
-public class Entrust extends BaseEntity {
+public class Entrust extends ProcessEntity {
 
     /**
      * 项目Id
