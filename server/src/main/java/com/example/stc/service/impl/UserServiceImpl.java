@@ -2,6 +2,7 @@ package com.example.stc.service.impl;
 
 import com.example.stc.domain.*;
 import com.example.stc.framework.exception.*;
+import com.example.stc.framework.util.DateUtils;
 import com.example.stc.repository.UserRepository;
 import com.example.stc.repository.RoleRepository;
 import com.example.stc.service.UserService;
@@ -13,6 +14,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -26,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private DateUtils dateUtils;
 
     @Override
     public User getUserByUsername(String username)
@@ -72,6 +77,7 @@ public class UserServiceImpl implements UserService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userRepository.save(user);
         }
+        user.setUserID("u" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         return user;
     }
 

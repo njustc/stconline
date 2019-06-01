@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1559029209409" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
-  <process id="entrust" isClosed="false" isExecutable="true" name="委托" processType="None">
+  <process id="Entrust" isClosed="false" isExecutable="true" name="委托" processType="None">
     <startEvent id="start" name="开始">
       <extensionElements>
         <activiti:formProperty id="EntrustID" name="ID of entrust" type="String" required="true"/>
@@ -41,7 +41,7 @@
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram documentation="background=#3C3F41;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
-    <bpmndi:BPMNPlane bpmnElement="entrust">
+    <bpmndi:BPMNPlane bpmnElement="Entrust">
       <bpmndi:BPMNShape bpmnElement="start" id="Shape-start">
         <omgdc:Bounds height="32.0" width="32.0" x="230.0" y="45.0"/>
         <bpmndi:BPMNLabel>

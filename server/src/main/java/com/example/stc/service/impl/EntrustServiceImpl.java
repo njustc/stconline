@@ -58,12 +58,15 @@ public class EntrustServiceImpl implements EntrustService {
     @Override
     public Entrust newEntrust(Entrust entrust) {
         //根据某一个算法增加新的id
-        entrust.setPid(dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
+        entrust.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         return entrustRepository.save(entrust);
     }
 
     @Override
     public Entrust updateEntrust(String pid, Entrust record) {
+        /**
+         * TODO: 增加更新逻辑
+         */
         return entrustRepository.findByPid(pid); // .orElseThrow(() -> new EntrustNotFoundException(pid));
     }
 }

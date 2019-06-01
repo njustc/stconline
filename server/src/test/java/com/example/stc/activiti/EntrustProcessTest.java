@@ -2,6 +2,8 @@ package com.example.stc.activiti;
 
 import com.example.stc.StcApplication;
 import com.example.stc.domain.Entrust;
+import com.example.stc.service.EntrustService;
+import com.example.stc.service.UserService;
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.Group;
@@ -16,9 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = StcApplication.class)
@@ -30,13 +30,25 @@ public class EntrustProcessTest {
     @Autowired
     private EntrustAction entrustAction;
 
+    @Autowired
+    private EntrustService entrustService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private TaskService taskService;
+
+    @Autowired
+    private FormService formService;
+
     private Entrust entrust;
     private com.example.stc.domain.User user;
 
     @Before
     public void before() {
-        entrust = new Entrust();
-        user = new com.example.stc.domain.User();
+        entrust = entrustService.newEntrust(new Entrust());
+        user = userService.newUser(new com.example.stc.domain.User());
     }
 
     /** 部署流程定义 */
@@ -45,7 +57,7 @@ public class EntrustProcessTest {
         Deployment deployment = processEngine.getRepositoryService()//与流程定义和部署对象相关的Service
                 .createDeployment() // 创建一个部署对象
                 .name("EntrustProcess测试") // 添加部署的名称
-                .addClasspathResource("processes/Entrust.bpmn.xml") // 从classpath的资源中加载，一次只能加载一个文件
+                .addClasspathResource("processes/Entrust.bpmn20.xml") // 从classpath的资源中加载，一次只能加载一个文件
                 .deploy();//完成部署
         System.out.println("部署ID：" + deployment.getId());
         System.out.println("部署名称：" + deployment.getName());
@@ -122,10 +134,15 @@ public class EntrustProcessTest {
 //                .startProcessInstanceByKey(processDefinitionKey, variables);// 使用流程定义的key启动流程实例，EntrustProcess.bpmn中id的属性值
 //        System.out.println("流程实例ID:" + processInstance.getId());// 流程实例ID
 //        System.out.println("流程定义ID:" + processInstance.getProcessDefinitionId());// 流程定义ID
-        user.setUserID("u201905310001");
-        entrust.setPid("p201905310001");
+        System.out.println(entrust.getPid());
+        System.out.println(user.getUserID());
         entrustAction.createEntrustProcess(entrust, user);
-
+        System.out.println("Task status: " + entrustAction.getEntrustProcessState(entrust.getProcessInstanceID()));
+        Task task = taskService.createTaskQuery().processInstanceId(entrust.getProcessInstanceID()).singleResult();
+        System.out.println("Task: " + task.getId());
+        // taskService.claim(task.getId(), "w123");
+        // taskService.complete(task.getId());
+        System.out.println("Task status: " + entrustAction.getEntrustProcessState(entrust.getProcessInstanceID()));
     }
 
 //    /** 认领任务 */
