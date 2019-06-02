@@ -1,15 +1,21 @@
 package com.example.stc.service.impl;
 
 import com.example.stc.domain.Entrust;
+import com.example.stc.domain.Role;
 import com.example.stc.framework.exception.EntrustNotFoundException;
 import com.example.stc.framework.util.DateUtils;
 import com.example.stc.repository.EntrustRepository;
 import com.example.stc.repository.ProjectRepository;
 import com.example.stc.service.EntrustService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -29,6 +35,31 @@ public class EntrustServiceImpl implements EntrustService {
     @Override
     public List<Entrust> findAllEntrusts() {
         return entrustRepository.findAll();
+    }
+
+    @Override
+    public List<Entrust> findEntrustsByAuthority() {
+        // 获得当前登陆用户对应的对象
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+        // 获取权限集
+        List<GrantedAuthority> authorList = new ArrayList<>(userDetails.getAuthorities());
+        // 判断是否是客户
+        boolean isCustomer = false;
+        for (GrantedAuthority author: authorList) {
+            if (author.getAuthority().equals("ROLE_" + Role.Customer.str()))
+                isCustomer = true;
+        }
+        List<Entrust> allEntrusts = this.findAllEntrusts();
+        if (isCustomer) {
+            Iterator<Entrust> it = allEntrusts.iterator();
+            while (it.hasNext()) {
+                Entrust entrust = it.next();
+                if (!entrust.getUser().getUsername().equals(userDetails.getUsername()))
+                    it.remove(); // 不是当前客户的委托不可见
+            }
+        }
+        return allEntrusts;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.stc.framework.config;
 
+import com.example.stc.domain.Role;
 import com.example.stc.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -46,7 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests() // 定义需要保护和不需要保护的URL
                 .antMatchers("/register", "/api/register/**", "/login", "/api/login").permitAll()
-                .antMatchers("/api/projects/**").hasRole("USER")
+                .antMatchers("/api/projects/**").hasRole(Role.USER.str())
+                // TODO: 其他针对角色拦截的URL
                 .anyRequest().authenticated() // 任何请求,登录后可以访问
 
                 .and().csrf().disable();

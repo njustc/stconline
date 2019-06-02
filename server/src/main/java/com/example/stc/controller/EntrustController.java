@@ -42,7 +42,11 @@ public class EntrustController extends BaseController {
     @GetMapping(path = "/entrust")
     public @ResponseBody
     Resources<Resource<Entrust>> getAllEntrust() {
-        List<Resource<Entrust>> entrusts = entrustService.findAllEntrusts().stream()
+        //List<Resource<Entrust>> entrusts = entrustService.findAllEntrusts().stream()
+        //        .map(entrust -> toResource(entrust))
+        //        .collect(Collectors.toList());
+        // 依据当前登录的用户的权限查询能见的委托
+        List<Resource<Entrust>> entrusts = entrustService.findEntrustsByAuthority().stream()
                 .map(entrust -> toResource(entrust))
                 .collect(Collectors.toList());
         return new Resources<>(entrusts,
@@ -55,7 +59,7 @@ public class EntrustController extends BaseController {
      * @return
      * @throws URISyntaxException
      */
-    @PostMapping(path = "/entrust")
+    @PostMapping(path = "/entrust/new")
     public @ResponseBody
     ResponseEntity<?> addNewEntrust(@RequestBody Entrust entrust) throws URISyntaxException {
         Resource<Entrust> resource = toResource(entrustService.newEntrust(entrust));

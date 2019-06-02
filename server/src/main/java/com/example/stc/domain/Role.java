@@ -5,6 +5,7 @@ package com.example.stc.domain;
  */
 public enum Role {
 
+    USER("USER"),
     Customer("CUS"),
     SalesStaff("SS"), SalesManager("SM"),
     TestStaff("TS"), TestManager("TM"),

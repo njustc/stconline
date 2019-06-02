@@ -32,7 +32,15 @@ public class User extends BaseEntity {
 
     /** 用户所对应的角色组(见enum Role)，格式为: 例如"SS,TS"，例如"CUS"，例如"ADMIN" */
     @Column(name = "ROLES")
-    private String roles;
+    private String roles = "";
+
+    /** 添加角色/权限 */
+    public void addRole(String role) {
+        if (roles.length() > 0)
+            roles = new String(roles + "," + role);
+        else
+            setRoles(role);
+    }
 
     /** 用户的委托列表 */
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

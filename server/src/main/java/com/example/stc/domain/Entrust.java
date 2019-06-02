@@ -276,4 +276,7 @@ public class Entrust extends ProcessEntity {
 	public void setPid(String pid) {
 		this.pid = pid;
 	}
+
+	public User getUser() { return user; }
+	public void setUser(User user) { this.user = user; }
 }

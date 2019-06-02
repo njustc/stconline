@@ -17,6 +17,11 @@ public interface EntrustService extends BaseService<Entrust> {
     List<Entrust> findAllEntrusts();
 
     /**
+     * 依据用户权限获取委托
+     */
+    List<Entrust> findEntrustsByAuthority();
+
+    /**
      * 通过主键ID查询单个委托记录
      */
     Entrust findEntrustById(Long id);

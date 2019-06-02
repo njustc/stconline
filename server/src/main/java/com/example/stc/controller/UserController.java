@@ -28,7 +28,7 @@ public class UserController {
     @PostMapping("/api/register/customer")
     public @ResponseBody
     User registerCustomer(@RequestBody User user) {
-        user.setRoles(Role.Customer.str());
+        user.addRole(Role.Customer.str());
         userService.newUser(user);
         return user;
     }
@@ -37,7 +37,7 @@ public class UserController {
     @PostMapping("/api/register/salesStaff")
     public @ResponseBody
     User registerSalesStaff(@RequestBody User user) {
-        user.setRoles(Role.SalesStaff.str());
+        user.addRole(Role.SalesStaff.str());
         userService.newUser(user);
         return user;
     }
@@ -46,7 +46,7 @@ public class UserController {
     @PostMapping("/api/register/salesManager")
     public @ResponseBody
     User registerSalesManager(@RequestBody User user) {
-        user.setRoles(Role.SalesManager.str());
+        user.addRole(Role.SalesManager.str());
         userService.newUser(user);
         return user;
     }
@@ -55,7 +55,7 @@ public class UserController {
     @PostMapping("/api/register/testStaff")
     public @ResponseBody
     User registerTestStaff(@RequestBody User user) {
-        user.setRoles(Role.TestStaff.str());
+        user.addRole(Role.TestStaff.str());
         userService.newUser(user);
         return user;
     }
@@ -64,7 +64,7 @@ public class UserController {
     @PostMapping("/api/register/testManager")
     public @ResponseBody
     User registerTestManager(@RequestBody User user) {
-        user.setRoles(Role.TestManager.str());
+        user.addRole(Role.TestManager.str());
         userService.newUser(user);
         return user;
     }
@@ -73,7 +73,7 @@ public class UserController {
     @PostMapping("/api/register/qualityManager")
     public @ResponseBody
     User registerQualityManager(@RequestBody User user) {
-        user.setRoles(Role.QualityManager.str());
+        user.addRole(Role.QualityManager.str());
         userService.newUser(user);
         return user;
     }
@@ -82,7 +82,7 @@ public class UserController {
     @PostMapping("/api/register/admin")
     public @ResponseBody
     User registerAdmin(@RequestBody User user) {
-        user.setRoles(Role.Admin.str());
+        user.addRole(Role.Admin.str());
         userService.newUser(user);
         return user;
     }
