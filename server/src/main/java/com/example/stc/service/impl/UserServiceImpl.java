@@ -75,10 +75,10 @@ public class UserServiceImpl implements UserService {
     public User newUser(User user) {
         if (user.getUsername() != null && user.getPassword() != null){
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setUserID("u" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
             return userRepository.save(user);
         }
-        user.setUserID("u" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
-        return user;
+        return null;
     }
 
     @Override
