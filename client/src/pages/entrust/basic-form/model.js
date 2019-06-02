@@ -4,7 +4,9 @@ import { fakeSubmitForm } from './service';
 export default {
   namespace: 'basicForm',
 
-  state: {},
+  state: {
+    data:{},
+  },
 
   effects: {
     *submitRegularForm({ payload }, { call }) {
