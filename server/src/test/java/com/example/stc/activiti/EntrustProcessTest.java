@@ -18,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = StcApplication.class)
@@ -134,15 +136,31 @@ public class EntrustProcessTest {
 //                .startProcessInstanceByKey(processDefinitionKey, variables);// 使用流程定义的key启动流程实例，EntrustProcess.bpmn中id的属性值
 //        System.out.println("流程实例ID:" + processInstance.getId());// 流程实例ID
 //        System.out.println("流程定义ID:" + processInstance.getProcessDefinitionId());// 流程定义ID
+        /** 创建流程 */
         System.out.println(entrust.getPid());
         System.out.println(user.getUserID());
         entrustAction.createEntrustProcess(entrust, user);
-        System.out.println("Task status: " + entrustAction.getEntrustProcessState(entrust.getProcessInstanceID()));
-        Task task = taskService.createTaskQuery().processInstanceId(entrust.getProcessInstanceID()).singleResult();
-        System.out.println("Task: " + task.getId());
-        // taskService.claim(task.getId(), "w123");
-        // taskService.complete(task.getId());
-        System.out.println("Task status: " + entrustAction.getEntrustProcessState(entrust.getProcessInstanceID()));
+        System.out.println("Process status: " + entrustAction.getEntrustProcessState(entrust.getProcessInstanceID()));
+
+        try {
+            /** 提交 */
+            entrustAction.submitEntrust(entrust.getProcessInstanceID(), user);
+            System.out.println("Process status: " + entrustAction.getEntrustProcessState(entrust.getProcessInstanceID()));
+
+            /** 否决 */
+            entrustAction.reviewEntrust(entrust.getProcessInstanceID(), user, "ReviewDisprove");
+            System.out.println("Process status: " + entrustAction.getEntrustProcessState(entrust.getProcessInstanceID()));
+
+            /** 再提交 */
+            entrustAction.submitEntrust(entrust.getProcessInstanceID(), user);
+            System.out.println("Process status: " + entrustAction.getEntrustProcessState(entrust.getProcessInstanceID()));
+
+            /** 通过 */
+            entrustAction.reviewEntrust(entrust.getProcessInstanceID(), user, "ReviewPass");
+            System.out.println("Process status: " + entrustAction.getEntrustProcessState(entrust.getProcessInstanceID()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 //    /** 认领任务 */
