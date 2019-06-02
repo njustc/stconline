@@ -1,50 +1,22 @@
 package com.example.stc.domain;
-import com.alibaba.fastjson.annotation.JSONField;
-
-import javax.persistence.*;
-import java.util.List;
-
 
 /**
- * 每个用户User对应一个角色Role，一个Role包含若干个Funtion
+ * 定义用户角色：客户、市场部普通人员、市场部主任、测试部普通人员、测试部主任、质量部主任和超级管理员
  */
-@Entity
-@Table(name = "TBL_SYS_ROLES")
-public class Role extends BaseEntity{
-    /**
-     * 角色名称
-     */
-    @Column(name = "ROLE_NAME")
-    private String roleName;
+public enum Role {
 
+    Customer("CUS"),
+    SalesStaff("SS"), SalesManager("SM"),
+    TestStaff("TS"), TestManager("TM"),
+    QualityManager("QM"),
+    Admin("ADMIN");
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "TBL_SYS_ROLE_FUNCTIONS", joinColumns = {
-            @JoinColumn(name = "ROLE_ID", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
-    }, inverseJoinColumns = {
-            @JoinColumn(name = "FUNCTION_ID", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
-    })
-
-    /**
-     * 角色所对应的权限
-     */
-    @JSONField(deserialize = false)
-    private List<Function> functions;
-
-    public String getRoleName() {
-        return roleName;
+    private String name;
+    private Role(String name) {
+        this.name = name;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    public List<Function> getFunctions() {
-        return functions;
-    }
-
-    @JSONField(deserialize = false)
-    public void setFunctions(List<Function> functions) {
-        this.functions = functions;
+    public String str() {
+        return name;
     }
 }
