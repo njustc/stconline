@@ -23,6 +23,16 @@ const { Option } = Select;
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const confirm=Modal.confirm;
+//此处为假数据，未来在得到用户之前的数据后，mapState2Props里return form
+//在对应的formitem里添加initialValue，此时表单里现实的数据就是从后端的得到的。
+const form={
+    pid:'1',			
+    entrustEntity	:'',
+    testType:'软件确认测试'	,	
+    softwareName:'little mushroom',	
+    version:'1.0.2',
+    
+}
 //#endregion
 
 //删除按钮的对话框方法，点击“确认删除”调取delete方法
@@ -150,6 +160,7 @@ class BasicForm extends PureComponent {
           </FormItem>
           <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.softname.label" />}>
             {getFieldDecorator('softname', {
+              initialValue:form.softwareName,
               rules: [
                 {
                   required: true,
@@ -160,6 +171,7 @@ class BasicForm extends PureComponent {
           </FormItem>
           <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.version.label" />}>
             {getFieldDecorator('version', {
+              initialValue:form.version,
               rules: [
                 {
                   required: true,
