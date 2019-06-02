@@ -5,22 +5,19 @@
 //import org.springframework.web.bind.annotation.ExceptionHandler;
 //import org.springframework.web.bind.annotation.ResponseBody;
 //import org.springframework.web.bind.annotation.ResponseStatus;
-//
-//import com.example.stc.framework.exception.EntrustNotFoundException;
-//
 //import javax.persistence.EntityExistsException;
 //import javax.persistence.EntityNotFoundException;
+//import com.example.stc.framework.exception.RoleNotFoundException;
 //
 //@ControllerAdvice
-//public class EntrustNotFoundAdvice {
-//
+//public class RoleNotFoundAdvice {
 //    /**
-//     * 用于委托不存在的异常返回
+//     * 用于角色不存在的异常返回
 //     */
 //    @ResponseBody
-//    @ExceptionHandler(EntrustNotFoundException.class)
+//    @ExceptionHandler(RoleNotFoundException.class)
 //    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    private String entrustNotFoundHandler(RuntimeException e) {
+//    private String roleNotFoundHandler(RuntimeException e) {
 //        return e.getMessage();
 //    }
 //

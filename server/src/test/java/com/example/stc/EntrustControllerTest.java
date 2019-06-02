@@ -2,7 +2,7 @@ package com.example.stc;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.stc.controller.CustomerEntrustController;
+import com.example.stc.controller.EntrustController;
 import com.example.stc.domain.Entrust;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +32,7 @@ public class EntrustControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private CustomerEntrustController entrustController;
+    private EntrustController entrustController;
 
     private static final Logger logger = LoggerFactory.getLogger(EntrustControllerTest.class);
 
@@ -48,13 +48,13 @@ public class EntrustControllerTest {
      */
     @Test
     public void httpPostTest() throws Exception {
-        mockMvc.perform(get("/api/customers/projects"))
+        mockMvc.perform(get("/api/projects/entrust"))
                 .andExpect(status().isOk());
         Map<String, Object> reqBody = new HashMap<>();
         reqBody.put("pid", "hello");
         logger.info("sent post with body " + JSON.toJSONString(reqBody));
         //新建委托
-        MvcResult result = mockMvc.perform(post("/api/customers/projects")
+        MvcResult result = mockMvc.perform(post("/api/projects/entrust")
                 .content(JSON.toJSONString(reqBody))
                 .contentType("application/json"))
                 .andExpect(status().isCreated())
@@ -62,12 +62,12 @@ public class EntrustControllerTest {
         String content = result.getResponse().getContentAsString();
         Entrust record = JSONObject.toJavaObject(JSONObject.parseObject(content), Entrust.class);
         //删除刚刚新建的委托内容
-        mockMvc.perform(delete("/api/customers/projects" + "/" + record.getPid() + "/entrust")
+        mockMvc.perform(delete("/api/projects/entrust/" + record.getPid())
                 .contentType("application/json"))
                 .andExpect(status().isNoContent()) // 删除成功,返回204
                 .andReturn();
         //再次删除,需要返回的是404
-        mockMvc.perform(delete("/api/customers/projects" + "/" + record.getPid() + "/entrust")
+        mockMvc.perform(delete("/api/projects/entrust/" + record.getPid())
                 .contentType("application/json"))
                 .andExpect(status().isNotFound()) // 删除成功,返回204
                 .andReturn();

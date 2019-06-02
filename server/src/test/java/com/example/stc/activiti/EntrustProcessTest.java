@@ -1,5 +1,9 @@
 package com.example.stc.activiti;
 
+import com.example.stc.StcApplication;
+import com.example.stc.domain.Entrust;
+import com.example.stc.service.EntrustService;
+import com.example.stc.service.UserService;
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.Group;
@@ -7,16 +11,45 @@ import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = StcApplication.class)
 public class EntrustProcessTest {
 
     /** 通过默认载入activiti.cfg.xml获取 */
     private ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+
+    @Autowired
+    private EntrustAction entrustAction;
+
+    @Autowired
+    private EntrustService entrustService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private TaskService taskService;
+
+    @Autowired
+    private FormService formService;
+
+    private Entrust entrust;
+    private com.example.stc.domain.User user;
+
+    @Before
+    public void before() {
+        entrust = entrustService.newEntrust(new Entrust());
+        user = userService.newUser(new com.example.stc.domain.User());
+    }
 
     /** 部署流程定义 */
     @Test
@@ -24,8 +57,7 @@ public class EntrustProcessTest {
         Deployment deployment = processEngine.getRepositoryService()//与流程定义和部署对象相关的Service
                 .createDeployment() // 创建一个部署对象
                 .name("EntrustProcess测试") // 添加部署的名称
-                .addClasspathResource("processes/EntrustProcess.bpmn") // 从classpath的资源中加载，一次只能加载一个文件
-                .addClasspathResource("processes/EntrustProcess.png") // 从classpath的资源中加载，一次只能加载一个文件
+                .addClasspathResource("processes/Entrust.bpmn20.xml") // 从classpath的资源中加载，一次只能加载一个文件
                 .deploy();//完成部署
         System.out.println("部署ID：" + deployment.getId());
         System.out.println("部署名称：" + deployment.getName());
@@ -93,53 +125,62 @@ public class EntrustProcessTest {
     @Test
     public void startProcessInstance() {
         // 定义参数
-        Map<String, Object> variables = new HashMap<String, Object>();
-        variables.put("CustomersGroup", "Customers"); // 为candidateGroups的参数CustomersGroup指定值
-        variables.put("StaffGroup", "Staff"); // 为candidateGroups的参数StaffGroup指定值
-        // 流程定义的key
-        String processDefinitionKey = "entrust_process";
-        ProcessInstance processInstance = processEngine.getRuntimeService()// 与正在执行的流程实例和执行对象相关的Service
-                .startProcessInstanceByKey(processDefinitionKey, variables);// 使用流程定义的key启动流程实例，EntrustProcess.bpmn中id的属性值
-        System.out.println("流程实例ID:" + processInstance.getId());// 流程实例ID
-        System.out.println("流程定义ID:" + processInstance.getProcessDefinitionId());// 流程定义ID
+//        Map<String, Object> variables = new HashMap<String, Object>();
+//        variables.put("CustomersGroup", "Customers"); // 为candidateGroups的参数CustomersGroup指定值
+//        variables.put("StaffGroup", "Staff"); // 为candidateGroups的参数StaffGroup指定值
+//        // 流程定义的key
+//        String processDefinitionKey = "entrust_process";
+//        ProcessInstance processInstance = processEngine.getRuntimeService()// 与正在执行的流程实例和执行对象相关的Service
+//                .startProcessInstanceByKey(processDefinitionKey, variables);// 使用流程定义的key启动流程实例，EntrustProcess.bpmn中id的属性值
+//        System.out.println("流程实例ID:" + processInstance.getId());// 流程实例ID
+//        System.out.println("流程定义ID:" + processInstance.getProcessDefinitionId());// 流程定义ID
+        System.out.println(entrust.getPid());
+        System.out.println(user.getUserID());
+        entrustAction.createEntrustProcess(entrust, user);
+        System.out.println("Task status: " + entrustAction.getEntrustProcessState(entrust.getProcessInstanceID()));
+        Task task = taskService.createTaskQuery().processInstanceId(entrust.getProcessInstanceID()).singleResult();
+        System.out.println("Task: " + task.getId());
+        // taskService.claim(task.getId(), "w123");
+        // taskService.complete(task.getId());
+        System.out.println("Task status: " + entrustAction.getEntrustProcessState(entrust.getProcessInstanceID()));
     }
 
-    /** 认领任务 */
-    @Test
-    public void claimTasks() {
-        TaskService taskService = processEngine.getTaskService();
-        Task customerTask = taskService.createTaskQuery().taskCandidateGroup("Customers").singleResult();
-        taskService.claim(customerTask.getId(), "C1");
-        System.out.println("流程实例ID:" + customerTask.getProcessInstanceId());// 流程实例ID
-        System.out.println("流程定义ID:" + customerTask.getProcessDefinitionId());// 流程定义ID
-        System.out.println("任务：" + customerTask.getId() + "  " + customerTask.getName());
-        System.out.println("成功认领");
-    }
-
-    /** 解除认领 */
-    @Test
-    public void declaimTasks() {
-        TaskService taskService = processEngine.getTaskService();
-        Task customerTask = taskService.createTaskQuery().taskCandidateOrAssigned("C1").singleResult();
-        taskService.setAssignee(customerTask.getId(), null);
-        System.out.println("流程实例ID:" + customerTask.getProcessInstanceId());// 流程实例ID
-        System.out.println("流程定义ID:" + customerTask.getProcessDefinitionId());// 流程定义ID
-        System.out.println("任务：" + customerTask.getId() + "  " + customerTask.getName());
-        System.out.println("解除认领");
-    }
-
-    /** 完成任务 */
-    @Test
-    public void completeTasks() {
-        TaskService taskService = processEngine.getTaskService();
-        Task customerTask = taskService.createTaskQuery().taskAssignee("C1").singleResult();
-        taskService.addComment(customerTask.getId(), customerTask.getProcessInstanceId(), "提交委托");
-        taskService.complete(customerTask.getId());
-        System.out.println("流程实例ID:" + customerTask.getProcessInstanceId());// 流程实例ID
-        System.out.println("流程定义ID:" + customerTask.getProcessDefinitionId());// 流程定义ID
-        System.out.println("任务：" + customerTask.getId() + "  " + customerTask.getName());
-        System.out.println("完成任务，认领者：" + customerTask.getAssignee());
-    }
+//    /** 认领任务 */
+//    @Test
+//    public void claimTasks() {
+//        TaskService taskService = processEngine.getTaskService();
+//        Task customerTask = taskService.createTaskQuery().taskCandidateGroup("Customers").singleResult();
+//        taskService.claim(customerTask.getId(), "C1");
+//        System.out.println("流程实例ID:" + customerTask.getProcessInstanceId());// 流程实例ID
+//        System.out.println("流程定义ID:" + customerTask.getProcessDefinitionId());// 流程定义ID
+//        System.out.println("任务：" + customerTask.getId() + "  " + customerTask.getName());
+//        System.out.println("成功认领");
+//    }
+//
+//    /** 解除认领 */
+//    @Test
+//    public void declaimTasks() {
+//        TaskService taskService = processEngine.getTaskService();
+//        Task customerTask = taskService.createTaskQuery().taskCandidateOrAssigned("C1").singleResult();
+//        taskService.setAssignee(customerTask.getId(), null);
+//        System.out.println("流程实例ID:" + customerTask.getProcessInstanceId());// 流程实例ID
+//        System.out.println("流程定义ID:" + customerTask.getProcessDefinitionId());// 流程定义ID
+//        System.out.println("任务：" + customerTask.getId() + "  " + customerTask.getName());
+//        System.out.println("解除认领");
+//    }
+//
+//    /** 完成任务 */
+//    @Test
+//    public void completeTasks() {
+//        TaskService taskService = processEngine.getTaskService();
+//        Task customerTask = taskService.createTaskQuery().taskAssignee("C1").singleResult();
+//        taskService.addComment(customerTask.getId(), customerTask.getProcessInstanceId(), "提交委托");
+//        taskService.complete(customerTask.getId());
+//        System.out.println("流程实例ID:" + customerTask.getProcessInstanceId());// 流程实例ID
+//        System.out.println("流程定义ID:" + customerTask.getProcessDefinitionId());// 流程定义ID
+//        System.out.println("任务：" + customerTask.getId() + "  " + customerTask.getName());
+//        System.out.println("完成任务，认领者：" + customerTask.getAssignee());
+//    }
 
     /** 查询当前任务 */
     @Test

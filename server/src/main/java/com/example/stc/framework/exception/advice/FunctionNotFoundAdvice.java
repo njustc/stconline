@@ -1,26 +1,21 @@
 //package com.example.stc.framework.exception.advice;
 //
 //import org.springframework.http.HttpStatus;
-//import org.springframework.web.bind.annotation.ControllerAdvice;
 //import org.springframework.web.bind.annotation.ExceptionHandler;
 //import org.springframework.web.bind.annotation.ResponseBody;
 //import org.springframework.web.bind.annotation.ResponseStatus;
-//
-//import com.example.stc.framework.exception.EntrustNotFoundException;
-//
+//import com.example.stc.framework.exception.FunctionNotFoundException;
 //import javax.persistence.EntityExistsException;
 //import javax.persistence.EntityNotFoundException;
 //
-//@ControllerAdvice
-//public class EntrustNotFoundAdvice {
-//
+//public class FunctionNotFoundAdvice {
 //    /**
-//     * 用于委托不存在的异常返回
+//     * 用于功能不存在的异常返回
 //     */
 //    @ResponseBody
-//    @ExceptionHandler(EntrustNotFoundException.class)
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    private String entrustNotFoundHandler(RuntimeException e) {
+//    @ExceptionHandler(FunctionNotFoundException.class)
+////    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    private String roleNotFoundHandler(RuntimeException e) {
 //        return e.getMessage();
 //    }
 //
