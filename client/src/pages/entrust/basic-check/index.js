@@ -7,7 +7,9 @@ export default () => {
     boxShadow:'0 4px 8px 0 rgba(0, 0, 0, 0.2)',
     border:'1px solid #e8e8e8',
   }
-  const columns = [
+
+ 
+  const model_columns = [
     {
       title: '模块编号',
       dataIndex: 'name',
@@ -29,47 +31,105 @@ export default () => {
       ),
     },
   ];
-  
-  const data = [
-    {
-      key: '1',
-      name: 'M1',
-      age: "佩奇",
-      describe:"客户可在委托管理页面按照委托ID和委托名称对委托进行搜索，按照委托ID、委托名称和委托日期对委托进行排序。点击委托列表中的详情按钮可进入委托详",
-    },
-    {
-      key: '1',
-      name: 'M2',
-      age: "佩奇",
-      describe:"客户可在委托管理页面按照委托ID和委托名称对委托进行搜索，按照委托ID、委托名称和委托日期对委托进行排序。点击委托列表中的详情按钮可进入委托详",
-    },
-    {
-      key: '1',
-      name: 'M3',
-      age: "佩奇",
-      describe:"客户可在委托管理页面按照委托ID和委托名称对委托进行搜索，按照委托ID、委托名称和委托日期对委托进行排序。点击委托列表中的详情按钮可进入委托详",
-    }
-  ];
+
+
+  //mock数据，写完方法后可移入mock文件，并在maptate2props方法里，return时return  form
+  const form={
+    pid:'1',			
+    entrustEntity	:'',
+    testType:'软件确认测试'	,	
+    softwareName:'little mushroom',	
+    version:'1.0.2',
+    companyEn:'ABC',
+    companyCh:'中文的ABC',
+    developer:'NJUse',
+    unitProperty:'科研院校',
+    userDescription:'认真搬砖的一群小朋友',
+    funcDescription:'有些软件看起来是一个作业，其实它不仅不能被作为一个作业，好很粗糙，还跑不起来',
+    testBasis:'GB/T 16260.1-2006',	
+    testSpecification:"功能性,可靠性,易用性,效率,可维护性,可移植性,代码覆盖度,缺陷检测率,代码风格符合度,代码不符合项检测率,产品说明要求,用户文档集要求",
+    //功能数
+    funcNum:'17',
+    //功能点数
+    fpNum:'18',
+    //代码行数
+    codeLine:'100000',
+    softwareType:'操作系统',
+    clientSystem:"Linux",	
+    clientExStorage:'90',
+    clientOther:'none',
+    serverHardFrame:'PC服务器',
+    serverInStorage:'100',
+    serverExStorage:'5000',
+    serverHardOther:'none again',
+    serverSystem:'Linux',
+    serverSoftVersion:'19.0',
+    serverLanguage:'Java',
+    serverSoftFrame	:'C/S',
+    serverDataBase:'mySQL',
+    serverSoftMidW:'what?',
+    serverSupport:'nope',
+    webEnvironment:'?',
+    sampleType:'U盘',
+    sampleFile:'.TXT,B/TXT',
+    sampleChocie:'由本实验室销毁',
+    expectedDeadLine:'2019.07.25',
+    infoTE:'14956563232',
+    infoFAX	:'emmmm',
+    infoAddr:'南京大学仙林校区',
+    infoPostcode:'014030',
+    infoName:'miao ',
+    infoPhone	:'1234562146',
+    infoEmail	:'keysoftlab@nju.edu.cn',
+    infoURL:'www.miaomiaomiao.io',
+    encryptionLev:'机密',
+    antiVirus:"已完成",
+    checkSample:'源代码',
+    opinions:'用户手册',
+    acceptOpinions:'测试所需材料不全，未达到受理条件。'	,
+    model:[
+      {
+        key: '1',
+        name: 'M1',
+        age: "佩奇",
+        describe:"客户可在委托管理页面按照委托ID和委托名称对委托进行搜索，按照委托ID、委托名称和委托日期对委托进行排序。点击委托列表中的详情按钮可进入委托详",
+      },
+      {
+        key: '1',
+        name: 'M2',
+        age: "佩奇",
+        describe:"客户可在委托管理页面按照委托ID和委托名称对委托进行搜索，按照委托ID、委托名称和委托日期对委托进行排序。点击委托列表中的详情按钮可进入委托详",
+      },
+      {
+        key: '1',
+        name: 'M3',
+        age: "佩奇",
+        describe:"客户可在委托管理页面按照委托ID和委托名称对委托进行搜索，按照委托ID、委托名称和委托日期对委托进行排序。点击委托列表中的详情按钮可进入委托详",
+      }
+    ]
+  }
+
+
   return (
     <div>
 		<Breadcrumb>
 			<Breadcrumb.Item href="/basic-list">委托列表</Breadcrumb.Item>
 			<Breadcrumb.Item href="/basic-check">委托详情</Breadcrumb.Item>
 		</Breadcrumb>
-      <div><h3>NST-04-JS002-2011-软件项目委托测试申请表(只读)</h3></div>
-      <Card style={{ width: 300 }}>
-        <p>测试类型：软件确认测试，成果技术鉴定测试</p>
-        <p>软件名称：小猪佩奇软件测试</p>
-        <p>版本号</p>
+      <div><h3>{form.pid}软件项目委托测试申请表</h3></div>
+      <Card>     
+        <p>测试类型：{form.testType}</p>
+        <p>软件名称：{form.softwareName}</p>
+        <p>版本号:{form.version}</p>
         <p>下略...</p>
       </Card>
-      
+
       <div><h3>NST-04-JS002-2011-软件项目委托测试申请表(只读)</h3></div>
       <div style={{ width: "100%", border:"1px solid"}}>
         测试类型：软件确认测试，成果技术鉴定测试<br/>
         软件名称：小猪佩奇软件测试
       </div>
-      <Table columns={columns} dataSource={data} pagination={false} />
+      <Table columns={model_columns} dataSource={form.model} pagination={false} />
       <div><h3>委托状态及意见</h3></div>
       <div>待受理/已受理/已驳回</div>
       <Input.TextArea style={{width:400,height:200}} placeholder="//意见" />
