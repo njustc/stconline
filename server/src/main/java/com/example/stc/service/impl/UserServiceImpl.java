@@ -4,18 +4,14 @@ import com.example.stc.domain.*;
 import com.example.stc.framework.exception.*;
 import com.example.stc.framework.util.DateUtils;
 import com.example.stc.repository.UserRepository;
-import com.example.stc.repository.RoleRepository;
 import com.example.stc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,9 +21,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
 
     @Autowired
     private DateUtils dateUtils;
@@ -51,23 +44,12 @@ public class UserServiceImpl implements UserService {
         User userToEdit = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
-        String username = params.getString("username");
-
-        JSONArray roleIds = params.getJSONArray("roleIds");
-        if(roleIds != null) {
-            List<Role> roles = new ArrayList<Role>();
-
-            for(int i = 0; i < roleIds.size(); i++) {
-                Long roleId = roleIds.getLong(i);
-                Role role = roleRepository.findById(roleId)
-                        .orElseThrow(() -> new RoleNotFoundException(roleId));
-                roles.add(role);
-            }
-
-            userToEdit.setRoles(roles);
-        }
         userToEdit.setUsername(user.getUsername());
         userToEdit.setId(user.getId());
+
+        // 用户权限不可更改
+        //userToEdit.setRoles(user.getRoles());
+
         userRepository.save(userToEdit);
     }
 
