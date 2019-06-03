@@ -35,7 +35,7 @@ public class EntrustAction {
      * @param entrust
      * @param user
      */
-    public void createEntrustProcess(Entrust entrust, User user) {
+    public String createEntrustProcess(Entrust entrust, User user) {
         Map<String, Object> variable = new HashMap<String, Object>();
         variable.put("EntrustID", entrust.getPid());
         variable.put("ClientID", user.getUserID());
@@ -48,6 +48,7 @@ public class EntrustAction {
         variable.put("WorkerIDs", "w2");
 
         entrust.setProcessInstanceID(stcProcessEngine.createProcess("Entrust", variable));
+        return entrust.getProcessInstanceID();
     }
 
     /**
