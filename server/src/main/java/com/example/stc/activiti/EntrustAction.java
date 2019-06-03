@@ -60,45 +60,59 @@ public class EntrustAction {
         return stcProcessEngine.getProcessState(processInstanceId);
     }
 
-    /**
-     * 提交委托
-     * @param processInstanceId
-     * @param user
-     * @throws Exception
-     */
-    public void submitEntrust(String processInstanceId, User user) throws Exception {
-        /**
-         * TODO: 验证user，需要用到安全框架
-         */
-        Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-        if (task.getName().equals("ToSubmit")) {
-            taskService.complete(task.getId());
-        }
-        else {
-            throw new Exception();
-        }
-    }
+//    /**
+//     * 提交委托
+//     * @param processInstanceId
+//     * @param user
+//     * @throws Exception
+//     */
+//    public void submitEntrust(String processInstanceId, User user) throws Exception {
+//        /**
+//         * TODO: 验证user，需要用到安全框架
+//         */
+//        updateEntrustProcess(processInstanceId, user, null);
+//    }
+//
+//    /**
+//     * 工作人员评审委托
+//     * @param processInstanceId
+//     * @param user
+//     * @param operation
+//     * @throws Exception
+//     */
+//    public void reviewEntrust(String processInstanceId, User user, String operation) throws Exception {
+//        /**
+//         * TODO: 验证user，需要用到安全框架
+//         */
+//        updateEntrustProcess(processInstanceId, user, operation);
+//    }
 
     /**
-     * 工作人员评审委托
-     * @param processInstanceId
+     * 更新委托流程状态
+     * @param entrust
      * @param user
      * @param operation
      * @throws Exception
      */
-    public void reviewEntrust(String processInstanceId, User user, String operation) throws Exception {
+    public void updateEntrustProcess(Entrust entrust, User user, String operation) throws Exception {
         /**
          * TODO: 验证user，需要用到安全框架
          */
-        Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+        Task task = taskService.createTaskQuery().processInstanceId(entrust.getProcessInstanceID()).singleResult();
         if (task.getName().equals("ToReview")) {
             Map<String, Object> variable = new HashMap<>();
             variable.put("reviewEntrustResult", operation);
             taskService.complete(task.getId(), variable);
         }
+        else if (task.getName().equals("ToSubmit")) {
+            taskService.complete(task.getId());
+        }
         else {
             throw new Exception();
         }
+
+
+        // TODO: 更新Entrust的processState
     }
 
 }
