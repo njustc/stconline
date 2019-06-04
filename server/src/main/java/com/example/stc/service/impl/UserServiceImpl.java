@@ -55,10 +55,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User newUser(User user) {
+        if (getUserByUsername(user.getUsername()) != null)
+            return null;
         if (user.getUsername() != null && user.getPassword() != null){
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setUserID("u" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
             user.addRole(Role.USER.str()); // 都有用户权限
+            user.setEntrusts(null);
             return userRepository.save(user);
         }
         return null;
