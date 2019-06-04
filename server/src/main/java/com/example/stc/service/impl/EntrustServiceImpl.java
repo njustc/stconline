@@ -1,5 +1,6 @@
 package com.example.stc.service.impl;
 
+import com.example.stc.activiti.EntrustAction;
 import com.example.stc.domain.Entrust;
 import com.example.stc.domain.Role;
 import com.example.stc.framework.exception.EntrustNotFoundException;
@@ -31,6 +32,9 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Autowired
     private DateUtils dateUtils;
+
+    @Autowired
+    private EntrustAction entrustAction;
 
     @Override
     public List<Entrust> findAllEntrusts() {
@@ -80,6 +84,9 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public void deleteEntrustByPid(String pid) {
+        Entrust entrust = entrustRepository.findByPid(pid);
+        entrustAction.deleteEntrustProcess(entrust);
+
         int n = entrustRepository.deleteByPid(pid);
         if (0 == n) {
             throw new EntrustNotFoundException("record not found");
@@ -90,6 +97,7 @@ public class EntrustServiceImpl implements EntrustService {
     public Entrust newEntrust(Entrust entrust) {
         //根据某一个算法增加新的id
         entrust.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
+        entrustAction.createEntrustProcess(entrust, entrust.getUser());
         return entrustRepository.save(entrust);
     }
 

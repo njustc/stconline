@@ -21,6 +21,7 @@ import com.example.stc.domain.Entrust;
  * 客户类用户的委托相关接口
  */
 @RestController
+@RequestMapping(path = "/project")
 public class EntrustController extends BaseController {
 
     @Autowired

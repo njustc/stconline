@@ -134,5 +134,8 @@ public class STCProcessEngine {
         return htiList.get(0).getName().toString();
     }
 
+    public void deleteProcessInstance(String processInstanceId) {
+        runtimeService.deleteProcessInstance(processInstanceId, "用户已取消");
+    }
 
 }
