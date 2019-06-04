@@ -4,11 +4,13 @@ import com.example.stc.activiti.EntrustAction;
 import com.example.stc.domain.Entrust;
 import com.example.stc.domain.Role;
 import com.example.stc.framework.exception.EntrustNotFoundException;
+import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.DateUtils;
 import com.example.stc.repository.EntrustRepository;
 import com.example.stc.repository.ProjectRepository;
 import com.example.stc.service.EntrustService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,6 +36,9 @@ public class EntrustServiceImpl implements EntrustService {
     private DateUtils dateUtils;
 
     @Autowired
+    private AuthorityUtils authorityUtils;
+
+    @Autowired
     private EntrustAction entrustAction;
 
     @Override
@@ -43,48 +48,65 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public List<Entrust> findEntrustsByAuthority() {
-        // 获得当前登陆用户对应的对象
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
-        // 获取权限集
-        List<GrantedAuthority> authorList = new ArrayList<>(userDetails.getAuthorities());
+        // 若不是用户抛出权限异常
+        authorityUtils.roleAccessCheck(Role.USER); // 若不是用户抛出权限异常
         // 判断是否是客户
-        boolean isCustomer = false;
-        for (GrantedAuthority author: authorList) {
-            if (author.getAuthority().equals("ROLE_" + Role.Customer.str()))
-                isCustomer = true;
-        }
+        boolean isCustomer = authorityUtils.hasAuthority(Role.Customer);
         List<Entrust> allEntrusts = this.findAllEntrusts();
         if (isCustomer) {
             Iterator<Entrust> it = allEntrusts.iterator();
             while (it.hasNext()) {
                 Entrust entrust = it.next();
-                if (!entrust.getUser().getUsername().equals(userDetails.getUsername()))
+                if (!entrust.getUser().getUsername().equals(authorityUtils.getLoginUser().getUsername()))
                     it.remove(); // 不是当前客户的委托不可见
             }
         }
         return allEntrusts;
     }
 
+    /** 对于客户，检查访问的是否是本人的委托；若不是则权限异常 */
+    private void customerAccessCheck(Entrust entrust) {
+        boolean isCustomer = authorityUtils.hasAuthority(Role.Customer);
+        if (isCustomer) {
+            if (!entrust.getUser().getUsername().equals(authorityUtils.getLoginUser().getUsername()))
+                throw new AccessDeniedException("没有查看权限，客户只能查看自己的委托");
+        }
+    }
+
     @Override
     public Entrust findEntrustById(Long id) {
-        return entrustRepository.findById(id)
+        authorityUtils.roleAccessCheck(Role.USER);
+        // 获取委托
+        Entrust entrust = entrustRepository.findById(id)
                 .orElseThrow(() -> new EntrustNotFoundException(id));
+
+        this.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
+
+        return entrust;
     }
 
     @Override
     public Entrust findEntrustByPid(String pid) {
-        return entrustRepository.findByPid(pid);
+        authorityUtils.roleAccessCheck(Role.USER);
+        // 获取委托
+        Entrust entrust = entrustRepository.findByPid(pid);
+        if (entrust == null)
+            throw new EntrustNotFoundException(pid);
+
+        this.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
+
+        return entrust;
     }
 
     @Override
     public void deleteEntrustById(Long id) {
+        this.findEntrustById(id); // 找到应删除的委托并检查，若为客户，只能访问本人的委托
         entrustRepository.deleteById(id);
     }
 
     @Override
     public void deleteEntrustByPid(String pid) {
-        Entrust entrust = entrustRepository.findByPid(pid);
+        Entrust entrust = this.findEntrustByPid(pid); // 找到应删除的委托并检查，若为客户，只能访问本人的委托
         entrustAction.deleteEntrustProcess(entrust);
 
         int n = entrustRepository.deleteByPid(pid);
@@ -95,6 +117,8 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public Entrust newEntrust(Entrust entrust) {
+        // 仅客户可以创建委托
+        authorityUtils.roleAccessCheck(Role.Customer);
         //根据某一个算法增加新的id
         entrust.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         entrustAction.createEntrustProcess(entrust, entrust.getUser());
@@ -103,6 +127,8 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public Entrust updateEntrust(String pid, Entrust record) {
+        // 仅客户可以修改委托
+        authorityUtils.roleAccessCheck(Role.Customer);
         /**
          * TODO: 增加更新逻辑
          */
