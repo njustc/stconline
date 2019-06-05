@@ -1,4 +1,4 @@
-import { Table, Divider, Tag } from 'antd';
+import { Table, Divider, Tag ,Breadcrumb} from 'antd';
 
 const columns = [
   {
@@ -72,7 +72,14 @@ const data = [
 class List extends React.Component{
 	render(){
 		return(
+		<div>
+		<Breadcrumb>
+			<Breadcrumb.Item href="/Welcome.html">主页</Breadcrumb.Item>
+			<Breadcrumb.Item>合同列表</Breadcrumb.Item>
+		</Breadcrumb>
+		<br />
 		<Table columns={columns} dataSource={data} />
+		</div>
 		);
 	}
 }
