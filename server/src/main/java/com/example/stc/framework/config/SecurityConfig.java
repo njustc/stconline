@@ -44,12 +44,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // 使用Spring默认登出URL: http://localhost:8080/logout(http://localhost:8080/login?logout)
 
-                .and()
-                .authorizeRequests() // 定义需要保护和不需要保护的URL
-                .antMatchers("/register", "/api/register/**", "/login", "/api/login").permitAll()
-                .antMatchers("/api/projects/**").hasRole(Role.USER.str())
-                // TODO: 其他针对角色拦截的URL
-                .anyRequest().authenticated() // 任何请求,登录后可以访问
+//                .and()
+//                .authorizeRequests() // 定义需要保护和不需要保护的URL
+//                .antMatchers("/register", "/api/register/**", "/login", "/api/login").permitAll()
+//                .antMatchers("/api/projects/**").hasRole(Role.USER.str())
+//                // TODO: 其他针对角色拦截的URL
+//                .anyRequest().authenticated() // 任何请求,登录后可以访问
 
                 .and().csrf().disable();
     }
