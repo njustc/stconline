@@ -69,6 +69,9 @@ public class StcApplicationTests {
     private UserController userController;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private EntrustService entrustService;
 
     @Autowired
@@ -79,26 +82,26 @@ public class StcApplicationTests {
 
     @Test
     public void createUserAndEntrust() {
-        /**
-         * 创建用户
-         */
-        for (int i = 0; i < 4; i++)
-            users.add(new User());
-
-        users.get(0).setUsername("Morison");
-        users.get(1).setUsername("Lucio");
-        users.get(2).setUsername("Mei");
-        users.get(3).setUsername("Ana");
-
-        try {
-            for (User user: users) {
-                user.setPassword("user");
-                userController.registerCustomer(user);
-                TimeUnit.SECONDS.sleep(1);
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        /**
+//         * 创建用户
+//         */
+//        for (int i = 0; i < 4; i++)
+//            users.add(new User());
+//
+//        users.get(0).setUsername("Morison");
+//        users.get(1).setUsername("Lucio");
+//        users.get(2).setUsername("Mei");
+//        users.get(3).setUsername("Ana");
+//
+//        try {
+//            for (User user: users) {
+//                user.setPassword("user");
+//                userController.registerCustomer(user);
+//                TimeUnit.SECONDS.sleep(1);
+//            }
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
         /**
          * 创建委托
@@ -107,12 +110,12 @@ public class StcApplicationTests {
             entrusts.add(new Entrust());
         }
 
-        entrusts.get(0).setUser(users.get(0));
-        entrusts.get(1).setUser(users.get(0));
-        entrusts.get(2).setUser(users.get(1));
-        entrusts.get(3).setUser(users.get(2));
-        entrusts.get(4).setUser(users.get(3));
-        entrusts.get(5).setUser(users.get(3));
+        entrusts.get(0).setUser(userService.getUserByUsername("CUSA"));
+        entrusts.get(1).setUser(userService.getUserByUsername("CUSA"));
+        entrusts.get(2).setUser(userService.getUserByUsername("CUSA"));
+        entrusts.get(3).setUser(userService.getUserByUsername("CUSB"));
+        entrusts.get(4).setUser(userService.getUserByUsername("CUSC"));
+        entrusts.get(5).setUser(userService.getUserByUsername("CUSB"));
 
         try {
             for (Entrust entrust: entrusts) {

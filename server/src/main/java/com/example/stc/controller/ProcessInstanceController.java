@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
  * 流程管理相关接口
  */
 @RestController
-@RequestMapping(path = "/process")
-public class ProcessInstanceController extends BaseController{
+@RequestMapping(path = "/api/process")
+public class ProcessInstanceController {
 
     @Autowired
     private EntrustController entrustController;

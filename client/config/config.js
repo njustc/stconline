@@ -3,7 +3,7 @@ import {primaryColor} from '../src/defaultSettings';
 
 export default {
   base:'/',
-  publicPath: 'http://localhost:8080/',
+  publicPath: 'http://localhost:8000',
   treeShaking: true,
   exportStatic:{
     htmlSuffix:true,
@@ -109,5 +109,11 @@ export default {
   theme: {'primary-color': primaryColor},
   externals: {'@antv/data-set': 'DataSet'},
   ignoreMomentLocale: true,
-  lessLoaderOptions: {javascriptEnabled: true}
+  lessLoaderOptions: {javascriptEnabled: true},
+  proxy: {
+    '/api': {
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    }
+  },
 };

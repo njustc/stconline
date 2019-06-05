@@ -116,7 +116,7 @@ export default () => {
         <Breadcrumb.Item href="/basic-list">委托列表</Breadcrumb.Item>
         <Breadcrumb.Item href="/basic-check">委托详情</Breadcrumb.Item>
       </Breadcrumb>
-      <div><h3>{form.pid}软件项目委托测试申请表</h3></div>
+      <div><h3>{form.pid} 软件项目委托测试申请表</h3></div>
       <Card>
         <p>测试类型：{form.testType}</p>
         <p>软件名称：{form.softwareName}</p>
@@ -150,19 +150,19 @@ export default () => {
         <p> 硬盘要求：{form.serverExStorage}</p>
         <p> 其他要求：{form.serverHardOther}</p>
         <p> 软件</p>
-        <p> 操作系统{form.serverSystem}</p>
-        <p> 版本{form.serverSoftVersion}</p>
-        <p> 编程语言{form.serverLanguage}</p>
-        <p> 构架{form.serverSoftFrame}</p>
-        <p> 数据库{form.serverDataBase}</p>
-        <p> 中间件{form.serverSoftMidW}</p>
-        <p> 其他支撑软件{form.serverSupport}</p>
-        <p> 网络环境{form.webEnvironment}</p>
+        <p> 操作系统：{form.serverSystem}</p>
+        <p> 版本：{form.serverSoftVersion}</p>
+        <p> 编程语言：{form.serverLanguage}</p>
+        <p> 构架：{form.serverSoftFrame}</p>
+        <p> 数据库：{form.serverDataBase}</p>
+        <p> 中间件：{form.serverSoftMidW}</p>
+        <p> 其他支撑软件：{form.serverSupport}</p>
+        <p> 网络环境：{form.webEnvironment}</p>
         <p>样品和数量</p>
-        <p> 软件介质{form.sampleType}</p>
-        <p> 文档资料{form.sampleFile}</p>
+        <p> 软件介质：{form.sampleType}</p>
+        <p> 文档资料：{form.sampleFile}</p>
         <p> 提交的样品（硬拷贝资料、硬件）五年保存期满：{form.sampleChocie}</p>
-        <p>希望测试完成时间{form.expectedDeadLine}</p>
+        <p>希望测试完成时间：{form.expectedDeadLine}</p>
         <p>委托单位信息</p>
         <p> 电话：{form.infoTE}</p>
         <p> 传真：{form.infoFAX}</p>
@@ -173,15 +173,15 @@ export default () => {
         <p> E-mail：{form.infoEmail}</p>
         <p> 网址：{form.infoURL}</p>
         <p></p>
-        <p> 密级{form.encryptionLev}</p>
-        <p> 查杀病毒{form.antiVirus}</p>
+        <p> 密级：{form.encryptionLev}</p>
+        <p> 查杀病毒：{form.antiVirus}</p>
         <p> 材料检查</p>
         <p> 测试样品：{form.checkSample}</p>
         <p> 需求文档：</p>
         <p> 用户文档：{form.opinions}</p>
         <p> 操作文档：</p>
         <p> 其它：</p>
-        <p> 确认意见{form.acceptOpinions}</p>
+        <p> 确认意见：{form.acceptOpinions}</p>
         <p> 受理意见</p>
         <p> 测试项目编号</p>
         <p> 备注：</p>
@@ -191,13 +191,13 @@ export default () => {
         <p> 委托人（签字）</p>
         <p> 日期</p>
       </Card>
-
       {/*<div><h3>NST-04-JS002-2011-软件项目委托测试申请表(只读)</h3></div>*/}
       {/*<div style={{ width: "100%", border:"1px solid"}}>*/}
       {/*  测试类型：软件确认测试，成果技术鉴定测试<br/>*/}
       {/*  软件名称：小猪佩奇软件测试*/}
       {/*</div>*/}
       {/*<Table columns={model_columns} dataSource={form.model} pagination={false} />*/}
+
       <div><h3>委托状态及意见</h3></div>
       <div>待受理/已受理/已驳回</div>
       <Input.TextArea style={{width: 400, height: 200}} placeholder="//意见"/>

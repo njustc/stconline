@@ -1,7 +1,5 @@
 package com.example.stc.domain;
 
-import com.example.stc.activiti.ProcessState;
-
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
@@ -12,7 +10,7 @@ public class ProcessEntity extends BaseEntity{
     private String processInstanceId;
 
     @Column
-    private ProcessState processState;
+    private String processState;
 
     public String getProcessInstanceID() {
         return processInstanceId;
@@ -22,11 +20,11 @@ public class ProcessEntity extends BaseEntity{
         this.processInstanceId = processInstanceID;
     }
 
-    public ProcessState getProcessState() {
+    public String getProcessState() {
         return processState;
     }
 
-    public void setProcessState(ProcessState processState) {
+    public void setProcessState(String processState) {
         this.processState = processState;
     }
 }
