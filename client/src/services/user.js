@@ -14,10 +14,12 @@ export async function queryNotices() {
 
 export async function getAllEntrust(cid) {
   console.log(cid)
-  return request(`/dev/api/customers/${cid}/projects`);
+  // return request(`/dev/api/customers/${cid}/projects`);
+  return request('/api/project/entrust');
 }
 
 export async function deleteEntrust(params) {
   console.log(params.pid);
-  return request(`/dev/api/customers/projects/entrust?${stringify(params)}`);
+  // return request(`/dev/api/customers/projects/entrust?${stringify(params)}`);
+  return request('/api/project/entrust/${params.pid}')
 }
