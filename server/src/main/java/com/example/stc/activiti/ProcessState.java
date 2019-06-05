@@ -1,11 +1,20 @@
 package com.example.stc.activiti;
 
-public enum  ProcessState {
+public enum ProcessState {
 
-    ToSubmit,
-    ToReview,
+    ToSubmit("ToSubmit"),
+    ToReview("ToReview"),
     /**
      * TODO: 添加更多状态
      */
     ;
+
+    private String name;
+    ProcessState(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

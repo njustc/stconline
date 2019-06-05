@@ -2,10 +2,14 @@ package com.example.stc.activiti;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.stc.domain.Entrust;
+import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
+import com.example.stc.framework.util.AuthorityUtils;
+import com.example.stc.service.EntrustService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -19,6 +23,21 @@ public class EntrustAction {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private AuthorityUtils authorityUtils;
+
+    /**
+     * 检查是否为客户本人的委托，参见EntrustServiceImpl.java
+     * @param entrust
+     */
+    private void customerAccessCheck(Entrust entrust) {
+        boolean isCustomer = authorityUtils.hasAuthority(Role.Customer);
+        if (isCustomer) {
+            if (!entrust.getUser().getUsername().equals(authorityUtils.getLoginUser().getUsername()))
+                throw new AccessDeniedException("没有查看权限，客户只能查看自己的委托");
+        }
+    }
 
     /**
      * 根据JSON数据创建Process
@@ -48,7 +67,7 @@ public class EntrustAction {
         variable.put("WorkerIDs", "w2");
 
         entrust.setProcessInstanceID(stcProcessEngine.createProcess("Entrust", variable));
-        entrust.setProcessState(ProcessState.ToSubmit);
+        entrust.setProcessState(ProcessState.ToSubmit.getName());
         return entrust.getProcessInstanceID();
     }
 
@@ -74,15 +93,19 @@ public class EntrustAction {
         Task task = taskService.createTaskQuery().processInstanceId(entrust.getProcessInstanceID()).singleResult();
         switch (task.getName()) {
             case "ToSubmit":
+                customerAccessCheck(entrust);
                 taskService.complete(task.getId());
                 break;
             case "ToReview":
+                authorityUtils.roleAccessCheck(Role.SalesStaff);
                 Map<String, Object> variable = new HashMap<>();
                 variable.put("reviewEntrustResult", operation);
                 taskService.complete(task.getId(), variable);
                 break;
             default: throw new Exception();
         }
+        task = taskService.createTaskQuery().processInstanceId(entrust.getProcessInstanceID()).singleResult();
+        entrust.setProcessState(task.getName());
     }
 
     public void deleteEntrustProcess(Entrust entrust) {
