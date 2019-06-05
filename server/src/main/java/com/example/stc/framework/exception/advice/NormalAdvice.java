@@ -2,6 +2,7 @@ package com.example.stc.framework.exception.advice;
 
 import com.example.stc.framework.exception.FunctionNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,6 +25,12 @@ public class NormalAdvice {
         return e.getMessage();
     }
 
+    @ResponseBody
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    private String unauthorizedHandler(AccessDeniedException e){
+        return e.getMessage();
+    }
     /**
      * 资源已存在
      */

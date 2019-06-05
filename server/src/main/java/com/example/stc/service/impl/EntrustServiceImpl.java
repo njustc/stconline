@@ -116,7 +116,7 @@ public class EntrustServiceImpl implements EntrustService {
     }
 
     @Override
-    public Entrust newEntrust(Entrust entrust) {
+    public Entrust newEntrust(Entrust entrust) throws AccessDeniedException{
         // 仅客户可以创建委托
         authorityUtils.roleAccessCheck(Role.Customer);
         //根据某一个算法增加新的id
