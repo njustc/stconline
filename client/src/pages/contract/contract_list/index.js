@@ -40,7 +40,7 @@ const columns = [
     key: 'action',
     render: (text, record) => (
       <span>
-        <a href="/contract_detail">查看详情</a>
+        <a href="/contract_detail.html">查看详情</a>
         <Divider type="vertical" />
         <a>删除</a>
       </span>
