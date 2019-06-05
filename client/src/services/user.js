@@ -21,5 +21,10 @@ export async function getAllEntrust(cid) {
 export async function deleteEntrust(params) {
   console.log(params.pid);
   // return request(`/dev/api/customers/projects/entrust?${stringify(params)}`);
-  return request('/api/project/entrust/${params.pid}')
+  return request('/api/project/entrust/${params.pid}');
+}
+
+export async function getOneEntrust(pid) {
+  return request('api/project/entrust');
+
 }
