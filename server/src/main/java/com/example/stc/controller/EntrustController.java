@@ -46,7 +46,7 @@ public class EntrustController extends BaseController {
         //        .map(entrust -> toResource(entrust))
         //        .collect(Collectors.toList());
         // 依据当前登录的用户的权限查询能见的委托
-        List<Resource<Entrust>> entrusts = entrustService.findEntrustsByAuthority().stream()
+        List<Resource<Entrust>> entrusts = entrustService.findAllEntrusts().stream()
                 .map(entrust -> toResource(entrust))
                 .collect(Collectors.toList());
         return new Resources<>(entrusts,
