@@ -74,7 +74,7 @@ class List extends React.Component{
 		return(
 		<div>
 		<Breadcrumb>
-			<Breadcrumb.Item href="/Welcome.html">主页</Breadcrumb.Item>
+			<Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
 			<Breadcrumb.Item>合同列表</Breadcrumb.Item>
 		</Breadcrumb>
 		<br />

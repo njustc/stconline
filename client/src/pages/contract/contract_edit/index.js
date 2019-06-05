@@ -117,7 +117,7 @@ class BasicForm extends PureComponent {
     return (
 	<div>
 		<Breadcrumb>
-			<Breadcrumb.Item href="/Welcome.html">主页</Breadcrumb.Item>
+			<Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
 			<Breadcrumb.Item>合同编辑</Breadcrumb.Item>
 		</Breadcrumb>
 		<br />

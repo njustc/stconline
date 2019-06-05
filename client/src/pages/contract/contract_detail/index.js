@@ -4,7 +4,7 @@ export default () => {
 	return (
 	<div>
 	<Breadcrumb>
-		<Breadcrumb.Item href="/Welcome.html">主页</Breadcrumb.Item>
+		<Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
 		<Breadcrumb.Item>合同详情</Breadcrumb.Item>
 	</Breadcrumb>
 	<Card>
