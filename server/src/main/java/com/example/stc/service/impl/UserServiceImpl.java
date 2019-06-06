@@ -26,20 +26,19 @@ public class UserServiceImpl implements UserService {
     private DateUtils dateUtils;
 
     @Override
-    public User getUserByUsername(String username)
-    {
+    public User getUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
     @Override
-    public void deleteUserById(Long userId){
+    public void deleteUserById(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
         userRepository.deleteById(userId);
     }
 
     @Override
-    public void editUser(JSONObject params, User user){
+    public void editUser(JSONObject params, User user) {
         Long userId = params.getLong("id");
         User userToEdit = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
@@ -55,16 +54,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User newUser(User user) {
+        //TODO: 这里user.getUsername() 可能会报空指针错误
         if (getUserByUsername(user.getUsername()) != null)
             return null;
-        if (user.getUsername() != null && user.getPassword() != null){
+        if (user.getUsername() != null && user.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setUserID("u" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
             user.addRole(Role.USER.str()); // 都有用户权限
             user.setEntrusts(null);
             return userRepository.save(user);
+        } else { //用户相关信息不完整
+            throw new ParamMissingException();
         }
-        return null;
     }
 
     @Override
