@@ -1,5 +1,6 @@
 package com.example.stc;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.stc.controller.EntrustController;
 import com.example.stc.controller.UserController;
 import com.example.stc.domain.Entrust;
@@ -27,7 +28,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @SpringBootTest
 @AutoConfigureWebMvc
 @AutoConfigureMockMvc
-@WithMockUser(username = "CUSA", password = "cusa",roles = {"CUS","USER"})
+@WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS", "USER"})
 public class EntrustControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -61,18 +62,30 @@ public class EntrustControllerTest {
      * 委托查询
      */
     @Test
-    @WithMockUser(username = "CUSA", password = "cusa",roles = {"CUS","USER"})
+    @WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS", "USER"})
     public void getAllEntrustTest() throws Exception {
         Resources<Resource<Entrust>> resources =
                 this.entrustController.getAllEntrust();
         assertThat(resources).isNotNull();
     }
 
-//    @Test
-//    @WithMockUser(username = "admin",password = "admin")
-//    public void PDSMTest()throws Exception{
-//        Entrust record = new Entrust();
-//        ResponseEntity<?> entity =
-//                this.entrustController.addNewEntrust(record);
-//    }
+    @Test
+    @WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS","USER"})
+    public void PDSMTest() throws Exception {
+        User user = new User();
+        user.setUsername("CUSA");
+        user.setPassword("cusa");
+        user.setUserID("aaa");
+        user.setId(131L);
+        Entrust record = new Entrust();
+        record.setUser(user);
+        ResponseEntity<?> entity =
+                this.entrustController.addNewEntrust(record);
+        Resource<Entrust> resource = (Resource<Entrust>) entity.getBody();
+        record = resource.getContent();
+        assertThat(record).isNotNull();
+        //删除记录
+        entity = this.entrustController.deleteEntrust(record.getPid());
+        assertThat(entity).isNotNull();
+    }
 }
