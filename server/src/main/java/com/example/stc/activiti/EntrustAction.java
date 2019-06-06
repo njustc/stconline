@@ -109,7 +109,9 @@ public class EntrustAction {
     }
 
     public void deleteEntrustProcess(Entrust entrust) {
-        stcProcessEngine.deleteProcessInstance(entrust.getProcessInstanceID());
+        String processInstanceId = entrust.getProcessInstanceID();
+        if (!processInstanceId.equals(""))
+            stcProcessEngine.deleteProcessInstance(processInstanceId);
     }
 
 }
