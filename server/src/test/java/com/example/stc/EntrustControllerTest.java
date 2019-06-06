@@ -27,6 +27,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @SpringBootTest
 @AutoConfigureWebMvc
 @AutoConfigureMockMvc
+@WithMockUser(username = "CUSA", password = "cusa",roles = {"CUS","USER"})
 public class EntrustControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -60,7 +61,7 @@ public class EntrustControllerTest {
      * 委托查询
      */
     @Test
-    @WithMockUser(username = "CUSA", password = "cusa", roles = {"USER","CUS"})
+    @WithMockUser(username = "CUSA", password = "cusa",roles = {"CUS","USER"})
     public void getAllEntrustTest() throws Exception {
         Resources<Resource<Entrust>> resources =
                 this.entrustController.getAllEntrust();
