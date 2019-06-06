@@ -64,7 +64,9 @@ public class EntrustServiceImpl implements EntrustService {
         return allEntrusts;
     }
 
-    /** 对于客户，检查访问的是否是本人的委托；若不是则权限异常 */
+    /**
+     * 对于客户，检查访问的是否是本人的委托；若不是则权限异常
+     */
     private void customerAccessCheck(Entrust entrust) {
         boolean isCustomer = authorityUtils.hasAuthority(Role.Customer);
         if (isCustomer) {
@@ -100,7 +102,7 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public void deleteEntrustById(Long id) {
-        this.findEntrustById(id); // 找到应删除的委托并检查，若为客户，只能访问本人的委托
+        Entrust entrust = this.findEntrustById(id); // 找到应删除的委托并检查，若为客户，只能访问本人的委托
         entrustRepository.deleteById(id);
     }
 
@@ -116,7 +118,7 @@ public class EntrustServiceImpl implements EntrustService {
     }
 
     @Override
-    public Entrust newEntrust(Entrust entrust) throws AccessDeniedException{
+    public Entrust newEntrust(Entrust entrust) {
         // 仅客户可以创建委托
         authorityUtils.roleAccessCheck(Role.Customer);
         //根据某一个算法增加新的id

@@ -1,6 +1,7 @@
 package com.example.stc.framework.exception.advice;
 
 import com.example.stc.framework.exception.FunctionNotFoundException;
+import com.example.stc.framework.exception.ParamMissingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,19 +26,33 @@ public class NormalAdvice {
         return e.getMessage();
     }
 
+    /**
+     * 未鉴权
+     */
     @ResponseBody
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    private String unauthorizedHandler(AccessDeniedException e){
+    private String unauthorizedHandler(AccessDeniedException e) {
         return e.getMessage();
     }
+
     /**
      * 资源已存在
      */
     @ResponseBody
     @ExceptionHandler({EntityExistsException.class})
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     private String entityExistHandler(EntityExistsException e) {
+        return e.getMessage();
+    }
+
+    /**
+     * 请求信息有误
+     */
+    @ResponseBody
+    @ExceptionHandler({ParamMissingException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    private String rapamMissExceptionHandler(ParamMissingException e) {
         return e.getMessage();
     }
 
