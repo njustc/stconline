@@ -121,11 +121,9 @@ public class StcApplicationTests {
 
         try {
             for (Entrust entrust: entrusts) {
-                entrustController.addNewEntrust(entrust);
+                entrustService.newEntrust(entrust);
                 TimeUnit.SECONDS.sleep(1);
             }
-        } catch (URISyntaxException ue) {
-            ue.printStackTrace();
         } catch (InterruptedException ie) {
             ie.printStackTrace();
         }

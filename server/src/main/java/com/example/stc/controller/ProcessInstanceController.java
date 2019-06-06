@@ -33,7 +33,10 @@ public class ProcessInstanceController {
         String comment = param.getString("comment");
         Entrust entrust = JSONObject.toJavaObject(param.getJSONObject("param"), Entrust.class);
         try {
-            entrustAction.updateEntrustProcess(entrust, operation, comment);
+            if (entrust.getProcessInstanceID().equals(""))
+                entrustAction.createEntrustProcess(entrust, entrust.getUser());
+            else
+                entrustAction.updateEntrustProcess(entrust, operation, comment);
         } catch (Exception e) {
             e.printStackTrace();
         }

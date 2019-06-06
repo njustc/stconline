@@ -121,7 +121,7 @@ public class EntrustServiceImpl implements EntrustService {
         authorityUtils.roleAccessCheck(Role.Customer);
         //根据某一个算法增加新的id
         entrust.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
-        entrustAction.createEntrustProcess(entrust, entrust.getUser());
+        entrust.setProcessState("Submit");
         return entrustRepository.save(entrust);
     }
 

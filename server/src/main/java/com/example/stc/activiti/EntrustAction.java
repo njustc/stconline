@@ -67,7 +67,7 @@ public class EntrustAction {
         variable.put("WorkerIDs", "w2");
 
         entrust.setProcessInstanceID(stcProcessEngine.createProcess("Entrust", variable));
-        entrust.setProcessState(ProcessState.ToSubmit.getName());
+        entrust.setProcessState(ProcessState.Review);
         return entrust.getProcessInstanceID();
     }
 
@@ -92,11 +92,11 @@ public class EntrustAction {
          */
         Task task = taskService.createTaskQuery().processInstanceId(entrust.getProcessInstanceID()).singleResult();
         switch (task.getName()) {
-            case "ToSubmit":
+            case "Submit":
                 customerAccessCheck(entrust);
                 taskService.complete(task.getId());
                 break;
-            case "ToReview":
+            case "Review":
                 authorityUtils.roleAccessCheck(Role.SalesStaff);
                 Map<String, Object> variable = new HashMap<>();
                 variable.put("reviewEntrustResult", operation);
