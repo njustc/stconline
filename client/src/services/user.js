@@ -24,6 +24,28 @@ export async function deleteEntrust(params) {
   return request('/api/project/entrust/${params.pid}');
 }
 
+export async function saveForm(params) {
+  return request('/api/basic-form/save', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+export async function initGetData(params) {
+  // console.log(params)
+  return request('/api/basic-form/initGetData', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+export async function submitForm(params) {
+  return request('/api/basic-form/submit', {
+    method: 'POST',
+    data: params,
+  });
+}
+
 export async function getOneEntrust(pid) {
   return request('api/project/entrust');
 
