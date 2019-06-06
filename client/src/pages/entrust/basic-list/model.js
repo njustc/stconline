@@ -11,7 +11,7 @@ export default {
       *GetAllEntrust(_,{call,put}){
         const response=yield call(getAllEntrust,'cid')
         // console.log('GetAllEntrust')
-        console.log(response._embedded.entrusts);
+        console.log(response);
         yield put({type:'addListData',payload: response._embedded.entrusts})
       },
       *DeleteEntrust({payload},{call,put}){
