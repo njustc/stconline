@@ -21,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // 配置PasswordEncoder; BCryptPasswordEncoder是security提供的PasswordEncorder的一个实现类
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -29,12 +29,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 1）HttpSecurity支持cors。
      * 2）默认会启用CRSF，此处因为没有使用thymeleaf模板（会自动注入_csrf参数），要先禁用csrf，否则登录时需要_csrf参数，而导致登录失败。
      * 3）antMatchers：匹配 "/api/register" ,"/api/login" 路径，不需要权限即可访问，匹配 "/api/projects" 及其以下所有路径，都需要 "USER" 权限;
-     *    不同的权限可以访问不同的api也通过此控制
+     * 不同的权限可以访问不同的api也通过此控制
      * 4）配置登录成功自动跳转地址
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.exceptionHandling().authenticationEntryPoint(new RestAuthenticationEntryPoint())
+                .and()
                 .cors()
                 .and()
 

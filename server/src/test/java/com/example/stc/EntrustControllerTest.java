@@ -62,7 +62,7 @@ public class EntrustControllerTest {
      * 委托查询
      */
     @Test
-    @WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS", "USER"})
+//    @WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS", "USER"})
     public void getAllEntrustTest() throws Exception {
         Resources<Resource<Entrust>> resources =
                 this.entrustController.getAllEntrust();
