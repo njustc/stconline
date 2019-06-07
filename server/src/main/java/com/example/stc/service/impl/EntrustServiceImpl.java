@@ -134,6 +134,13 @@ public class EntrustServiceImpl implements EntrustService {
         /**
          * TODO: 增加更新逻辑
          */
-        return entrustRepository.findByPid(pid); // .orElseThrow(() -> new EntrustNotFoundException(pid));
+        Entrust entrust = entrustRepository.findByPid(pid);
+        record.setId(entrust.getId());
+        record.setPid(pid);
+        record.setUser(entrust.getUser());
+        record.setProcessState(entrust.getProcessState());
+        record.setProcessInstanceID(entrust.getProcessInstanceID());
+        return entrustRepository.save(record);
+        // return entrustRepository.findByPid(pid); // .orElseThrow(() -> new EntrustNotFoundException(pid));
     }
 }

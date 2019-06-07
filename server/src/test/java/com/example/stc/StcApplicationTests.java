@@ -105,28 +105,8 @@ public class StcApplicationTests {
 //            e.printStackTrace();
 //        }
 
-        /**
-         * 创建委托
-         */
-        for (int i = 0; i < 6; i++) {
-            entrusts.add(new Entrust());
-        }
-
-        entrusts.get(0).setUser(userService.getUserByUsername("CUSA"));
-        entrusts.get(1).setUser(userService.getUserByUsername("CUSA"));
-        entrusts.get(2).setUser(userService.getUserByUsername("CUSA"));
-        entrusts.get(3).setUser(userService.getUserByUsername("CUSB"));
-        entrusts.get(4).setUser(userService.getUserByUsername("CUSC"));
-        entrusts.get(5).setUser(userService.getUserByUsername("CUSB"));
-
-        try {
-            for (Entrust entrust: entrusts) {
-                entrustService.newEntrust(entrust);
-                TimeUnit.SECONDS.sleep(1);
-            }
-        } catch (InterruptedException ie) {
-            ie.printStackTrace();
-        }
+        Entrust entrust = new Entrust();
+        entrustService.updateEntrust("p20190606171311", entrust);
     }
 
 }
