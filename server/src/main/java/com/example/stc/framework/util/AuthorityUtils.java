@@ -32,7 +32,6 @@ public class AuthorityUtils {
 
     /** @param role 为Role枚举类型对应的String */
     public boolean hasAuthority(Role role) {
-
         // 获得当前登陆用户对应的对象
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();

@@ -42,9 +42,6 @@ public class EntrustController extends BaseController {
     @GetMapping(path = "/entrust")
     public @ResponseBody
     Resources<Resource<Entrust>> getAllEntrust() {
-        //List<Resource<Entrust>> entrusts = entrustService.findAllEntrusts().stream()
-        //        .map(entrust -> toResource(entrust))
-        //        .collect(Collectors.toList());
         // 依据当前登录的用户的权限查询能见的委托
         List<Resource<Entrust>> entrusts = entrustService.findAllEntrusts().stream()
                 .map(entrust -> toResource(entrust))

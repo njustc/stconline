@@ -2,6 +2,7 @@ package com.example.stc.service;
 
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import com.example.stc.domain.*;
 import com.example.stc.repository.*;
@@ -14,12 +15,14 @@ public interface UserService extends BaseService<User>{
      * @param params
      * @param user
      */
+    //@Secured("ROLE_ADMIN")
     public void editUser(JSONObject params, User user);
 
     /**
      * 删除用户
      * @param userId
      */
+    //@Secured("ROLE_ADMIN")
     public void deleteUserById(Long userId);
 
     /**
@@ -33,6 +36,7 @@ public interface UserService extends BaseService<User>{
      * @param username
      * @return
      */
+    //@Secured("ROLE_ADMIN")
     public User getUserByUsername(String username);
 
     /**
@@ -40,6 +44,7 @@ public interface UserService extends BaseService<User>{
      * @param uid
      * @return
      */
+    //@Secured("ROLE_ADMIN")
     public User findUserByUid(String uid);
 
     /**
@@ -47,5 +52,6 @@ public interface UserService extends BaseService<User>{
      * @param uid
      * @return
      */
+    //@Secured("ROLE_ADMIN")
     public int deleteUserByUid(String uid);
 }

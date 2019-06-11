@@ -48,12 +48,8 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public List<Entrust> findEntrustsByAuthority() {
-        // 若不是用户抛出权限异常
-        authorityUtils.roleAccessCheck(Role.USER); // 若不是用户抛出权限异常
-        // 判断是否是客户
-        boolean isCustomer = authorityUtils.hasAuthority(Role.Customer);
         List<Entrust> allEntrusts = this.findAllEntrusts();
-        if (isCustomer) {
+        if (authorityUtils.hasAuthority(Role.Customer)) {
             Iterator<Entrust> it = allEntrusts.iterator();
             while (it.hasNext()) {
                 Entrust entrust = it.next();
@@ -68,8 +64,7 @@ public class EntrustServiceImpl implements EntrustService {
      * 对于客户，检查访问的是否是本人的委托；若不是则权限异常
      */
     private void customerAccessCheck(Entrust entrust) {
-        boolean isCustomer = authorityUtils.hasAuthority(Role.Customer);
-        if (isCustomer) {
+        if (authorityUtils.hasAuthority(Role.Customer)) {
             if (!entrust.getUser().getUsername().equals(authorityUtils.getLoginUser().getUsername()))
                 throw new AccessDeniedException("没有查看权限，客户只能查看自己的委托");
         }
@@ -77,7 +72,6 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public Entrust findEntrustById(Long id) {
-        authorityUtils.roleAccessCheck(Role.USER);
         // 获取委托
         Entrust entrust = entrustRepository.findById(id)
                 .orElseThrow(() -> new EntrustNotFoundException(id));
@@ -89,7 +83,6 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public Entrust findEntrustByPid(String pid) {
-        authorityUtils.roleAccessCheck(Role.USER);
         // 获取委托
         Entrust entrust = entrustRepository.findByPid(pid);
         if (entrust == null)
@@ -119,8 +112,6 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public Entrust newEntrust(Entrust entrust) {
-        // 仅客户可以创建委托
-        authorityUtils.roleAccessCheck(Role.Customer);
         //根据某一个算法增加新的id
         entrust.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         entrust.setProcessState("Submit");
@@ -129,8 +120,6 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public Entrust updateEntrust(String pid, Entrust record) {
-        // 仅客户可以修改委托
-        authorityUtils.roleAccessCheck(Role.Customer);
         /**
          * TODO: 增加更新逻辑
          */
