@@ -259,7 +259,7 @@ public class Entrust extends ProcessEntity {
     /**
      * 用户信息
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
     //@JSONField(serialize = false)
     private User user;

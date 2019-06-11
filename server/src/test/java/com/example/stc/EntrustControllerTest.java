@@ -22,6 +22,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.nio.file.AccessDeniedException;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -70,13 +72,13 @@ public class EntrustControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS","USER"})
+    @WithMockUser(username = "SSB", password = "cusa", roles = {"CUS", "USER"})
     public void PDSMTest() throws Exception {
         User user = new User();
-        user.setUsername("CUSA");
+        user.setUsername("SSB");
         user.setPassword("cusa");
         user.setUserID("aaa");
-        user.setId(131L);
+        user.setId(9L);
         Entrust record = new Entrust();
         record.setUser(user);
         ResponseEntity<?> entity =
@@ -86,6 +88,6 @@ public class EntrustControllerTest {
         assertThat(record).isNotNull();
         //删除记录
         entity = this.entrustController.deleteEntrust(record.getPid());
-        assertThat(entity).isNotNull();
+
     }
 }
