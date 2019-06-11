@@ -182,16 +182,16 @@ class BasicForm extends PureComponent {
 		</Card>
 		
 		<FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
-            <Button type="primary" onClick={showConfirm}>
-				<FormattedMessage id="basic-form.form.submit" />
-            </Button>
-            <Button style={{ marginLeft: 8 }}>
-                <FormattedMessage id="basic-form.form.save" />
-            </Button>
-			<Button style={{ marginLeft: 8}} type="danger" onClick={showDeleteConfirm}>
-				<FormattedMessage id="basic-form.form.delete" />
-			</Button>
-        </FormItem>
+        <Button type="primary" onClick={showConfirm}>
+				    <FormattedMessage id="basic-form.form.submit" />
+        </Button>
+        <Button style={{ marginLeft: 8 }}>
+            <FormattedMessage id="basic-form.form.save" />
+        </Button>
+			  <Button style={{ marginLeft: 8}} type="danger" onClick={showDeleteConfirm}>
+			      <FormattedMessage id="basic-form.form.delete" />
+			  </Button>
+    </FormItem>
 	</div>
     );
   }
