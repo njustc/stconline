@@ -60,7 +60,6 @@ public class UserServiceImpl implements UserService {
         if (user.getUsername() != null && user.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setUserID("u" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
-            user.addRole(Role.USER.str()); // 都有用户权限
             user.setEntrusts(null);
             return userRepository.save(user);
         } else { //用户相关信息不完整

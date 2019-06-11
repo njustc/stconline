@@ -29,6 +29,7 @@ public class UserController {
     public @ResponseBody
     User registerCustomer(@RequestBody User user) {
         user.addRole(Role.Customer.str());
+        user.addRole(Role.USER.str());
         userService.newUser(user);
         return user;
     }
@@ -38,6 +39,7 @@ public class UserController {
     public @ResponseBody
     User registerSalesStaff(@RequestBody User user) {
         user.addRole(Role.SalesStaff.str());
+        user.addRole(Role.USER.str());
         userService.newUser(user);
         return user;
     }
@@ -47,6 +49,7 @@ public class UserController {
     public @ResponseBody
     User registerSalesManager(@RequestBody User user) {
         user.addRole(Role.SalesManager.str());
+        user.addRole(Role.USER.str());
         userService.newUser(user);
         return user;
     }
@@ -56,6 +59,7 @@ public class UserController {
     public @ResponseBody
     User registerTestStaff(@RequestBody User user) {
         user.addRole(Role.TestStaff.str());
+        user.addRole(Role.USER.str());
         userService.newUser(user);
         return user;
     }
@@ -65,6 +69,7 @@ public class UserController {
     public @ResponseBody
     User registerTestManager(@RequestBody User user) {
         user.addRole(Role.TestManager.str());
+        user.addRole(Role.USER.str());
         userService.newUser(user);
         return user;
     }
@@ -74,6 +79,7 @@ public class UserController {
     public @ResponseBody
     User registerQualityManager(@RequestBody User user) {
         user.addRole(Role.QualityManager.str());
+        user.addRole(Role.USER.str());
         userService.newUser(user);
         return user;
     }

@@ -36,54 +36,54 @@ export default class EntrustList extends Component {
   columns =[
     {
       title: '委托ID',
-      dataIndex: 'pid',
-      key: 'pid',
+      dataIndex: 'id',
+      key: 'id',
       render: text => <a href="javascript:;">{text}</a>,
     },
-    // {
-    //   title: '用户名',
-    //   dataIndex: 'name',
-    //   key: 'name',
-    // },
-    // {
-    //   title: '委托建立时间',
-    //   dataIndex: 'address',
-    //   key: 'address',
-    // },
+    {
+      title: '用户名',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: '委托建立时间',
+      dataIndex: 'address',
+      key: 'address',
+    },
   
-    // {
-    //   title: '状态',
-    //   key: 'tags',
-    //   dataIndex: 'tags',
-    //   render: tags => (
-    //     <span>
-    //       {tags.map(tag => {
-    //         let color = tag==='委托待审核' ? 'geekblue' : 'green';
-    //         if (tag === '委托审核未通过') {
-    //           color = 'volcano';
-    //         }
-    //         return (
-    //           <Tag color={color} key={tag}>
-    //             {tag}
-    //           </Tag>
-    //         );
-    //       })}
-    //     </span>
-    //   ),
-    // },
-    // {
-    //   title: '操作',
-    //   key: 'action',
-    //   render: (key) => (
-    //     <span>
-    //       <Link to={{pathname:'./basic-check',query:key}}>查看项目详情</Link>
-    //       <Divider type="vertical" />
-    //       <Link to={{pathname:'../../basic-form',query:key}}>编辑</Link>
-    //       <Divider type="vertical" />
-    //       <span style={{color:'red', cursor:'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)} >删除</span >
-    //     </span>
-    //   ),
-    // },
+    {
+      title: '状态',
+      key: 'tags',
+      dataIndex: 'tags',
+      render: tags => (
+        <span>
+          {tags.map(tag => {
+            let color = tag==='委托待审核' ? 'geekblue' : 'green';
+            if (tag === '委托审核未通过') {
+              color = 'volcano';
+            }
+            return (
+              <Tag color={color} key={tag}>
+                {tag}
+              </Tag>
+            );
+          })}
+        </span>
+      ),
+    },
+    {
+      title: '操作',
+      key: 'action',
+      render: (key) => (
+        <span>
+          <Link to={{pathname:'./basic-check.html',query:key}}>查看项目详情</Link>
+          <Divider type="vertical" />
+          <Link to={{pathname:'../../basic-form.html',query:key}}>编辑</Link>
+          <Divider type="vertical" />
+          <span style={{color:'red', cursor:'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)} >删除</span >
+        </span>
+      ),
+    },
   ]
 
   showDeleteConfirm(key) {
@@ -129,7 +129,7 @@ export default class EntrustList extends Component {
 		<Button
 		style={{ marginLeft: 400 }}
 		type="primary"
-		href="/basic-form">
+		href="/basic-form.html">
 		新建委托
 		</Button>
       </div>
