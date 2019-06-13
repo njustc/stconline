@@ -56,11 +56,11 @@ export default class EntrustList extends Component {
       dataIndex: 'processState',
       render: processState => 
           {
-            var color = processState==='委托已提交待审核' ? 'geekblue' : 'green'
+            var color = processState==='Review' ? 'geekblue' : 'green'
             if (processState === '委托审核未通过') {
               color = 'volcano'
             }
-            if (processState === '委托审核未提交') {
+            if (processState === 'Submit') {
               color = 'grey'
             }
             return (
@@ -75,9 +75,9 @@ export default class EntrustList extends Component {
       key: 'action',
       render: (key) => (
         <span>
-          {key.processState=='委托审核未提交'?<Link disabled to={{pathname:'./basic-check',query:{pid:key.pid}}}>查看项目详情</Link>:<Link to={{pathname:'./basic-check',query:{pid:key.pid}}}>查看项目详情</Link>}
+          {key.processState=='Submit'?<Link to={{pathname:'./basic-check',query:{pid:key.pid}}}>查看项目详情</Link>:<Link to={{pathname:'./basic-check',query:{pid:key.pid}}}>查看项目详情</Link>}
           <Divider type="vertical" />
-          {key.processState=='委托审核未提交'?<Link to={{pathname:'../../basic-form',query:{pid:key.pid}}}>编辑</Link>:<Link disabled to={{pathname:'../../basic-form',query:{pid:key.pid}}}>编辑</Link>}
+          {key.processState=='Submit'?<Link to={{pathname:'../../basic-form',query:{pid:key.pid}}}>编辑</Link>:<Link disabled to={{pathname:'../../basic-form',query:{pid:key.pid}}}>编辑</Link>}
           <Divider type="vertical" />
           <span style={{color:'red', cursor:'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)} >删除</span >
         </span>
@@ -86,7 +86,7 @@ export default class EntrustList extends Component {
   ]
 
   showDeleteConfirm(key) {
-    console.log(key.pid)
+    // console.log(key.pid)
     var that=this
     confirm({
       title: '您是否要删除本委托?',

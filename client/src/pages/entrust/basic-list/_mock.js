@@ -149,142 +149,142 @@
 //           processState: '委托已提交待审核',
 //         },
 //     ]
-//     export default {
-//       'get /dev/api/customers/cid/projects': function (req, res) {
-//           // console.log(data);
-//           res.json(data);
-//       },
-//       'get /dev/api/customers/projects/entrust': function (req, res) {
-//         // console.log(req.query)
-//         for(var index in data){
-//           if(data[index].pid===req.query.pid){
-//             // console.log(data[index].pid)
-//             data.splice(index,1)
-//             res.json(data);
-//           }
-//         }
-//      },
-//      'POST /api/basic-form/save': (req, res) => {
+    // export default {
+    //   'get /dev/api/customers/cid/projects': function (req, res) {
+    //       // console.log(data);
+    //       res.json(data);
+    //   },
+    //   'get /dev/api/customers/projects/entrust': function (req, res) {
+    //     // console.log(req.query)
+    //     for(var index in data){
+    //       if(data[index].pid===req.query.pid){
+    //         // console.log(data[index].pid)
+    //         data.splice(index,1)
+    //         res.json(data);
+    //       }
+    //     }
+    //  },
+    //  'POST /api/basic-form/save': (req, res) => {
         
-//         for(var i in data){
-//           if(data[i].pid===req.body.pid){
-//             save(data[i],req)
-//             // console.log(data[i])
-//           }
-//         }
-//         res.send({ message: 'Ok' });
-//       },
-//       // 'POST /api/basic-form/initGetData': (req, res) => {
-//       //   console.log(req.body)
-//       //   for(var i in data){
-//       //     if(data[i].pid===req.body.pid){
-//       //       res.json(data[i])
+    //     for(var i in data){
+    //       if(data[i].pid===req.body.pid){
+    //         save(data[i],req)
+    //         // console.log(data[i])
+    //       }
+    //     }
+    //     res.send({ message: 'Ok' });
+    //   },
+    //   // 'POST /api/basic-form/initGetData': (req, res) => {
+    //   //   console.log(req.body)
+    //   //   for(var i in data){
+    //   //     if(data[i].pid===req.body.pid){
+    //   //       res.json(data[i])
             
-//       //     }
-//       //   }
-//       // },
-//       'GET /api/project/entrust': (req, res) => {
-//         console.log('GET /api/project/entrust')
-//         for(var i in data){
-//           if(data[i].pid===req.query.pid){
-//             res.json(data[i])
-//           }
-//         }
-//       },
-//       'POST /api/process/entrust': (req, res) => {
-//         console.log(req.body.expectedDeadline)
-//         for(var i in data){
+    //   //     }
+    //   //   }
+    //   // },
+    //   'GET /api/project/entrust': (req, res) => {
+    //     console.log('GET /api/project/entrust')
+    //     for(var i in data){
+    //       if(data[i].pid===req.query.pid){
+    //         res.json(data[i])
+    //       }
+    //     }
+    //   },
+    //   'POST /api/process/entrust': (req, res) => {
+    //     console.log(req.body.expectedDeadline)
+    //     for(var i in data){
           
-//           if(data[i].pid===req.body.pid){
-//             // console.log(data[i])
-//             save(data[i],req)
-//             data[i].processState='委托已提交待审核'
+    //       if(data[i].pid===req.body.pid){
+    //         // console.log(data[i])
+    //         save(data[i],req)
+    //         data[i].processState='委托已提交待审核'
             
-//             // console.log(data[i].processState)
-//             // console.log(data[i])
-//             res.send({ message: 'Ok' });
-//           }
-//         }
+    //         // console.log(data[i].processState)
+    //         // console.log(data[i])
+    //         res.send({ message: 'Ok' });
+    //       }
+    //     }
         
         
-//       },
-//     };
+    //   },
+    // };
     
-//     function save(data,req){
-//       data.entrustEntity=req.body.entrustEntity//
-//       data.testType=req.body.testType//测试类型
-//       data.softname=req.body.softname//软件名称
-//       data.version=req.body.version//版本号
-//       data.companyEn=req.body.companyEn//委托单位（英文）
-//       data.companyCh=req.body.companyCh///委托单位（中文）
-//       data.developer=req.body.developer//开发单位
-//       data.unitProperty=req.body.unitProperty//单位性质
-//       data.userDescription=req.body.userDescription//软件用户对象描述
-//       data.funcDescription=req.body.funcDescription//主要功能及用途简介
-//       data.testBasis=req.body.testBasis//测试依据
-//       data.testSpecification=req.body.testSpecification//需要测试的技术指标
-//       //软件规模
-//       data.funcNum=req.body.funcNum//功能数
-//       data.fpNum=req.body.fpNum//功能点数
-//       data.codeLine=req.body.codeLine//代码行数
-//       data.softwareType=req.body.softwareType//系统软件
-//       data.supportSoftware=req.body.supportSoftware//支持软件
-//       data.internetApplications=req.body.internetApplications//应用软件
+    // function save(data,req){
+    //   data.entrustEntity=req.body.entrustEntity//
+    //   data.testType=req.body.testType//测试类型
+    //   data.softname=req.body.softname//软件名称
+    //   data.version=req.body.version//版本号
+    //   data.companyEn=req.body.companyEn//委托单位（英文）
+    //   data.companyCh=req.body.companyCh///委托单位（中文）
+    //   data.developer=req.body.developer//开发单位
+    //   data.unitProperty=req.body.unitProperty//单位性质
+    //   data.userDescription=req.body.userDescription//软件用户对象描述
+    //   data.funcDescription=req.body.funcDescription//主要功能及用途简介
+    //   data.testBasis=req.body.testBasis//测试依据
+    //   data.testSpecification=req.body.testSpecification//需要测试的技术指标
+    //   //软件规模
+    //   data.funcNum=req.body.funcNum//功能数
+    //   data.fpNum=req.body.fpNum//功能点数
+    //   data.codeLine=req.body.codeLine//代码行数
+    //   data.softwareType=req.body.softwareType//系统软件
+    //   data.supportSoftware=req.body.supportSoftware//支持软件
+    //   data.internetApplications=req.body.internetApplications//应用软件
     
-//       //客户端
-//       data.clientSystem=req.body.clientSystem//操作系统
-//       data.clientExStorage=req.body.clientExStorage//内存要求
-//       data.clientInStorage=req.body.clientInStorage//硬盘要求
-//       data.clientOther=req.body.clientOther//其他要求
-//       //服务器端 硬件
-//       data.serverHardFrame=req.body.serverHardFrame//硬件架构
-//       data.serverInStorage=req.body.serverInStorage//内存要求
-//       data.serverExStorage=req.body.serverExStorage//硬盘要求
-//       data.serverOther=req.body.serverOther//其他要求
-//       //服务器端 软件
-//       data.serverSystem=req.body.serverSystem//操作系统
-//       data.serverSoftVersion=req.body.serverSoftVersion//版本
-//       data.serverLanguage=req.body.serverLanguage//编程语言
-//       data.serverSoftFrame=req.body.serverSoftFrame//软件架构
-//       data.serverDataBase=req.body.serverDataBase//数据库
-//       data.serverSoftMidW=req.body.serverSoftMidW//中间件
-//       data.serverSupport=req.body.serverSupport//支持
-//       //网络环境
-//       data.webEnvironment=req.body.webEnvironment//主要功能及用途简介
-//       //样品和数量
-//       data.sampleType=req.body.sampleType//样品类型
-//       data.sampleFile=req.body.sampleFile//样品文件
-//       if(req.body.expectedDeadline){
-//         data.expectedDeadline=req.body.expectedDeadline
-//       }
-//       //软件介质
-//       data.CD=req.body.CD//光盘
-//       data.usbFlashDrive=req.body.usbFlashDrive//U盘
-//       data.softwareMediumOther=req.body.softwareMediumOther//其他
-//       data.sample_document=req.body.sample_document//文档资料
-//       data.sampleChocie=req.body.sampleChocie//提交的样品处理选择
-//       //委托单位信息
-//       data.infoTE=req.body.cusInfo.infoTE//cusInfo.电话
-//       data.infoFAX=req.body.cusInfo.infoFAX//cusInfo.传真
-//       data.infoAddr=req.body.cusInfo.infoAddr//cusInfo.地址
-//       data.infoPostcode=req.body.cusInfo.infoPostcode//cusInfo.邮编
-//       data.infoName=req.body.cusInfo.infoName//cusInfo.联系人
-//       data.infoPhone=req.body.cusInfo.infoPhone//cusInfo.手机
-//       data.infoEmail=req.body.cusInfo.infoEmail//cusInfo.
-//       data.infoURL=req.body.cusInfo.infoURL//cusInfo.网址
-//       data.encryptionLev=req.body.encryptionLev//密级
-//       data.antiVirus=req.body.antiVirus//查杀病毒
-//       data.checkSample=req.body.checkSample//测试样品
-//       data.reqword=req.body.reqword//重述
-//       data.userDocumentation=req.body.userDocumentation//用户文档
-//       data.operationDocument=req.body.operationDocument//操作文档
-//       data.opinions=req.body.opinions//确认意见
-//       data.acceptOpinions=req.body.acceptOpinions//受理意见
-//       data.test_number=req.body.test_number//测试项目编号
-//       data.remarks=req.body.remarks//备注
-//       data.acceptee_signature=req.body.acceptee_signature//受理人签名
-//       data.acceptee_signature_time=req.body.acceptee_signature_time//受理人签名日期
-//       data.completedByClient=req.body.completedByClient//委托人填写
-//       data.client_signature=req.body.client_signature//委托人签名
-//       data.client_signature_time=req.body.client_signature_time//委托人签名日期
-//     }
+    //   //客户端
+    //   data.clientSystem=req.body.clientSystem//操作系统
+    //   data.clientExStorage=req.body.clientExStorage//内存要求
+    //   data.clientInStorage=req.body.clientInStorage//硬盘要求
+    //   data.clientOther=req.body.clientOther//其他要求
+    //   //服务器端 硬件
+    //   data.serverHardFrame=req.body.serverHardFrame//硬件架构
+    //   data.serverInStorage=req.body.serverInStorage//内存要求
+    //   data.serverExStorage=req.body.serverExStorage//硬盘要求
+    //   data.serverOther=req.body.serverOther//其他要求
+    //   //服务器端 软件
+    //   data.serverSystem=req.body.serverSystem//操作系统
+    //   data.serverSoftVersion=req.body.serverSoftVersion//版本
+    //   data.serverLanguage=req.body.serverLanguage//编程语言
+    //   data.serverSoftFrame=req.body.serverSoftFrame//软件架构
+    //   data.serverDataBase=req.body.serverDataBase//数据库
+    //   data.serverSoftMidW=req.body.serverSoftMidW//中间件
+    //   data.serverSupport=req.body.serverSupport//支持
+    //   //网络环境
+    //   data.webEnvironment=req.body.webEnvironment//主要功能及用途简介
+    //   //样品和数量
+    //   data.sampleType=req.body.sampleType//样品类型
+    //   data.sampleFile=req.body.sampleFile//样品文件
+    //   if(req.body.expectedDeadline){
+    //     data.expectedDeadline=req.body.expectedDeadline
+    //   }
+    //   //软件介质
+    //   data.CD=req.body.CD//光盘
+    //   data.usbFlashDrive=req.body.usbFlashDrive//U盘
+    //   data.softwareMediumOther=req.body.softwareMediumOther//其他
+    //   data.sample_document=req.body.sample_document//文档资料
+    //   data.sampleChocie=req.body.sampleChocie//提交的样品处理选择
+    //   //委托单位信息
+    //   data.infoTE=req.body.cusInfo.infoTE//cusInfo.电话
+    //   data.infoFAX=req.body.cusInfo.infoFAX//cusInfo.传真
+    //   data.infoAddr=req.body.cusInfo.infoAddr//cusInfo.地址
+    //   data.infoPostcode=req.body.cusInfo.infoPostcode//cusInfo.邮编
+    //   data.infoName=req.body.cusInfo.infoName//cusInfo.联系人
+    //   data.infoPhone=req.body.cusInfo.infoPhone//cusInfo.手机
+    //   data.infoEmail=req.body.cusInfo.infoEmail//cusInfo.
+    //   data.infoURL=req.body.cusInfo.infoURL//cusInfo.网址
+    //   data.encryptionLev=req.body.encryptionLev//密级
+    //   data.antiVirus=req.body.antiVirus//查杀病毒
+    //   data.checkSample=req.body.checkSample//测试样品
+    //   data.reqword=req.body.reqword//重述
+    //   data.userDocumentation=req.body.userDocumentation//用户文档
+    //   data.operationDocument=req.body.operationDocument//操作文档
+    //   data.opinions=req.body.opinions//确认意见
+    //   data.acceptOpinions=req.body.acceptOpinions//受理意见
+    //   data.test_number=req.body.test_number//测试项目编号
+    //   data.remarks=req.body.remarks//备注
+    //   data.acceptee_signature=req.body.acceptee_signature//受理人签名
+    //   data.acceptee_signature_time=req.body.acceptee_signature_time//受理人签名日期
+    //   data.completedByClient=req.body.completedByClient//委托人填写
+    //   data.client_signature=req.body.client_signature//委托人签名
+    //   data.client_signature_time=req.body.client_signature_time//委托人签名日期
+    // }
