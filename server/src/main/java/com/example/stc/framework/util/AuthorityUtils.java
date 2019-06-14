@@ -3,6 +3,8 @@ package com.example.stc.framework.util;
 import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
 import com.example.stc.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,19 +21,36 @@ import java.util.List;
 @Component
 public class AuthorityUtils {
 
+    Logger logger = LoggerFactory.getLogger(AuthorityUtils.class);
+
     @Autowired
     private UserRepository userRepository;
 
+    /** 判断当前是否有用户登录 */
+    public boolean isAuthenticated() {
+        logger.info("Not Authenticated");
+        return SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+    }
+
     /** 获取当前登录的用户 */
     public User getLoginUser() {
+        if (!isAuthenticated())
+            return null; // 未登录
+
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
         User user = userRepository.findByUsername(userDetails.getUsername());
+
+        logger.info("Get Authenticated User: " + user.getUsername());
+
         return user;
     }
 
     /** @param role 为Role枚举类型对应的String */
     public boolean hasAuthority(Role role) {
+        if (!isAuthenticated())
+            return false; // 未登录
+
         // 获得当前登陆用户对应的对象
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
@@ -44,6 +63,9 @@ public class AuthorityUtils {
             if (author.getAuthority().equals("ROLE_" + role.str()))
                 isRole = true;
         }
+
+        logger.info("Authenticated User has role " + role.str());
+
         return isRole;
     }
 
