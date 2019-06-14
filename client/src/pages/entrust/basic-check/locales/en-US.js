@@ -3,7 +3,6 @@ export default {
   'basic-form.basic.description':
     'Form pages are used to collect or verify information to users, and basic forms are common in scenarios where there are fewer data items.',
 
-  'basic-form.radio.testtype': 'testtype',
   'basic-form.email.required': 'Please enter your email!',
   'basic-form.email.wrong-format': 'The email address is in the wrong format!',
   'basic-form.userName.required': 'Please enter your userName!',

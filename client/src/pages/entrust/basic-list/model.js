@@ -9,14 +9,13 @@ export default {
     },
     effects:{
       *GetAllEntrust(_,{call,put}){
-        const response=yield call(getAllEntrust,'cid')
+        const response=yield call(getAllEntrust)
         // console.log('GetAllEntrust')
-        console.log(response);
         yield put({type:'addListData',payload: response._embedded.entrusts})
       },
       *DeleteEntrust({payload},{call,put}){
-        // console.log(payload.pid)
-        const response=yield call(deleteEntrust,{cid:'cid',pid:payload.pid})
+        // console.log(payload)
+        const response=yield call(deleteEntrust,{pid:payload.pid})
         yield put({type:'addListData',payload: response})
       },
     },
