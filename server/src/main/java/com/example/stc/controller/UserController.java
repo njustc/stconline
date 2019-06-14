@@ -41,7 +41,7 @@ public class UserController {
     @GetMapping("/api/login")
     public String showLogin(HttpServletRequest req) {
         UsernamePasswordAuthenticationToken authReq
-                = new UsernamePasswordAuthenticationToken("CUSA", "cusa");
+                = new UsernamePasswordAuthenticationToken("CUSA", "cua");
         Authentication auth = authManager.authenticate(authReq);
 
         SecurityContext sc = SecurityContextHolder.getContext();

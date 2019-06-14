@@ -26,6 +26,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Autowired
+    private CustomAuthenticationProvider authProvider;
+
     // 配置PasswordEncoder; BCryptPasswordEncoder是security提供的PasswordEncorder的一个实现类
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -61,11 +64,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and().csrf().disable();
     }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("admin").password(passwordEncoder().encode("adminPass")).roles("ADMIN")
-                .and()
-                .withUser("user").password(passwordEncoder().encode("userPass")).roles("USER");
+        auth.authenticationProvider(authProvider);
     }
 }
