@@ -20,6 +20,7 @@ public final class RestAuthenticationEntryPoint implements AuthenticationEntryPo
             final HttpServletRequest request,
             final HttpServletResponse response,
             final AuthenticationException authException) throws IOException {
+        //配置返回401错误码
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
     }
 

@@ -26,11 +26,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throws AuthenticationException {
 
         String name = authentication.getName();
-        String password = authentication.getCredentials().toString();
-        String p = userDetailsService.loadUserByUsername(name).getPassword();
-        if (passwordEncoder.matches(password, p)) {
+        String rawPassword = authentication.getCredentials().toString();
+        String truePassword = userDetailsService.loadUserByUsername(name).getPassword();
+        if (passwordEncoder.matches(rawPassword, truePassword)) {
             return new UsernamePasswordAuthenticationToken(
-                    name, password, new ArrayList<>());
+                    name, rawPassword, new ArrayList<>());
         }
         // use the credentials
         // and authenticate against the third-party system

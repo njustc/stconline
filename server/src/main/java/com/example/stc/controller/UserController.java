@@ -40,8 +40,9 @@ public class UserController {
      */
     @GetMapping("/api/login")
     public String showLogin(HttpServletRequest req) {
+        //TODO: 将具体逻辑加入到service层
         UsernamePasswordAuthenticationToken authReq
-                = new UsernamePasswordAuthenticationToken("CUSA", "cua");
+                = new UsernamePasswordAuthenticationToken("CUSA", "cusa");
         Authentication auth = authManager.authenticate(authReq);
 
         SecurityContext sc = SecurityContextHolder.getContext();
