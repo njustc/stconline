@@ -4,10 +4,8 @@ import com.example.stc.framework.exception.FunctionNotFoundException;
 import com.example.stc.framework.exception.ParamMissingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -27,12 +25,23 @@ public class NormalAdvice {
     }
 
     /**
-     * 未鉴权
+     * 未认证
+     * 认证失败
+     */
+    @ResponseBody
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    private String unauthorizedHandler(AuthenticationException e) {
+        return e.getMessage();
+    }
+
+    /**
+     * 无权限访问
      */
     @ResponseBody
     @ExceptionHandler(AccessDeniedException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    private String unauthorizedHandler(AccessDeniedException e) {
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    private String forbiddenHandler(AccessDeniedException e) {
         return e.getMessage();
     }
 
