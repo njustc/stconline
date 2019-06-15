@@ -43,7 +43,7 @@ public class EntrustController extends BaseController {
     public @ResponseBody
     Resources<Resource<Entrust>> getAllEntrust() {
         // 依据当前登录的用户的权限查询能见的委托
-        List<Resource<Entrust>> entrusts = entrustService.findAllEntrusts().stream()
+        List<Resource<Entrust>> entrusts = entrustService.findEntrustsByAuthority().stream()
                 .map(entrust -> toResource(entrust))
                 .collect(Collectors.toList());
         return new Resources<>(entrusts,
