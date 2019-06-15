@@ -97,7 +97,8 @@ public class EntrustProcessTest {
         Deployment deployment = processEngine.getRepositoryService()//与流程定义和部署对象相关的Service
                 .createDeployment() // 创建一个部署对象
                 .name("EntrustProcess测试") // 添加部署的名称
-                .addClasspathResource("processes/Entrust.bpmn20.xml") // 从classpath的资源中加载，一次只能加载一个文件
+                .addClasspathResource("processes/Entr ps" +
+                        "rust.bpmn20.xml") // 从classpath的资源中加载，一次只能加载一个文件
                 .deploy();//完成部署
         System.out.println("部署ID：" + deployment.getId());
         System.out.println("部署名称：" + deployment.getName());

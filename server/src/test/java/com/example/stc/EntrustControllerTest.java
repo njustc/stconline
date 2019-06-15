@@ -27,7 +27,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @SpringBootTest
 @AutoConfigureWebMvc
 @AutoConfigureMockMvc
-@WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS", "USER"})
 public class EntrustControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -37,14 +36,12 @@ public class EntrustControllerTest {
 
     @Autowired
     private UserController userController;
-    private MockHttpSession session;
 
     private static final Logger logger = LoggerFactory.getLogger(EntrustControllerTest.class);
 
     //进行认证操作 , 避免之后无法调用方法
     @Before
     public void prepare() throws Exception {
-        this.session = new MockHttpSession();
     }
 
     @Test

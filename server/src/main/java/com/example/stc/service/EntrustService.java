@@ -15,7 +15,7 @@ public interface EntrustService extends BaseService<Entrust> {
      * 获取全部的委托
      * 需要进行分页
      */
-    @Secured("ROLE_USER")
+//    @Secured("ROLE_USER")
     List<Entrust> findAllEntrusts();
 
     /**

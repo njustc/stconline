@@ -38,16 +38,18 @@ public class UserController {
     /**
      * DEBUG: 登录界面
      */
-    @GetMapping("/api/login")
-    public String showLogin(HttpServletRequest req) {
+    @PostMapping("/api/login")
+    public String userLogin(HttpServletRequest req,
+                            @RequestBody User user) {
         //TODO: 将具体逻辑加入到service层
         UsernamePasswordAuthenticationToken authReq
-                = new UsernamePasswordAuthenticationToken("CUSA", "cusa");
+                = new UsernamePasswordAuthenticationToken(user.getUsername(),
+                user.getPassword());
         Authentication auth = authManager.authenticate(authReq);
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);
         HttpSession session = req.getSession(true);
-        
+
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
         return "DEBUG: 用户登录";
     }

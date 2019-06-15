@@ -1,6 +1,8 @@
 package com.example.stc.web;
 
+import com.alibaba.fastjson.JSON;
 import com.example.stc.controller.UserController;
+import com.example.stc.domain.User;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +15,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultHandler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -29,6 +34,8 @@ public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    private final String loginUri = "/api/login";
+
     @Test
     public void checkNotNull() {
         assertThat(userController).isNotNull();
@@ -39,18 +46,28 @@ public class UserControllerTest {
     public void checkNotAuth() throws Exception {
         //check not auth
         mockMvc.perform(get("/api/project/**"))
-                .andExpect(status().isFound())
-                .andDo(result1 -> Assert.assertEquals("http://localhost/login",  //重定向成功
-                        result1.getResponse().getRedirectedUrl()));
+                .andExpect(status().isUnauthorized());
     }
 
+    /**
+     * 登录接口测试
+     */
     @Test
-    public void apiRegister() throws Exception {
-        MvcResult result = mockMvc.perform(get("/api/register"))
-                .andExpect(status().isOk())
-                .andReturn();
-        //check the register page
-        Assert.assertEquals("DEBUG: 用户注册，请Post", result.getResponse().getContentAsString());
+    public void apiLogin() throws Exception {
+        Map<String, String> req = new HashMap<>();
+        //设定正确的账号密码
+        req.put("username", "CUSA");
+        req.put("password", "cusa");
+        mockMvc.perform(post("/api/login")
+                .content(JSON.toJSONString(req))
+                .contentType("application/json"))
+                .andExpect(status().isOk());
+        //设定错误的账号密码
+        req.replace("password", "cussa");
+        mockMvc.perform(post("/api/login")
+                .content(JSON.toJSONString(req))
+                .contentType("application/json"))
+                .andExpect(status().isUnauthorized());
     }
 
 
