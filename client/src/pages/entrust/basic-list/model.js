@@ -11,12 +11,20 @@ export default {
       *GetAllEntrust(_,{call,put}){
         const response=yield call(getAllEntrust)
         // console.log('GetAllEntrust')
-        yield put({type:'addListData',payload: response._embedded.entrusts})
+        console.log(response)
+        console.log('_embedded' in response)
+        if(!('_embedded' in response)){
+          console.log("put []")
+          yield put({type:'addListData',payload: []})
+        }
+        else{
+          yield put({type:'addListData',payload: response._embedded.entrusts})
+        }
+
       },
       *DeleteEntrust({payload},{call,put}){
         // console.log(payload)
         const response=yield call(deleteEntrust,{pid:payload.pid})
-        yield put({type:'addListData',payload: response})
       },
     },
     reducers:{

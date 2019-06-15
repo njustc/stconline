@@ -27,6 +27,8 @@ const mapDispatchToProps=(dispatch)=>{
     }
   }
 }
+
+
 @connect(mapStateToProps,mapDispatchToProps)
 export default class EntrustList extends Component {
   componentDidMount() {
@@ -97,7 +99,7 @@ export default class EntrustList extends Component {
       cancelText: '取消',
       onOk() {
         that.props.DeleteEntrust({pid:key.pid})
-        
+        that.props.onDidMount()
         // console.log('OK');
       },
       onCancel() {
@@ -124,6 +126,7 @@ export default class EntrustList extends Component {
         <Search
             style={{marginLeft:100,width: 200 }}
         />
+        {/* <div class="" */}
         <Table  style={{marginTop:50 }} columns={this.columns} dataSource={this.props.listdata.data} />
 		<Button
 		style={{ marginLeft: 400 }}
