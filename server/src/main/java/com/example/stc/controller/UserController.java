@@ -44,10 +44,10 @@ public class UserController {
         UsernamePasswordAuthenticationToken authReq
                 = new UsernamePasswordAuthenticationToken("CUSA", "cusa");
         Authentication auth = authManager.authenticate(authReq);
-
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);
         HttpSession session = req.getSession(true);
+        
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
         return "DEBUG: 用户登录";
     }

@@ -1,6 +1,5 @@
 package com.example.stc;
 
-import com.alibaba.fastjson.JSONObject;
 import com.example.stc.controller.EntrustController;
 import com.example.stc.controller.UserController;
 import com.example.stc.domain.Entrust;
@@ -21,8 +20,6 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.nio.file.AccessDeniedException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -48,7 +45,6 @@ public class EntrustControllerTest {
     @Before
     public void prepare() throws Exception {
         this.session = new MockHttpSession();
-
     }
 
     @Test
@@ -60,7 +56,6 @@ public class EntrustControllerTest {
 
 
     /**
-     * 接口测试
      * 委托查询
      */
     @Test
@@ -71,6 +66,9 @@ public class EntrustControllerTest {
         assertThat(resources).isNotNull();
     }
 
+    /**
+     * 添加+修改+删除委托
+     * */
     @Test
     @WithMockUser(username = "SSB", password = "cusa", roles = {"CUS", "USER"})
     public void PDSMTest() throws Exception {
