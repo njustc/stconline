@@ -2,11 +2,11 @@
 import {primaryColor} from '../src/defaultSettings';
 
 export default {
-  base:'/',
+  base: '/',
   publicPath: 'http://localhost:8080/',
   treeShaking: true,
-  exportStatic:{
-    htmlSuffix:true,
+  exportStatic: {
+    htmlSuffix: true,
   },
   plugins: [
     [
