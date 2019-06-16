@@ -78,8 +78,8 @@ export default class entrustCheck extends Component {
     return (
     <div>
 		<Breadcrumb>
-			<Breadcrumb.Item href="/basic-list">委托列表</Breadcrumb.Item>
-			<Breadcrumb.Item href="/basic-check">委托详情</Breadcrumb.Item>
+			<Breadcrumb.Item href="/basic-list.html">委托列表</Breadcrumb.Item>
+			<Breadcrumb.Item href="/basic-check.html">委托详情</Breadcrumb.Item>
 		</Breadcrumb>
       <div><h3>NST-04-JS002-2011-软件项目委托测试申请表(只读)</h3></div>
       <Card style={{ width: '100%' }}>

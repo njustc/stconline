@@ -114,7 +114,7 @@ export default class EntrustList extends Component {
     return (
       <div> 
 	  <Breadcrumb>
-		<Breadcrumb.Item hr ="/basic-list">委托列表</Breadcrumb.Item>
+		<Breadcrumb.Item hr ="/basic-list.html">委托列表</Breadcrumb.Item>
 	  </Breadcrumb>
         <Select
           style={{ width: 200 }}
@@ -131,7 +131,7 @@ export default class EntrustList extends Component {
 		<Button
 		style={{ marginLeft: 400 }}
 		type="primary"
-		href="/basic-form">
+		href="/basic-form.html">
 		新建委托
 		</Button>
       </div>
