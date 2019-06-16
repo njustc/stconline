@@ -67,7 +67,7 @@ public class EntrustAction {
         variable.put("WorkerIDs", "w2");
 
         entrust.setProcessInstanceID(stcProcessEngine.createProcess("Entrust", variable));
-        entrust.setProcessState(ProcessState.Review);
+        entrust.setProcessState(ProcessState.ToReview);
         return entrust.getProcessInstanceID();
     }
 
