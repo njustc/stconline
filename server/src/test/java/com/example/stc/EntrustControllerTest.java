@@ -67,11 +67,11 @@ public class EntrustControllerTest {
      * 添加+修改+删除委托
      * */
     @Test
-    @WithMockUser(username = "SSB", password = "cusa", roles = {"CUS", "USER"})
+    @WithMockUser(username = "SSA", password = "ssa", roles = {"SS", "USER"})
     public void PDSMTest() throws Exception {
         User user = new User();
-        user.setUsername("SSB");
-        user.setPassword("cusa");
+        user.setUsername("SSA");
+        user.setPassword("ssa");
         user.setUserID("aaa");
         user.setId(9L);
         Entrust record = new Entrust();
