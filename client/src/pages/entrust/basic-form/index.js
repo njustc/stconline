@@ -178,11 +178,11 @@ class BasicForm extends PureComponent {
     return (
       <Breadcrumb>
         <Button
-        a href="basic-list.html">
+        a href="basic-list">
           <FormattedMessage id="返回"/>
         </Button>
-        <Breadcrumb.Item href="/basic-list.html">委托列表</Breadcrumb.Item>
-        <Breadcrumb.Item href="/basic-form.html">编辑委托</Breadcrumb.Item>
+        <Breadcrumb.Item href="/basic-list">委托列表</Breadcrumb.Item>
+        <Breadcrumb.Item href="/basic-form">编辑委托</Breadcrumb.Item>
         <h1></h1>
         <PageHeaderWrapper
           title={<FormattedMessage id="basic-form.basic.title"/>}

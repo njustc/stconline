@@ -140,8 +140,8 @@ export default class EntrustCheck extends React.Component {
           返回
         </Button>
         <Breadcrumb>
-          <Breadcrumb.Item href="/basic-list.html">委托列表</Breadcrumb.Item>
-          <Breadcrumb.Item href="/basic-check.html">委托详情</Breadcrumb.Item>
+          <Breadcrumb.Item href="/basic-list">委托列表</Breadcrumb.Item>
+          <Breadcrumb.Item href="/basic-check">委托详情</Breadcrumb.Item>
         </Breadcrumb>
         <div><h3>{this.props.checkform.form} 软件项目委托测试申请表</h3></div>
         <Table  style={{marginTop:50 }} columns={this.columns} dataSource={this.props.checkform.form} />
