@@ -66,24 +66,24 @@ public class EntrustControllerTest {
     /**
      * 添加+修改+删除委托
      * */
-    @Test
-    @WithMockUser(username = "SSA", password = "ssa", roles = {"SS", "USER"})
-    public void PDSMTest() throws Exception {
-        User user = new User();
-        user.setUsername("SSA");
-        user.setPassword("ssa");
-        user.setUserID("u20190605134833");
-        user.setId(8L);
-        Entrust record = new Entrust();
-        record.setProcessInstanceID("");
-        record.setUser(user);
-        ResponseEntity<?> entity =
-                this.entrustController.addNewEntrust(record);
-        Resource<Entrust> resource = (Resource<Entrust>) entity.getBody();
-        record = resource.getContent();
-        assertThat(record).isNotNull();
-        //删除记录
-        entity = this.entrustController.deleteEntrust(record.getPid());
-
-    }
+//    @Test
+//    @WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS", "USER"})
+//    public void PDSMTest() throws Exception {
+//        User user = new User();
+//        user.setUsername("CUSA");
+//        user.setPassword("cusa");
+//        user.setUserID("aaa");
+//        user.setId(9L);
+//        Entrust record = new Entrust();
+//        record.setUser(user);
+//
+//        ResponseEntity<?> entity =
+//                this.entrustController.addNewEntrust(record);
+//        Resource<Entrust> resource = (Resource<Entrust>) entity.getBody();
+//        record = resource.getContent();
+//        assertThat(record).isNotNull();
+//        //删除记录
+////        entity = this.entrustController.deleteEntrust(record.getPid());
+//
+//    }
 }

@@ -2,6 +2,12 @@
 import {primaryColor} from '../src/defaultSettings';
 
 export default {
+  base:'/',
+  publicPath: 'http://localhost:8080/',
+  treeShaking: true,
+  exportStatic:{
+    htmlSuffix:true,
+  },
   plugins: [
     [
       'umi-plugin-react',
@@ -107,11 +113,11 @@ export default {
   theme: {'primary-color': primaryColor},
   externals: {'@antv/data-set': 'DataSet'},
   ignoreMomentLocale: true,
-  lessLoaderOptions: {javascriptEnabled: true}
-  // proxy: {
-  //   '/api': {
-  //     target: 'http://localhost:8080',
-  //     changeOrigin: true,
-  //   }
-  // }
+  lessLoaderOptions: {javascriptEnabled: true},
+  proxy: {
+    '/api': {
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    }
+  }
 };
