@@ -3,7 +3,7 @@ import {primaryColor} from '../src/defaultSettings';
 
 export default {
   base:'/',
-  publicPath: 'http://localhost:8080/',
+  publicPath: 'http://localhost:8000/',
   treeShaking: true,
   exportStatic:{
     htmlSuffix:true,
@@ -72,26 +72,14 @@ export default {
         //   icon: 'block',
         // },
         {
-          name: '编辑页面',
-          icon: 'dashboard',
+          //name: 'basic-form',
+          //icon: 'dashboard',
           path: '/basic-form',
           component: './entrust/basic-form',
         },
-        {
-          name: '面向提交审核后的客户的详情页面',
-          icon: 'pie-chart',
-          path: 'for_client',
-          component: './entrust/basic-check/for_client',
-        },
-        {
-          name: '面向工作人员的详情页面',
-          icon: 'pie-chart',
-          path: 'basic-check',
-          component: './entrust/basic-check/index',
-        },
         //entrustlist
         {
-          name: '列表页面',
+          name: '您的委托',
           icon: 'pie-chart',
           path: '/basic-list',
           component: './entrust/basic-list/entrustlist',
