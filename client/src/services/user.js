@@ -18,7 +18,8 @@ export async function queryNotices() {
 // }
 
 export async function getAllEntrust() {
-  return request(`api/project/entrust`);
+  return request('dev/api/customers/cid/projects');
+  // return request(`api/project/entrust`);
 }
 
 // export async function deleteEntrust(params) {

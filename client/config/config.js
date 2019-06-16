@@ -71,6 +71,10 @@ export default {
           path: '/basic-form',
           component: './entrust/basic-form',
         },
+        {
+          path: 'for_client',
+          component: './entrust/basic-check/for_client',
+        },
         //entrustlist
         {
           name: '您的委托',
@@ -95,11 +99,11 @@ export default {
   theme: {'primary-color': primaryColor},
   externals: {'@antv/data-set': 'DataSet'},
   ignoreMomentLocale: true,
-  lessLoaderOptions: {javascriptEnabled: true},
-  proxy: {
-    '/api': {
-      target: 'http://localhost:8080',
-      changeOrigin: true,
-    }
-  }
+  lessLoaderOptions: {javascriptEnabled: true}
+  // proxy: {
+  //   '/api': {
+  //     target: 'http://localhost:8080',
+  //     changeOrigin: true,
+  //   }
+  // }
 };

@@ -1,4 +1,4 @@
-import { Card , Table , Divider , Tag , Input , Button , Breadcrumb , DatePicker} from 'antd';
+import { Card , Table , Divider , Tag , Input , Button , Breadcrumb , DatePicker ,Upload , Icon ,message} from 'antd';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import {connect} from 'dva';
 import React,{Component} from 'react'
@@ -12,6 +12,27 @@ const mapStateToProps = (state) => {
     entrustdata,
   };
 };
+
+const Dragger = Upload.Dragger;
+
+const props = {
+  name: 'file',
+  multiple: true,
+  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+  onChange(info) {
+    const status = info.file.status;
+    if (status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully.`);
+    } else if (status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+};
+
+
 const style={
   width:'400px',
   margin:'30px',
@@ -176,11 +197,23 @@ export default class entrustCheck extends Component {
       <div><h3>委托状态及意见</h3></div>
       <div>待受理/已受理/已驳回</div>
       <Input.TextArea style={{width:400,height:200}} placeholder="//意见" />
-      <div><h3>样品</h3></div>
-      <Input.TextArea style={{width:400,height:200}} placeholder="//样品" />
       <div>已提交样品：a.zip</div>
-      <Link to={{pathname:'../../basic-form',query:{pid:this.props.entrustdata.entrust.key}}}><Button style={{marginLeft:300}} type="primary">修改</Button></Link>
-      <Link to={{pathname:'../../basic-list',query:{pid:this.props.entrustdata.entrust.key}}}><Button style={{marginLeft:300}} type="primary">返回</Button></Link>
+
+      <Dragger {...props}>
+        <p className="提交栏">
+          <Icon type="inbox" />
+        </p>
+        <p className="ant-upload-text">点击或者拖拽文件到这里进行上传</p>
+        <p className="ant-upload-hint">
+          Support for a single or bulk upload. Strictly prohibit from uploading company data or other
+          band files
+        </p>
+      </Dragger>
+      <br />
+      
+      <Button style={{marginLeft:300}} type="primary">通过</Button>
+      <Button style={{marginLeft:300}} type="primary">不通过</Button>
+      
     </div>
   )
   } 

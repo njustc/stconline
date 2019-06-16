@@ -15,7 +15,7 @@ export default {
         console.log('_embedded' in response)
         if(!('_embedded' in response)){
           console.log("put []")
-          yield put({type:'addListData',payload: []})
+          yield put({type:'addListData',payload: response})
         }
         else{
           yield put({type:'addListData',payload: response._embedded.entrusts})
