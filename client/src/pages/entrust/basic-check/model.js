@@ -80,6 +80,8 @@ export default {
       effects: {
         *getOneEntrust({ payload }, { call , put}) {
           const response=yield call(getOneEntrust, payload);
+          console.log("get res")
+          console.log(response)
           yield put({type:'initData',payload:response})
         },
       },

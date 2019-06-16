@@ -61,6 +61,6 @@ export async function updateEntrustProcess(params) {
 }
 
 export async function getOneEntrust(params) {
-  // console.log(params)
-  return request(`api/project/entrust/${stringify(params.pid)}`);
+  //console.log(params)
+  return request(`api/project/entrust/${params.pid}`);
 }

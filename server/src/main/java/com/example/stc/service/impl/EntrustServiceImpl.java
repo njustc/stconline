@@ -88,7 +88,7 @@ public class EntrustServiceImpl implements EntrustService {
         if (entrust == null)
             throw new EntrustNotFoundException(pid);
 
-        this.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
+        // this.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
 
         return entrust;
     }
