@@ -66,18 +66,26 @@ export default {
         //   icon: 'block',
         // },
         {
-          //name: 'basic-form',
-          //icon: 'dashboard',
+          name: '编辑页面',
+          icon: 'dashboard',
           path: '/basic-form',
           component: './entrust/basic-form',
         },
         {
+          name: '面向提交审核后的客户的详情页面',
+          icon: 'pie-chart',
           path: 'for_client',
           component: './entrust/basic-check/for_client',
         },
+        {
+          name: '面向工作人员的详情页面',
+          icon: 'pie-chart',
+          path: 'basic-check',
+          component: './entrust/basic-check/index',
+        },
         //entrustlist
         {
-          name: '您的委托',
+          name: '列表页面',
           icon: 'pie-chart',
           path: '/basic-list',
           component: './entrust/basic-list/entrustlist',
