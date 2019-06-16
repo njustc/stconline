@@ -79,4 +79,4 @@ mvn package
 java -jar server/target/stc.jar
 ```
 
-项目可以直接运行，并且在浏览器中输入 `localhost:8080` 即可进入项目主页
+项目可以直接运行，并且在浏览器中输入 `localhost:8000` 即可进入项目主页
