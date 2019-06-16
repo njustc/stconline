@@ -72,9 +72,10 @@ public class EntrustControllerTest {
         User user = new User();
         user.setUsername("SSA");
         user.setPassword("ssa");
-        user.setUserID("aaa");
-        user.setId(9L);
+        user.setUserID("u20190605134833");
+        user.setId(8L);
         Entrust record = new Entrust();
+        record.setProcessInstanceID("");
         record.setUser(user);
         ResponseEntity<?> entity =
                 this.entrustController.addNewEntrust(record);
