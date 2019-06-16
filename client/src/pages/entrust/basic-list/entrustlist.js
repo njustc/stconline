@@ -99,7 +99,7 @@ export default class EntrustList extends Component {
       cancelText: '取消',
       onOk() {
         that.props.DeleteEntrust({pid:key.pid})
-        that.props.onDidMount()
+        // that.props.onDidMount()
         // console.log('OK');
       },
       onCancel() {
