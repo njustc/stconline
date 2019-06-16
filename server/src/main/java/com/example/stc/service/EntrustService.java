@@ -25,6 +25,12 @@ public interface EntrustService extends BaseService<Entrust> {
     List<Entrust> findEntrustsByAuthority();
 
     /**
+     * 获取某用户全部委托
+     */
+    @Secured({"ROLE_USER", "ROLE_STAFF"})
+    List<Entrust> findEntrustsByUser(String uid);
+
+    /**
      * 通过主键ID查询单个委托记录
      */
     @Secured("ROLE_USER")
