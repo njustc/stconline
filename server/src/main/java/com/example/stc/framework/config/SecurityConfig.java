@@ -47,8 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-                .exceptionHandling().authenticationEntryPoint(new RestAuthenticationEntryPoint())
-                .and()
+//                .exceptionHandling().authenticationEntryPoint(new RestAuthenticationEntryPoint())
+//                .and()
                 .cors()
                 .and()
 
@@ -60,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests() // 定义需要保护和不需要保护的URL
-                .antMatchers("/*/**", "*").permitAll()
+                .antMatchers("/*/**", "*", "/").permitAll()
 //                .antMatchers("/register", "/api/register/**", "/login", "/api/login").permitAll()
 //                .antMatchers("/api/project/**").hasRole(Role.USER.str())
                 // TODO: 其他针对角色拦截的URL
