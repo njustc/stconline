@@ -9,6 +9,8 @@ import com.example.stc.framework.util.DateUtils;
 import com.example.stc.repository.EntrustRepository;
 import com.example.stc.repository.ProjectRepository;
 import com.example.stc.service.EntrustService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,6 +28,9 @@ import java.util.List;
  */
 @Service
 public class EntrustServiceImpl implements EntrustService {
+
+    Logger logger = LoggerFactory.getLogger(EntrustServiceImpl.class);
+
     @Autowired
     private EntrustRepository entrustRepository;
 
@@ -43,6 +48,7 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public List<Entrust> findAllEntrusts() {
+        logger.info("findAllEntrusts: 查看全部委托");
         return entrustRepository.findAll();
     }
 
@@ -50,6 +56,7 @@ public class EntrustServiceImpl implements EntrustService {
     public List<Entrust> findEntrustsByAuthority() {
         List<Entrust> allEntrusts = this.findAllEntrusts();
         if (authorityUtils.hasAuthority(Role.Customer)) {
+            logger.info("findEntrustsByAuthority: 仅查看当前客户委托");
             Iterator<Entrust> it = allEntrusts.iterator();
             while (it.hasNext()) {
                 Entrust entrust = it.next();
@@ -57,6 +64,7 @@ public class EntrustServiceImpl implements EntrustService {
                     it.remove(); // 不是当前客户的委托不可见
             }
         }
+        else logger.info("findEntrustsByAuthority: 查看全部委托");
         return allEntrusts;
     }
 
@@ -66,6 +74,7 @@ public class EntrustServiceImpl implements EntrustService {
     private void customerAccessCheck(Entrust entrust) {
         if (authorityUtils.hasAuthority(Role.Customer)) {
             if (!entrust.getUser().getUsername().equals(authorityUtils.getLoginUser().getUsername()))
+                logger.info("customerAccessCheck: 没有查看权限，客户只能查看自己的委托");
                 throw new AccessDeniedException("没有查看权限，客户只能查看自己的委托");
         }
     }
@@ -75,8 +84,9 @@ public class EntrustServiceImpl implements EntrustService {
         // 获取委托
         Entrust entrust = entrustRepository.findById(id)
                 .orElseThrow(() -> new EntrustNotFoundException(id));
+        logger.info("findEntrustById: ");
 
-        this.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
+        //this.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
 
         return entrust;
     }
@@ -87,20 +97,23 @@ public class EntrustServiceImpl implements EntrustService {
         Entrust entrust = entrustRepository.findByPid(pid);
         if (entrust == null)
             throw new EntrustNotFoundException(pid);
+        logger.info("findEntrustByPid: ");
 
-        this.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
+        //this.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
 
         return entrust;
     }
 
     @Override
     public void deleteEntrustById(Long id) {
+        logger.info("deleteEntrustById: ");
         Entrust entrust = this.findEntrustById(id); // 找到应删除的委托并检查，若为客户，只能访问本人的委托
         entrustRepository.deleteById(id);
     }
 
     @Override
     public void deleteEntrustByPid(String pid) {
+        logger.info("deleteEntrustByPid: ");
         Entrust entrust = this.findEntrustByPid(pid); // 找到应删除的委托并检查，若为客户，只能访问本人的委托
         entrustAction.deleteEntrustProcess(entrust);
 
@@ -112,6 +125,7 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public Entrust newEntrust(Entrust entrust) {
+        logger.info("newEntrust: ");
         //根据某一个算法增加新的id
         entrust.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         entrust.setProcessState("Submit");
@@ -120,6 +134,7 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public Entrust updateEntrust(String pid, Entrust record) {
+        logger.info("updateEntrust: ");
         /**
          * TODO: 增加更新逻辑
          */
