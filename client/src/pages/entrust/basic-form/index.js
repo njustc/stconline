@@ -13,7 +13,9 @@ import {
   Icon,
   Tooltip,
   Modal,
-  Breadcrumb
+  Breadcrumb,
+  Upload,
+  message
 } from 'antd';
 import PageHeaderWrapper from './components/PageHeaderWrapper';
 import styles from './style.less';
@@ -35,6 +37,26 @@ const form={
     
 }
 //#endregion
+
+const Dragger = Upload.Dragger;
+
+const props = {
+  name: 'file',
+  multiple: true,
+  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+  onChange(info) {
+    const status = info.file.status;
+    if (status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully.`);
+    } else if (status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+};
+
 
 //删除按钮的对话框方法，点击“确认删除”调取delete方法
 function showDeleteConfirm() {
@@ -1205,6 +1227,17 @@ class BasicForm extends PureComponent {
                   ],
                 })(<Input placeholder={formatMessage({id: 'form.client_signature_time.placeholder'})}/>)}
               </FormItem>
+
+              <Dragger {...props}>
+               <p className="提交栏">
+               <Icon type="inbox" />
+               </p>
+               <p className="ant-upload-text">点击或者拖拽文件到这里进行上传</p>
+                <p className="ant-upload-hint">
+             Support for a single or bulk upload. Strictly prohibit from uploading company data or other
+              band files
+               </p>
+            </Dragger>
 
               <FormItem {...submitFormLayout} style={{marginTop: 32}}>
                 <Button type="primary" onClick={showConfirm.bind(this)}>
