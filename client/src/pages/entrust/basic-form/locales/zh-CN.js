@@ -193,6 +193,9 @@ export default {
   'form.softscale_code_number.placeholder': ' ',
   'validation.softscale_code_number.required': '请输入代码行数',
 
+  'form.sampleType.label': '软件介质',
+  'form.sampleType.label.tooltip': "U盘，光盘，或其他",
+
   'form.sample_document.label': '文档资料',
   'form.sample_document.label.tooltip': "1.需求文档（例如：项目计划任务书、需求分析报告、合同等）（验收、鉴定测试必须）2.用户文档（例如：用户手册、用户指南等）（必须）3.操作文档（例如：操作员手册、安装手册、诊断手册、支持手册等）（验收项目必须）",
   'form.sample_document.placeholder': ' ',
@@ -243,11 +246,11 @@ export default {
   'basic-form.others.viruses.complete':"已完成",
   'basic-form.others.viruses.cannot':"无法完成",
 
-  'basic-form.others.tsample.label':"测试样品",
+  'basic-form.others.tsample.label':"材料检查(多选)",
   'basic-form.others.tsample.code':"源代码",
   'basic-form.others.tsample.exe':"可执行文件",
 
-  'basic-form.others.reqword.label':"查杀病毒",
+  'basic-form.others.reqword.label':"重述",
   'basic-form.others.reqword.plan':"项目计划任务书",
   'basic-form.others.reqword.report':"需求分析报告",
   'basic-form.others.reqword.contract':"合同",

@@ -1,21 +1,43 @@
 package com.example.stc.domain;
 
+import com.example.stc.activiti.ProcessState;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import java.util.List;
 
-/**
- * 作为参与流程引擎的实体类的父类
- */
 @MappedSuperclass
-public class ProcessEntity extends BaseEntity {
-    @Column(name = "PROCESS_INSTANCE_ID")
-    private String processInstanceID;
+public class ProcessEntity extends BaseEntity{
+
+    @Column
+    private String processInstanceId;
+
+    @Column
+    private ProcessState processState;
 
     public String getProcessInstanceID() {
-        return processInstanceID;
+        return processInstanceId;
     }
 
     public void setProcessInstanceID(String processInstanceID) {
-        this.processInstanceID = processInstanceID;
+        this.processInstanceId = processInstanceID;
+    }
+
+    public ProcessState getProcessState() {
+        return processState;
+    }
+
+    public void setProcessState(ProcessState processState) {
+        this.processState = processState;
+    }
+
+    public void setProcessState(String state) {
+        ProcessState states[] = ProcessState.values();
+        for (ProcessState processState: states) {
+            if (state.equals(processState.getName())) {
+                this.processState = processState;
+                return;
+            }
+        }
     }
 }

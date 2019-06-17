@@ -1,109 +1,99 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1559029209409" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
-  <process id="entrust" isClosed="false" isExecutable="true" name="委托" processType="None">
+  <process id="Entrust" isClosed="false" isExecutable="true" name="委托" processType="None">
     <startEvent id="start" name="开始">
       <extensionElements>
-        <activiti:formProperty id="EntrustID" name="ID of entrust" type="String" required="true"/>
+        <activiti:formProperty id="EntrustID" name="ID of entrust" required="true" type="String"/>
       </extensionElements>
     </startEvent>
-    <userTask activiti:exclusive="true" id="submitEntrust" name="委托待提交" activiti:assignee="${ClientID}">
+    <userTask activiti:assignee="${ClientID}" activiti:exclusive="true" id="submitEntrust" name="Submit">
       <extensionElements>
         <activiti:formProperty id="user" name="client" type="string" value="client"/>
       </extensionElements>
     </userTask>
-    <userTask activiti:exclusive="true" id="reviewEntrust" name="委托待审核" activiti:candidateGroups="${WorkerIDs}">
+    <userTask activiti:candidateGroups="${WorkerIDs}" activiti:exclusive="true" id="reviewEntrust" name="Review">
       <extensionElements>
-        <activiti:formProperty id="approvalChoice" name="Do you approve this request?" type="enum" required="true"/>
+        <activiti:formProperty id="reviewEntrustResult" name="Do you approve this request?" required="true" type="String"/>
         <activiti:formProperty id="user" name="worker" type="string" value="worker"/>
-        <activiti:formProperty id="approvalComment" name="reason about pass or reject the consign" type="string" required="true"/>
+        <activiti:formProperty id="reviewEntrustComment" name="reason about pass or reject the consign" required="true" type="string"/>
       </extensionElements>
     </userTask>
-    <endEvent id="end" name="结束">
-
-    </endEvent>
-    <sequenceFlow id="fSubmitToReview" sourceRef="submitEntrust" targetRef="reviewEntrust">
-
-    </sequenceFlow>
-    <sequenceFlow id="fStartToSubmit" sourceRef="start" targetRef="submitEntrust">
-
-    </sequenceFlow>
-    <exclusiveGateway gatewayDirection="Unspecified" id="approveGate" name="是否通过">
-
-    </exclusiveGateway>
-    <sequenceFlow id="fReviewToApprove" sourceRef="reviewEntrust" targetRef="approveGate">
-
-    </sequenceFlow>
+    <endEvent id="end" name="结束"/>
+    <sequenceFlow id="fSubmitToReview" sourceRef="submitEntrust" targetRef="reviewEntrust"/>
+    <exclusiveGateway gatewayDirection="Unspecified" id="approveGate" name="是否通过"/>
+    <sequenceFlow id="fReviewToApprove" sourceRef="reviewEntrust" targetRef="approveGate"/>
     <sequenceFlow id="fApproveToEnd" name="通过" sourceRef="approveGate" targetRef="end">
-
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewEntrustResult == 'ReviewPass'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="fApproveToSubmit" name="未通过" sourceRef="approveGate" targetRef="submitEntrust">
-
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewEntrustResult == 'ReviewDisprove'}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="fStartToReview" sourceRef="start" targetRef="reviewEntrust"/>
   </process>
   <bpmndi:BPMNDiagram documentation="background=#3C3F41;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
-    <bpmndi:BPMNPlane bpmnElement="entrust">
+    <bpmndi:BPMNPlane bpmnElement="Entrust">
       <bpmndi:BPMNShape bpmnElement="start" id="Shape-start">
-        <omgdc:Bounds height="32.0" width="32.0" x="230.0" y="45.0"/>
+        <omgdc:Bounds height="32.0" width="32.0" x="220.0" y="160.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="submitEntrust" id="Shape-submitEntrust">
-        <omgdc:Bounds height="55.0" width="85.0" x="205.0" y="160.0"/>
+        <omgdc:Bounds height="55.0" width="85.0" x="380.0" y="305.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="reviewEntrust" id="Shape-reviewEntrust">
-        <omgdc:Bounds height="55.0" width="85.0" x="205.0" y="300.0"/>
+        <omgdc:Bounds height="55.0" width="85.0" x="195.0" y="305.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="end" id="Shape-end">
-        <omgdc:Bounds height="32.0" width="32.0" x="230.0" y="615.0"/>
+        <omgdc:Bounds height="32.0" width="32.0" x="220.0" y="620.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="approveGate" id="Shape-approveGate" isMarkerVisible="false">
-        <omgdc:Bounds height="32.0" width="32.0" x="230.0" y="450.0"/>
+        <omgdc:Bounds height="32.0" width="32.0" x="220.0" y="440.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="fStartToSubmit" id="BPMNEdge_fStartToSubmit" sourceElement="start" targetElement="submitEntrust">
-        <omgdi:waypoint x="246.0" y="77.0"/>
-        <omgdi:waypoint x="246.0" y="160.0"/>
+      <bpmndi:BPMNEdge bpmnElement="fStartToReview" id="BPMNEdge_fStartToReview" sourceElement="start" targetElement="reviewEntrust">
+        <omgdi:waypoint x="236.0" y="192.0"/>
+        <omgdi:waypoint x="236.0" y="305.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="fReviewToApprove" id="BPMNEdge_fReviewToApprove" sourceElement="reviewEntrust" targetElement="approveGate">
-        <omgdi:waypoint x="246.0" y="355.0"/>
-        <omgdi:waypoint x="246.0" y="450.0"/>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="fApproveToEnd" id="BPMNEdge_fApproveToEnd" sourceElement="approveGate" targetElement="end">
-        <omgdi:waypoint x="246.0" y="482.0"/>
-        <omgdi:waypoint x="246.0" y="615.0"/>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="fApproveToSubmit" id="BPMNEdge_fApproveToSubmit" sourceElement="ApproveGate" targetElement="submitEntrust">
-        <omgdi:waypoint x="262.0" y="466.0"/>
-        <omgdi:waypoint x="375.0" y="350.0"/>
-        <omgdi:waypoint x="290.0" y="187.5"/>
+        <omgdi:waypoint x="236.0" y="360.0"/>
+        <omgdi:waypoint x="236.0" y="440.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="fSubmitToReview" id="BPMNEdge_fSubmitToReview" sourceElement="submitEntrust" targetElement="reviewEntrust">
-        <omgdi:waypoint x="247.5" y="215.0"/>
-        <omgdi:waypoint x="247.5" y="300.0"/>
+        <omgdi:waypoint x="380.0" y="332.5"/>
+        <omgdi:waypoint x="280.0" y="332.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="fApproveToSubmit" id="BPMNEdge_fApproveToSubmit" sourceElement="approveGate" targetElement="submitEntrust">
+        <omgdi:waypoint x="252.0" y="456.0"/>
+        <omgdi:waypoint x="423.0" y="345.0"/>
+        <omgdi:waypoint x="423.0" y="360.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="fApproveToEnd" id="BPMNEdge_fApproveToEnd" sourceElement="approveGate" targetElement="end">
+        <omgdi:waypoint x="236.0" y="472.0"/>
+        <omgdi:waypoint x="236.0" y="620.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>

@@ -2,18 +2,16 @@ package com.example.stc.service.impl;
 
 import com.example.stc.domain.*;
 import com.example.stc.framework.exception.*;
+import com.example.stc.framework.util.DateUtils;
 import com.example.stc.repository.UserRepository;
-import com.example.stc.repository.RoleRepository;
 import com.example.stc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,54 +23,48 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private RoleRepository roleRepository;
+    private DateUtils dateUtils;
 
     @Override
-    public User getUserByUsername(String username)
-    {
+    public User getUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
     @Override
-    public void deleteUserById(Long userId){
+    public void deleteUserById(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
         userRepository.deleteById(userId);
     }
 
     @Override
-    public void editUser(JSONObject params, User user){
+    public void editUser(JSONObject params, User user) {
         Long userId = params.getLong("id");
         User userToEdit = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
-        String username = params.getString("username");
-
-        JSONArray roleIds = params.getJSONArray("roleIds");
-        if(roleIds != null) {
-            List<Role> roles = new ArrayList<Role>();
-
-            for(int i = 0; i < roleIds.size(); i++) {
-                Long roleId = roleIds.getLong(i);
-                Role role = roleRepository.findById(roleId)
-                        .orElseThrow(() -> new RoleNotFoundException(roleId));
-                roles.add(role);
-            }
-
-            userToEdit.setRoles(roles);
-        }
         userToEdit.setUsername(user.getUsername());
         userToEdit.setId(user.getId());
+
+        // 用户权限不可更改
+        //userToEdit.setRoles(user.getRoles());
+
         userRepository.save(userToEdit);
     }
 
     @Override
     public User newUser(User user) {
-        if (user.getUsername() != null && user.getPassword() != null){
+        //TODO: 这里user.getUsername() 可能会报空指针错误
+        if (getUserByUsername(user.getUsername()) != null)
+            return null;
+        if (user.getUsername() != null && user.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setUserID("u" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
+            user.setEntrusts(null);
             return userRepository.save(user);
+        } else { //用户相关信息不完整
+            throw new ParamMissingException();
         }
-        return user;
     }
 
     @Override

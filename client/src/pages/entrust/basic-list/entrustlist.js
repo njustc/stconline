@@ -27,6 +27,8 @@ const mapDispatchToProps=(dispatch)=>{
     }
   }
 }
+
+
 @connect(mapStateToProps,mapDispatchToProps)
 export default class EntrustList extends Component {
   componentDidMount() {
@@ -36,49 +38,48 @@ export default class EntrustList extends Component {
   columns =[
     {
       title: '委托ID',
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: 'pid',
+      key: 'pid',
       render: text => <a href="javascript:;">{text}</a>,
     },
-    {
-      title: '用户名',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: '委托建立时间',
-      dataIndex: 'address',
-      key: 'address',
-    },
-  
+    // {
+    //   title: '用户名',
+    //   dataIndex: 'name',
+    //   key: 'name',
+    // },
+    // {
+    //   title: '委托建立时间',
+    //   dataIndex: 'time',
+    //   key: 'time',
+    // },
     {
       title: '状态',
-      key: 'tags',
-      dataIndex: 'tags',
-      render: tags => (
-        <span>
-          {tags.map(tag => {
-            let color = tag==='委托待审核' ? 'geekblue' : 'green';
-            if (tag === '委托审核未通过') {
-              color = 'volcano';
+      key: 'processState',
+      dataIndex: 'processState',
+      render: processState => 
+          {
+            var color = processState==='Review' ? 'geekblue' : 'green'
+            if (processState === '委托审核未通过') {
+              color = 'volcano'
+            }
+            if (processState === 'Submit') {
+              color = 'grey'
             }
             return (
-              <Tag color={color} key={tag}>
-                {tag}
+              <Tag color={color} key={processState}>
+                {processState}
               </Tag>
             );
-          })}
-        </span>
-      ),
+          }
     },
     {
       title: '操作',
       key: 'action',
       render: (key) => (
         <span>
-          <Link to={{pathname:'./basic-check',query:key}}>查看项目详情</Link>
+          {key.processState=='Submit'?<Link to={{pathname:'./basic-check',query:{pid:key.pid}}}>查看项目详情</Link>:<Link to={{pathname:'./basic-check',query:{pid:key.pid}}}>查看项目详情</Link>}
           <Divider type="vertical" />
-          <Link to={{pathname:'../../basic-form',query:key}}>编辑</Link>
+          {<Link to={{pathname:'../../basic-form',query:{pid:key.pid}}}>编辑</Link>}
           <Divider type="vertical" />
           <span style={{color:'red', cursor:'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)} >删除</span >
         </span>
@@ -87,18 +88,18 @@ export default class EntrustList extends Component {
   ]
 
   showDeleteConfirm(key) {
-    console.log(key.key)
+    // console.log(key.pid)
     var that=this
     confirm({
-      title: 'Are you sure delete this task?',
-      content: `委托ID:${key.id} 用户名：${key.name}`,
+      title: '您是否要删除本委托?',
+      content: `委托ID:${key.pid}  用户名:${key.name}`,
       // content: `委托ID:`,
-      okText: 'Yes',
+      okText: '确认删除',
       okType: 'danger',
-      cancelText: 'No',
+      cancelText: '取消',
       onOk() {
-        that.props.DeleteEntrust({pid:key.key})
-        
+        that.props.DeleteEntrust({pid:key.pid})
+        // that.props.onDidMount()
         // console.log('OK');
       },
       onCancel() {
@@ -113,10 +114,10 @@ export default class EntrustList extends Component {
     return (
       <div> 
 	  <Breadcrumb>
-		<Breadcrumb.Item hr ="/basic-list">委托列表</Breadcrumb.Item>
+		<Breadcrumb.Item hr ="/basic-list.html">委托列表</Breadcrumb.Item>
 	  </Breadcrumb>
         <Select
-          style={{ width: 200  }}
+          style={{ width: 200 }}
           defaultValue="1"
         >
           <Option value="1">按委托ID</Option>
@@ -125,11 +126,12 @@ export default class EntrustList extends Component {
         <Search
             style={{marginLeft:100,width: 200 }}
         />
+        {/* <div class="" */}
         <Table  style={{marginTop:50 }} columns={this.columns} dataSource={this.props.listdata.data} />
 		<Button
 		style={{ marginLeft: 400 }}
 		type="primary"
-		href="/basic-form">
+		href="/basic-form.html">
 		新建委托
 		</Button>
       </div>

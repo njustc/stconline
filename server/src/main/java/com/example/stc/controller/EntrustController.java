@@ -33,6 +33,7 @@ public class EntrustController extends BaseController {
         return new Resource<>(entrust
                 , linkTo(methodOn(EntrustController.class).getOneEntrust(entrust.getPid())).withSelfRel()
                 , linkTo(methodOn(EntrustController.class).getAllEntrust()).withSelfRel()
+                , linkTo(methodOn(UserController.class).getUserDetail(entrust.getUser().getUserID())).withSelfRel()
         );
     }
 
@@ -42,11 +43,26 @@ public class EntrustController extends BaseController {
     @GetMapping(path = "/entrust")
     public @ResponseBody
     Resources<Resource<Entrust>> getAllEntrust() {
+        // 依据当前登录的用户的权限查询能见的委托
         List<Resource<Entrust>> entrusts = entrustService.findAllEntrusts().stream()
-                .map(entrust -> toResource(entrust))
+                .map(EntrustController::toResource)
                 .collect(Collectors.toList());
         return new Resources<>(entrusts,
                 linkTo(methodOn(EntrustController.class).getAllEntrust()).withSelfRel());
+    }
+
+    /**
+     * 查看某一用户全部委托
+     */
+    @GetMapping(path = "/entrust/user/{uid}")
+    public @ResponseBody
+    Resources<Resource<Entrust>> getUserEntrust(@PathVariable String uid) {
+        // 查询某一用户全部委托
+        List<Resource<Entrust>> entrusts = entrustService.findAllEntrusts().stream()
+                .map(EntrustController::toResource)
+                .collect(Collectors.toList());
+        return new Resources<>(entrusts,
+                linkTo(methodOn(EntrustController.class).getUserEntrust(uid)).withSelfRel());
     }
 
     /**
@@ -55,7 +71,7 @@ public class EntrustController extends BaseController {
      * @return
      * @throws URISyntaxException
      */
-    @PostMapping(path = "/entrust")
+    @PostMapping(path = "/entrust/new")
     public @ResponseBody
     ResponseEntity<?> addNewEntrust(@RequestBody Entrust entrust) throws URISyntaxException {
         Resource<Entrust> resource = toResource(entrustService.newEntrust(entrust));

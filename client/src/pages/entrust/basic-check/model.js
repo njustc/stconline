@@ -1,3 +1,4 @@
+import { getOneEntrust } from '@/services/user'
 export default {
   namespace: 'checkentrust',
   state: {
@@ -51,7 +52,7 @@ export default {
             ),
           },
         ],
-        
+        entrust:{},
         data:[
           {
             key: '1',
@@ -75,5 +76,23 @@ export default {
             tags: ['cool', 'teacher'],
           },
         ]
+      },
+      effects: {
+        *getOneEntrust({ payload }, { call , put}) {
+          const response=yield call(getOneEntrust, payload);
+          console.log("get res")
+          console.log(response)
+          yield put({type:'initData',payload:response})
+        },
+      },
+      reducers:{
+        initData(state,action){
+          // console.log(action.payload)
+          return{
+            ...state,
+            entrust:action.payload,
+          }
+        }
       }
+  
 };

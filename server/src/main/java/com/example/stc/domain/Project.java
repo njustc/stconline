@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 /**
  * 该类用来管理测试流程中的项目
+ *
  * @author JinYiFan
  */
 @Entity
@@ -12,10 +13,10 @@ public class Project extends BaseEntity {
 
 //    private Entrust entrust;
 
-//    /**
+    //    /**
 //     * 该Project对应的用户
 //     */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
     //@JSONField(serialize = false)
     private User user;
