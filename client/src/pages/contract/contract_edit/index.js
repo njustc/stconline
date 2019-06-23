@@ -145,7 +145,11 @@ class BasicForm extends PureComponent {
 			<h1>一、任务表述</h1>
 			<br />
 			<h1>
-			乙方按照国家软件质量测试标准和测试规范，完成甲方委托的软件<Input  placeholder="这个框好像有点太大了"/>(下称受测软件)的质量特性<Input  placeholder="但是我不知道怎么调"/>，进行测试，并出具相应的测试报告。
+			乙方按照国家软件质量测试标准和测试规范，完成甲方委托的软件
+			<Input  placeholder=" " style={{width:300}}/>
+			(下称受测软件)的质量特性
+			<Input  placeholder=" " style={{width:300}}/>
+			，进行测试，并出具相应的测试报告。
 			</h1>
 		</Card>
 		<br />
