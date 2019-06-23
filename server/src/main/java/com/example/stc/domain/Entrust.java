@@ -7,11 +7,6 @@ import javax.persistence.*;
 public class Entrust extends ProcessEntity {
 
     /**
-     * 项目Id
-     */
-    private String pid;
-
-    /**
      * 存储测试文档整体
      */
     private String entrustEntity;
@@ -263,19 +258,6 @@ public class Entrust extends ProcessEntity {
     @JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
     //@JSONField(serialize = false)
     private User user;
-
-    /**
-     * 委托所在的项目
-     */
-    //private Project project;
-
-    public String getPid() {
-        return pid;
-    }
-
-    public void setPid(String pid) {
-        this.pid = pid;
-    }
 
     public String getEntrustEntity() {
         return entrustEntity;
