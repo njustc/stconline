@@ -76,24 +76,37 @@ export default {
           path: '/basic-check',
           component: './entrust/basic-check',
         },
-        {
-          name: '您的合同详情',
-          icon: 'pie-chart',
-          path: '/contract_detail',
-          component: './contract/contract_detail',
-        },
-        {
-          name: '您的合同列表',
-          icon: 'pie-chart',
-          path: '/contract_list',
-          component: './contract/contract_list',
-        },
-        {
-          name: '您的合同编辑',
-          icon: 'pie-chart',
-          path: '/contract_edit',
-          component: './contract/contract_edit',
-        },
+		{
+			name: '合同',
+			icon: 'pie-chart',
+			path: '/contract',
+			routes:[
+			{
+				path:'/contract_detail',
+				name:'合同详情',
+			},
+			{
+				path:'/contract_edit',
+				name:'合同编辑',
+			},
+			{
+				path:'/contract_list',
+				name:'合同列表',
+			}
+			]
+		},
+		{
+			path:'/contract_detail',
+			component:'./contract/contract_detail',
+		},
+		{
+			path:'/contract_edit',
+			component: './contract/contract_edit',
+		},
+		{
+			path:'/contract_list',
+			component: './contract/contract_list',
+		},
         {
           name: '登陆',
           icon: 'smile',
