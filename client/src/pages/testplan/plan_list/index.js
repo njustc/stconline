@@ -42,6 +42,8 @@ const columns = [
       <span>
         <a href="/plan_check.html">查看详情</a>
         <Divider type="vertical" />
+        <a href="/plan_edit.html">编辑</a>
+		    <Divider type="vertical" />
         <a>删除</a>
       </span>
     ),
