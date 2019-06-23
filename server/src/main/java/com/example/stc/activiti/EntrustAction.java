@@ -63,8 +63,8 @@ public class EntrustAction {
          * TODO: 根据具体的权限策略(Spring Security or Shiro?)从当前用户组中取出可以进行委托审核操作的工作人员组
          *       是否需要修改.bpmn.xml？工作人员组可能在流程创立之后发生变动，需要使用安全框架实时更新权限组，待研究
          */
-        variable.put("WorkerIDs", "w1");
-        variable.put("WorkerIDs", "w2");
+//        variable.put("WorkerIDs", "w1");
+//        variable.put("WorkerIDs", "w2");
 
         entrust.setProcessInstanceID(stcProcessEngine.createProcess("Entrust", variable));
         entrust.setProcessState(ProcessState.ToReview);
@@ -98,7 +98,7 @@ public class EntrustAction {
                 taskService.complete(task.getId());
                 break;
             case "Review":
-                authorityUtils.roleAccessCheck(Role.SalesStaff);
+                // authorityUtils.roleAccessCheck(Role.SalesStaff);
                 Map<String, Object> variable = new HashMap<>();
                 variable.put("reviewEntrustResult", operation);
                 taskService.complete(task.getId(), variable);

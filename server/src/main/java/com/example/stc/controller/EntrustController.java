@@ -71,7 +71,7 @@ public class EntrustController extends BaseController {
      * @return
      * @throws URISyntaxException
      */
-    @PostMapping(path = "/entrust/new")
+    @PostMapping(path = "/entrust")
     public @ResponseBody
     ResponseEntity<?> addNewEntrust(@RequestBody Entrust entrust) throws URISyntaxException {
         Resource<Entrust> resource = toResource(entrustService.newEntrust(entrust));

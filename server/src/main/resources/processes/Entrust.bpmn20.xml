@@ -11,11 +11,11 @@
         <activiti:formProperty id="user" name="client" type="string" value="client"/>
       </extensionElements>
     </userTask>
-    <userTask activiti:candidateGroups="${WorkerIDs}" activiti:exclusive="true" id="reviewEntrust" name="Review">
+    <userTask activiti:exclusive="true" id="reviewEntrust" name="Review">
       <extensionElements>
         <activiti:formProperty id="reviewEntrustResult" name="Do you approve this request?" required="true" type="String"/>
         <activiti:formProperty id="user" name="worker" type="string" value="worker"/>
-        <activiti:formProperty id="reviewEntrustComment" name="reason about pass or reject the consign" required="true" type="string"/>
+        <activiti:formProperty id="reviewEntrustComment" name="reason about pass or reject" required="true" type="string"/>
       </extensionElements>
     </userTask>
     <endEvent id="end" name="结束"/>
