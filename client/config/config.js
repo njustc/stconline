@@ -77,38 +77,72 @@ export default {
           component: './entrust/basic-check',
         },
         {
-          name: '您的合同详情',
+          name: '合同',
           icon: 'pie-chart',
-          path: '/contract_detail',
-          component: './contract/contract_detail',
+          path: '/contract',
+          routes:[
+            {
+              path:'/contract_detail',
+              name:'合同详情',
+            },
+            {
+              path:'/contract_edit',
+              name:'合同编辑',
+            },
+            {
+              path:'/contract_list',
+              name:'合同列表',
+            }
+          ]
         },
+
+		{
+			path:'/contract_detail',
+			component:'./contract/contract_detail',
+		},
+		{
+			path:'/contract_edit',
+			component: './contract/contract_edit',
+		},
+		{
+			path:'/contract_list',
+			component: './contract/contract_list',
+		},
         {
-          name: '您的合同列表',
+          name: '测试方案',
           icon: 'pie-chart',
-          path: '/contract_list',
-          component: './contract/contract_list',
+          path: '/testplan',
+          routes:[
+            {
+              path:'/plan_check',
+              name:'测试方案详情',
+            },
+            {
+              path:'/plan_edit',
+              name:'测试方案编辑',
+            },
+            {
+              path:'/plan_list',
+              name:'测试方案列表',
+            }
+          ]
         },
+
         {
-          name: '您的合同编辑',
-          icon: 'pie-chart',
-          path: '/contract_edit',
-          component: './contract/contract_edit',
-        },
-        {
-          name: '测试方案详情',
-          icon: 'pie-chart',
+          //name: '测试方案详情',
+          //icon: 'pie-chart',
           path: '/plan_check',
           component: './testplan/plan_check',
         },
         {
-          name: '测试方案列表',
-          icon: 'pie-chart',
+          //name: '测试方案列表',
+          //icon: 'pie-chart',
           path: '/plan_list',
           component: './testplan/plan_list',
         },
         {
-          name: '测试方案编辑',
-          icon: 'pie-chart',
+          //name: '测试方案编辑',
+          //icon: 'pie-chart',
           path: '/plan_edit',
           component: './testplan/plan_edit',
         },
