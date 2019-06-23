@@ -76,25 +76,26 @@ export default {
           path: '/basic-check',
           component: './entrust/basic-check',
         },
-		{
-			name: '合同',
-			icon: 'pie-chart',
-			path: '/contract',
-			routes:[
-			{
-				path:'/contract_detail',
-				name:'合同详情',
-			},
-			{
-				path:'/contract_edit',
-				name:'合同编辑',
-			},
-			{
-				path:'/contract_list',
-				name:'合同列表',
-			}
-			]
-		},
+        {
+          name: '合同',
+          icon: 'pie-chart',
+          path: '/contract',
+          routes:[
+            {
+              path:'/contract_detail',
+              name:'合同详情',
+            },
+            {
+              path:'/contract_edit',
+              name:'合同编辑',
+            },
+            {
+              path:'/contract_list',
+              name:'合同列表',
+            }
+          ]
+        },
+
 		{
 			path:'/contract_detail',
 			component:'./contract/contract_detail',
@@ -108,20 +109,40 @@ export default {
 			component: './contract/contract_list',
 		},
         {
-          name: '测试方案详情',
+          name: '测试方案',
           icon: 'pie-chart',
+          path: '/testplan',
+          routes:[
+            {
+              path:'/plan_check',
+              name:'测试方案详情',
+            },
+            {
+              path:'/plan_edit',
+              name:'测试方案编辑',
+            },
+            {
+              path:'/plan_list',
+              name:'测试方案列表',
+            }
+          ]
+        },
+
+        {
+          //name: '测试方案详情',
+          //icon: 'pie-chart',
           path: '/plan_check',
           component: './testplan/plan_check',
         },
         {
-          name: '测试方案列表',
-          icon: 'pie-chart',
+          //name: '测试方案列表',
+          //icon: 'pie-chart',
           path: '/plan_list',
           component: './testplan/plan_list',
         },
         {
-          name: '测试方案编辑',
-          icon: 'pie-chart',
+          //name: '测试方案编辑',
+          //icon: 'pie-chart',
           path: '/plan_edit',
           component: './testplan/plan_edit',
         },
