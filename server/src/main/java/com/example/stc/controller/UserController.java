@@ -4,6 +4,7 @@ import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
 import com.example.stc.framework.exception.EntrustNotFoundException;
 import com.example.stc.framework.exception.UserNotFoundException;
+import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,7 +15,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
@@ -25,10 +28,15 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuthorityUtils authorityUtils;
+
     @Resource(name = "authenticationManager")
     private AuthenticationManager authManager;
 
-    /** 用户基本信息 */
+    /**
+     * 用户基本信息
+     */
     @GetMapping("/api/userdetail/{uid}")
     public User getUserDetail(@PathVariable String uid) {
         User user = userService.findUserByUid(uid);
@@ -52,6 +60,7 @@ public class UserController {
      */
     @PostMapping("/api/login")
     public String userLogin(HttpServletRequest req,
+                            HttpServletResponse response,
                             @RequestBody User user) {
         //TODO: 将具体逻辑加入到service层
         UsernamePasswordAuthenticationToken authReq
@@ -61,6 +70,12 @@ public class UserController {
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);
         HttpSession session = req.getSession(true);
+
+        //add cookie
+        Cookie cookie = new Cookie("roles",authorityUtils.getLoginUser().getRoles()); // 创建新cookie
+        cookie.setMaxAge(60 * 60); // 设置存在时间60min
+        cookie.setPath("/"); // TODO: 设置作用域
+        response.addCookie(cookie); // 将cookie添加到response的cookie数组中返回给客户端
 
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
         return "DEBUG: 用户登录";
