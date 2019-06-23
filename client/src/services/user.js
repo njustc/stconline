@@ -42,7 +42,7 @@ export async function replaceEntrust(params) {
   });
 }
 export async function addNewEntrust(params) {
-  return request('api/project/entrust/new', {
+  return request('api/project/entrust', {
     method: 'POST',
     data: params,
   });

@@ -129,12 +129,21 @@ constructor(props){
 
   componentDidMount() {
     const {dispatch}=this.props;
-    this.state.pid=this.props.location.query.pid;
-    console.log(this.state.pid)
+
+    if(this.props.location.query.pid){
+
+      this.state.pid=this.props.location.query.pid
+      console.log(this.state.pid)
+
     dispatch({
       type:'entrustForm/getOneEntrust',
       payload:this.props.location.query,
     })
+  }
+
+  else{
+
+  }
   }
 
   handleSubmit = e => {
@@ -166,20 +175,27 @@ constructor(props){
     
     const { dispatch } = this.props;  
     form.validateFields((err,value) => {
-      console.log("error",err)
-      console.log('lalalala',value)
+      // console.log("error",err)
+      // console.log('lalalala',value)
       // console.log(this)
-      value.pid=this.state.pid
-      
-      // console.log(value)
 
-      dispatch({
-        type: 'entrustForm/replaceEntrust',
-        payload: value,
-        // payload: mockform,
-      });
-
+      if (this.state.pid=="") {
+        //新建
+        value.pid=this.state.pid
+        dispatch({
+          type: 'entrustForm/addNewEntrust',
+          payload: value,
+        });
+      } else {
+        //保存
+        value.pid=this.state.pid
+        dispatch({
+          type: 'entrustForm/replaceEntrust',
+          payload: value,
+        });
+      }
       console.log("finish save")
+
     })
   }
 
