@@ -108,6 +108,24 @@ export default {
 			component: './contract/contract_list',
 		},
         {
+          name: '测试方案详情',
+          icon: 'pie-chart',
+          path: '/plan_check',
+          component: './testplan/plan_check',
+        },
+        {
+          name: '测试方案列表',
+          icon: 'pie-chart',
+          path: '/plan_list',
+          component: './testplan/plan_list',
+        },
+        {
+          name: '测试方案编辑',
+          icon: 'pie-chart',
+          path: '/plan_edit',
+          component: './testplan/plan_edit',
+        },
+        {
           name: '登陆',
           icon: 'smile',
           path: '/user-login',
