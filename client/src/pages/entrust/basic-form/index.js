@@ -25,7 +25,7 @@ const { Option } = Select;
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const confirm=Modal.confirm;
-const namespace = 'basicForm';
+const namespace = 'entrustForm';
 //此处为假数据，未来在得到用户之前的数据后，mapState2Props里return form
 //在对应的formitem里添加initialValue，此时表单里现实的数据就是从后端的得到的。
 const form={
@@ -37,6 +37,7 @@ const form={
     
 }
 //#endregion
+
 
 const Dragger = Upload.Dragger;
 
@@ -92,6 +93,9 @@ function showConfirm() {
     },
   });
 }
+
+
+
 const mapStateToProps=(state)=>{
   const entrustdata=state[namespace];
   return{
@@ -115,11 +119,20 @@ const mapDispatchToProps=(dispatch)=>{
 }))
 @Form.create()
 class BasicForm extends PureComponent {
+constructor(props){
+  super(props)
+
+  this.state={
+    pid:""
+  }
+}
+
   componentDidMount() {
     const {dispatch}=this.props;
+    this.state.pid=this.props.location.query.pid;
+    console.log(this.state.pid)
     dispatch({
-      //
-      type:'basicForm/getOneEntrust',
+      type:'entrustForm/getOneEntrust',
       payload:this.props.location.query,
     })
   }
@@ -148,6 +161,27 @@ class BasicForm extends PureComponent {
     });
   };
 
+  saveForm=(form)=>{
+    console.log(form)
+    
+    const { dispatch } = this.props;  
+    form.validateFields((err,value) => {
+      console.log("error",err)
+      console.log('lalalala',value)
+      // console.log(this)
+      value.pid=this.state.pid
+      
+      // console.log(value)
+
+      dispatch({
+        type: 'entrustForm/replaceEntrust',
+        payload: value,
+        // payload: mockform,
+      });
+
+      console.log("finish save")
+    })
+  }
 
 
   render() {
@@ -188,6 +222,7 @@ class BasicForm extends PureComponent {
           title={<FormattedMessage id="basic-form.basic.title"/>}
           content={<FormattedMessage id="basic-form.basic.description"/>}
         >
+          <Form onSubmit={this.handleSubmit}>
           <Card bordered={false}>
             <FormItem
               {...formItemLayout}
@@ -212,7 +247,7 @@ class BasicForm extends PureComponent {
               </div>
             </FormItem>
             <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.softname.label"/>}>
-              {getFieldDecorator('softname', {
+              {getFieldDecorator('softwareName', {
                 initialValue: this.props.entrustdata.data.softname || '',
               }, {
                 rules: [
@@ -755,7 +790,7 @@ class BasicForm extends PureComponent {
 
             <h3>样品和数量</h3>
             <h4>软件介质</h4>
-            <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.mediumg.label"/>}>
+            {/* <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.mediumg.label"/>}>
               {getFieldDecorator('CD', {
                 initialValue: this.props.entrustdata.data.CD || '',
               }, {
@@ -790,9 +825,7 @@ class BasicForm extends PureComponent {
                   },
                 ],
               })(<Input placeholder={formatMessage({id: 'basic-form.softmiddle.placeholder'})}/>)}
-            </FormItem>
-
-            <h4>文档资料</h4>
+            </FormItem> */}
             <FormItem {...formItemLayout} label={<FormattedMessage id="form.sample_document.label"/>}>
               <Tooltip title={<FormattedMessage id="form.sample_document.label.tooltip"/>}>
                 <Icon type="info-circle-o" style={{marginRight: 4}}/>
@@ -813,7 +846,32 @@ class BasicForm extends PureComponent {
                   rows={10}
                 />
               )}
-            </FormItem>
+            </FormItem> 
+
+
+            <h4>文档资料</h4>
+            {/* <FormItem {...formItemLayout} label={<FormattedMessage id="form.sample_document.label"/>}>
+              <Tooltip title={<FormattedMessage id="form.sample_document.label.tooltip"/>}>
+                <Icon type="info-circle-o" style={{marginRight: 4}}/>
+              </Tooltip>
+              {getFieldDecorator('sample_document', {
+                initialValue: this.props.entrustdata.data.sample_document || '',
+              }, {
+                rules: [
+                  {
+                    required: true,
+                    message: formatMessage({id: 'validation.sample_document.required'}),
+                  },
+                ],
+              })(
+                <TextArea
+                  style={{minHeight: 32}}
+                  placeholder={formatMessage({id: 'form.sample_document.placeholder'})}
+                  rows={10}
+                />
+              )}
+            </FormItem> */}
+            
             <FormItem
               {...formItemLayout}
               label={<FormattedMessage id="form.sample.label"/>}
@@ -858,7 +916,7 @@ class BasicForm extends PureComponent {
             <Form onSubmit={this.handleSubmit} hideRequiredMark style={{marginTop: 8}}>
               <h3>委托单位信息</h3>
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.phone.label"/>}>
-                {getFieldDecorator('cusInfo.infoTE', {
+                {getFieldDecorator('infoPhone', {
                   initialValue: this.props.entrustdata.data.infoTE || '',
                 }, {
                   rules: [
@@ -870,7 +928,7 @@ class BasicForm extends PureComponent {
                 })(<Input/>)}
               </FormItem>
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.fax.label"/>}>
-                {getFieldDecorator('cusInfo.infoFAX', {
+                {getFieldDecorator('infoFAX', {
                   initialValue: this.props.entrustdata.data.infoFAX || '',
                 }, {
                   rules: [
@@ -882,7 +940,7 @@ class BasicForm extends PureComponent {
                 })(<Input/>)}
               </FormItem>
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.address.label"/>}>
-                {getFieldDecorator('cusInfo.infoAddr', {
+                {getFieldDecorator('infoAddr', {
                   initialValue: this.props.entrustdata.data.infoAddr || '',
                 }, {
                   rules: [
@@ -894,7 +952,7 @@ class BasicForm extends PureComponent {
                 })(<Input/>)}
               </FormItem>
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.postcode.label"/>}>
-                {getFieldDecorator('cusInfo.infoPostcode', {
+                {getFieldDecorator('infoPostcode', {
                   initialValue: this.props.entrustdata.data.infoPostcode || '',
                 }, {
                   rules: [
@@ -906,7 +964,7 @@ class BasicForm extends PureComponent {
                 })(<Input/>)}
               </FormItem>
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.contactor.label"/>}>
-                {getFieldDecorator('cusInfo.contactorName', {
+                {getFieldDecorator('contactorName', {
                   initialValue: this.props.entrustdata.data.contactorName || '',
                 }, {
                   rules: [
@@ -918,8 +976,8 @@ class BasicForm extends PureComponent {
                 })(<Input/>)}
               </FormItem>
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.tel.label"/>}>
-                {getFieldDecorator('cusInfo.infoMobilePhone', {
-                  initialValue: this.props.entrustdata.data.infoMobilePhone || '',
+                {getFieldDecorator('infoTEL', {
+                  initialValue: this.props.entrustdata.data.infoTEL || '',
                 }, {
                   rules: [
                     {
@@ -930,7 +988,7 @@ class BasicForm extends PureComponent {
                 })(<Input/>)}
               </FormItem>
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.email.label"/>}>
-                {getFieldDecorator('cusInfo.infoEmail', {
+                {getFieldDecorator('infoEmail', {
                   initialValue: this.props.entrustdata.data.infoEmail || '',
                 }, {
                   rules: [
@@ -942,7 +1000,7 @@ class BasicForm extends PureComponent {
                 })(<Input/>)}
               </FormItem>
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.url.label"/>}>
-                {getFieldDecorator('cusInfo.infoURL', {
+                {getFieldDecorator('infoURL', {
                   initialValue: this.props.entrustdata.data.infoURL || '',
                 }, {
                   rules: [
@@ -1014,7 +1072,7 @@ class BasicForm extends PureComponent {
                   )}
                 </div>
               </FormItem>
-              <FormItem
+             {/* <FormItem
                 {...formItemLayout}
                 label={<FormattedMessage id="basic-form.others.reqword.label"/>}
               >
@@ -1080,12 +1138,14 @@ class BasicForm extends PureComponent {
                   )}
                 </div>
               </FormItem>
-              <FormItem
+                  */}
+
+              <FormItem 
                 {...formItemLayout}
                 label={<FormattedMessage id="form.Confirmation.label"/>}
               >
                 <div>
-                  {getFieldDecorator('confirmationOpinions', {
+                  {getFieldDecorator('opinions', {
                     initialValue: this.props.entrustdata.data.confirmationOpinions || 'form.Confirmation.radio.one',
                   })(
                     <Radio.Group>
@@ -1128,7 +1188,7 @@ class BasicForm extends PureComponent {
                 </div>
               </FormItem>
 
-              <FormItem {...formItemLayout} label={<FormattedMessage id="form.test_number.label"/>}>
+              {/* <FormItem {...formItemLayout} label={<FormattedMessage id="form.test_number.label"/>}>
                 {getFieldDecorator('test_number', {
                   initialValue: this.props.entrustdata.data.test_number || '',
                 }, {
@@ -1226,7 +1286,7 @@ class BasicForm extends PureComponent {
                     },
                   ],
                 })(<Input placeholder={formatMessage({id: 'form.client_signature_time.placeholder'})}/>)}
-              </FormItem>
+              </FormItem> */}
 
               <Dragger {...props}>
                <p className="提交栏">
@@ -1244,7 +1304,7 @@ class BasicForm extends PureComponent {
                   <FormattedMessage id="basic-form.form.submit"/>
                 </Button>
 
-                <Button htmlType="submit" style={{marginLeft: 8}}>
+                <Button htmlType="submit" style={{marginLeft: 8}} onClick={()=>{this.saveForm(this.props.form)}}>
                   <FormattedMessage id="basic-form.form.save"/>
                 </Button>
 
@@ -1255,6 +1315,8 @@ class BasicForm extends PureComponent {
               </FormItem>
             </Form>
           </Card>
+          </Form>
+        
         </PageHeaderWrapper>
       </Breadcrumb>
     );
