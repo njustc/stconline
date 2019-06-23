@@ -88,6 +88,18 @@ export default {
           path: '/basic-check',
           component: './entrust/basic-check',
         },
+		{
+			path: '/contract_edit',
+			component: './contract/contract_edit',
+		},
+		{
+			path: '/contract_list',
+			component: './contract/contract_list',
+		},
+		{
+			path: '/contract_detail',
+			component: './contract/contract_detail'
+		},
       ],
     },
   ],

@@ -1,4 +1,4 @@
-import {Card ,Breadcrumb} from 'antd';
+import {Card ,Breadcrumb ,Button} from 'antd';
 
 export default () => {
 	return (
@@ -26,6 +26,8 @@ export default () => {
 		<h1>二、双方的主要义务</h1>
 		<p>我感觉我随便打字也不会有人发现那我就随便打点字吧最好打多一点这样就没有人会仔细看</p>
 	</Card>
+	<Button>通过</Button>
+	<Button>不通过</Button>
 	</div>
 	);
 };
