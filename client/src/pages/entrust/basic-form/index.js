@@ -119,7 +119,7 @@ class BasicForm extends PureComponent {
     const {dispatch}=this.props;
     dispatch({
       //
-      type:'basicForm/initGetData',
+      type:'basicForm/getOneEntrust',
       payload:this.props.location.query,
     })
   }
