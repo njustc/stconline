@@ -7,6 +7,7 @@ public enum Role {
 
     USER("USER"),
     Customer("CUS"),
+    STAFF("STAFF"),
     SalesStaff("SS"), SalesManager("SM"),
     TestStaff("TS"), TestManager("TM"),
     QualityManager("QM"),

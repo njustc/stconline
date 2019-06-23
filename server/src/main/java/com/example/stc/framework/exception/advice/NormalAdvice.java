@@ -72,6 +72,7 @@ public class NormalAdvice {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     private String exceptionHandler(Exception e) {
+        e.printStackTrace();
         return e.getMessage();
     }
 }

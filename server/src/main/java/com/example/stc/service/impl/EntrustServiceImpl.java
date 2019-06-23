@@ -68,6 +68,19 @@ public class EntrustServiceImpl implements EntrustService {
         return allEntrusts;
     }
 
+    @Override
+    public List<Entrust> findEntrustsByUser(String uid) {
+        logger.info("findEntrustsByUser: 查看某用户全部委托");
+        List<Entrust> allEntrusts =  this.findAllEntrusts();
+        Iterator<Entrust> it = allEntrusts.iterator();
+        while (it.hasNext()) {
+            Entrust entrust = it.next();
+            if (!entrust.getUser().getUsername().equals(uid))
+                it.remove();
+        }
+        return allEntrusts;
+    }
+
     /**
      * 对于客户，检查访问的是否是本人的委托；若不是则权限异常
      */
