@@ -105,8 +105,8 @@ public class StcApplicationTests {
 //            e.printStackTrace();
 //        }
 
-        Entrust entrust = new Entrust();
-        entrustService.updateEntrust("p20190606171311", entrust);
+//        Entrust entrust = new Entrust();
+//        entrustService.updateEntrust("p20190606171311", entrust);
     }
 
 }

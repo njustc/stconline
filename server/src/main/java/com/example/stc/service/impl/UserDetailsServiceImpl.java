@@ -28,11 +28,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null)
             throw new UsernameNotFoundException("找不到该帐户信息");
 
-        return new User(s, user.getPassword(), getRoles(user)); // org.springframework.security.core.userdetails.User
+        return new User(s, user.getPassword(), getRoles(s)); // org.springframework.security.core.userdetails.User
     }
 
     /** 获取用户角色 */
-    public List<GrantedAuthority> getRoles(com.example.stc.domain.User user){
+    public List<GrantedAuthority> getRoles(String name){
+        com.example.stc.domain.User user = userService.getUserByUsername(name);
+        if (user == null)
+            throw new UsernameNotFoundException("找不到该帐户信息");
         List<GrantedAuthority> list = new ArrayList<>();
         for (String role: user.getRoles().split(",")) {
             // 权限如果前缀是ROLE_，security就会认为这是个角色信息，而不是权限，例如ROLE_ADMIN就是ADMIN角色

@@ -42,16 +42,16 @@ export default class EntrustList extends Component {
       key: 'pid',
       render: text => <a href="javascript:;">{text}</a>,
     },
-    {
-      title: '用户名',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: '委托建立时间',
-      dataIndex: 'time',
-      key: 'time',
-    },
+    // {
+    //   title: '用户名',
+    //   dataIndex: 'name',
+    //   key: 'name',
+    // },
+    // {
+    //   title: '委托建立时间',
+    //   dataIndex: 'time',
+    //   key: 'time',
+    // },
     {
       title: '状态',
       key: 'processState',
@@ -79,7 +79,7 @@ export default class EntrustList extends Component {
         <span>
           {key.processState=='Submit'?<Link to={{pathname:'./basic-check',query:{pid:key.pid}}}>查看项目详情</Link>:<Link to={{pathname:'./basic-check',query:{pid:key.pid}}}>查看项目详情</Link>}
           <Divider type="vertical" />
-          {key.processState=='Submit'?<Link to={{pathname:'../../basic-form',query:{pid:key.pid}}}>编辑</Link>:<Link disabled to={{pathname:'../../basic-form',query:{pid:key.pid}}}>编辑</Link>}
+          {<Link to={{pathname:'../../basic-form',query:{pid:key.pid}}}>编辑</Link>}
           <Divider type="vertical" />
           <span style={{color:'red', cursor:'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)} >删除</span >
         </span>
@@ -99,7 +99,7 @@ export default class EntrustList extends Component {
       cancelText: '取消',
       onOk() {
         that.props.DeleteEntrust({pid:key.pid})
-        that.props.onDidMount()
+        // that.props.onDidMount()
         // console.log('OK');
       },
       onCancel() {
@@ -114,7 +114,7 @@ export default class EntrustList extends Component {
     return (
       <div> 
 	  <Breadcrumb>
-		<Breadcrumb.Item hr ="/basic-list">委托列表</Breadcrumb.Item>
+		<Breadcrumb.Item hr ="/basic-list.html">委托列表</Breadcrumb.Item>
 	  </Breadcrumb>
         <Select
           style={{ width: 200 }}
@@ -131,7 +131,7 @@ export default class EntrustList extends Component {
 		<Button
 		style={{ marginLeft: 400 }}
 		type="primary"
-		href="/basic-form">
+		href="/basic-form.html">
 		新建委托
 		</Button>
       </div>

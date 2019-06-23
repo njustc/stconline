@@ -30,7 +30,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String truePassword = userDetailsService.loadUserByUsername(name).getPassword();
         if (passwordEncoder.matches(rawPassword, truePassword)) {
             return new UsernamePasswordAuthenticationToken(
-                    name, rawPassword, new ArrayList<>());
+                    name, rawPassword, userDetailsService.getRoles(name));
         }
         // use the credentials
         // and authenticate against the third-party system

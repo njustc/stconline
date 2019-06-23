@@ -60,8 +60,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests() // 定义需要保护和不需要保护的URL
-                .antMatchers("*/**").permitAll()
-//                .antMatchers("/register", "/api/register/**", "/login", "/api/login", "/", "/welcome").permitAll()
+                .antMatchers("/*/**", "*", "/").permitAll()
+//                .antMatchers("/register", "/api/register/**", "/login", "/api/login").permitAll()
 //                .antMatchers("/api/project/**").hasRole(Role.USER.str())
                 // TODO: 其他针对角色拦截的URL
                 .anyRequest().authenticated() // 任何请求,登录后可以访问
@@ -69,8 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable();
     }
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(authProvider);
-//    }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authProvider);
+    }
 }

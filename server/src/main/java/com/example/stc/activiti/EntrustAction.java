@@ -90,7 +90,8 @@ public class EntrustAction {
         /**
          * TODO: 验证user，需要用到安全框架
          */
-        Task task = taskService.createTaskQuery().processInstanceId(entrust.getProcessInstanceID()).singleResult();
+        String processInstanceId = entrust.getProcessInstanceID();
+        Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
         switch (task.getName()) {
             case "Submit":
                 customerAccessCheck(entrust);
@@ -104,8 +105,15 @@ public class EntrustAction {
                 break;
             default: throw new Exception();
         }
-        task = taskService.createTaskQuery().processInstanceId(entrust.getProcessInstanceID()).singleResult();
-        entrust.setProcessState(task.getName());
+
+        String processState = stcProcessEngine.getProcessState(processInstanceId);
+        if (processState.equals("Finished")) {
+            entrust.setProcessState(ProcessState.Approve);
+        }
+        else {
+            task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+            entrust.setProcessState(task.getName());
+        }
     }
 
     public void deleteEntrustProcess(Entrust entrust) {

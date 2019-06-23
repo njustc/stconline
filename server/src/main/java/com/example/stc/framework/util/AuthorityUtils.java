@@ -28,8 +28,11 @@ public class AuthorityUtils {
 
     /** 判断当前是否有用户登录 */
     public boolean isAuthenticated() {
-        logger.info("Not Authenticated");
-        return SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+        boolean isAuth = SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+        if (!isAuth)
+            logger.info("Not Authenticated");
+        else logger.info("Authenticated");
+        return isAuth;
     }
 
     /** 获取当前登录的用户 */

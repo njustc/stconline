@@ -2,6 +2,8 @@ package com.example.stc.controller;
 
 import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
+import com.example.stc.framework.exception.EntrustNotFoundException;
+import com.example.stc.framework.exception.UserNotFoundException;
 import com.example.stc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,8 +24,18 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
     @Resource(name = "authenticationManager")
     private AuthenticationManager authManager;
+
+    /** 用户基本信息 */
+    @GetMapping("/api/userdetail/{uid}")
+    public User getUserDetail(@PathVariable String uid) {
+        User user = userService.findUserByUid(uid);
+        if (user == null)
+            throw new UserNotFoundException(uid);
+        return user;
+    }
 
     /**
      * DEBUG: 注册界面

@@ -78,8 +78,8 @@ export default class entrustCheck extends Component {
     return (
     <div>
 		<Breadcrumb>
-			<Breadcrumb.Item href="/basic-list">委托列表</Breadcrumb.Item>
-			<Breadcrumb.Item href="/basic-check">委托详情</Breadcrumb.Item>
+			<Breadcrumb.Item href="/basic-list.html">委托列表</Breadcrumb.Item>
+			<Breadcrumb.Item href="/basic-check.html">委托详情</Breadcrumb.Item>
 		</Breadcrumb>
       <div><h3>NST-04-JS002-2011-软件项目委托测试申请表(只读)</h3></div>
       <Card style={{ width: '100%' }}>
@@ -92,8 +92,8 @@ export default class entrustCheck extends Component {
         <p>单位性质：<FormattedMessage id={this.props.entrustdata.entrust.unitProperty||' '}/></p>
         <p>软件用户对象描述：<FormattedMessage id={this.props.entrustdata.entrust.userDescription||' '}/></p>
         <p>主要功能及用途简介：<FormattedMessage id={this.props.entrustdata.entrust.funcDescription||' '}/></p>
-        <p style={{display:'flex',justifyItems:'row'}}>测试依据(多选)：<span>{(this.props.entrustdata.entrust.testBasis||[]).map((item,index)=>{return (<span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>)})}</span></p>
-        <p style={{display:'flex',justifyItems:'row'}}>需要测试的技术指标(多选)：<span>{(this.props.entrustdata.entrust.testSpecification||[]).map((item,index)=>{return (<span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>)})}</span></p>
+        {/* <p style={{display:'flex',justifyItems:'row'}}>测试依据(多选)：<span>{(this.props.entrustdata.entrust.testBasis||[]).map((item,index)=>{return (<span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>)})}</span></p>
+        <p style={{display:'flex',justifyItems:'row'}}>需要测试的技术指标(多选)：<span>{(this.props.entrustdata.entrust.testSpecification||[]).map((item,index)=>{return (<span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>)})}</span></p> */}
         <h3>软件规模</h3>
         <p>功能数：<FormattedMessage id={this.props.entrustdata.entrust.funcNum||' '}/></p>
         <p>功能点数：<FormattedMessage id={this.props.entrustdata.entrust.fpNum||' '}/></p>
@@ -102,12 +102,12 @@ export default class entrustCheck extends Component {
         <p>支持软件：<FormattedMessage id={this.props.entrustdata.entrust.supportSoftware||' '}/></p>
         <p>应用软件：<FormattedMessage id={this.props.entrustdata.entrust.internetApplications||' '}/></p>
         <h3>客户端</h3>
-        <p style={{display:'flex',justifyItems:'row'}}>操作系统(多选)：<span>{(this.props.entrustdata.entrust.clientSystem||[]).map((item,index)=>{return (<span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>)})}</span></p>
+        {/* <p style={{display:'flex',justifyItems:'row'}}>操作系统(多选)：<span>{(this.props.entrustdata.entrust.clientSystem||[]).map((item,index)=>{return (<span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>)})}</span></p> */}
         <p>内存要求：<FormattedMessage id={this.props.entrustdata.entrust.clientInStorage||' '}/></p>
         <p>硬盘要求：<FormattedMessage id={this.props.entrustdata.entrust.clientExStorage||' '}/></p>
         <p>其他要求：<FormattedMessage id={this.props.entrustdata.entrust.clientOther||' '}/></p>
         <h3>服务器端 硬件</h3>
-        <p style={{display:'flex',justifyItems:'row'}}>架构(多选)：<span>{(this.props.entrustdata.entrust.serverHardFrame||[]).map((item,index)=>{return (<span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>)})}</span></p>
+        {/* <p style={{display:'flex',justifyItems:'row'}}>架构(多选)：<span>{(this.props.entrustdata.entrust.serverHardFrame||[]).map((item,index)=>{return (<span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>)})}</span></p> */}
         <p>内存要求：<FormattedMessage id={this.props.entrustdata.entrust.serverInStorage||' '}/></p>
         <p>硬盘要求：<FormattedMessage id={this.props.entrustdata.entrust.serverExStorage||' '}/></p>
         <p>其他要求：<FormattedMessage id={this.props.entrustdata.entrust.serverHardOther||' '}/></p>
@@ -115,7 +115,7 @@ export default class entrustCheck extends Component {
         <p>操作系统：<FormattedMessage id={this.props.entrustdata.entrust.serverSystem||' '}/></p>
         <p>版本：<FormattedMessage id={this.props.entrustdata.entrust.serverSoftVersion||' '}/></p>
         <p>编程语言：<FormattedMessage id={this.props.entrustdata.entrust.serverLanguage||' '}/></p>
-        <p style={{display:'flex',justifyItems:'row'}}>软件架构(多选)：<span>{(this.props.entrustdata.entrust.serverSoftFrame||[]).map((item,index)=>{return (<span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>)})}</span></p>
+        {/* <p style={{display:'flex',justifyItems:'row'}}>软件架构(多选)：<span>{(this.props.entrustdata.entrust.serverSoftFrame||[]).map((item,index)=>{return (<span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>)})}</span></p> */}
         <p>数据库：<FormattedMessage id={this.props.entrustdata.entrust.serverDataBase||' '}/></p>
         <p>中间件：<FormattedMessage id={this.props.entrustdata.entrust.serverSoftMidW||' '}/></p>
         <p>其他支撑软件<FormattedMessage id={this.props.entrustdata.entrust.serverSupport||' '}/></p>
@@ -153,7 +153,7 @@ export default class entrustCheck extends Component {
         <p>密级：<FormattedMessage id={this.props.entrustdata.entrust.encryptionLev||' '}/></p>
         <p>查杀病毒：<FormattedMessage id={this.props.entrustdata.entrust.antiVirus||' '}/></p>
         <p>编程语言：<FormattedMessage id={this.props.entrustdata.entrust.serverLanguage||' '}/></p>
-        <p style={{display:'flex',justifyItems:'row'}}>材料检查(多选)：<span>{(this.props.entrustdata.entrust.checkSample||[]).map((item,index)=>{return (<span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>)})}</span></p>
+        {/* <p style={{display:'flex',justifyItems:'row'}}>材料检查(多选)：<span>{(this.props.entrustdata.entrust.checkSample||[]).map((item,index)=>{return (<span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>)})}</span></p> */}
         <p>重述：<FormattedMessage id={this.props.entrustdata.entrust.reqword||' '}/></p>
         <p>用户文档：<FormattedMessage id={this.props.entrustdata.entrust.userDocumentation||' '}/></p>
         <p>操作文档：<FormattedMessage id={this.props.entrustdata.entrust.operationDocument||' '}/></p>
@@ -169,7 +169,7 @@ export default class entrustCheck extends Component {
         <p>委托人签名日期：<FormattedMessage id={this.props.entrustdata.entrust.client_signature_time||' '}/></p> */}
       </Card>
       
-      <div><h3>NST-04-JS002-2011-软件项目委托测试申请表(只读)</h3></div>
+      {/* <div><h3>NST-04-JS002-2011-软件项目委托测试申请表(只读)</h3></div>
       <div style={{ width: "100%", border:"1px solid"}}>
         测试类型：软件确认测试，成果技术鉴定测试<br/>
         软件名称：小猪佩奇软件测试
@@ -178,12 +178,12 @@ export default class entrustCheck extends Component {
       <div><h3>委托状态及意见</h3></div>
       <div>待受理/已受理/已驳回</div>
       <Input.TextArea style={{width:400,height:200}} placeholder="//意见" />
-      <div>已提交样品：a.zip</div>
+      <div>已提交样品：a.zip</div> */}
 
       <br />
       
-      <Button style={{marginLeft:300}} type="primary">通过</Button>
-      <Button style={{marginLeft:300}} type="primary">不通过</Button>
+      {/* <Button style={{marginLeft:300}} type="primary">通过</Button>
+      <Button style={{marginLeft:300}} type="primary">不通过</Button> */}
       
     </div>
   )
