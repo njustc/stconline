@@ -66,3 +66,15 @@ export async function getOneEntrust(params) {
   // console.log(params)
   return request(`api/project/entrust/${params.pid}`);
 }
+
+export async function getAllTestPlan() {
+  return request('dev/random_joke');
+}
+
+export async function addNewTestPlan(params) {
+  console.log(params);
+  return request('dev/addPlan', {
+    method: 'POST',
+    data: params,
+  });
+}

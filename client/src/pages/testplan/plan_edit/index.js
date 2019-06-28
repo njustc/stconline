@@ -17,6 +17,7 @@ import {
 } from 'antd';
 import moment from 'moment';
 
+
 const FormItem = Form.Item;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -121,9 +122,45 @@ class BasicForm extends PureComponent {
           <Breadcrumb.Item>测试方案编辑</Breadcrumb.Item>
         </Breadcrumb>
         <br />
-        {/*<Card bordered={false}>*/}
-        {/*  <h1>软件委托测试合同</h1>*/}
-        {/*</Card>*/}
+        <Card bordered={false}>
+          <h1>软件委托测试方案</h1>
+        </Card>
+        <br />
+        <Card bordered={false}>
+          <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.edit.label" />}>
+            {getFieldDecorator('edit', {
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage({ id: 'validation.edit.required' }),
+                },
+              ],
+            })(<Input placeholder={formatMessage({ id: 'testplan.edit.placeholder' })} />)}
+          </FormItem>
+          <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.check.label" />}>
+            {getFieldDecorator('check', {
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage({ id: 'validation.check.required' }),
+                },
+              ],
+            })(<Input placeholder={formatMessage({ id: 'testplan.check.placeholder' })} />)}
+          </FormItem>
+          <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.approve.label" />}>
+            {getFieldDecorator('approve', {
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage({ id: 'validation.approve.required' }),
+                },
+              ],
+            })(<Input placeholder={formatMessage({ id: 'testplan.approve.placeholder' })} />)}
+          </FormItem>
+
+        </Card>
+        <br />
+
         {/*<br />*/}
         {/*<Card bordered={false}>*/}
         {/*  <FormItem {...formItemLayout} label={<FormattedMessage id="contract.project_name.label" />}>*/}

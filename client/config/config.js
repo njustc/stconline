@@ -96,18 +96,18 @@ export default {
           ]
         },
 
-		{
-			path:'/contract_detail',
-			component:'./contract/contract_detail',
-		},
-		{
-			path:'/contract_edit',
-			component: './contract/contract_edit',
-		},
-		{
-			path:'/contract_list',
-			component: './contract/contract_list',
-		},
+        {
+          path:'/contract_detail',
+          component:'./contract/contract_detail',
+        },
+        {
+          path:'/contract_edit',
+          component: './contract/contract_edit',
+        },
+        {
+          path:'/contract_list',
+          component: './contract/contract_list',
+        },
         {
           name: '测试方案',
           icon: 'pie-chart',

@@ -1,9 +1,11 @@
-import { Table, Divider, Tag ,Breadcrumb} from 'antd';
+import { Table, Divider, Button, Tag ,Breadcrumb} from 'antd';
+import React from "react";
+import {connect} from "dva";
 
 const columns = [
   {
-    title: '合同名称',
-    dataIndex: 'contract_name',
+    title: '方案名称',
+    dataIndex: 'testplan_name',
     key: 'name',
     render: text => <a href="javascript:;">{text}</a>,
   },
@@ -50,40 +52,131 @@ const columns = [
   },
 ];
 
-const data = [
-  {
-    key: '1',
-    contract_name: 'mmm测试',
-    client: "林黛玉",
-    tags: ['审核通过'],
-  },
-  {
-    key: '2',
-    contract_name: 'kkk测试',
-    client: 123,
-    tags: ['未通过'],
-  },
-  {
-    key: '3',
-    contract_name: 'xxx测试',
-    client: '李逵',
-    tags: ['待提交审核'],
-  },
-];
+// const data = [
+//   {
+//     key: '1',
+//     testplan_name: 'mmm测试',
+//     client: "林黛玉",
+//     tags: ['审核通过'],
+//   },
+//   {
+//     key: '2',
+//     testplan_name: 'kkk测试',
+//     client: 123,
+//     tags: ['未通过'],
+//   },
+//   {
+//     key: '3',
+//     testplan_name: 'xxx测试',
+//     client: '李逵',
+//     tags: ['待提交审核'],
+//   },
+// ];
 
-class List extends React.Component{
-  render(){
-    return(
+const namespace='testplans';
+const mapStateToProps = (state) => {
+  const dataList = state[namespace].data;
+  const newdataList=state[namespace].newdata;
+  return {
+    dataList,
+    newdataList,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    //页面在mount完后发送一个queryInitPlans的action，被effects处理
+    onDidMount: () => {
+      dispatch({
+        type: `${namespace}/queryInitPlans`,
+      });
+    },
+    queryAddPlan:(newPlan)=>{
+      dispatch({
+        type:`${namespace}/queryAddPlan`,
+        payload:newPlan,
+      });
+    }
+  };
+};
+
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     onClickAdd: (newPlan) => {
+//       const action = {
+//         type: `${namespace}/addNewPlan`,
+//         payload: newPlan,
+//       };
+//       dispatch(action);
+//     },
+//   };
+// };
+
+@connect(mapStateToProps,mapDispatchToProps)
+export default class List extends React.Component{
+  // constructor(props){
+  //   super(props);
+  //   this.counter=100;
+  //   this.state= {
+  //     dataList: [
+  //       {
+  //         id: 1,
+  //         testplan_name: 'mmm',
+  //         client: "林黛玉",
+  //         tags: ['审核通过'],
+  //       },
+  //       {
+  //         id: 2,
+  //         testplan_name: 'kkk',
+  //         client: 123,
+  //         tags: ['未通过'],
+  //       },
+  //       {
+  //         id: 3,
+  //         testplan_name: 'xxx',
+  //         client: '李逵',
+  //         tags: ['待提交审核'],
+  //       },
+  //     ],
+  //   }
+  // }
+  // addNewPlan=()=>{
+  //   this.setState(prevState=>{
+  //     const prevDataList = prevState.dataList;
+  //     this.counter += 1;
+  //     const data = {
+  //       id: this.counter,
+  //       testplan_name: 'elit',
+  //       client: 'aliqua',
+  //       tags:['未通过'],
+  //     };
+  //     return {
+  //       dataList: prevDataList.concat(data),
+  //     };
+  //   });
+  // }
+
+  componentDidMount() {
+    this.props.onDidMount();
+  }
+
+  render() {
+    return (
       <div>
         <Breadcrumb>
           <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
           <Breadcrumb.Item>测试方案列表</Breadcrumb.Item>
         </Breadcrumb>
-        <br />
-        <Table columns={columns} dataSource={data} />
+        <br/>
+
+        <Table columns={columns} dataSource={this.props.dataList}/>
+
+        {/*<div>*/}
+        {/*  <Button onClick={*/}
+        {/*    () => this.props.queryAddPlan(this.props.newdataList)}>添加方案</Button>*/}
+        {/*</div>*/}
       </div>
     );
   }
 }
 
-export default List;
+//export default List;
