@@ -141,7 +141,7 @@ public class EntrustServiceImpl implements EntrustService {
         logger.info("newEntrust: ");
         //根据某一个算法增加新的id
         entrust.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
-        entrust.setProcessState("Submit");
+        entrust.setProcessState("ToSubmit");
         return entrustRepository.save(entrust);
     }
 
