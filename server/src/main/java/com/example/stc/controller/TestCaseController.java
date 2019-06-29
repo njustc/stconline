@@ -63,8 +63,6 @@ public class TestCaseController extends BaseController {
 
     /**
      * 新建测试用例
-     *
-     * @return
      * @throws URISyntaxException
      */
     @PostMapping(path = "/testcase/{pid}")
@@ -86,7 +84,6 @@ public class TestCaseController extends BaseController {
 
     /**
      * 修改单个测试用例
-     *
      * @throws URISyntaxException
      */
     @PutMapping(path = "/testcase/{pid}/{testId}")
