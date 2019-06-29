@@ -56,7 +56,7 @@ export async function addNewEntrust(params) {
 // }
 
 export async function updateEntrustProcess(params) {
-  return request('api/process/entrust', {
+  return request('/api/process/entrust', {
     method: 'POST',
     data: params,
   });
@@ -68,8 +68,8 @@ export async function getOneEntrust(params) {
 }
 
 export async function getAllTestPlan() {
-  return request('/dev/api/project/testplan');
   //return request('api/project/testplan');
+  return request('/dev/api/project/testplan');
 }
 
 export async function addNewTestPlan(params) {
