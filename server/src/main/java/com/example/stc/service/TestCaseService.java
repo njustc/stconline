@@ -39,7 +39,7 @@ public interface TestCaseService extends BaseService<TestCase> {
     /**
      * 插入单个测试用例
      */
-    TestCase newTestCase(String pid, TestCase testCase);
+    TestCase newTestCase(TestCase testCase);
 
     /**
      * 通过用例ID修改单个测试用例

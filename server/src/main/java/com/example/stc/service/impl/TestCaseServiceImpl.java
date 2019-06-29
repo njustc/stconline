@@ -45,10 +45,10 @@ public class TestCaseServiceImpl implements TestCaseService {
     }
 
     @Override
-    public TestCase newTestCase(String pid, TestCase testCase) {
-        testCase.setPid(pid);
+    public TestCase newTestCase(TestCase testCase) {
+        // 该测试用例的pid是已经填好的
         // 根据某一个算法设置testId
-        testCase.setTestId(pid + "-" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
+        testCase.setTestId(testCase.getPid() + "-" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         // TODO: 流程引擎
         return testCaseRepository.save(testCase);
     }

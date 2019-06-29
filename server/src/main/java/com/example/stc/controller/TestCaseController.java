@@ -65,10 +65,10 @@ public class TestCaseController extends BaseController {
      * 新建测试用例
      * @throws URISyntaxException
      */
-    @PostMapping(path = "/testcase/{pid}")
+    @PostMapping(path = "/testcase")
     public @ResponseBody
-    ResponseEntity<?> addNewTestCase(@PathVariable String pid, @RequestBody TestCase testCase) throws URISyntaxException {
-        Resource<TestCase> resource = toResource(testCaseService.newTestCase(pid, testCase));
+    ResponseEntity<?> addNewTestCase(@RequestBody TestCase testCase) throws URISyntaxException {
+        Resource<TestCase> resource = toResource(testCaseService.newTestCase(testCase));
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 

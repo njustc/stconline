@@ -65,11 +65,11 @@ public class TestRecordController extends BaseController {
      * 新建测试记录
      * @throws URISyntaxException
      */
-    @PostMapping(path = "/testRecord/{pid}")
+    @PostMapping(path = "/testRecord")
     public @ResponseBody
-    ResponseEntity<?> addNewTestRecord(@PathVariable String pid, @RequestBody TestRecord testRecord) throws URISyntaxException {
+    ResponseEntity<?> addNewTestRecord(@RequestBody TestRecord testRecord) throws URISyntaxException {
         // testRecord参数中的TestCase是已经填好的
-        Resource<TestRecord> resource = toResource(testRecordService.newTestRecord(pid, testRecord));
+        Resource<TestRecord> resource = toResource(testRecordService.newTestRecord(testRecord));
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
