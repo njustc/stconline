@@ -19,7 +19,7 @@ public interface TestReportService extends BaseService<TestReport> {
     /**
      * 新建项目测试报告
      */
-    TestReport newTestReport(String pid, TestReport testReport);
+    TestReport newTestReport(TestReport testReport);
 
     /**
      * 通过pid修改单个委托记录
