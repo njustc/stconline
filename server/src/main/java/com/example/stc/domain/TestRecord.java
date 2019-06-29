@@ -7,7 +7,7 @@ import javax.persistence.Table;
  * 测试记录
  */
 @Entity
-@Table(name = "TBL_SYS_TESTCASE")
+@Table(name = "TBL_SYS_TESTRECORD")
 public class TestRecord extends ProcessEntity {
 
     /** ID */
