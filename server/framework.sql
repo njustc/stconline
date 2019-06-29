@@ -1068,6 +1068,61 @@ INSERT INTO `hibernate_sequence` VALUES (1),(1),(1);
 UNLOCK TABLES;
 
 --
+-- Table structure for table `tbl_sys_contract`
+--
+
+DROP TABLE IF EXISTS `tbl_sys_contract`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tbl_sys_contract` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `pid` varchar(255) DEFAULT NULL,
+  `process_instance_id` varchar(255) DEFAULT NULL,
+  `process_state` int(11) DEFAULT NULL,
+  `assignee` varchar(255) DEFAULT NULL,
+  `assigneeaddr` varchar(255) DEFAULT NULL,
+  `assgineeauthrepre` varchar(255) DEFAULT NULL,
+  `assigneebank` varchar(255) DEFAULT NULL,
+  `assigneebankname` varchar(255) DEFAULT NULL,
+  `assigneecompanyname` varchar(255) DEFAULT NULL,
+  `assigneecontact` varchar(255) DEFAULT NULL,
+  `assigneefax` varchar(255) DEFAULT NULL,
+  `assigneepostcode` varchar(255) DEFAULT NULL,
+  `assigneesigndate` varchar(255) DEFAULT NULL,
+  `assigneetel` varchar(255) DEFAULT NULL,
+  `assigneeusername` varchar(255) DEFAULT NULL,
+  `client` varchar(255) DEFAULT NULL,
+  `clientaddr` varchar(255) DEFAULT NULL,
+  `clientauthpepre` varchar(255) DEFAULT NULL,
+  `clientbank` varchar(255) DEFAULT NULL,
+  `clientcompanyname` varchar(255) DEFAULT NULL,
+  `clientcontact` varchar(255) DEFAULT NULL,
+  `clientfax` varchar(255) DEFAULT NULL,
+  `clientpostcode` varchar(255) DEFAULT NULL,
+  `clientsigndate` varchar(255) DEFAULT NULL,
+  `clienttel` varchar(255) DEFAULT NULL,
+  `clientusername` varchar(255) DEFAULT NULL,
+  `contractbody` varchar(255) DEFAULT NULL,
+  `finishtime` varchar(255) DEFAULT NULL,
+  `price` varchar(255) DEFAULT NULL,
+  `quality` varchar(255) DEFAULT NULL,
+  `signdate` varchar(255) DEFAULT NULL,
+  `signplace` varchar(255) DEFAULT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_sys_contract`
+--
+
+LOCK TABLES `tbl_sys_contract` WRITE;
+/*!40000 ALTER TABLE `tbl_sys_contract` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tbl_sys_contract` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tbl_sys_entrust`
 --
 
@@ -1258,6 +1313,72 @@ LOCK TABLES `tbl_sys_roles` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `tbl_sys_testcase`
+--
+
+DROP TABLE IF EXISTS `tbl_sys_testcase`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tbl_sys_testcase` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `pid` varchar(255) DEFAULT NULL,
+  `process_instance_id` varchar(255) DEFAULT NULL,
+  `process_state` int(11) DEFAULT NULL,
+  `design_notes` varchar(255) DEFAULT NULL,
+  `designer` varchar(255) DEFAULT NULL,
+  `expected_result` varchar(255) DEFAULT NULL,
+  `regu_notes` varchar(255) DEFAULT NULL,
+  `test_class` varchar(255) DEFAULT NULL,
+  `test_id` varchar(255) DEFAULT NULL,
+  `test_time` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_sys_testcase`
+--
+
+LOCK TABLES `tbl_sys_testcase` WRITE;
+/*!40000 ALTER TABLE `tbl_sys_testcase` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tbl_sys_testcase` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tbl_sys_testplan`
+--
+
+DROP TABLE IF EXISTS `tbl_sys_testplan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tbl_sys_testplan` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `pid` varchar(255) DEFAULT NULL,
+  `process_instance_id` varchar(255) DEFAULT NULL,
+  `process_state` int(11) DEFAULT NULL,
+  `approver` varchar(255) DEFAULT NULL,
+  `auditor` varchar(255) DEFAULT NULL,
+  `author` varchar(255) DEFAULT NULL,
+  `body` varchar(255) DEFAULT NULL,
+  `hardware` varchar(255) DEFAULT NULL,
+  `progress_table` varchar(255) DEFAULT NULL,
+  `software` varchar(255) DEFAULT NULL,
+  `staff` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2019062906 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_sys_testplan`
+--
+
+LOCK TABLES `tbl_sys_testplan` WRITE;
+/*!40000 ALTER TABLE `tbl_sys_testplan` DISABLE KEYS */;
+INSERT INTO `tbl_sys_testplan` VALUES (2019062901,'2019062901','2019062901',0,'AA','Aser1','Aser2','Abody','ssd',NULL,'nju','Aser3'),(2019062902,'2019062902','2019062902',0,'BB','Bser1','Bser2','Bbody','ssd',NULL,'stc','Bser3'),(2019062903,'2019062903','2019062903',0,'CC','Cser1','Cser2','Cbody','ssd',NULL,'dev','Cser3'),(2019062904,'2019062904','2019062904',0,'DD','Dser1','Dser2','Dbody','ssd',NULL,'online','Dser3'),(2019062905,'019062905','2019062905',0,'EE','Eser1','Eser2','Ebody','ssd',NULL,'master','Eser3');
+/*!40000 ALTER TABLE `tbl_sys_testplan` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tbl_sys_user`
 --
 
@@ -1341,4 +1462,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-06-16  8:49:45
+-- Dump completed on 2019-06-29 11:16:20

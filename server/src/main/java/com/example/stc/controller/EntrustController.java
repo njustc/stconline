@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.stc.domain.Entrust;
 
 /**
- * 客户类用户的委托相关接口
+ * 用户的委托相关接口
  */
 @RestController
 public class EntrustController extends BaseController {

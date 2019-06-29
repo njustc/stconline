@@ -68,7 +68,8 @@ export async function getOneEntrust(params) {
 }
 
 export async function getAllTestPlan() {
-  return request('dev/random_joke');
+  return request('api/project/testplan');
+  //return request('/dev/api/project/testplan');
 }
 
 export async function addNewTestPlan(params) {
