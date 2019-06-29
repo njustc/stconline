@@ -4,43 +4,39 @@ import {connect} from "dva";
 
 const columns = [
   {
-    title: '方案名称',
-    dataIndex: 'testplan_name',
-    key: 'name',
+    title: '方案ID',
+    dataIndex: 'pid',
+    key: 'pid',
     render: text => <a href="javascript:;">{text}</a>,
   },
   {
-    title: '委托人',
-    dataIndex: 'client',
-    key: 'age',
+    title: '编辑人员',
+    dataIndex: 'author',
+    key: 'author',
   },
   {
     title: '状态',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: tags => (
-      <span>
-        {tags.map(tag => {
-          let color = 'green';
-          if (tag === '未通过') {
-            color = 'volcano';
-          }
-          else if(tag === '待提交审核'){
-            color = 'geekblue';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </span>
-    ),
+    key: 'processState',
+    dataIndex: 'processState',
+    render: processState => {
+      var color = processState === 'Approve' ? 'purple' : 'green';
+      if (processState === 'ToReview') {
+        color = 'orange';
+      }
+      if (processState === 'ToSubmit') {
+        color = 'blue';
+      }
+      return (
+        <Tag color={color} key={processState}>
+          {processState}
+        </Tag>
+      );
+    }
   },
   {
     title: '操作',
     key: 'action',
-    render: (text, record) => (
+    render: (key) => (
       <span>
         <a href="/plan_check.html">查看详情</a>
         <Divider type="vertical" />

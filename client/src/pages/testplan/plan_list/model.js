@@ -42,7 +42,7 @@ export default {
         //执行getPlanData
         yield put({type: 'getPlanData', payload: response});
       } else {
-        yield put({type: 'getPlanData', payload: response._embedded.testplans});
+        yield put({type: 'getPlanData', payload: response._embedded.testPlans});
       }
 
     },

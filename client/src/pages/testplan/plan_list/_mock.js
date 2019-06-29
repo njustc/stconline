@@ -1,29 +1,21 @@
 const data = [
   {
     key: '1',
-    testplan_name: 'mmm',
-    client: "林黛玉",
-    tags: ['审核通过'],
+    pid: 'mmm',
+    author: "林黛玉",
+    processState: ['Approve'],
   },
   {
     key: '2',
-    testplan_name: 'kkk',
-    client: 123,
-    tags: ['未通过'],
+    pid: 'kkk',
+    author: '123',
+    processState: ['ToReview'],
   },
   {
     key: '3',
-    testplan_name: 'xxx',
-    client: '李逵',
-    tags: ['待提交审核'],
-  },
-];
-
-const newdata = [
-  {
-    testplan_name: '小红',
-    client: "小明",
-    tags: ['审核通过'],
+    pid: 'xxx',
+    author: '李逵',
+    processState: ['ToSubmit'],
   },
 ];
 
@@ -33,7 +25,7 @@ export default {
     res.json(data);
   },
   'get /dev/addPlan': function (req, res) {
-    res.json(newdata);
+    res.json(data);
   },
 
 };

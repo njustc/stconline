@@ -117,7 +117,7 @@ public class ContractServiceImpl implements ContractService{
     @Override
     public Contract newContract(Contract contract) {
         logger.info("newContract: ");
-        contract.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
+        //contract.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         contract.setProcessState("ToSubmit");
         return contractRepository.save(contract);
     }
