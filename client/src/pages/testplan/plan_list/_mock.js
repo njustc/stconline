@@ -29,7 +29,7 @@ const newdata = [
 
 //let count=0;
 export default {
-  'get /dev/random_joke': function (req, res) {
+  'get /dev/api/project/testplan': function (req, res) {
     res.json(data);
   },
   'get /dev/addPlan': function (req, res) {
