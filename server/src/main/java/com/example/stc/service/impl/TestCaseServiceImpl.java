@@ -1,11 +1,13 @@
 package com.example.stc.service.impl;
 
 import com.example.stc.domain.TestCase;
+import com.example.stc.framework.util.DateUtils;
 import com.example.stc.repository.TestCaseRepository;
 import com.example.stc.service.TestCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -13,6 +15,9 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     @Autowired
     private TestCaseRepository testCaseRepository;
+
+    @Autowired
+    private DateUtils dateUtils;
 
     @Override
     public List<TestCase> findAllTestCases() {
@@ -42,6 +47,8 @@ public class TestCaseServiceImpl implements TestCaseService {
     @Override
     public TestCase newTestCase(String pid, TestCase testCase) {
         testCase.setPid(pid);
+        // 根据某一个算法设置testId
+        testCase.setTestId(pid + "-" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         // TODO: 流程引擎
         return testCaseRepository.save(testCase);
     }
