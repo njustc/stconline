@@ -186,6 +186,12 @@ public class Contract extends ProcessEntity {
     private String contractBody;
 
     /**
+     * 评审意见
+     */
+    @Column(name = "COMMENT")
+    private String comment;
+
+    /**
      * 用户信息
      */
     @ManyToOne(cascade = CascadeType.REFRESH)
@@ -431,5 +437,13 @@ public class Contract extends ProcessEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

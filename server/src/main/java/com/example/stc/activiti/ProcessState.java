@@ -2,8 +2,9 @@ package com.example.stc.activiti;
 
 public enum ProcessState {
 
-    ToSubmit("ToSubmit"),
-    ToReview("ToReview"),
+    NotExist("NotExist"),
+    Submit("ToSubmit"),
+    Review("ToReview"),
     Approve("Approve"),
     /**
      * TODO: 添加更多状态

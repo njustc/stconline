@@ -5,6 +5,7 @@ import com.example.stc.domain.User;
 import com.example.stc.framework.exception.EntrustNotFoundException;
 import com.example.stc.framework.exception.UserNotFoundException;
 import com.example.stc.framework.util.AuthorityUtils;
+import com.example.stc.framework.util.CookieUtils;
 import com.example.stc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import java.io.UnsupportedEncodingException;
+
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 @RestController
@@ -31,6 +34,8 @@ public class UserController {
     @Autowired
     private AuthorityUtils authorityUtils;
 
+    @Autowired
+    private CookieUtils cookieUtils;
     @Resource(name = "authenticationManager")
     private AuthenticationManager authManager;
 
@@ -72,10 +77,14 @@ public class UserController {
         HttpSession session = req.getSession(true);
 
         //add cookie
-        Cookie cookie = new Cookie("roles",authorityUtils.getLoginUser().getRoles()); // 创建新cookie
-        cookie.setMaxAge(60 * 60); // 设置存在时间60min
-        cookie.setPath("/"); // TODO: 设置作用域
-        response.addCookie(cookie); // 将cookie添加到response的cookie数组中返回给客户端
+        try {
+            cookieUtils.addCookie(response,
+                    "roles",
+                    authorityUtils.getLoginUser().getRoles(),
+                    60 * 60);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
         return "DEBUG: 用户登录";

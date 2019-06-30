@@ -26,7 +26,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -72,10 +74,31 @@ public class ProcessTest {
         String processInstanceId = contractAction.createContractProcess(contract, user);
         System.out.println(processInstanceId);
 
-        Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-        taskService.complete(task.getId());
+        contractAction.submitContractProcess(contract);
 
         List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+        System.out.println(tasks.size());
+
+        Task task1 = tasks.get(0);
+        Task task2 = tasks.get(1);
+        System.out.println("1: " + task1.getName() + "; 2: " + task2.getName());
+
+        Map<String, Object> value1 = new HashMap<>();
+        Map<String, Object> value2 = new HashMap<>();
+
+        value1.put("reviewContractResult", "ReviewDisprove");
+        taskService.complete(task1.getId(), value1);
+        taskService.complete(task2.getId(), value1);
+
+        tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+        System.out.println(tasks.size());
+        for (Task task: tasks) {
+            if (task.getName().equals("WorkerSubmitContract")) {
+                taskService.complete(task.getId());
+            }
+        }
+
+        tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
         System.out.println(tasks.size());
 
         // contractAction.deleteContractProcess(contract);
