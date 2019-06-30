@@ -1,6 +1,7 @@
 package com.example.stc.service.impl;
 
 import com.example.stc.domain.TestPlan;
+import com.example.stc.framework.exception.TestPlanNotFoundException;
 import com.example.stc.repository.TestPlanRepository;
 import com.example.stc.service.TestPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,10 @@ public class TestPlanServiceImpl implements TestPlanService {
 
     @Override
     public TestPlan findTestPlanByPid(String pid) {
-        return testPlanRepository.findByPid(pid);
+        TestPlan testPlan = testPlanRepository.findByPid(pid);
+        if (testPlan == null)
+            throw new TestPlanNotFoundException(pid);
+        return testPlan;
     }
 
     @Override
@@ -48,6 +52,9 @@ public class TestPlanServiceImpl implements TestPlanService {
 
     @Override
     public void deleteTestPlanByPid(String pid) {
+        TestPlan testPlan = testPlanRepository.findByPid(pid);
+        if (testPlan == null)
+            throw new TestPlanNotFoundException(pid);
         testPlanRepository.deleteByPid(pid);
     }
 }

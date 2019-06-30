@@ -8,6 +8,9 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.alibaba.fastjson.JSONObject;
+import com.example.stc.activiti.EntrustAction;
+import com.example.stc.framework.exception.EntrustNotFoundException;
 import com.example.stc.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
@@ -25,6 +28,9 @@ public class EntrustController extends BaseController {
 
     @Autowired
     private EntrustService entrustService;
+
+    @Autowired
+    private EntrustAction entrustAction;
 
     /**
      * 添加Link，使 Entrust -> Resource<Entrust>
@@ -107,12 +113,30 @@ public class EntrustController extends BaseController {
     @DeleteMapping(path = "/entrust/{pid}")
     public @ResponseBody
     ResponseEntity<?> deleteEntrust(@PathVariable String pid) {
+        entrustAction.deleteEntrustProcess(entrustService.findEntrustByPid(pid));
         entrustService.deleteEntrustByPid(pid);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping(path = "/hello")
-    public void runrr(){
-        System.out.println("saa");
+    @PostMapping(path = "/entrust/submit")
+    public @ResponseBody
+    ResponseEntity<?> submitEntrust(@RequestParam(value = "pid")String pid) throws URISyntaxException {
+        Entrust entrust = entrustService.findEntrustByPid(pid);
+        entrustAction.submitEntrustProcess(entrust);
+        Entrust updatedEntrust = entrustService.updateEntrust(pid, entrust);
+        Resource<Entrust> resource = toResource(updatedEntrust);
+        return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
+    }
+
+    @PostMapping(path = "/entrust/review")
+    public @ResponseBody
+    ResponseEntity<?> reviewEntrust(@RequestBody String comment,
+                                    @RequestParam(value = "pid") String pid,
+                                    @RequestParam(value = "operation") String operation) throws URISyntaxException {
+        Entrust entrust = entrustService.findEntrustByPid(pid);
+        entrustAction.reviewEntrustProcess(entrust, operation, comment);
+        Entrust updatedEntrust = entrustService.updateEntrust(pid, entrust);
+        Resource<Entrust> resource = toResource(updatedEntrust);
+        return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 }

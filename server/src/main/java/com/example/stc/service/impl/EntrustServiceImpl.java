@@ -127,8 +127,6 @@ public class EntrustServiceImpl implements EntrustService {
     @Override
     public void deleteEntrustByPid(String pid) {
         logger.info("deleteEntrustByPid: ");
-        Entrust entrust = this.findEntrustByPid(pid); // 找到应删除的委托并检查，若为客户，只能访问本人的委托
-        entrustAction.deleteEntrustProcess(entrust);
 
         int n = entrustRepository.deleteByPid(pid);
         if (0 == n) {

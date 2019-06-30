@@ -64,13 +64,16 @@ public class ProcessTest {
 
         contract = new Contract();
         contract.setUser(user);
-        entrust.setPid("p201906231620");
+        contract.setPid("p201906231620");
     }
 
     @Test
     public void testProcess() {
         String processInstanceId = contractAction.createContractProcess(contract, user);
         System.out.println(processInstanceId);
+
+        Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+        taskService.complete(task.getId());
 
         List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
         System.out.println(tasks.size());
