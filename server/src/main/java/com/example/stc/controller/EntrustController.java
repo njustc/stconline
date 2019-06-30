@@ -110,4 +110,9 @@ public class EntrustController extends BaseController {
         entrustService.deleteEntrustByPid(pid);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping(path = "/hello")
+    public void runrr(){
+        System.out.println("saa");
+    }
 }

@@ -10,13 +10,14 @@ import javax.servlet.http.HttpSession;
 /**
  * session处理工具类
  * 负责添加、删除、查找
+ * 还包括处理httpRequest内容的修改工作
  */
 @Component
 public class SessionUtils {
     /**
      * 获取request
      *
-     * @return
+     * @return : 当前请求实体
      */
     public HttpServletRequest getRequest() {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -26,7 +27,7 @@ public class SessionUtils {
     /**
      * 获取session
      *
-     * @return
+     * @return : 当前请求对应的线程上的session
      */
     public HttpSession getSession() {
         return getRequest().getSession(false);
@@ -35,7 +36,7 @@ public class SessionUtils {
     /**
      * 获取真实路径
      *
-     * @return
+     * @return : 请求url
      */
     public String getRealRootPath() {
         return getRequest().getServletContext().getRealPath("/");
@@ -44,7 +45,7 @@ public class SessionUtils {
     /**
      * 获取ip
      *
-     * @return
+     * @return : 请求方 ip
      */
     public String getIp() {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder
@@ -59,8 +60,8 @@ public class SessionUtils {
     /**
      * 获取session中的Attribute
      *
-     * @param name
-     * @return
+     * @param name: session 名称, 作为键值对中的key
+     * @return : value of key
      */
     public Object getSessionAttribute(String name) {
         HttpServletRequest request = getRequest();

@@ -1,6 +1,7 @@
 HELP.md
 /target/
 server/target
+server/jenkins
 client/node
 client/target
 !.mvn/wrapper/maven-wrapper.jar
