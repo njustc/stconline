@@ -1,4 +1,4 @@
-import { getAllTestPlan,addNewTestPlan} from '@/services/user';
+import { getAllTestPlan,addNewTestPlan,deleteTestPlan} from '@/services/testplan';
 
 export default {
   namespace:'testplanList',
@@ -37,7 +37,7 @@ export default {
       //_embedded复制粘贴的委托
       console.log('_embedded' in response);
       if (!('_embedded' in response)) {
-        console.log("put []");
+        // console.log("put []");
         //执行getPlanData
         yield put({type: 'getPlanData', payload: response});
       } else {
@@ -45,11 +45,23 @@ export default {
       }
 
     },
-    *queryAddPlan(_,{call,put}){
-      const response = yield call(addNewTestPlan);
-      console.log(response);
+    *queryAddPlan({payload},{call,put}) {
+      const response = yield call(addNewTestPlan, payload);
+      //console.log(response);
       //执行addNewPlan
       yield put({type: 'addNewPlan', payload: response});
+    },
+    *queryDeletePlan({payload},{call,put}){
+      yield call(deleteTestPlan,{pid:payload.pid})
+      // console.log(response)
+      const list=yield call(getAllTestPlan);
+      if(!('_embedded' in list)){
+        console.log("put []");
+        yield put({type:'getPlanData',payload: list})
+      }
+      else{
+        yield put({type:'getPlanData',payload: list._embedded.testPlans})
+      }
     },
 
   },

@@ -31,7 +31,7 @@ public class TestReport extends ProcessEntity {
     /** 样品名称 */
     private String sampleName;
 
-    /** 来样日期 */
+    /** 采样日期 */
     private String sampleDate;
 
     /** 测试日期 */

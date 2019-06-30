@@ -1,31 +1,36 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { connect } from 'dva';
 import { formatMessage, FormattedMessage } from 'umi/locale';
-import {
-  Form,
-  Input,
-  DatePicker,
-  Select,
-  Button,
-  Card,
-  InputNumber,
-  Radio,
-  Icon,
-  Tooltip,
-  Modal,
-  Breadcrumb
-} from 'antd';
-import moment from 'moment';
-
+import {Form, Input, DatePicker, Select, Button, Card, InputNumber, Radio, Icon, Tooltip, Modal, Breadcrumb} from 'antd';
 
 const FormItem = Form.Item;
-const { Option } = Select;
-const { RangePicker } = DatePicker;
-const { TextArea } = Input;
 const confirm=Modal.confirm;
+const namespace='testplanEdit';
 
-const dateFormat = 'YYYY/MM/DD';
+// const dateFormat = 'YYYY/MM/DD';
 
+const mapStateToProps = (state) => {
+  const dataEdit = state[namespace];
+  console.log(dataEdit);
+  return {
+    dataEdit,
+  };
+};
+function showConfirm() {
+  confirm({
+    title: '您是否要提交本委托?',
+    content: '委托一旦提交，将无法从线上更改，但您可以在“委托列表”查看本委托详情。提交的委托将由工作人员进行核对。',
+    okText: '提交',
+    cancelText: '取消',
+    onOk() {
+      console.log('OK');
+      //在此方法里提交
+    },
+    onCancel() {
+      console.log('Cancel');
+    },
+  });
+}
 //删除按钮的对话框方法，点击“确认删除”调取delete方法
 function showDeleteConfirm() {
   confirm({
@@ -44,74 +49,65 @@ function showDeleteConfirm() {
   });
 }
 
-//提交按钮的对话框方法，点击“提交”调取提交方法
-function showConfirm() {
-  confirm({
-    title: '您是否要提交本委托?',
-    content: '委托一旦提交，将无法从线上更改，但您可以在“委托列表”查看本委托详情。提交的委托将由工作人员进行核对。',
-    okText: '提交',
-    cancelText: '取消',
-    onOk() {
-      console.log('OK');
-      //在此方法里提交
-    },
-    onCancel() {
-      console.log('Cancel');
-    },
-  });
-}
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     //页面在mount完后发送一个queryInitPlans的action，被effects处理
+//     onDidMount: () => {
+//       dispatch({
+//         type: `${namespace}/queryGetOnePlan`,
+//         payload: this.props.location.query,
+//       });
+//     },
+//     queryAddPlan:(newPlan)=>{
+//       dispatch({
+//         type:`${namespace}/queryAddPlan`,
+//         payload:newPlan,
+//       });
+//     },
+//     queryDeletePlan:(params)=>{
+//       dispatch({
+//         type:`${namespace}/queryDeletePlan`,
+//         payload:params
+//       })
+//     },
+//
+//   };
+// };
 
-@connect(({ loading }) => ({
-  submitting: loading.effects['basicForm/submitRegularForm'],
-}))
+// @connect(({ loading }) => ({
+//   submitting: loading.effects['basicForm/submitRegularForm'],
+// }))
 @Form.create()
-class BasicForm extends PureComponent {
-  handleSubmit = e => {
-    const { dispatch, form } = this.props;
-    e.preventDefault();
-    form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        dispatch({
-          type: 'basicForm/submitRegularForm',
-          payload: values,
-        });
-      }
-    });
-  };
+@connect(mapStateToProps)
+export default class EditPlan extends React.Component{
+  componentDidMount() {
+    const {dispatch} = this.props;
 
-  submit = () => {
-    this.setState({
-      visible: true,
-      current: undefined,
-    });
     dispatch({
-      type: 'basicForm/submitRegularForm',
-      payload: values,
+      type: `${namespace}/queryGetOnePlan`,
+      payload: this.props.location.query,
     });
-  };
-
+  }
   render() {
-    const { submitting } = this.props;
     const {
-      form: { getFieldDecorator, getFieldValue },
+      form: {getFieldDecorator, getFieldValue},
     } = this.props;
 
     const formItemLayout = {
       labelCol: {
-        xs: { span: 24 },
-        sm: { span: 7 },
+        xs: {span: 24},
+        sm: {span: 7},
       },
       wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 12 },
-        md: { span: 10 },
+        xs: {span: 24},
+        sm: {span: 12},
+        md: {span: 10},
       },
     };
-
     const submitFormLayout = {
       wrapperCol: {
-        xs: { span: 24, offset: 0 },
-        sm: { span: 10, offset: 7 },
+        xs: {span: 24, offset: 0},
+        sm: {span: 10, offset: 7},
       },
     };
 
@@ -121,117 +117,97 @@ class BasicForm extends PureComponent {
           <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
           <Breadcrumb.Item>测试方案编辑</Breadcrumb.Item>
         </Breadcrumb>
-        <br />
+        <br/>
         <Card bordered={false}>
           <h1>软件委托测试方案</h1>
         </Card>
-        <br />
+        <br/>
         <Card bordered={false}>
-          <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.edit.label" />}>
+          <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.edit.label"/>}>
             {getFieldDecorator('edit', {
-              rules: [
+              initialValue: this.props.dataEdit.editdata.author || '',
+            }, {rules: [
                 {
                   required: true,
-                  message: formatMessage({ id: 'validation.edit.required' }),
+                  message: formatMessage({id: 'validation.edit.required'}),
                 },
               ],
-            })(<Input placeholder={formatMessage({ id: 'testplan.edit.placeholder' })} />)}
+            })(<Input placeholder={formatMessage({id: 'testplan.edit.placeholder'})}/>)}
           </FormItem>
-          <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.check.label" />}>
+          <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.check.label"/>}>
             {getFieldDecorator('check', {
+                initialValue: this.props.dataEdit.editdata.auditor || '',
+              },{
               rules: [
                 {
                   required: true,
-                  message: formatMessage({ id: 'validation.check.required' }),
+                  message: formatMessage({id: 'validation.check.required'}),
                 },
               ],
-            })(<Input placeholder={formatMessage({ id: 'testplan.check.placeholder' })} />)}
+            })(<Input placeholder={formatMessage({id: 'testplan.check.placeholder'})}/>)}
           </FormItem>
-          <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.approve.label" />}>
+          <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.approve.label"/>}>
             {getFieldDecorator('approve', {
+              initialValue: this.props.dataEdit.editdata.approver || '',
+            }, {
               rules: [
                 {
                   required: true,
-                  message: formatMessage({ id: 'validation.approve.required' }),
+                  message: formatMessage({id: 'validation.approve.required'}),
                 },
               ],
-            })(<Input placeholder={formatMessage({ id: 'testplan.approve.placeholder' })} />)}
+            })(<Input placeholder={formatMessage({id: 'testplan.approve.placeholder'})}/>)}
           </FormItem>
-
+          <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.hardware.label"/>}>
+            {getFieldDecorator('hardware', {
+              initialValue: this.props.dataEdit.editdata.hardware || '',
+            }, {
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage({id: 'validation.hardware.required'}),
+                },
+              ],
+            })(<Input placeholder={formatMessage({id: 'testplan.hardware.placeholder'})}/>)}
+          </FormItem>
+          <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.software.label"/>}>
+            {getFieldDecorator('software', {
+              initialValue: this.props.dataEdit.editdata.software || '',
+            }, {
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage({id: 'validation.software.required'}),
+                },
+              ],
+            })(<Input placeholder={formatMessage({id: 'testplan.software.placeholder'})}/>)}
+          </FormItem>
+          <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.staff.label"/>}>
+            {getFieldDecorator('staff', {
+              initialValue: this.props.dataEdit.editdata.staff || '',
+            }, {
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage({id: 'validation.staff.required'}),
+                },
+              ],
+            })(<Input placeholder={formatMessage({id: 'testplan.staff.placeholder'})}/>)}
+          </FormItem>
         </Card>
-        <br />
-
-        {/*<br />*/}
-        {/*<Card bordered={false}>*/}
-        {/*  <FormItem {...formItemLayout} label={<FormattedMessage id="contract.project_name.label" />}>*/}
-        {/*    {getFieldDecorator('project_name', {*/}
-        {/*      rules: [*/}
-        {/*        {*/}
-        {/*          required: true,*/}
-        {/*          message: formatMessage({ id: 'validation.project_name.required' }),*/}
-        {/*        },*/}
-        {/*      ],*/}
-        {/*    })(<Input placeholder={formatMessage({ id: 'contract.project_name.placeholder' })} />)}*/}
-        {/*  </FormItem>*/}
-        {/*  <FormItem {...formItemLayout} label={<FormattedMessage id="contract.sign_data.label" />}>*/}
-        {/*    <DatePicker defaultValue={moment('2019/01/01', dateFormat)} format={dateFormat} />*/}
-        {/*  </FormItem>*/}
-        {/*</Card>*/}
-        {/*<br />*/}
-        {/*<Card bordered={false}>*/}
-        {/*  <h1>一、任务表述</h1>*/}
-        {/*  <br />*/}
-        {/*  <h1>*/}
-        {/*    乙方按照国家软件质量测试标准和测试规范，完成甲方委托的软件<Input  placeholder="这个框好像有点太大了"/>(下称受测软件)的质量特性<Input  placeholder="但是我不知道怎么调"/>，进行测试，并出具相应的测试报告。*/}
-        {/*  </h1>*/}
-        {/*</Card>*/}
-        {/*<br />*/}
-        {/*<Card bordered={false}>*/}
-        {/*</Card>*/}
-        {/*<Card>*/}
-        {/*  <h2>十二、签章</h2>*/}
-        {/*</Card>*/}
-        {/*<Card>*/}
-        {/*  <h1>委托方</h1>*/}
-        {/*  <FormItem {...formItemLayout} label={<FormattedMessage id="这里写一写" />}>*/}
-        {/*    {getFieldDecorator('project_name', {*/}
-        {/*      rules: [*/}
-        {/*        {*/}
-        {/*          required: true,*/}
-        {/*          message: formatMessage({ id: '写一写' }),*/}
-        {/*        },*/}
-        {/*      ],*/}
-        {/*    })(<Input placeholder={formatMessage({ id: '这里写一写' })} />)}*/}
-        {/*  </FormItem>*/}
-        {/*</Card>*/}
-        {/*<Card>*/}
-        {/*  <h1>受托方</h1>*/}
-        {/*  <FormItem {...formItemLayout} label={<FormattedMessage id="这里写一写" />}>*/}
-        {/*    {getFieldDecorator('project_name', {*/}
-        {/*      rules: [*/}
-        {/*        {*/}
-        {/*          required: true,*/}
-        {/*          message: formatMessage({ id: '写一写' }),*/}
-        {/*        },*/}
-        {/*      ],*/}
-        {/*    })(<Input placeholder={formatMessage({ id: '这里写一写' })} />)}*/}
-        {/*  </FormItem>*/}
-        {/*</Card>*/}
-
-        <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
+        <br/>
+        <FormItem {...submitFormLayout} style={{marginTop: 32}}>
           <Button type="primary" onClick={showConfirm}>
-            <FormattedMessage id="basic-form.form.submit" />
+            <FormattedMessage id="plan_edit.form.submit"/>
           </Button>
-          <Button style={{ marginLeft: 8 }}>
-            <FormattedMessage id="basic-form.form.save" />
+          <Button style={{marginLeft: 8}}>
+            <FormattedMessage id="plan_edit.form.save"/>
           </Button>
-          <Button style={{ marginLeft: 8}} type="danger" onClick={showDeleteConfirm}>
-            <FormattedMessage id="basic-form.form.delete" />
+          <Button style={{marginLeft: 8}} type="danger" onClick={showDeleteConfirm}>
+            <FormattedMessage id="plan_edit.form.delete"/>
           </Button>
         </FormItem>
       </div>
     );
   }
 }
-
-export default BasicForm;

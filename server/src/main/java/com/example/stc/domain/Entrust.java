@@ -6,10 +6,10 @@ import javax.persistence.*;
 @Table(name = "TBL_SYS_ENTRUST")
 public class Entrust extends ProcessEntity {
 
-    /**
-     * 存储测试文档整体
-     */
-    private String entrustEntity;
+//    /**
+//     * 存储测试文档整体
+//     */
+//    private String entrustEntity;
 
     /**
      * 测试类型（多选）
@@ -259,13 +259,13 @@ public class Entrust extends ProcessEntity {
     //@JSONField(serialize = false)
     private User user;
 
-    public String getEntrustEntity() {
-        return entrustEntity;
-    }
-
-    public void setEntrustEntity(String entrustEntity) {
-        this.entrustEntity = entrustEntity;
-    }
+//    public String getEntrustEntity() {
+//        return entrustEntity;
+//    }
+//
+//    public void setEntrustEntity(String entrustEntity) {
+//        this.entrustEntity = entrustEntity;
+//    }
 
     public String getTestType() {
         return testType;
