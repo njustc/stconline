@@ -247,9 +247,9 @@ public class Entrust extends ProcessEntity {
     private String opinions;
 
     /**
-     * 受理意见（单选）
+     * 评审意见
      */
-    private String acceptOpinions;
+    private String comment;
 
     /**
      * 用户信息
@@ -639,19 +639,19 @@ public class Entrust extends ProcessEntity {
         this.opinions = opinions;
     }
 
-    public String getAcceptOpinions() {
-        return acceptOpinions;
-    }
-
-    public void setAcceptOpinions(String acceptOpinions) {
-        this.acceptOpinions = acceptOpinions;
-    }
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

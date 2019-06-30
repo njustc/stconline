@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1561274924704" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
-  <process id="Contract" isClosed="false" isExecutable="true" processType="None">
+  <process id="Contract" isClosed="false" isExecutable="true" name="合同" processType="None">
     <startEvent id="start" name="开始">
       <extensionElements>
         <activiti:formProperty id="ContractID" name="ID of contract" required="true" type="String"/>
@@ -8,8 +8,20 @@
     </startEvent>
     <endEvent id="end" name="结束"/>
     <parallelGateway gatewayDirection="Unspecified" id="mApproveForkGate" name="Fork"/>
-    <userTask activiti:exclusive="true" id="mmContractReview" name="MMReviewContract"/>
-    <userTask activiti:exclusive="true" id="qmContractReview" name="QMReviewContract"/>
+    <userTask activiti:exclusive="true" id="mmContractReview" name="MMReviewContract">
+      <extensionElements>
+        <activiti:formProperty id="reviewContractResult" name="Do you approve this request?" required="true" type="String"/>
+        <activiti:formProperty id="user" name="MM" type="string" value="MarketingManager"/>
+        <activiti:formProperty id="reviewContractComment" name="reason about pass or reject" required="true" type="string"/>
+      </extensionElements>
+    </userTask>
+    <userTask activiti:exclusive="true" id="qmContractReview" name="QMReviewContract">
+      <extensionElements>
+        <activiti:formProperty id="reviewContractResult" name="Do you approve this request?" required="true" type="String"/>
+        <activiti:formProperty id="user" name="QM" type="string" value="QualityManager"/>
+        <activiti:formProperty id="reviewContractComment" name="reason about pass or reject" required="true" type="string"/>
+      </extensionElements>
+    </userTask>
     <parallelGateway gatewayDirection="Unspecified" id="mApproveJoinGate" name="Join"/>
     <userTask activiti:assignee="${ClientID}" activiti:exclusive="true" id="cusContractReview" name="CusReviewContract">
       <extensionElements>
@@ -19,24 +31,40 @@
       </extensionElements>
     </userTask>
     <exclusiveGateway gatewayDirection="Unspecified" id="cusApproveGate" name="CUS是否通过"/>
-    <userTask activiti:assignee="${ClientID}" activiti:exclusive="true" id="submitContract" name="cusReviewContract">
+    <userTask activiti:exclusive="true" id="submitContract" name="CusSubmitContract">
       <extensionElements>
-        <activiti:formProperty id="user" name="client" type="string" value="client"/>
+        <activiti:formProperty id="user" name="worker" type="string" value="worker"/>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="fStartToFork" sourceRef="start" targetRef="mApproveForkGate"/>
     <sequenceFlow id="fForkToMM" sourceRef="mApproveForkGate" targetRef="mmContractReview"/>
     <sequenceFlow id="fForkToQM" sourceRef="mApproveForkGate" targetRef="qmContractReview"/>
-    <sequenceFlow id="fSubmitToFork" sourceRef="submitContract" targetRef="mApproveForkGate"/>
-    <sequenceFlow id="fMMToJoin" sourceRef="mmContractReview" targetRef="mApproveJoinGate"/>
-    <sequenceFlow id="fQMToJoin" sourceRef="qmContractReview" targetRef="mApproveJoinGate"/>
     <sequenceFlow id="fJoinToCus" sourceRef="mApproveJoinGate" targetRef="cusContractReview"/>
     <sequenceFlow id="fCusToCusApprove" sourceRef="cusContractReview" targetRef="cusApproveGate"/>
     <sequenceFlow id="fCusApproveToEnd" name="通过" sourceRef="cusApproveGate" targetRef="end">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewEntrustResult == 'ReviewPass'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewContractResult == 'ReviewPass'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="fCusApproveToSubmit" name="不通过" sourceRef="cusApproveGate" targetRef="submitContract">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewEntrustResult == 'ReviewDisprove'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewContractResult == 'ReviewDisprove'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask activiti:exclusive="true" id="blankTask" name="Blank"/>
+    <sequenceFlow id="_6" sourceRef="start" targetRef="blankTask"/>
+    <sequenceFlow id="_7" sourceRef="blankTask" targetRef="mApproveForkGate"/>
+    <sequenceFlow id="_2" sourceRef="submitContract" targetRef="blankTask"/>
+    <exclusiveGateway gatewayDirection="Unspecified" id="MMApproveGate" name="MM是否通过"/>
+    <exclusiveGateway gatewayDirection="Unspecified" id="QMApproveGate" name="QM是否通过"/>
+    <sequenceFlow id="_5" sourceRef="mmContractReview" targetRef="MMApproveGate"/>
+    <sequenceFlow id="_8" sourceRef="qmContractReview" targetRef="QMApproveGate"/>
+    <sequenceFlow id="_9" name="不通过" sourceRef="MMApproveGate" targetRef="submitContract">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewContractResult == 'ReviewDisprove'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_10" name="通过" sourceRef="MMApproveGate" targetRef="mApproveJoinGate">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewContractResult == 'ReviewPass'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_11" name="通过" sourceRef="QMApproveGate" targetRef="mApproveJoinGate">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewContractResult == 'ReviewPass'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_12" name="不通过" sourceRef="QMApproveGate" targetRef="submitContract">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewContractResult == 'ReviewDisprove'}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram documentation="background=#3C3F41;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
@@ -48,124 +76,176 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="end" id="Shape-end">
-        <omgdc:Bounds height="32.0" width="32.0" x="205.0" y="535.0"/>
+        <omgdc:Bounds height="32.0" width="32.0" x="200.0" y="800.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mApproveForkGate" id="Shape-mApproveForkGate">
-        <omgdc:Bounds height="32.0" width="32.0" x="205.0" y="90.0"/>
+        <omgdc:Bounds height="32.0" width="32.0" x="200.0" y="185.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mmContractReview" id="Shape-mmContractReview">
-        <omgdc:Bounds height="55.0" width="85.0" x="60.0" y="170.0"/>
+        <omgdc:Bounds height="55.0" width="85.0" x="60.0" y="245.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="qmContractReview" id="Shape-qmContractReview">
-        <omgdc:Bounds height="55.0" width="85.0" x="320.0" y="160.0"/>
+        <omgdc:Bounds height="55.0" width="85.0" x="315.0" y="245.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mApproveJoinGate" id="Shape-mApproveJoinGate">
-        <omgdc:Bounds height="32.0" width="32.0" x="205.0" y="245.0"/>
+        <omgdc:Bounds height="32.0" width="32.0" x="200.0" y="510.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="cusContractReview" id="Shape-cusContractReview">
-        <omgdc:Bounds height="55.0" width="85.0" x="170.0" y="330.0"/>
+        <omgdc:Bounds height="55.0" width="85.0" x="165.0" y="595.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="cusApproveGate" id="Shape-cusApproveGate" isMarkerVisible="false">
-        <omgdc:Bounds height="32.0" width="32.0" x="205.0" y="430.0"/>
+        <omgdc:Bounds height="32.0" width="32.0" x="200.0" y="695.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="submitContract" id="Shape-submitContract">
-        <omgdc:Bounds height="55.0" width="85.0" x="460.0" y="420.0"/>
+        <omgdc:Bounds height="55.0" width="85.0" x="455.0" y="685.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="blankTask" id="Shape-blankTask">
+        <omgdc:Bounds height="55.0" width="85.0" x="175.0" y="90.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="MMApproveGate" id="Shape-MMApproveGate" isMarkerVisible="false">
+        <omgdc:Bounds height="32.0" width="32.0" x="85.0" y="335.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="QMApproveGate" id="Shape-QMApproveGate" isMarkerVisible="false">
+        <omgdc:Bounds height="32.0" width="32.0" x="345.0" y="335.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="fForkToQM" id="BPMNEdge_fForkToQM" sourceElement="mApproveForkGate" targetElement="qmContractReview">
-        <omgdi:waypoint x="237.0" y="106.0"/>
-        <omgdi:waypoint x="350.0" y="150.0"/>
-        <omgdi:waypoint x="350.0" y="160.0"/>
+        <omgdi:waypoint x="232.0" y="201.0"/>
+        <omgdi:waypoint x="345.0" y="245.0"/>
+        <omgdi:waypoint x="345.0" y="245.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="fForkToMM" id="BPMNEdge_fForkToMM" sourceElement="mApproveForkGate" targetElement="mmContractReview">
-        <omgdi:waypoint x="205.0" y="106.0"/>
-        <omgdi:waypoint x="110.0" y="125.0"/>
-        <omgdi:waypoint x="110.0" y="170.0"/>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="fMMToJoin" id="BPMNEdge_fMMToJoin" sourceElement="mmContractReview" targetElement="mApproveJoinGate">
-        <omgdi:waypoint x="110.0" y="225.0"/>
-        <omgdi:waypoint x="110.0" y="260.0"/>
-        <omgdi:waypoint x="206.0" y="260.0"/>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="fSubmitToFork" id="BPMNEdge_fSubmitToFork" sourceElement="submitContract" targetElement="mApproveForkGate">
-        <omgdi:waypoint x="495.0" y="420.0"/>
-        <omgdi:waypoint x="495.0" y="70.0"/>
-        <omgdi:waypoint x="221.0" y="90.0"/>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="fJoinToCus" id="BPMNEdge_fJoinToCus" sourceElement="mApproveJoinGate" targetElement="cusContractReview">
-        <omgdi:waypoint x="221.0" y="277.0"/>
-        <omgdi:waypoint x="221.0" y="330.0"/>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="fQMToJoin" id="BPMNEdge_fQMToJoin" sourceElement="qmContractReview" targetElement="mApproveJoinGate">
-        <omgdi:waypoint x="350.0" y="215.0"/>
-        <omgdi:waypoint x="350.0" y="260.0"/>
-        <omgdi:waypoint x="236.0" y="260.0"/>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="fCusApproveToEnd" id="BPMNEdge_fCusApproveToEnd" sourceElement="cusApproveGate" targetElement="end">
-        <omgdi:waypoint x="221.0" y="462.0"/>
-        <omgdi:waypoint x="221.0" y="535.0"/>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="fCusToCusApprove" id="BPMNEdge_fCusToCusApprove" sourceElement="cusContractReview" targetElement="cusApproveGate">
-        <omgdi:waypoint x="221.0" y="385.0"/>
-        <omgdi:waypoint x="221.0" y="430.0"/>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="fStartToFork" id="BPMNEdge_fStartToFork" sourceElement="start" targetElement="mApproveForkGate">
-        <omgdi:waypoint x="213.5" y="40.13329402510257"/>
-        <omgdi:waypoint x="213.5" y="97.5"/>
+      <bpmndi:BPMNEdge bpmnElement="_12" id="BPMNEdge__12" sourceElement="_4" targetElement="submitContract">
+        <omgdi:waypoint x="377.0" y="351.0"/>
+        <omgdi:waypoint x="455.0" y="712.5"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="fCusApproveToSubmit" id="BPMNEdge_fCusApproveToSubmit" sourceElement="cusApproveGate" targetElement="submitContract">
-        <omgdi:waypoint x="237.0" y="446.0"/>
-        <omgdi:waypoint x="460.0" y="447.5"/>
+        <omgdi:waypoint x="232.0" y="711.0"/>
+        <omgdi:waypoint x="455.0" y="712.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="fCusToCusApprove" id="BPMNEdge_fCusToCusApprove" sourceElement="cusContractReview" targetElement="cusApproveGate">
+        <omgdi:waypoint x="216.0" y="650.0"/>
+        <omgdi:waypoint x="216.0" y="695.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="fJoinToCus" id="BPMNEdge_fJoinToCus" sourceElement="mApproveJoinGate" targetElement="cusContractReview">
+        <omgdi:waypoint x="216.0" y="542.0"/>
+        <omgdi:waypoint x="216.0" y="595.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="fCusApproveToEnd" id="BPMNEdge_fCusApproveToEnd" sourceElement="cusApproveGate" targetElement="end">
+        <omgdi:waypoint x="216.0" y="727.0"/>
+        <omgdi:waypoint x="216.0" y="800.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2" id="BPMNEdge__2" sourceElement="submitContract" targetElement="blankTask">
+        <omgdi:waypoint x="500.0" y="685.0"/>
+        <omgdi:waypoint x="500.0" y="335.0"/>
+        <omgdi:waypoint x="260.0" y="117.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5" id="BPMNEdge__5" sourceElement="mmContractReview" targetElement="_3">
+        <omgdi:waypoint x="101.0" y="300.0"/>
+        <omgdi:waypoint x="101.0" y="335.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6" id="BPMNEdge__6" sourceElement="start" targetElement="blankTask">
+        <omgdi:waypoint x="206.0" y="42.0"/>
+        <omgdi:waypoint x="206.0" y="90.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7" id="BPMNEdge__7" sourceElement="blankTask" targetElement="mApproveForkGate">
+        <omgdi:waypoint x="216.0" y="145.0"/>
+        <omgdi:waypoint x="216.0" y="185.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8" id="BPMNEdge__8" sourceElement="qmContractReview" targetElement="_4">
+        <omgdi:waypoint x="361.0" y="300.0"/>
+        <omgdi:waypoint x="361.0" y="335.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9" id="BPMNEdge__9" sourceElement="_3" targetElement="submitContract">
+        <omgdi:waypoint x="100.0" y="366.0"/>
+        <omgdi:waypoint x="100.0" y="905.0"/>
+        <omgdi:waypoint x="497.5" y="740.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="fForkToMM" id="BPMNEdge_fForkToMM" sourceElement="mApproveForkGate" targetElement="mmContractReview">
+        <omgdi:waypoint x="200.0" y="201.0"/>
+        <omgdi:waypoint x="105.0" y="220.0"/>
+        <omgdi:waypoint x="105.0" y="245.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_11" id="BPMNEdge__11" sourceElement="_4" targetElement="mApproveJoinGate">
+        <omgdi:waypoint x="345.0" y="351.0"/>
+        <omgdi:waypoint x="232.0" y="526.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10" id="BPMNEdge__10" sourceElement="_3" targetElement="mApproveJoinGate">
+        <omgdi:waypoint x="117.0" y="351.0"/>
+        <omgdi:waypoint x="200.0" y="526.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
