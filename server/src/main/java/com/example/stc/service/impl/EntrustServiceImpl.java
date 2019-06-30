@@ -137,6 +137,7 @@ public class EntrustServiceImpl implements EntrustService {
     @Override
     public Entrust newEntrust(Entrust entrust) {
         logger.info("newEntrust: ");
+        entrust.setUser(authorityUtils.getLoginUser());
         //根据某一个算法增加新的id
         entrust.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         entrust.setProcessState("ToSubmit");
