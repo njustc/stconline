@@ -19,6 +19,7 @@ import java.util.Map;
 public class EntrustAction {
 
     private static final String REVIEW = "reviewEntrustResult";
+    private static final String COMMENT = "reviewEntrustComment";
 
     @Autowired
     private STCProcessEngine stcProcessEngine;
@@ -113,12 +114,13 @@ public class EntrustAction {
         taskService.setAssignee(task.getId(), currentUser.getUserID());
         Map<String, Object> value = new HashMap<>();
         value.put(REVIEW, operation);
+        if (!comment.equals("")) {
+            value.put(COMMENT, comment);
+            entrust.setComment(comment);
+        }
         taskService.complete(task.getId(), value);
 
         entrust.setProcessState(getEntrustProcessState(processInstanceId));
-        if (!comment.equals("")) {
-            entrust.setComment(comment);
-        }
     }
 
     /**
