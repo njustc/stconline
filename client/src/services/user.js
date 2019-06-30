@@ -86,3 +86,10 @@ export async function addNewTestPlan(params) {
     data: params,
   });
 }
+
+export async function deleteTestPlan(params) {
+  console.log(params.pid);
+  return request(`api/project/testplan/${params.pid}`,{
+    method: 'DELETE',
+  });
+}

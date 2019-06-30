@@ -1,55 +1,9 @@
-import { Table, Divider, Button, Tag ,Breadcrumb} from 'antd';
+import {Table, Divider, Button, Tag, Breadcrumb, Modal} from 'antd';
 import React from "react";
 import {connect} from "dva";
+const confirm = Modal.confirm;
 import Link from 'umi/link'
 
-const columns = [
-  {
-    title: '方案ID',
-    dataIndex: 'pid',
-    key: 'pid',
-    render: text => <a href="javascript:;">{text}</a>,
-  },
-  {
-    title: '编辑人员',
-    dataIndex: 'author',
-    key: 'author',
-  },
-  {
-    title: '状态',
-    key: 'processState',
-    dataIndex: 'processState',
-    render: processState => {
-      var color = processState === 'Approve' ? 'purple' : 'green';
-      if (processState === 'ToReview') {
-        color = 'orange';
-      }
-      if (processState === 'ToSubmit') {
-        color = 'blue';
-      }
-      return (
-        <Tag color={color} key={processState}>
-          {processState}
-        </Tag>
-      );
-    }
-  },
-  {
-    title: '操作',
-    key: 'action',
-    render: (key) => (
-
-      <span>
-        {key.processState=='Submit'?<Link to={{pathname:'./plan_check',query:{pid:key.pid}}}>查看详情</Link>:<Link to={{pathname:'./plan_check',query:{pid:key.pid}}}>查看详情</Link>}
-        {/*<a href="/plan_check.html">查看详情</a>*/}
-        <Divider type="vertical" />
-        <a href="/plan_edit.html">编辑</a>
-		    <Divider type="vertical" />
-        <a>删除</a>
-      </span>
-    ),
-  },
-];
 
 // const data = [
 //   {
@@ -92,7 +46,14 @@ const mapDispatchToProps = (dispatch) => {
         type:`${namespace}/queryAddPlan`,
         payload:newPlan,
       });
-    }
+    },
+    queryDeletePlan:(params)=>{
+      dispatch({
+        type:`${namespace}/queryDeletePlan`,
+        payload:params
+      })
+    },
+
   };
 };
 
@@ -155,6 +116,74 @@ export default class List extends React.Component{
   componentDidMount() {
     this.props.onDidMount();
   }
+  showDeleteConfirm(key) {
+    // console.log(key.pid)
+    var that=this;
+    confirm({
+      title: '您是否要删除本方案?',
+      content: `测试方案ID:${key.pid}  编辑人员:${key.author}`,
+      okText: '确认删除',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk() {
+        that.props.queryDeletePlan({pid:key.pid})
+        // console.log('OK');
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
+
+  columns = [
+    {
+      title: '方案ID',
+      dataIndex: 'pid',
+      key: 'pid',
+      render: text => <a href="javascript:;">{text}</a>,
+    },
+    {
+      title: '编辑人员',
+      dataIndex: 'author',
+      key: 'author',
+    },
+    {
+      title: '状态',
+      key: 'processState',
+      dataIndex: 'processState',
+      render: processState => {
+        var color = processState === 'Approve' ? 'purple' : 'green';
+        if (processState === 'ToReview') {
+          color = 'orange';
+        }
+        if (processState === 'ToSubmit') {
+          color = 'blue';
+        }
+        return (
+          <Tag color={color} key={processState}>
+            {processState}
+          </Tag>
+        );
+      }
+    },
+    {
+      title: '操作',
+      key: 'action',
+      render: (key) => (
+
+        <span>
+        {key.processState == 'Submit' ? <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link> :
+          <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
+          {/*<a href="/plan_check.html">查看详情</a>*/}
+          <Divider type="vertical"/>
+        <a href="/plan_edit.html">编辑</a>
+		    <Divider type="vertical"/>
+          <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
+          {/*<a>删除</a>*/}
+      </span>
+      ),
+    },
+  ];
 
   render() {
     return (
@@ -165,7 +194,7 @@ export default class List extends React.Component{
         </Breadcrumb>
         <br/>
 
-        <Table columns={columns} dataSource={this.props.dataList}/>
+        <Table columns={this.columns} dataSource={this.props.dataList}/>
 
         {/*<div>*/}
         {/*  <Button onClick={*/}

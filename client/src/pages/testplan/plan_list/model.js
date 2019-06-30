@@ -1,4 +1,4 @@
-import { getAllTestPlan,addNewTestPlan} from '@/services/user';
+import { getAllTestPlan,addNewTestPlan,deleteTestPlan} from '@/services/user';
 
 export default {
   namespace:'testplanList',
@@ -50,6 +50,22 @@ export default {
       console.log(response);
       //执行addNewPlan
       yield put({type: 'addNewPlan', payload: response});
+    },
+    *queryDeletePlan({payload},{call,put}){
+      // console.log(payload)
+      yield call(deleteTestPlan,{pid:payload.pid})
+      // console.log(response)
+      const list=yield call(getAllTestPlan);
+      // console.log('GetAllTestPlan')
+      console.log(list);
+      console.log('_embedded' in list);
+      if(!('_embedded' in list)){
+        console.log("put []");
+        yield put({type:'getPlanData',payload: list})
+      }
+      else{
+        yield put({type:'getPlanData',payload: list._embedded.testPlans})
+      }
     },
 
   },
