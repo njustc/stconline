@@ -25,8 +25,8 @@ public class TestReportServiceImpl implements TestReportService {
     }
 
     @Override
-    public TestReport newTestReport(String pid, TestReport testReport) {
-        testReport.setPid(pid);
+    public TestReport newTestReport(TestReport testReport) {
+        // 要求pid在前端已经设置好
         // TODO: 流程引擎
         return testReportRepository.save(testReport);
     }

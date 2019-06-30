@@ -20,7 +20,7 @@ public interface TestPlanService extends BaseService<TestPlan> {
     /**
      * 新建项目测试方案
      */
-    TestPlan newTestPlan(String pid, TestPlan testPlan);
+    TestPlan newTestPlan(TestPlan testPlan);
 
     /**
      * 通过pid修改单个委托记录

@@ -63,10 +63,10 @@ public class TestPlanController extends BaseController {
      * 新建测试方案
      * @throws URISyntaxException
      */
-    @PostMapping(path = "/testplan/{pid}")
+    @PostMapping(path = "/testplan")
     public @ResponseBody
-    ResponseEntity<?> addNewTestPlan(@PathVariable String pid, @RequestBody TestPlan testPlan) throws URISyntaxException {
-        Resource<TestPlan> resource = toResource(testPlanService.newTestPlan(pid, testPlan));
+    ResponseEntity<?> addNewTestPlan(@RequestBody TestPlan testPlan) throws URISyntaxException {
+        Resource<TestPlan> resource = toResource(testPlanService.newTestPlan(testPlan));
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 

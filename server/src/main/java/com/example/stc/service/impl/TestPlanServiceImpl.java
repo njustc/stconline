@@ -25,8 +25,8 @@ public class TestPlanServiceImpl implements TestPlanService {
     }
 
     @Override
-    public TestPlan newTestPlan(String pid, TestPlan testPlan) {
-        testPlan.setPid(pid);
+    public TestPlan newTestPlan(TestPlan testPlan) {
+        // 要求pid在前端已经设置好
         // TODO: 流程引擎
         return testPlanRepository.save(testPlan);
     }

@@ -23,7 +23,7 @@ public class TestReport extends ProcessEntity {
     private String testType;
 
     /** 报告日期 */
-    private String reportData;
+    private String reportDate;
 
     /** 项目编号 */
     private String codeId;
@@ -32,10 +32,10 @@ public class TestReport extends ProcessEntity {
     private String sampleName;
 
     /** 来样日期 */
-    private String sampleData;
+    private String sampleDate;
 
     /** 测试日期 */
-    private String testData;
+    private String testDate;
 
     /** 样品状态 */
     private String sampleState;
@@ -53,19 +53,19 @@ public class TestReport extends ProcessEntity {
     private String tester;
 
     /** 主测人日期 */
-    private String testerTime;
+    private String testerDate;
 
     /** 审核人 */
     private String auditor;
 
     /** 审核人日期 */
-    private String auditorData;
+    private String auditorDate;
 
     /** 批准人 */
     private String approver;
 
     /** 批准人日期 */
-    private String approverData;
+    private String approverDate;
 
     /** 委托单位电话 */
     private String clientTel;
@@ -132,12 +132,12 @@ public class TestReport extends ProcessEntity {
         this.testType = testType;
     }
 
-    public String getReportData() {
-        return reportData;
+    public String getReportDate() {
+        return reportDate;
     }
 
-    public void setReportData(String reportData) {
-        this.reportData = reportData;
+    public void setReportDate(String reportDate) {
+        this.reportDate = reportDate;
     }
 
     public String getCodeId() {
@@ -156,20 +156,20 @@ public class TestReport extends ProcessEntity {
         this.sampleName = sampleName;
     }
 
-    public String getSampleData() {
-        return sampleData;
+    public String getSampleDate() {
+        return sampleDate;
     }
 
-    public void setSampleData(String sampleData) {
-        this.sampleData = sampleData;
+    public void setSampleDate(String sampleDate) {
+        this.sampleDate = sampleDate;
     }
 
-    public String getTestData() {
-        return testData;
+    public String getTestDate() {
+        return testDate;
     }
 
-    public void setTestData(String testData) {
-        this.testData = testData;
+    public void setTestDate(String testDate) {
+        this.testDate = testDate;
     }
 
     public String getSampleState() {
@@ -212,12 +212,12 @@ public class TestReport extends ProcessEntity {
         this.tester = tester;
     }
 
-    public String getTesterTime() {
-        return testerTime;
+    public String getTesterDate() {
+        return testerDate;
     }
 
-    public void setTesterTime(String testerTime) {
-        this.testerTime = testerTime;
+    public void setTesterDate(String testerDate) {
+        this.testerDate = testerDate;
     }
 
     public String getAuditor() {
@@ -228,12 +228,12 @@ public class TestReport extends ProcessEntity {
         this.auditor = auditor;
     }
 
-    public String getAuditorData() {
-        return auditorData;
+    public String getAuditorDate() {
+        return auditorDate;
     }
 
-    public void setAuditorData(String auditorData) {
-        this.auditorData = auditorData;
+    public void setAuditorDate(String auditorDate) {
+        this.auditorDate = auditorDate;
     }
 
     public String getApprover() {
@@ -244,12 +244,12 @@ public class TestReport extends ProcessEntity {
         this.approver = approver;
     }
 
-    public String getApproverData() {
-        return approverData;
+    public String getApproverDate() {
+        return approverDate;
     }
 
-    public void setApproverData(String approverData) {
-        this.approverData = approverData;
+    public void setApproverDate(String approverDate) {
+        this.approverDate = approverDate;
     }
 
     public String getClientTel() {

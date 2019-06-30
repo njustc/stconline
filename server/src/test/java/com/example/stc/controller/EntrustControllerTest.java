@@ -1,7 +1,5 @@
-package com.example.stc;
+package com.example.stc.controller;
 
-import com.example.stc.controller.EntrustController;
-import com.example.stc.controller.UserController;
 import com.example.stc.domain.Entrust;
 import com.example.stc.domain.User;
 import org.junit.Before;
@@ -16,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -58,32 +55,38 @@ public class EntrustControllerTest {
     @Test
     @WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS", "USER"})
     public void getAllEntrustTest() throws Exception {
-        Resources<Resource<Entrust>> resources =
-                this.entrustController.getAllEntrust();
+        Resources<Resource<Entrust>> resources = entrustController.getAllEntrust();
         assertThat(resources).isNotNull();
     }
 
     /**
      * 添加+修改+删除委托
      * */
-//    @Test
-//    @WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS", "USER"})
-//    public void PDSMTest() throws Exception {
-//        User user = new User();
-//        user.setUsername("CUSA");
-//        user.setPassword("cusa");
-//        user.setUserID("aaa");
-//        user.setId(9L);
-//        Entrust record = new Entrust();
-//        record.setUser(user);
-//
-//        ResponseEntity<?> entity =
-//                this.entrustController.addNewEntrust(record);
-//        Resource<Entrust> resource = (Resource<Entrust>) entity.getBody();
-//        record = resource.getContent();
-//        assertThat(record).isNotNull();
-//        //删除记录
-////        entity = this.entrustController.deleteEntrust(record.getPid());
-//
-//    }
+    @Test
+    @WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS", "USER"})
+    public void NewRepDelTest() throws Exception {
+        User user = new User();
+        user.setUsername("CUSA");
+        user.setPassword("cusa");
+        user.setUserID("u20190605134344");
+        user.setId(5L);
+        Entrust record = new Entrust();
+        record.setProcessInstanceID("");
+        record.setUser(user);
+        record.setVersion("1.0");
+        // 添加
+        ResponseEntity<?> entity = entrustController.addNewEntrust(record);
+        Resource<Entrust> resource = (Resource<Entrust>) entity.getBody();
+        Entrust entrustNew = entrustController.getOneEntrust(resource.getContent().getPid()).getContent();
+        assertThat(entrustNew).isNotNull();
+        assertThat(entrustNew.getVersion()).isEqualTo("1.0");
+        // 修改
+        entrustNew.setVersion("2.0");
+        entrustController.replaceEntrust(entrustNew.getPid(), entrustNew);
+        Entrust entrust = entrustController.getOneEntrust(entrustNew.getPid()).getContent();
+        assertThat(entrust).isNotNull();
+        assertThat(entrust.getVersion()).isEqualTo("2.0");
+        // 删除
+        entrustController.deleteEntrust(entrustNew.getPid());
+    }
 }

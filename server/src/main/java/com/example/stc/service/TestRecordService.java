@@ -39,7 +39,7 @@ public interface TestRecordService extends BaseService<TestRecord> {
     /**
      * 插入单个测试记录
      */
-    TestRecord newTestRecord(String pid, TestRecord testRecord);
+    TestRecord newTestRecord(TestRecord testRecord);
 
     /**
      * 通过用例ID修改单个测试记录

@@ -63,10 +63,10 @@ public class TestReportController extends BaseController {
      * 新建测试报告
      * @throws URISyntaxException
      */
-    @PostMapping(path = "/testReport/{pid}")
+    @PostMapping(path = "/testReport")
     public @ResponseBody
-    ResponseEntity<?> addNewTestReport(@PathVariable String pid, @RequestBody TestReport testReport) throws URISyntaxException {
-        Resource<TestReport> resource = toResource(testReportService.newTestReport(pid, testReport));
+    ResponseEntity<?> addNewTestReport(@RequestBody TestReport testReport) throws URISyntaxException {
+        Resource<TestReport> resource = toResource(testReportService.newTestReport(testReport));
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 

@@ -46,10 +46,8 @@ public class TestRecordServiceImpl implements TestRecordService {
     }
 
     @Override
-    public TestRecord newTestRecord(String pid, TestRecord testRecord) {
-        testRecord.setPid(pid);
-        // 该测试记录对应的测试用例应该是已经填好的
-        testRecord.setTestId(testRecord.getTestCase().getTestId());
+    public TestRecord newTestRecord(TestRecord testRecord) {
+        // 该测试记录的pid和testId应该是已经填好的
         // TODO: 流程引擎
         return testRecordRepository.save(testRecord);
     }
