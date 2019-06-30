@@ -24,7 +24,7 @@ public class TestPlanController extends BaseController {
 
     @Autowired
     private TestPlanService testPlanService;
-    
+
     /**
      * 添加Link，使 TestPlan -> Resource<TestPlan>
      */
@@ -61,6 +61,7 @@ public class TestPlanController extends BaseController {
 
     /**
      * 新建测试方案
+     *
      * @throws URISyntaxException
      */
     @PostMapping(path = "/testplan")
@@ -72,6 +73,7 @@ public class TestPlanController extends BaseController {
 
     /**
      * 修改单个测试方案
+     *
      * @throws URISyntaxException
      */
     @PutMapping(path = "/testplan/{pid}")

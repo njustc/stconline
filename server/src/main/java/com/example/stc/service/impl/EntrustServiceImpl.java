@@ -127,8 +127,6 @@ public class EntrustServiceImpl implements EntrustService {
     @Override
     public void deleteEntrustByPid(String pid) {
         logger.info("deleteEntrustByPid: ");
-        Entrust entrust = this.findEntrustByPid(pid); // 找到应删除的委托并检查，若为客户，只能访问本人的委托
-        entrustAction.deleteEntrustProcess(entrust);
 
         int n = entrustRepository.deleteByPid(pid);
         if (0 == n) {
@@ -139,6 +137,7 @@ public class EntrustServiceImpl implements EntrustService {
     @Override
     public Entrust newEntrust(Entrust entrust) {
         logger.info("newEntrust: ");
+        entrust.setUser(authorityUtils.getLoginUser());
         //根据某一个算法增加新的id
         entrust.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         entrust.setProcessState("ToSubmit");

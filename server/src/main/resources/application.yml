@@ -10,4 +10,3 @@ spring:
     hibernate:
       ddl-auto: update # 数据库自动与jpa同步
     show-sql: true
-

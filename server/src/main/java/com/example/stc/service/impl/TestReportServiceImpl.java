@@ -1,6 +1,7 @@
 package com.example.stc.service.impl;
 
 import com.example.stc.domain.TestReport;
+import com.example.stc.framework.exception.TestReportNotFoundException;
 import com.example.stc.repository.TestReportRepository;
 import com.example.stc.service.TestReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,10 @@ public class TestReportServiceImpl implements TestReportService {
 
     @Override
     public TestReport findTestReportByPid(String pid) {
-        return testReportRepository.findByPid(pid);
+        TestReport testReport = testReportRepository.findByPid(pid);
+        if (testReport == null)
+            throw new TestReportNotFoundException(pid);
+        return testReport;
     }
 
     @Override
@@ -48,6 +52,9 @@ public class TestReportServiceImpl implements TestReportService {
 
     @Override
     public void deleteTestReportByPid(String pid) {
+        TestReport testReport = testReportRepository.findByPid(pid);
+        if (testReport == null)
+            throw new TestReportNotFoundException(pid);
         testReportRepository.deleteByPid(pid);
     }
 }

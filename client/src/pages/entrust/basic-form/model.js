@@ -16,6 +16,7 @@ export default {
     },
     *addNewEntrust({ payload }, { call ,put}) {
       const response=yield call(addNewEntrust, payload);
+      console.log("newid=",response)
       yield put({type:'initData',payload:response})
       message.success('新建成功');
     },
