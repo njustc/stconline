@@ -40,9 +40,8 @@ public class AuthorityUtils {
         if (!isAuthenticated())
             return null; // 未登录
 
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
-        User user = userRepository.findByUsername(userDetails.getUsername());
+        User user = userRepository.findByUsername(SecurityContextHolder.getContext()
+                .getAuthentication().getName());
 
         logger.info("Get Authenticated User: " + user.getUsername());
 

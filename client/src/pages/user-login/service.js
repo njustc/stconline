@@ -1,9 +1,15 @@
 import request from '@/utils/request';
 
-export async function fakeAccountLogin(params) {
-  return request('/api/user-login/account', {
+/**
+ * 用户登录
+ * */
+export async function userLogin(payload) {
+  return request('/api/login', {
     method: 'POST',
-    data: params,
+    data: {
+      username: payload.username,//用户名
+      password: payload.password //密码
+    }
   });
 }
 

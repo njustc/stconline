@@ -1,52 +1,30 @@
-import { routerRedux } from 'dva/router';
-import { getPageQuery } from './utils/utils';
-import { setAuthority } from './utils/authority';
-import { reloadAuthorized } from './utils/Authorized';
-import { fakeAccountLogin, getFakeCaptcha } from './service';
+import {setAuthority} from './utils/authority';
+import {userLogin, getFakeCaptcha} from './service';
 
 export default {
-  namespace: 'userLogin',
+  namespace: 'userInfo',
 
   state: {
-    status: undefined,
+    data: {
+      status: undefined,
+      username: '',
+      password: ''
+    }
   },
 
   effects: {
-    *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
-      yield put({
-        type: 'changeLoginStatus',
-        payload: response,
-      });
-      // Login successfully
-      if (response.status === 'ok') {
-        reloadAuthorized();
-        const urlParams = new URL(window.location.href);
-        const params = getPageQuery();
-        let { redirect } = params;
-        if (redirect) {
-          const redirectUrlParams = new URL(redirect);
-          if (redirectUrlParams.origin === urlParams.origin) {
-            redirect = redirect.substr(urlParams.origin.length);
-            if (redirect.match(/^\/.*#/)) {
-              redirect = redirect.substr(redirect.indexOf('#') + 1);
-            }
-          } else {
-            window.location.href = redirect;
-            return;
-          }
-        }
-        yield put(routerRedux.replace(redirect || '/'));
-      }
+    * login({payload}, {call, put}) {
+      const response = yield call(userLogin, payload);
+      return response;
     },
 
-    *getCaptcha({ payload }, { call }) {
+    * getCaptcha({payload}, {call}) {
       yield call(getFakeCaptcha, payload);
     },
   },
 
   reducers: {
-    changeLoginStatus(state, { payload }) {
+    changeLoginStatus(state, {payload}) {
       setAuthority(payload.currentAuthority);
       return {
         ...state,
@@ -54,5 +32,9 @@ export default {
         type: payload.type,
       };
     },
+    //更新用户信息
+    flushUserInfo(state, {payload}) {
+      this.state = payload;
+    }
   },
 };
