@@ -66,7 +66,7 @@ export default {
         },
         //entrustlist
         {
-          name: '测试报告列表',
+          name: '委托列表',
           icon: 'pie-chart',
           path: '/basic-list',
           component: './entrust/basic-list/entrustlist',
