@@ -1,4 +1,6 @@
 import { Table, Divider, Tag ,Breadcrumb, Button} from 'antd';
+import Link from 'umi/link'
+import React from "react";
 
 const columns = [
   {
@@ -38,13 +40,15 @@ const columns = [
   {
     title: '操作',
     key: 'action',
-    render: (text, record) => (
+    render: (key) => (
       <span>
-        <a href="/contract_detail.html">查看详情</a>
-        <Divider type="vertical" />
-        <a href="/contract_edit.html">编辑</a>
-		<Divider type="vertical" />
-		<a>删除</a>
+        {key.processState == 'Submit' ? <Link to={{pathname: './contract_detail', query: {pid: key.pid}}}>查看详情</Link> :
+          <Link to={{pathname: './contract_detail', query: {pid: key.pid}}}>查看详情</Link>}
+        <Divider type="vertical"/>
+        {/*<a href="/plan_edit.html">编辑</a>*/}
+        {<Link to={{pathname: '../../contract_edit', query: {pid: key.pid}}}>编辑</Link>}
+        <Divider type="vertical"/>
+          <span style={{color: 'red', cursor: 'pointer'}}>删除</span>
       </span>
     ),
   },

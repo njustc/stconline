@@ -11,7 +11,7 @@ const namespace='testplanEdit';
 
 const mapStateToProps = (state) => {
   const dataEdit = state[namespace];
-  console.log(dataEdit);
+  // console.log(dataEdit);
   return {
     dataEdit,
   };
@@ -51,13 +51,7 @@ function showDeleteConfirm() {
 
 // const mapDispatchToProps = (dispatch) => {
 //   return {
-//     //页面在mount完后发送一个queryInitPlans的action，被effects处理
-//     onDidMount: () => {
-//       dispatch({
-//         type: `${namespace}/queryGetOnePlan`,
-//         payload: this.props.location.query,
-//       });
-//     },
+//
 //     queryAddPlan:(newPlan)=>{
 //       dispatch({
 //         type:`${namespace}/queryAddPlan`,
