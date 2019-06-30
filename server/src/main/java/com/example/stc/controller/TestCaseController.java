@@ -30,7 +30,7 @@ public class TestCaseController extends BaseController {
      */
     private static Resource<TestCase> toResource(TestCase testCase) {
         return new Resource<>(testCase
-                , linkTo(methodOn(TestCaseController.class).getOneTestCase(testCase.getPid(), testCase.getTestId())).withSelfRel()
+                , linkTo(methodOn(TestCaseController.class).getOneTestCase(testCase.getTestId())).withSelfRel()
                 , linkTo(methodOn(TestCaseController.class).getAllTestCases()).withSelfRel()
         );
     }
@@ -38,7 +38,7 @@ public class TestCaseController extends BaseController {
     /**
      * 查看全部测试用例
      */
-    @GetMapping(path = "/testcase")
+    @GetMapping(path = "/testcase/all")
     public @ResponseBody
     Resources<Resource<TestCase>> getAllTestCases() {
         List<Resource<TestCase>> testCases = testCaseService.findAllTestCases().stream()
@@ -51,9 +51,9 @@ public class TestCaseController extends BaseController {
     /**
      * 查看某一项目全部测试用例
      */
-    @GetMapping(path = "/testcase/{pid}")
+    @GetMapping(path = "/testcase")
     public @ResponseBody
-    Resources<Resource<TestCase>> getProjectTestCases(@PathVariable String pid) {
+    Resources<Resource<TestCase>> getProjectTestCases(@RequestParam String pid) {
         List<Resource<TestCase>> testCases = testCaseService.findAllTestCasesByPid(pid).stream()
                 .map(TestCaseController::toResource)
                 .collect(Collectors.toList());
@@ -75,9 +75,9 @@ public class TestCaseController extends BaseController {
     /**
      * 查看单个测试用例
      */
-    @GetMapping(path = "/testcase/{pid}/{testId}")
+    @GetMapping(path = "/testcase/{testId}")
     public @ResponseBody
-    Resource<TestCase> getOneTestCase(@PathVariable String pid, @PathVariable String testId) {
+    Resource<TestCase> getOneTestCase(@PathVariable String testId) {
         TestCase testCase = testCaseService.findTestCaseByTestId(testId);
         return toResource(testCase);
     }
@@ -86,9 +86,9 @@ public class TestCaseController extends BaseController {
      * 修改单个测试用例
      * @throws URISyntaxException
      */
-    @PutMapping(path = "/testcase/{pid}/{testId}")
+    @PutMapping(path = "/testcase/{testId}")
     public @ResponseBody
-    ResponseEntity<?> replaceTestCase(@PathVariable String pid, @PathVariable String testId, @RequestBody TestCase testCase) throws URISyntaxException {
+    ResponseEntity<?> replaceTestCase(@PathVariable String testId, @RequestBody TestCase testCase) throws URISyntaxException {
         TestCase updatedTestCase = testCaseService.updateTestCase(testId, testCase);
         Resource<TestCase> resource = toResource(updatedTestCase);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
@@ -97,9 +97,9 @@ public class TestCaseController extends BaseController {
     /**
      * 删除单个测试用例
      */
-    @DeleteMapping(path = "/testcase/{pid}/{testId}")
+    @DeleteMapping(path = "/testcase/{testId}")
     public @ResponseBody
-    ResponseEntity<?> deleteTestCase(@PathVariable String pid, @PathVariable String testId) {
+    ResponseEntity<?> deleteTestCase(@PathVariable String testId) {
         testCaseService.deleteTestCaseByTestId(testId);
         return ResponseEntity.noContent().build();
     }

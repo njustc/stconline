@@ -30,7 +30,7 @@ public class TestRecordController extends BaseController {
      */
     private static Resource<TestRecord> toResource(TestRecord testRecord) {
         return new Resource<>(testRecord
-                , linkTo(methodOn(TestRecordController.class).getOneTestRecord(testRecord.getPid(), testRecord.getTestId())).withSelfRel()
+                , linkTo(methodOn(TestRecordController.class).getOneTestRecord(testRecord.getTestId())).withSelfRel()
                 , linkTo(methodOn(TestRecordController.class).getAllTestRecords()).withSelfRel()
         );
     }
@@ -38,7 +38,7 @@ public class TestRecordController extends BaseController {
     /**
      * 查看全部测试记录
      */
-    @GetMapping(path = "/testRecord")
+    @GetMapping(path = "/testRecord/all")
     public @ResponseBody
     Resources<Resource<TestRecord>> getAllTestRecords() {
         List<Resource<TestRecord>> testRecords = testRecordService.findAllTestRecords().stream()
@@ -51,9 +51,9 @@ public class TestRecordController extends BaseController {
     /**
      * 查看某一项目全部测试记录
      */
-    @GetMapping(path = "/testRecord/{pid}")
+    @GetMapping(path = "/testRecord")
     public @ResponseBody
-    Resources<Resource<TestRecord>> getProjectTestRecords(@PathVariable String pid) {
+    Resources<Resource<TestRecord>> getProjectTestRecords(@RequestParam String pid) {
         List<Resource<TestRecord>> testRecords = testRecordService.findAllTestRecordsByPid(pid).stream()
                 .map(TestRecordController::toResource)
                 .collect(Collectors.toList());
@@ -76,9 +76,9 @@ public class TestRecordController extends BaseController {
     /**
      * 查看单个测试记录
      */
-    @GetMapping(path = "/testRecord/{pid}/{testId}")
+    @GetMapping(path = "/testRecord/{testId}")
     public @ResponseBody
-    Resource<TestRecord> getOneTestRecord(@PathVariable String pid, @PathVariable String testId) {
+    Resource<TestRecord> getOneTestRecord(@PathVariable String testId) {
         TestRecord testRecord = testRecordService.findTestRecordByTestId(testId);
         return toResource(testRecord);
     }
@@ -87,9 +87,9 @@ public class TestRecordController extends BaseController {
      * 修改单个测试记录
      * @throws URISyntaxException
      */
-    @PutMapping(path = "/testRecord/{pid}/{testId}")
+    @PutMapping(path = "/testRecord/{testId}")
     public @ResponseBody
-    ResponseEntity<?> replaceTestRecord(@PathVariable String pid, @PathVariable String testId, @RequestBody TestRecord testRecord) throws URISyntaxException {
+    ResponseEntity<?> replaceTestRecord(@PathVariable String testId, @RequestBody TestRecord testRecord) throws URISyntaxException {
         TestRecord updatedTestRecord = testRecordService.updateTestRecord(testId, testRecord);
         Resource<TestRecord> resource = toResource(updatedTestRecord);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
@@ -98,9 +98,9 @@ public class TestRecordController extends BaseController {
     /**
      * 删除单个测试记录
      */
-    @DeleteMapping(path = "/testRecord/{pid}/{testId}")
+    @DeleteMapping(path = "/testRecord/{testId}")
     public @ResponseBody
-    ResponseEntity<?> deleteTestRecord(@PathVariable String pid, @PathVariable String testId) {
+    ResponseEntity<?> deleteTestRecord(@PathVariable String testId) {
         testRecordService.deleteTestRecordByTestId(testId);
         return ResponseEntity.noContent().build();
     }

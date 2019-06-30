@@ -60,17 +60,17 @@ public class TestRecordControllerTest {
         record.setBugId("000");
         // 添加
         testRecordController.addNewTestRecord(record);
-        TestRecord testRecordNew = testRecordController.getOneTestRecord(record.getPid(), record.getTestId()).getContent();
+        TestRecord testRecordNew = testRecordController.getOneTestRecord(record.getTestId()).getContent();
         assertThat(testRecordNew).isNotNull();
         assertThat(testRecordNew.getBugId()).isEqualTo("000");
         // 修改
         testRecordNew.setBugId("111");
-        testRecordController.replaceTestRecord(testRecordNew.getPid(), testRecordNew.getTestId(), testRecordNew);
-        TestRecord testRecord = testRecordController.getOneTestRecord(testRecordNew.getPid(), testRecordNew.getTestId()).getContent();
+        testRecordController.replaceTestRecord(testRecordNew.getTestId(), testRecordNew);
+        TestRecord testRecord = testRecordController.getOneTestRecord(testRecordNew.getTestId()).getContent();
         assertThat(testRecord).isNotNull();
         assertThat(testRecord.getBugId()).isEqualTo("111");
         // 删除
-        testRecordController.deleteTestRecord(testRecordNew.getPid(), testRecordNew.getTestId());
+        testRecordController.deleteTestRecord(testRecordNew.getTestId());
     }
 
 }

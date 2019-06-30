@@ -59,17 +59,17 @@ public class TestCaseControllerTest {
         record.setDesigner("designer1");
         // 添加
         testCaseController.addNewTestCase(record);
-        TestCase testCaseNew = testCaseController.getOneTestCase(record.getPid(), record.getTestId()).getContent();
+        TestCase testCaseNew = testCaseController.getOneTestCase(record.getTestId()).getContent();
         assertThat(testCaseNew).isNotNull();
         assertThat(testCaseNew.getDesigner()).isEqualTo("designer1");
         // 修改
         testCaseNew.setDesigner("designer2");
-        testCaseController.replaceTestCase(testCaseNew.getPid(), testCaseNew.getTestId(), testCaseNew);
-        TestCase testCase = testCaseController.getOneTestCase(testCaseNew.getPid(), testCaseNew.getTestId()).getContent();
+        testCaseController.replaceTestCase(testCaseNew.getTestId(), testCaseNew);
+        TestCase testCase = testCaseController.getOneTestCase(testCaseNew.getTestId()).getContent();
         assertThat(testCase).isNotNull();
         assertThat(testCase.getDesigner()).isEqualTo("designer2");
         // 删除
-        testCaseController.deleteTestCase(testCaseNew.getPid(), testCaseNew.getTestId());
+        testCaseController.deleteTestCase(testCaseNew.getTestId());
     }
 
 }

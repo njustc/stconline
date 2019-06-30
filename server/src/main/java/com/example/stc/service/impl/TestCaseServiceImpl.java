@@ -1,6 +1,7 @@
 package com.example.stc.service.impl;
 
 import com.example.stc.domain.TestCase;
+import com.example.stc.framework.exception.TestCaseNotFoundException;
 import com.example.stc.framework.util.DateUtils;
 import com.example.stc.repository.TestCaseRepository;
 import com.example.stc.service.TestCaseService;
@@ -31,7 +32,10 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     @Override
     public TestCase findTestCaseByTestId(String testId) {
-        return testCaseRepository.findByTestId(testId);
+        TestCase testCase = testCaseRepository.findByTestId(testId);
+        if (testCase == null)
+            throw new TestCaseNotFoundException(testId);
+        return testCase;
     }
 
     @Override
@@ -41,6 +45,9 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     @Override
     public void deleteTestCaseByTestId(String testId) {
+        TestCase testCase = testCaseRepository.findByTestId(testId);
+        if (testCase == null)
+            throw new TestCaseNotFoundException(testId);
         testCaseRepository.deleteByTestId(testId);
     }
 
