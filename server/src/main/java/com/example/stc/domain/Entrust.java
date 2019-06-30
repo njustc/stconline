@@ -242,11 +242,6 @@ public class Entrust extends ProcessEntity {
     private String checkSample;
 
     /**
-     * 确认意见（单选）
-     */
-    private String opinions;
-
-    /**
      * 评审意见
      */
     private String comment;
@@ -629,14 +624,6 @@ public class Entrust extends ProcessEntity {
 
     public void setCheckSample(String checkSample) {
         this.checkSample = checkSample;
-    }
-
-    public String getOpinions() {
-        return opinions;
-    }
-
-    public void setOpinions(String opinions) {
-        this.opinions = opinions;
     }
 
     public User getUser() {

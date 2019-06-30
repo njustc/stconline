@@ -8,6 +8,7 @@ import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.DateUtils;
 import com.example.stc.repository.EntrustRepository;
 import com.example.stc.repository.ProjectRepository;
+import com.example.stc.repository.UserRepository;
 import com.example.stc.service.EntrustService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,9 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Autowired
     private EntrustRepository entrustRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private ProjectRepository projectRepository;
@@ -137,7 +141,8 @@ public class EntrustServiceImpl implements EntrustService {
     @Override
     public Entrust newEntrust(Entrust entrust) {
         logger.info("newEntrust: ");
-        entrust.setUser(authorityUtils.getLoginUser());
+        //entrust.setUser(authorityUtils.getLoginUser());
+        entrust.setUser(userRepository.findByUid("u20190605134344"));
         //根据某一个算法增加新的id
         entrust.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         entrust.setProcessState("ToSubmit");
