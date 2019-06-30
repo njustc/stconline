@@ -1,5 +1,6 @@
 // ref: https://umijs.org/config/
-import { primaryColor } from '../src/defaultSettings';
+import {primaryColor} from '../src/defaultSettings';
+
 export default {
   base: '/',
   publicPath: 'http://localhost:8080/',

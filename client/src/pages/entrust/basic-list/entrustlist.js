@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import {Table,Select,Input,Button ,Breadcrumb,Divider, Tag,Menu,Modal} from 'antd';
+import React, {Component} from 'react';
+import {Table, Select, Input, Button, Breadcrumb, Divider, Tag, Menu, Modal} from 'antd';
+
 const Search = Input.Search;
-import { connect } from 'dva';
+import {connect} from 'dva';
 import Link from 'umi/link'
+
 const confirm = Modal.confirm;
 const namespace = 'entrustlist';
 
@@ -12,30 +14,30 @@ const mapStateToProps = (state) => {
     listdata,
   };
 };
-const mapDispatchToProps=(dispatch)=>{
+const mapDispatchToProps = (dispatch) => {
   return {
-    onDidMount:()=>{
+    onDidMount: () => {
       dispatch({
-        type:`${namespace}/GetAllEntrust`,
+        type: `${namespace}/GetAllEntrust`,
       })
     },
-    DeleteEntrust:(params)=>{
+    DeleteEntrust: (params) => {
       dispatch({
-        type:`${namespace}/DeleteEntrust`,
-        payload:params
+        type: `${namespace}/DeleteEntrust`,
+        payload: params
       })
     }
   }
 }
 
 
-@connect(mapStateToProps,mapDispatchToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 export default class EntrustList extends Component {
   componentDidMount() {
     this.props.onDidMount();
   }
 
-  columns =[
+  columns = [
     {
       title: '委托ID',
       dataIndex: 'pid',
@@ -56,32 +58,32 @@ export default class EntrustList extends Component {
       title: '状态',
       key: 'processState',
       dataIndex: 'processState',
-      render: processState => 
-          {
-            var color = processState==='Review' ? 'geekblue' : 'green'
-            if (processState === '委托审核未通过') {
-              color = 'volcano'
-            }
-            if (processState === 'Submit') {
-              color = 'grey'
-            }
-            return (
-              <Tag color={color} key={processState}>
-                {processState}
-              </Tag>
-            );
-          }
+      render: processState => {
+        var color = processState === 'Review' ? 'geekblue' : 'green'
+        if (processState === '委托审核未通过') {
+          color = 'volcano'
+        }
+        if (processState === 'Submit') {
+          color = 'grey'
+        }
+        return (
+          <Tag color={color} key={processState}>
+            {processState}
+          </Tag>
+        );
+      }
     },
     {
       title: '操作',
       key: 'action',
       render: (key) => (
         <span>
-          {key.processState=='Submit'?<Link to={{pathname:'./basic-check',query:{pid:key.pid}}}>查看项目详情</Link>:<Link to={{pathname:'./basic-check',query:{pid:key.pid}}}>查看项目详情</Link>}
-          <Divider type="vertical" />
-          {<Link to={{pathname:'../../basic-form',query:{pid:key.pid}}}>编辑</Link>}
-          <Divider type="vertical" />
-          <span style={{color:'red', cursor:'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)} >删除</span >
+          {key.processState == 'Submit' ? <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link> :
+            <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link>}
+          <Divider type="vertical"/>
+          {<Link to={{pathname: '../../basic-form', query: {pid: key.pid}}}>编辑</Link>}
+          <Divider type="vertical"/>
+          <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
         </span>
       ),
     },
@@ -89,7 +91,7 @@ export default class EntrustList extends Component {
 
   showDeleteConfirm(key) {
     // console.log(key.pid)
-    var that=this
+    var that = this
     confirm({
       title: '您是否要删除本委托?',
       content: `委托ID:${key.pid}  用户名:${key.name}`,
@@ -98,7 +100,7 @@ export default class EntrustList extends Component {
       okType: 'danger',
       cancelText: '取消',
       onOk() {
-        that.props.DeleteEntrust({pid:key.pid})
+        that.props.DeleteEntrust({pid: key.pid})
         // that.props.onDidMount()
         // console.log('OK');
       },
@@ -109,31 +111,30 @@ export default class EntrustList extends Component {
   }
 
 
-
   render() {
     return (
-      <div> 
-	  <Breadcrumb>
-		<Breadcrumb.Item hr ="/basic-list.html">委托列表</Breadcrumb.Item>
-	  </Breadcrumb>
+      <div>
+        <Breadcrumb>
+          <Breadcrumb.Item hr="/basic-list.html">委托列表</Breadcrumb.Item>
+        </Breadcrumb>
         <Select
-          style={{ width: 200 }}
+          style={{width: 200}}
           defaultValue="1"
         >
           <Option value="1">按委托ID</Option>
           <Option value="2">按委托状态</Option>
         </Select>
         <Search
-            style={{marginLeft:100,width: 200 }}
+          style={{marginLeft: 100, width: 200}}
         />
         {/* <div class="" */}
-        <Table  style={{marginTop:50 }} columns={this.columns} dataSource={this.props.listdata.data} />
-		<Button
-		style={{ marginLeft: 400 }}
-		type="primary"
-		href="/basic-form.html">
-		新建委托
-		</Button>
+        <Table style={{marginTop: 50}} columns={this.columns} dataSource={this.props.listdata.data}/>
+        <Button
+          style={{marginLeft: 400}}
+          type="primary"
+          href="/basic-form.html">
+          新建委托
+        </Button>
       </div>
     );
   }
