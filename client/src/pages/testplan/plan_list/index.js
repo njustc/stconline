@@ -4,7 +4,6 @@ import {connect} from "dva";
 const confirm = Modal.confirm;
 import Link from 'umi/link'
 
-
 // const data = [
 //   {
 //     key: '1',
@@ -174,12 +173,11 @@ export default class List extends React.Component{
         <span>
         {key.processState == 'Submit' ? <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link> :
           <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
-          {/*<a href="/plan_check.html">查看详情</a>*/}
           <Divider type="vertical"/>
-        <a href="/plan_edit.html">编辑</a>
-		    <Divider type="vertical"/>
+          {/*<a href="/plan_edit.html">编辑</a>*/}
+          {<Link to={{pathname: '../../plan_edit', query: {pid: key.pid}}}>编辑</Link>}
+          <Divider type="vertical"/>
           <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
-          {/*<a>删除</a>*/}
       </span>
       ),
     },
