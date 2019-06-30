@@ -17,8 +17,10 @@ import java.net.URLEncoder;
 public class CookieUtils {
     //默认设置cookie寿命为1个月
     private static int age = 30 * 24 * 60 * 60;
-    //默认的cookie的域
-    private static String domain = "/";
+    //默认的cookie的path
+    private static String path = "/";
+    //默认的cookie的domain
+    private static String domain = "localhost";
 
     /**
      * 用于添加cookie
@@ -31,7 +33,7 @@ public class CookieUtils {
     public void addCookie(HttpServletResponse response, String key, String value, int age) throws UnsupportedEncodingException {
         Cookie cookie = new Cookie(key, URLEncoder.encode(value, "UTF-8"));
         cookie.setMaxAge(age);
-        cookie.setPath(domain);
+        cookie.setPath(path);
         response.addCookie(cookie);
     }
 
@@ -66,7 +68,7 @@ public class CookieUtils {
     public static void deleteCookie(String name, HttpServletRequest request, HttpServletResponse response) {
         Cookie c1 = new Cookie(name, "");
         c1.setMaxAge(0);        //设置寿命为0 , cookie瞬间消失
-        c1.setPath(domain);
+        c1.setPath(path);
         response.addCookie(c1);
     }
 }
