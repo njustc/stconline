@@ -6,12 +6,12 @@
         <activiti:formProperty id="EntrustID" name="ID of entrust" required="true" type="String"/>
       </extensionElements>
     </startEvent>
-    <userTask activiti:assignee="${ClientID}" activiti:exclusive="true" id="submitEntrust" name="Submit">
+    <userTask activiti:assignee="${ClientID}" activiti:exclusive="true" id="submitEntrust" name="ToSubmit">
       <extensionElements>
         <activiti:formProperty id="user" name="client" type="string" value="client"/>
       </extensionElements>
     </userTask>
-    <userTask activiti:exclusive="true" id="reviewEntrust" name="Review">
+    <userTask activiti:exclusive="true" id="reviewEntrust" name="ToReview">
       <extensionElements>
         <activiti:formProperty id="reviewEntrustResult" name="Do you approve this request?" required="true" type="String"/>
         <activiti:formProperty id="user" name="worker" type="string" value="worker"/>

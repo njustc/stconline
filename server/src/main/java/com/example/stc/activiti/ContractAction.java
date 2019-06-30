@@ -2,17 +2,23 @@ package com.example.stc.activiti;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.stc.domain.Contract;
+import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
 import com.example.stc.framework.util.AuthorityUtils;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
 public class ContractAction {
+
+    private static final String REVIEW = "reviewContractResult";
+    private static final String COMMENT = "reviewContractComment";
 
     @Autowired
     private STCProcessEngine stcProcessEngine;
@@ -48,6 +54,65 @@ public class ContractAction {
         return contract.getProcessInstanceID();
     }
 
+    /**
+     * 提交Contract流程
+     * @param contract
+     */
+    public void submitContractProcess(Contract contract) {
+        String processInstanceId = contract.getProcessInstanceID();
+        Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+        // taskService.setAssignee(task.getId(), authorityUtils.getLoginUser().getUserID());
+        taskService.complete(task.getId());
+    }
+
+    /**
+     * 评审Contract流程
+     * @param contract
+     * @param operation
+     * @param comment
+     */
+    public void reviewContractProcess(Contract contract, String operation, String comment) {
+        String processInstanceId = contract.getProcessInstanceID();
+        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+        for (Task task: tasks) {
+            Role role;
+            switch (task.getName()) {
+                case "MMReviewContract": role = Role.SalesManager; break;
+                case "QMReviewContract": role = Role.QualityManager; break;
+                case "CusReviewContract": role = Role.Customer; break;
+                default: return;
+            }
+            if (!authorityUtils.hasAuthority(role)) {
+                continue;
+            }
+
+            Map<String, Object> value = new HashMap<>();
+            value.put(REVIEW, operation);
+            if (!comment.equals("")) {
+                value.put(COMMENT, comment);
+                contract.setComment(comment);
+            }
+
+            if (operation.equals("ReviewDisprove")) {
+                /** 异常处理 */
+                System.out.println("异常处理");
+                for (Task task1: tasks) {
+                    if (task1 != task) {
+                        taskService.complete(task1.getId(), value);
+                    }
+                }
+            }
+
+            User currentUser = authorityUtils.getLoginUser();
+            taskService.setAssignee(task.getId(), currentUser.getUserID());
+            taskService.complete(task.getId(), value);
+        }
+    }
+
+    /**
+     * 删除合同流程
+     * @param contract
+     */
     public void deleteContractProcess(Contract contract) {
         String processInstanceId = contract.getProcessInstanceID();
         if (!processInstanceId.equals(""))
