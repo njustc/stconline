@@ -1,6 +1,7 @@
 import { Table, Divider, Button, Tag ,Breadcrumb} from 'antd';
 import React from "react";
 import {connect} from "dva";
+import Link from 'umi/link'
 
 const columns = [
   {
@@ -37,8 +38,10 @@ const columns = [
     title: '操作',
     key: 'action',
     render: (key) => (
+
       <span>
-        <a href="/plan_check.html">查看详情</a>
+        {key.processState=='Submit'?<Link to={{pathname:'./plan_check',query:{pid:key.pid}}}>查看详情</Link>:<Link to={{pathname:'./plan_check',query:{pid:key.pid}}}>查看详情</Link>}
+        {/*<a href="/plan_check.html">查看详情</a>*/}
         <Divider type="vertical" />
         <a href="/plan_edit.html">编辑</a>
 		    <Divider type="vertical" />
@@ -69,13 +72,11 @@ const columns = [
 //   },
 // ];
 
-const namespace='testplans';
+const namespace='testplanList';
 const mapStateToProps = (state) => {
   const dataList = state[namespace].data;
-  const newdataList=state[namespace].newdata;
   return {
     dataList,
-    newdataList,
   };
 };
 const mapDispatchToProps = (dispatch) => {

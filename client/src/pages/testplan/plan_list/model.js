@@ -1,10 +1,9 @@
 import { getAllTestPlan,addNewTestPlan} from '@/services/user';
 
 export default {
-  namespace:'testplans',
+  namespace:'testplanList',
   state: {
     data: [],
-    newdata:[],
     counter: 0,
     // data: [
     //   {

@@ -72,6 +72,13 @@ export async function getAllTestPlan() {
   //return request('/dev/api/project/testplan');
 }
 
+export async function getOneTestPlan(params) {
+  console.log(params);
+  return request(`api/project/testplan/${params.pid}`);
+  //return request(`/dev/api/project/testplan/${params.pid}`);
+}
+
+
 export async function addNewTestPlan(params) {
   console.log(params);
   return request('dev/addPlan', {
