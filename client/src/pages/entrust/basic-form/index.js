@@ -26,17 +26,6 @@ const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const confirm=Modal.confirm;
 const namespace = 'entrustForm';
-//此处为假数据，未来在得到用户之前的数据后，mapState2Props里return form
-//在对应的formitem里添加initialValue，此时表单里现实的数据就是从后端的得到的。
-const form={
-    pid:'1',			
-    entrustEntity	:'',
-    testType:'软件确认测试'	,	
-    softwareName:'little mushroom',	
-    version:'1.0.2',
-    
-}
-//#endregion
 
 
 const Dragger = Upload.Dragger;
@@ -121,19 +110,17 @@ const mapDispatchToProps=(dispatch)=>{
 class BasicForm extends PureComponent {
 constructor(props){
   super(props)
-
   this.state={
     pid:""
   }
-}
+} 
 
   componentDidMount() {
     const {dispatch}=this.props;
-
+    console.log(this.props.location.query)
     if(this.props.location.query.pid){
-
       this.state.pid=this.props.location.query.pid
-      console.log(this.state.pid)
+      // console.log(this.state.pid)
 
     dispatch({
       type:'entrustForm/getOneEntrust',
@@ -142,7 +129,7 @@ constructor(props){
   }
 
   else{
-
+    console.log(this.state.pid)
   }
   }
 
@@ -171,30 +158,34 @@ constructor(props){
   };
 
   saveForm=(form)=>{
-    console.log(form)
-    
+    // console.log(form)
     const { dispatch } = this.props;  
-    form.validateFields((err,value) => {
-      // console.log("error",err)
-      // console.log('lalalala',value)
-      // console.log(this)
 
+    form.validateFields((err,value) => {
+      console.log(value)
       if (this.state.pid=="") {
         //新建
         value.pid=this.state.pid
+        value.processInstanceID=""
+        value.processState="ToSubmit"
+        value.entrustEntity=""
+        value.comment=""
+        value.userId="5"
+        console.log("start adds")
+        console.log("afterpack",value)
         dispatch({
           type: 'entrustForm/addNewEntrust',
           payload: value,
         });
       } else {
         //保存
+
         value.pid=this.state.pid
         dispatch({
           type: 'entrustForm/replaceEntrust',
           payload: value,
         });
       }
-      console.log("finish save")
 
     })
   }
@@ -244,9 +235,10 @@ constructor(props){
               {...formItemLayout}
               label={<FormattedMessage id="basic-form.radio.testtype"/>}
             >
+              {/* //测试类型 */}
               <div>
                 {getFieldDecorator('testType', {
-                  initialValue: this.props.entrustdata.data.testType || 'basic-form.radio.confirm',
+                  initialValue: this.props.entrustdata.data || 'basic-form.radio.confirm',
                 })(
                   <Radio.Group>
                     <Radio value="basic-form.radio.confirm">
@@ -262,9 +254,10 @@ constructor(props){
                 )}
               </div>
             </FormItem>
+            {/* //	软件名称 */}
             <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.softname.label"/>}>
               {getFieldDecorator('softwareName', {
-                initialValue: this.props.entrustdata.data.softname || '',
+                initialValue: this.props.entrustdata.data.softwareName || '',
               }, {
                 rules: [
                   {
@@ -274,6 +267,7 @@ constructor(props){
                 ],
               })(<Input placeholder={formatMessage({id: 'basic-form.softname.placeholder'})}/>)}
             </FormItem>
+            {/* 版本号 */}
             <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.version.label"/>}>
               {getFieldDecorator('version', {
                 initialValue: this.props.entrustdata.data.version || '',
@@ -286,6 +280,7 @@ constructor(props){
                 ],
               })(<Input placeholder={formatMessage({id: 'basic-form.version.placeholder'})}/>)}
             </FormItem>
+            {/* //公司名（中文 */}
             <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.unitc.label"/>}>
               {getFieldDecorator('companyCh', {
                 initialValue: this.props.entrustdata.data.companyCh || '',
@@ -298,6 +293,7 @@ constructor(props){
                 ],
               })(<Input placeholder={formatMessage({id: 'basic-form.unitc.placeholder'})}/>)}
             </FormItem>
+            {/* //公司名（英文 */}
             <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.unite.label"/>}>
               {getFieldDecorator('companyEn', {
                 initialValue: this.props.entrustdata.data.companyEn || '',
@@ -310,7 +306,7 @@ constructor(props){
                 ],
               })(<Input placeholder={formatMessage({id: 'basic-form.unite.placeholder'})}/>)}
             </FormItem>
-
+            {/* //开发单位 */}
             <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.unitd.label"/>}>
               {getFieldDecorator('developer', {
                 initialValue: this.props.entrustdata.data.developer || '',
@@ -323,6 +319,7 @@ constructor(props){
                 ],
               })(<Input placeholder={formatMessage({id: 'basic-form.unitd.placeholder'})}/>)}
             </FormItem>
+            {/* 单位性质 */}
             <FormItem
               {...formItemLayout}
               label={<FormattedMessage id="basic-form.radio.unit"/>}
@@ -354,6 +351,7 @@ constructor(props){
                 )}
               </div>
             </FormItem>
+            {/* 软件用户对象 */}
             <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.userobject.label"/>}>
               {getFieldDecorator('userDescription', {
                 initialValue: this.props.entrustdata.data.userDescription || '',
@@ -372,6 +370,7 @@ constructor(props){
                 />
               )}
             </FormItem>
+            {/* 主要功能描述 */}
             <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.intro.label"/>}>
               {getFieldDecorator('funcDescription', {
                 initialValue: this.props.entrustdata.data.funcDescription || '',
@@ -390,6 +389,7 @@ constructor(props){
                 />
               )}
             </FormItem>
+
             <FormItem
               {...formItemLayout}
               label={<FormattedMessage id="basic-form.radio.basis"/>}
@@ -496,6 +496,7 @@ constructor(props){
                 ],
               })(<Input placeholder={formatMessage({id: 'form.softscale_function_point.placeholder'})}/>)}
             </FormItem>
+
             <FormItem {...formItemLayout} label={<FormattedMessage id="form.softscale_code_number.label"/>}>
               {getFieldDecorator('codeLine', {
                 initialValue: this.props.entrustdata.data.codeLine || '',
@@ -508,6 +509,7 @@ constructor(props){
                 ],
               })(<Input placeholder={formatMessage({id: 'form.softscale_code_number.placeholder'})}/>)}
             </FormItem>
+
             <FormItem
               {...formItemLayout}
               label={<FormattedMessage id="basic-form.radio.system"/>}
@@ -537,37 +539,8 @@ constructor(props){
               </div>
             </FormItem>
 
-            <FormItem
-              {...formItemLayout}
-              label={<FormattedMessage id="basic-form.radio.support"/>}
-            >
-              <div>
-                {getFieldDecorator('supportSoftware', {
-                  initialValue: this.props.entrustdata.data.supportSoftware || 'basic-form.radio.support1',
-                })(
-                  <Radio.Group>
-                    <Radio value="basic-form.radio.support1">
-                      <FormattedMessage id="basic-form.radio.support1"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.support2">
-                      <FormattedMessage id="basic-form.radio.support2"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.support3">
-                      <FormattedMessage id="basic-form.radio.support3"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.support4">
-                      <FormattedMessage id="basic-form.radio.support4"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.support5">
-                      <FormattedMessage id="basic-form.radio.support5"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.support6">
-                      <FormattedMessage id="basic-form.radio.support6"/>
-                    </Radio>
-                  </Radio.Group>
-                )}
-              </div>
-            </FormItem>
+{/* 运行环境-客户端操作系统 */}
+            
             <FormItem
               {...formItemLayout}
               label={<FormattedMessage id="basic-form.radio.application"/>}
@@ -662,6 +635,19 @@ constructor(props){
               </div>
             </FormItem>
             <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.usermem.label"/>}>
+              {getFieldDecorator('clientInStorage', {
+                initialValue: this.props.entrustdata.data.clientInStorage || '',
+              }, {
+                rules: [
+                  {
+                    required: true,
+                    message: formatMessage({id: 'basic-form.usermem.required'}),
+                  },
+                ],
+              })(<Input placeholder={formatMessage({id: 'basic-form.usermem.placeholder'})}/>)}
+            </FormItem>
+
+            <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.usermem.label"/>}>
               {getFieldDecorator('clientExStorage', {
                 initialValue: this.props.entrustdata.data.clientExStorage || '',
               }, {
@@ -673,6 +659,7 @@ constructor(props){
                 ],
               })(<Input placeholder={formatMessage({id: 'basic-form.usermem.placeholder'})}/>)}
             </FormItem>
+
             <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.userother.label"/>}>
               {getFieldDecorator('clientOther', {
                 initialValue: this.props.entrustdata.data.clientOther || '',
@@ -699,9 +686,10 @@ constructor(props){
                 ],
               })(<Input placeholder={formatMessage({id: 'basic-form.hardmem.placeholder'})}/>)}
             </FormItem>
+            
             <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.harddisk.label"/>}>
-              {getFieldDecorator('serverHardDiskRequire', {
-                initialValue: this.props.entrustdata.data.serverHardDiskRequire || '',
+              {getFieldDecorator('serverHardFrame', {
+                initialValue: this.props.entrustdata.data.serverHardFrame || '',
               }, {
                 rules: [
                   {
@@ -711,8 +699,35 @@ constructor(props){
                 ],
               })(<Input placeholder={formatMessage({id: 'basic-form.harddisk.placeholder'})}/>)}
             </FormItem>
+
+            <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.harddisk.label"/>}>
+              {getFieldDecorator('serverInStorage', {
+                initialValue: this.props.entrustdata.data.serverInStorage || '',
+              }, {
+                rules: [
+                  {
+                    required: true,
+                    message: formatMessage({id: 'basic-form.harddisk.required'}),
+                  },
+                ],
+              })(<Input placeholder={formatMessage({id: 'basic-form.harddisk.placeholder'})}/>)}
+            </FormItem>
+
+            <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.harddisk.label"/>}>
+              {getFieldDecorator('serverExStorage', {
+                initialValue: this.props.entrustdata.data.serverExStorage || '',
+              }, {
+                rules: [
+                  {
+                    required: true,
+                    message: formatMessage({id: 'basic-form.harddisk.required'}),
+                  },
+                ],
+              })(<Input placeholder={formatMessage({id: 'basic-form.harddisk.placeholder'})}/>)}
+            </FormItem>
+
             <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.hardother.label"/>}>
-              {getFieldDecorator('serverOther', {
+              {getFieldDecorator('serverHardOther', {
                 initialValue: this.props.entrustdata.data.serverOther || '',
               }, {
                 rules: [
@@ -736,18 +751,20 @@ constructor(props){
                 ],
               })(<Input placeholder={formatMessage({id: 'basic-form.softsystem.placeholder'})}/>)}
             </FormItem>
-            <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.softversion.label"/>}>
-              {getFieldDecorator('softversion', {
-                initialValue: this.props.entrustdata.data.softversion || '',
+            
+            <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.hardother.label"/>}>
+              {getFieldDecorator('serverSoftVersion', {
+                initialValue: this.props.entrustdata.data.serverSoftVersion || '',
               }, {
                 rules: [
                   {
                     required: true,
-                    message: formatMessage({id: 'basic-form.softversion.required'}),
+                    message: formatMessage({id: 'basic-form.hardother.required'}),
                   },
                 ],
-              })(<Input placeholder={formatMessage({id: 'basic-form.softversion.placeholder'})}/>)}
+              })(<Input placeholder={formatMessage({id: 'basic-form.hardother.placeholder'})}/>)}
             </FormItem>
+            
             <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.softprolan.label"/>}>
               {getFieldDecorator('serverLanguage', {
                 initialValue: this.props.entrustdata.data.serverLanguage || '',
@@ -760,6 +777,7 @@ constructor(props){
                 ],
               })(<Input placeholder={formatMessage({id: 'basic-form.softprolan.placeholder'})}/>)}
             </FormItem>
+            
             <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.softdata.label"/>}>
               {getFieldDecorator('serverDataBase', {
                 initialValue: this.props.entrustdata.data.serverDataBase || '',
@@ -772,6 +790,7 @@ constructor(props){
                 ],
               })(<Input placeholder={formatMessage({id: 'basic-form.softdata.placeholder'})}/>)}
             </FormItem>
+            
             <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.softmiddle.label"/>}>
               {getFieldDecorator('serverSoftMidW', {
                 initialValue: this.props.entrustdata.data.serverSoftMidW || '',
@@ -784,6 +803,33 @@ constructor(props){
                 ],
               })(<Input placeholder={formatMessage({id: 'basic-form.softmiddle.placeholder'})}/>)}
             </FormItem>
+            
+            <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.softmiddle.label"/>}>
+              {getFieldDecorator('serverSoftFrame', {
+                initialValue: this.props.entrustdata.data.serverSoftFrame || '',
+              }, {
+                rules: [
+                  {
+                    required: true,
+                    message: formatMessage({id: 'basic-form.softmiddle.required'}),
+                  },
+                ],
+              })(<Input placeholder={formatMessage({id: 'basic-form.softmiddle.placeholder'})}/>)}
+            </FormItem>
+            
+            <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.softmiddle.label"/>}>
+              {getFieldDecorator('serverSupport', {
+                initialValue: this.props.entrustdata.data.serverSupport || '',
+              }, {
+                rules: [
+                  {
+                    required: true,
+                    message: formatMessage({id: 'basic-form.softmiddle.required'}),
+                  },
+                ],
+              })(<Input placeholder={formatMessage({id: 'basic-form.softmiddle.placeholder'})}/>)}
+            </FormItem>
+            
             <h4>网络环境</h4>
             <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.netenvironment.label"/>}>
               {getFieldDecorator('webEnvironment', {
@@ -805,49 +851,33 @@ constructor(props){
             </FormItem>
 
             <h3>样品和数量</h3>
-            <h4>软件介质</h4>
-            {/* <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.mediumg.label"/>}>
-              {getFieldDecorator('CD', {
-                initialValue: this.props.entrustdata.data.CD || '',
-              }, {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage({id: 'basic-form.mediumg.required'}),
-                  },
-                ],
-              })(<Input placeholder={formatMessage({id: 'basic-form.mediumg.placeholder'})}/>)}
+
+<FormItem
+              {...formItemLayout}
+              label={<FormattedMessage id="form.sample.label"/>}
+            >
+              <div>
+                {getFieldDecorator('sampleType', {
+                  initialValue: this.props.entrustdata.data.sampleType || 'form.sample.radio.destruction',
+                })(
+                  <Radio.Group>
+                    <Radio value="form.sample.radio.destruction">
+                      <FormattedMessage id="form.sample.radio.destruction"/>
+                    </Radio>
+                    <Radio value="form.sample.radio.return">
+                      <FormattedMessage id="form.sample.radio.return"/>
+                    </Radio>
+                  </Radio.Group>
+                )}
+              </div>
             </FormItem>
-            <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.mediumu.label"/>}>
-              {getFieldDecorator('usbFlashDrive', {
-                initialValue: this.props.entrustdata.data.usbFlashDrive || '',
-              }, {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage({id: 'basic-form.mediumu.required'}),
-                  },
-                ],
-              })(<Input placeholder={formatMessage({id: 'basic-form.mediumu.placeholder'})}/>)}
-            </FormItem>
-            <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.mediumo.label"/>}>
-              {getFieldDecorator('softwareMediumOther', {
-                initialValue: this.props.entrustdata.data.softwareMediumOther || '',
-              }, {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage({id: 'basic-form.mediumo.required'}),
-                  },
-                ],
-              })(<Input placeholder={formatMessage({id: 'basic-form.softmiddle.placeholder'})}/>)}
-            </FormItem> */}
+
             <FormItem {...formItemLayout} label={<FormattedMessage id="form.sample_document.label"/>}>
               <Tooltip title={<FormattedMessage id="form.sample_document.label.tooltip"/>}>
                 <Icon type="info-circle-o" style={{marginRight: 4}}/>
               </Tooltip>
-              {getFieldDecorator('sample_document', {
-                initialValue: this.props.entrustdata.data.sample_document || '',
+              {getFieldDecorator('sampleFile', {
+                initialValue: this.props.entrustdata.data.sampleFile || '',
               }, {
                 rules: [
                   {
@@ -864,37 +894,13 @@ constructor(props){
               )}
             </FormItem> 
 
-
-            <h4>文档资料</h4>
-            {/* <FormItem {...formItemLayout} label={<FormattedMessage id="form.sample_document.label"/>}>
-              <Tooltip title={<FormattedMessage id="form.sample_document.label.tooltip"/>}>
-                <Icon type="info-circle-o" style={{marginRight: 4}}/>
-              </Tooltip>
-              {getFieldDecorator('sample_document', {
-                initialValue: this.props.entrustdata.data.sample_document || '',
-              }, {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage({id: 'validation.sample_document.required'}),
-                  },
-                ],
-              })(
-                <TextArea
-                  style={{minHeight: 32}}
-                  placeholder={formatMessage({id: 'form.sample_document.placeholder'})}
-                  rows={10}
-                />
-              )}
-            </FormItem> */}
-            
             <FormItem
               {...formItemLayout}
               label={<FormattedMessage id="form.sample.label"/>}
             >
               <div>
-                {getFieldDecorator('sampleChocie', {
-                  initialValue: this.props.entrustdata.data.sampleChocie || 'form.sample.radio.destruction',
+                {getFieldDecorator('sampleChoice', {
+                  initialValue: this.props.entrustdata.data.sampleChoice || 'form.sample.radio.destruction',
                 })(
                   <Radio.Group>
                     <Radio value="form.sample.radio.destruction">
@@ -907,28 +913,29 @@ constructor(props){
                 )}
               </div>
             </FormItem>
+
             <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.date.label"/>}>
               {
-                getFieldDecorator('expectedDeadLine', {
-                  initialValue: this.props.entrustdata.data.expectedDeadLine1 ? [moment(this.props.entrustdata.data.expectedDeadLine1 || ' ', 'YYYY/MM/DD'), moment(this.props.entrustdata.data.expectedDeadLine2 || ' ', 'YYYY/MM/DD')] : null
+                getFieldDecorator('expectedDeadline', {
+                  initialValue:  " "
+                  // initialValue: this.props.entrustdata.data.expectedDeadLine1 ? [moment(this.props.entrustdata.data.expectedDeadLine1 || ' ', 'YYYY/MM/DD'), moment(this.props.entrustdata.data.expectedDeadLine2 || ' ', 'YYYY/MM/DD')] : null
                 }, {
                   rules: [
                     {
                       required: true,
-                      message: formatMessage({id: 'basic-form.date.required'}),
+                      message: formatMessage({id: 'basic-form.netenvironment.required'}),
                     },
                   ],
                 })(
-                  <RangePicker
-
-                    style={{width: '100%'}}
-                    placeholder={[
-                      formatMessage({id: 'basic-form.placeholder.start'}),
-                      formatMessage({id: 'basic-form.placeholder.end'}),
-                    ]}
+                  <TextArea
+                    style={{minHeight: 32}}
+                    placeholder={formatMessage({id: 'basic-form.netenvironment.placeholder'})}
+                    rows={9}
                   />
                 )}
             </FormItem>
+
+
             <Form onSubmit={this.handleSubmit} hideRequiredMark style={{marginTop: 8}}>
               <h3>委托单位信息</h3>
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.phone.label"/>}>
@@ -980,8 +987,8 @@ constructor(props){
                 })(<Input/>)}
               </FormItem>
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.contactor.label"/>}>
-                {getFieldDecorator('contactorName', {
-                  initialValue: this.props.entrustdata.data.contactorName || '',
+                {getFieldDecorator('infoName', {
+                  initialValue: this.props.entrustdata.data.infoName || '',
                 }, {
                   rules: [
                     {
@@ -1156,7 +1163,7 @@ constructor(props){
               </FormItem>
                   */}
 
-              <FormItem 
+              {/* <FormItem 
                 {...formItemLayout}
                 label={<FormattedMessage id="form.Confirmation.label"/>}
               >
@@ -1181,7 +1188,9 @@ constructor(props){
                   )}
                 </div>
               </FormItem>
-              <FormItem
+               */}
+              
+              {/* <FormItem
                 {...formItemLayout}
                 label={<FormattedMessage id="form.Acceptance_opinion.label"/>}
               >
@@ -1202,7 +1211,7 @@ constructor(props){
                     </Radio.Group>
                   )}
                 </div>
-              </FormItem>
+              </FormItem> */}
 
               {/* <FormItem {...formItemLayout} label={<FormattedMessage id="form.test_number.label"/>}>
                 {getFieldDecorator('test_number', {

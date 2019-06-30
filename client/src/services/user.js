@@ -42,6 +42,7 @@ export async function replaceEntrust(params) {
   });
 }
 export async function addNewEntrust(params) {
+  console.log("addnew",params)
   return request('api/project/entrust', {
     method: 'POST',
     data: params,
