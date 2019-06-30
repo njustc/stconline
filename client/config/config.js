@@ -66,7 +66,7 @@ export default {
         },
         //entrustlist
         {
-          name: '您的委托',
+          name: '测试报告列表',
           icon: 'pie-chart',
           path: '/basic-list',
           component: './entrust/basic-list/entrustlist',
@@ -96,18 +96,18 @@ export default {
           ]
         },
 
-        {
-          path:'/contract_detail',
-          component:'./contract/contract_detail',
-        },
-        {
-          path:'/contract_edit',
-          component: './contract/contract_edit',
-        },
-        {
-          path:'/contract_list',
-          component: './contract/contract_list',
-        },
+		{
+			path:'/contract_detail',
+			component:'./contract/contract_detail',
+		},
+		{
+			path:'/contract_edit',
+			component: './contract/contract_edit',
+		},
+		{
+			path:'/contract_list',
+			component: './contract/contract_list',
+		},
         {
           name: '测试方案',
           icon: 'pie-chart',
@@ -151,6 +151,12 @@ export default {
           icon: 'smile',
           path: '/user-login',
           component: './user-login',
+        },
+        {
+          name: '新建测试报告',
+          icon: 'file',
+          path: '/new-test-report',
+          component: './newTestReport',
         },
       ],
     },
