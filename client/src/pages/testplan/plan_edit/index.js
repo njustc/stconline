@@ -1,17 +1,36 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { connect } from 'dva';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import {Form, Input, DatePicker, Select, Button, Card, InputNumber, Radio, Icon, Tooltip, Modal, Breadcrumb} from 'antd';
-import moment from 'moment';
 
 const FormItem = Form.Item;
-const { Option } = Select;
-const { RangePicker } = DatePicker;
-const { TextArea } = Input;
 const confirm=Modal.confirm;
+const namespace='testplanEdit';
 
-const dateFormat = 'YYYY/MM/DD';
+// const dateFormat = 'YYYY/MM/DD';
 
+const mapStateToProps = (state) => {
+  const dataEdit = state[namespace];
+  console.log(dataEdit);
+  return {
+    dataEdit,
+  };
+};
+function showConfirm() {
+  confirm({
+    title: '您是否要提交本委托?',
+    content: '委托一旦提交，将无法从线上更改，但您可以在“委托列表”查看本委托详情。提交的委托将由工作人员进行核对。',
+    okText: '提交',
+    cancelText: '取消',
+    onOk() {
+      console.log('OK');
+      //在此方法里提交
+    },
+    onCancel() {
+      console.log('Cancel');
+    },
+  });
+}
 //删除按钮的对话框方法，点击“确认删除”调取delete方法
 function showDeleteConfirm() {
   confirm({
@@ -30,54 +49,46 @@ function showDeleteConfirm() {
   });
 }
 
-//提交按钮的对话框方法，点击“提交”调取提交方法
-function showConfirm() {
-  confirm({
-    title: '您是否要提交本委托?',
-    content: '委托一旦提交，将无法从线上更改，但您可以在“委托列表”查看本委托详情。提交的委托将由工作人员进行核对。',
-    okText: '提交',
-    cancelText: '取消',
-    onOk() {
-      console.log('OK');
-      //在此方法里提交
-    },
-    onCancel() {
-      console.log('Cancel');
-    },
-  });
-}
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     //页面在mount完后发送一个queryInitPlans的action，被effects处理
+//     onDidMount: () => {
+//       dispatch({
+//         type: `${namespace}/queryGetOnePlan`,
+//         payload: this.props.location.query,
+//       });
+//     },
+//     queryAddPlan:(newPlan)=>{
+//       dispatch({
+//         type:`${namespace}/queryAddPlan`,
+//         payload:newPlan,
+//       });
+//     },
+//     queryDeletePlan:(params)=>{
+//       dispatch({
+//         type:`${namespace}/queryDeletePlan`,
+//         payload:params
+//       })
+//     },
+//
+//   };
+// };
 
-@connect(({ loading }) => ({
-  submitting: loading.effects['basicForm/submitRegularForm'],
-}))
+// @connect(({ loading }) => ({
+//   submitting: loading.effects['basicForm/submitRegularForm'],
+// }))
 @Form.create()
-class EditPlan extends PureComponent {
-  handleSubmit = e => {
-    const {dispatch, form} = this.props;
-    e.preventDefault();
-    form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        dispatch({
-          type: `${namespace}/querySubmitPlan`,
-          payload: values,
-        });
-      }
-    });
-  };
+@connect(mapStateToProps)
+export default class EditPlan extends React.Component{
+  componentDidMount() {
+    const {dispatch} = this.props;
 
-  submit = () => {
-    this.setState({
-      visible: true,
-      current: undefined,
-    });
     dispatch({
-      type: 'basicForm/querySubmitPlan',
-      payload: values,
+      type: `${namespace}/queryGetOnePlan`,
+      payload: this.props.location.query,
     });
-  };
-
+  }
   render() {
-    const {submitting} = this.props;
     const {
       form: {getFieldDecorator, getFieldValue},
     } = this.props;
@@ -93,7 +104,6 @@ class EditPlan extends PureComponent {
         md: {span: 10},
       },
     };
-
     const submitFormLayout = {
       wrapperCol: {
         xs: {span: 24, offset: 0},
@@ -115,7 +125,8 @@ class EditPlan extends PureComponent {
         <Card bordered={false}>
           <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.edit.label"/>}>
             {getFieldDecorator('edit', {
-              rules: [
+              initialValue: this.props.dataEdit.editdata.author || '',
+            }, {rules: [
                 {
                   required: true,
                   message: formatMessage({id: 'validation.edit.required'}),
@@ -125,6 +136,8 @@ class EditPlan extends PureComponent {
           </FormItem>
           <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.check.label"/>}>
             {getFieldDecorator('check', {
+                initialValue: this.props.dataEdit.editdata.auditor || '',
+              },{
               rules: [
                 {
                   required: true,
@@ -135,6 +148,8 @@ class EditPlan extends PureComponent {
           </FormItem>
           <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.approve.label"/>}>
             {getFieldDecorator('approve', {
+              initialValue: this.props.dataEdit.editdata.approver || '',
+            }, {
               rules: [
                 {
                   required: true,
@@ -145,6 +160,8 @@ class EditPlan extends PureComponent {
           </FormItem>
           <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.hardware.label"/>}>
             {getFieldDecorator('hardware', {
+              initialValue: this.props.dataEdit.editdata.hardware || '',
+            }, {
               rules: [
                 {
                   required: true,
@@ -155,6 +172,8 @@ class EditPlan extends PureComponent {
           </FormItem>
           <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.software.label"/>}>
             {getFieldDecorator('software', {
+              initialValue: this.props.dataEdit.editdata.software || '',
+            }, {
               rules: [
                 {
                   required: true,
@@ -165,6 +184,8 @@ class EditPlan extends PureComponent {
           </FormItem>
           <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.staff.label"/>}>
             {getFieldDecorator('staff', {
+              initialValue: this.props.dataEdit.editdata.staff || '',
+            }, {
               rules: [
                 {
                   required: true,
@@ -177,18 +198,16 @@ class EditPlan extends PureComponent {
         <br/>
         <FormItem {...submitFormLayout} style={{marginTop: 32}}>
           <Button type="primary" onClick={showConfirm}>
-            <FormattedMessage id="basic-form.form.submit"/>
+            <FormattedMessage id="plan_edit.form.submit"/>
           </Button>
           <Button style={{marginLeft: 8}}>
-            <FormattedMessage id="basic-form.form.save"/>
+            <FormattedMessage id="plan_edit.form.save"/>
           </Button>
           <Button style={{marginLeft: 8}} type="danger" onClick={showDeleteConfirm}>
-            <FormattedMessage id="basic-form.form.delete"/>
+            <FormattedMessage id="plan_edit.form.delete"/>
           </Button>
         </FormItem>
       </div>
     );
   }
 }
-
-export default EditPlan;
