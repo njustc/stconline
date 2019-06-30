@@ -11,4 +11,17 @@ export default {
   'validation.approve.required': '请填写批准人员！',
   'testplan.approve.placeholder':' ',
 
+  'testplan.hardware.label':'测试环境-硬件',
+  'validation.hardware.required': '请填写测试硬件！',
+  'testplan.hardware.placeholder':' ',
+
+  'testplan.software.label':'测试环境-软件',
+  'validation.software.required': '请填写测试软件！',
+  'testplan.software.placeholder':' ',
+
+  'testplan.staff.label':'测试环境-人员',
+  'validation.staff.required': '请填写测试人员！',
+  'testplan.staff.placeholder':' ',
+
+
 };

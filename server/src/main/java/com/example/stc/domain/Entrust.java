@@ -6,10 +6,10 @@ import javax.persistence.*;
 @Table(name = "TBL_SYS_ENTRUST")
 public class Entrust extends ProcessEntity {
 
-    /**
-     * 存储测试文档整体
-     */
-    private String entrustEntity;
+//    /**
+//     * 存储测试文档整体
+//     */
+//    private String entrustEntity;
 
     /**
      * 测试类型（多选）
@@ -247,9 +247,9 @@ public class Entrust extends ProcessEntity {
     private String opinions;
 
     /**
-     * 受理意见（单选）
+     * 评审意见
      */
-    private String acceptOpinions;
+    private String comment;
 
     /**
      * 用户信息
@@ -259,13 +259,13 @@ public class Entrust extends ProcessEntity {
     //@JSONField(serialize = false)
     private User user;
 
-    public String getEntrustEntity() {
-        return entrustEntity;
-    }
-
-    public void setEntrustEntity(String entrustEntity) {
-        this.entrustEntity = entrustEntity;
-    }
+//    public String getEntrustEntity() {
+//        return entrustEntity;
+//    }
+//
+//    public void setEntrustEntity(String entrustEntity) {
+//        this.entrustEntity = entrustEntity;
+//    }
 
     public String getTestType() {
         return testType;
@@ -639,19 +639,19 @@ public class Entrust extends ProcessEntity {
         this.opinions = opinions;
     }
 
-    public String getAcceptOpinions() {
-        return acceptOpinions;
-    }
-
-    public void setAcceptOpinions(String acceptOpinions) {
-        this.acceptOpinions = acceptOpinions;
-    }
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }
