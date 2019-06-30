@@ -2,6 +2,7 @@ package com.example.stc.service.impl;
 
 import com.example.stc.domain.TestCase;
 import com.example.stc.domain.TestRecord;
+import com.example.stc.framework.exception.TestRecordNotFoundException;
 import com.example.stc.framework.util.DateUtils;
 import com.example.stc.repository.TestRecordRepository;
 import com.example.stc.service.TestRecordService;
@@ -32,7 +33,10 @@ public class TestRecordServiceImpl implements TestRecordService {
 
     @Override
     public TestRecord findTestRecordByTestId(String testId) {
-        return testRecordRepository.findByTestId(testId);
+        TestRecord testRecord = testRecordRepository.findByTestId(testId);
+        if (testRecord == null)
+            throw new TestRecordNotFoundException(testId);
+        return testRecord;
     }
 
     @Override
@@ -42,6 +46,9 @@ public class TestRecordServiceImpl implements TestRecordService {
 
     @Override
     public void deleteTestRecordByTestId(String testId) {
+        TestRecord testRecord = testRecordRepository.findByTestId(testId);
+        if (testRecord == null)
+            throw new TestRecordNotFoundException(testId);
         testRecordRepository.deleteByTestId(testId);
     }
 

@@ -13,4 +13,14 @@ services:
       - MYSQL_ROOT_PASSWORD=mysql
       - MYSQL_DATABASE=njustc
     command: mysqld --lower_case_table_names=1 --skip-ssl
+  jenkins:
+    image: 'jenkins/jenkins:lts'
+    container_name: 'jenkins_jenkins'
+    volumes:
+      - './jenkins:/var/jenkins_home'
+#      - '/bin/docker:/usr/bin/docker'
+#      - '/var/run/docker.sock:/var/run/docker.sock'
+    ports:
+      - '18000:8080'
+
 
