@@ -1,4 +1,4 @@
-import { getAllTestPlan,addNewTestPlan,deleteTestPlan} from '@/services/user';
+import { getAllTestPlan,addNewTestPlan,deleteTestPlan} from '@/services/testplan';
 
 export default {
   namespace:'testplanList',
