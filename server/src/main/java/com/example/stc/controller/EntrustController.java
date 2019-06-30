@@ -118,6 +118,12 @@ public class EntrustController extends BaseController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * 提交委托
+     * @param pid
+     * @return
+     * @throws URISyntaxException
+     */
     @PostMapping(path = "/entrust/submit")
     public @ResponseBody
     ResponseEntity<?> submitEntrust(@RequestParam(value = "pid")String pid) throws URISyntaxException {
@@ -128,6 +134,14 @@ public class EntrustController extends BaseController {
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
+    /**
+     * 评审委托
+     * @param comment
+     * @param pid
+     * @param operation
+     * @return
+     * @throws URISyntaxException
+     */
     @PostMapping(path = "/entrust/review")
     public @ResponseBody
     ResponseEntity<?> reviewEntrust(@RequestBody String comment,
