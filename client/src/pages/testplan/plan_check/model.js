@@ -1,4 +1,4 @@
-import { getOneTestPlan} from '@/services/user';
+import { getOneTestPlan} from '@/services/testplan';
 
 export default {
   namespace:'testplanCheck',
