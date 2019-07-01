@@ -11,3 +11,10 @@ export async function getAllContract() {
   return request('api/project/contract');
   //return request('/dev/api/project/contract');
 }
+
+export async function deleteContract(params) {
+  console.log(params);
+  return request(`api/project/contract/${params.pid}`,{
+    method: 'DELETE',
+  });
+}

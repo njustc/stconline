@@ -66,9 +66,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/*/**", "*", "/").permitAll()
                 .antMatchers("/api/register/**", "/api/login").permitAll()
                 .antMatchers("/api/project/**").hasRole(Role.USER.str())
-//                .antMatchers(HttpMethod.GET, "/api/project/entrust").hasRole(Role.USER.str())
-//                .antMatchers(HttpMethod.GET, "/api/project/entrust/user/**").hasRole(Role.STAFF.str())
-//                .antMatchers(HttpMethod.POST, "/api/project/entrust").hasRole(Role.Customer.str())
                 // TODO: 其他针对角色拦截的URL
                 .anyRequest().authenticated() // 任何请求,登录后可以访问
 
