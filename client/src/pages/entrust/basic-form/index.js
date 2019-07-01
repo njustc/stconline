@@ -20,7 +20,7 @@ import {
 import PageHeaderWrapper from './components/PageHeaderWrapper';
 import styles from './style.less';
 import moment from 'moment';
-import router from 'umi/router';
+import { func } from 'prop-types';
 const FormItem = Form.Item;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -30,6 +30,7 @@ const namespace = 'entrustForm';
 
 
 const Dragger = Upload.Dragger;
+
 
 const props = {
   name: 'file',
@@ -49,28 +50,6 @@ const props = {
 };
 
 
-//删除按钮的对话框方法，点击“确认删除”调取delete方法
-function showDeleteConfirm() {
-  confirm({
-    title: '您是否要删除本委托?',
-    content: '委托一旦删除不可恢复',
-    okText: '确认删除',
-    okType: 'danger',
-    cancelText: '取消',
-    onOk() {
-      console.log('OK');
-      //在此方法里使用delete
-    },
-    onCancel() {
-      console.log('Cancel');
-    },
-  });
-}
-
-
-
-
-
 const mapStateToProps=(state)=>{
   const entrustdata=state[namespace];
   return{
@@ -79,19 +58,6 @@ const mapStateToProps=(state)=>{
 }
 const mapDispatchToProps=(dispatch)=>{
   return {
-    DeleteEntrust:(params)=>{
-      dispatch({
-        type:`${namespace}/DeleteEntrust`,
-        payload:params
-      })
-    },
-    SubmitEntrust:(value)=>{
-      dispatch({
-        type: 'entrustForm/submitForm',
-        payload: value,
-      });
-      router.push('/basic-list.html')
-    }
   }
 }
 @connect(mapStateToProps,mapDispatchToProps)
@@ -104,9 +70,7 @@ class BasicForm extends PureComponent {
 constructor(props){
   super(props)
   this.state={
-    pid:"",
-    confirmVisible:false,
-    deleteVisible:false
+    pid:""
   }
 } 
 
@@ -124,25 +88,7 @@ constructor(props){
       payload:this.props.location.query,
     })
   }
-
-  else{
-    console.log("isNew")
   }
-  }
-
-  handleSubmit = e => {
-    const { dispatch, form } = this.props;
-    e.preventDefault();
-    form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        dispatch({
-          type: 'basicForm/submitRegularForm',
-          payload: values,
-        });
-      }
-    });
-  };
-
 
   addForm=(form)=>{
     const { dispatch } = this.props;  
@@ -178,10 +124,11 @@ constructor(props){
 
   //保存
   save=(form)=>{
+    console.log("save")
     const { dispatch } = this.props;  
     this.state.pid=this.props.entrustdata.pid
       if (this.state.pid=="") {
-        this.addForm(form)
+      this.addForm(form)
       } 
       else {
        this.saveForm(form)
@@ -189,60 +136,79 @@ constructor(props){
   }
 
   //提交
-  // submit = (form) => {
-  //   const { dispatch } = this.props;
-  //   this.state.pid=this.props.entrustdata.pid
-  //   form.validateFields((err,value) => {
-  //     //新建
-  //     value.pid=this.state.pid
-  //     // 补充新建属性
-  //     value.processInstanceID=""
-  //     value.processState="ToSubmit"
-  //     value.entrustEntity=""
-  //     value.comment=""
-  //     //补充完毕
-  //     dispatch({
-  //       type: 'entrustForm/submitForm',
-  //       payload: value,
-  //     });
-  //   })
-  //   // if(this.props.entrustdata.needJump){
-  //   // router.push('/basic-list');
-  //   // }
-  // };
+  submit=(form)=> {
+    const { dispatch } = this.props;  
+    this.state.pid=this.props.entrustdata.pid
+    form.validateFields((err,value) => {
+      //新建
+      value.pid=this.state.pid
+      // 补充新建属性
+      value.processInstanceID=""
+      value.processState="ToSubmit"
+      value.entrustEntity=""
+      value.comment=""
+      //补充完毕
+      dispatch({
+        type: 'entrustForm/submitForm',
+        payload: value,
+      });
+    })
+  };
+  
+  //删除
+  delete=(value)=>{
+    const { dispatch } = this.props;
+      dispatch({
+        type: 'entrustForm/deleteEntrust',
+        payload: value,
+      })
+  }
 
 
-  showConfirm(form){
+
+  
+  showConfirm(form) {
     var that=this
     confirm({
       title: '您是否要提交委托?',
       content: '委托提交后进入审核状态，不可编辑',
       okText: '确认提交',
-      okType: 'primary',
+      okType: 'primarsubmity',
       cancelText: '取消',
       onOk() {
-        console.log('OK');
-        console.log(this)
         //在此方法里使用submit
-        that.state.pid=that.props.entrustdata.pid
-        form.validateFields((err,value) => {
-            //新建
-            value.pid=that.state.pid
-            // 补充新建属性
-            value.processInstanceID=""
-            value.processState="ToSubmit"
-            value.entrustEntity=""
-            value.comment=""
-            that.props.SubmitEntrust(value)
-          })
-    },
+        that.submit(form)
+      },
       onCancel() {
         console.log('Cancel');
       },
-  })
-}
+    });
+  }
 
-  
+  showDelete(form) {
+    var that = this
+    confirm({
+      title: '您是否要删除本委托?',
+      content: '委托删除后无法恢复',
+      okText: '确认删除',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk() {
+        //在此方法里使用delete
+        that.state.pid=that.props.entrustdata.pid
+        form.validateFields((err,value) => {
+          //新建
+          value.pid=that.state.pid
+          //补充完毕
+          that.delete(value)
+
+        })
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
 
   render() {
     const {submitting} = this.props;
@@ -1161,15 +1127,13 @@ constructor(props){
             </Dragger>
 
               <FormItem {...submitFormLayout} style={{marginTop: 32}}>
-                <Button type="primary" onClick={this.showConfirm.bind(this,this.props.form)}>
+                <Button type="primary" onClick={()=>{this.showConfirm(this.props.form)}}>
                   <FormattedMessage id="basic-form.form.submit"/>
                 </Button>
-
                 <Button  style={{marginLeft: 8}} onClick={()=>{this.save(this.props.form)}}>
                   <FormattedMessage id="basic-form.form.save"/>
                 </Button>
-
-                <Button onClick={showDeleteConfirm.bind(this, this.props.location.query.pid)} style={{marginLeft: 8}}
+                <Button onClick={()=>{this.showDelete(this.props.form)}} style={{marginLeft: 8}}
                         type="danger">
                   <FormattedMessage id="basic-form.form.delete"/>
                 </Button>
