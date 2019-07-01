@@ -1,89 +1,96 @@
-import {Table, Divider, Button, Tag, Breadcrumb, Modal} from 'antd';
-import React, {Component} from "react";
-import {connect} from "dva";
-const confirm = Modal.confirm;
+import React, {Component} from 'react';
+import {Table, Select, Input, Button, Breadcrumb, Divider, Tag, Menu, Modal} from 'antd';
+
+const Search = Input.Search;
+
+import {connect} from 'dva';
 import Link from 'umi/link'
 
+const confirm = Modal.confirm;
 
-const columns = [
-  {
-    title: '测试报告',
-    dataIndex: 'testreport_name',
-    key: 'name',
-    render: text => <a href="javascript:;">{text}</a>,
-  },
-  {
-    title: '状态',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: tags => (
-      <span>
-        {tags.map(tag => {
-          let color = 'green';
-          if (tag === '待审核') {
-            color = 'volcano';
-          }
-		  else if(tag === '待确认'){
-			  color = 'geekblue';
-		  }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </span>
-    ),
-  },
-  {
-    title: '操作',
-    key: 'action',
-    render: (key) => (
-      <span>
-        {key.processState == 'Submit' ? <Link to={{pathname: './contract_detail', query: {pid: 'kkk'}}}>查看详情</Link> :
-          <Link to={{pathname: './contract_detail', query: {pid: 'kkk'}}}>查看详情</Link>}
-        <Divider type="vertical"/>
-        {/*<a href="/plan_edit.html">编辑</a>*/}
-        {<Link to={{pathname: '../../contract_edit', query: {pid: key.pid}}}>编辑</Link>}
-        <Divider type="vertical"/>
-          <span style={{color: 'red', cursor: 'pointer'}}>删除</span>
-      </span>
-    ),
-  },
-];
-
-const data = [
-  {
-    key: '1',
-    testreport_name: '测试报告1',
-    client: "123",
-    tags: ['待审核'],
-  },
-  {
-    key: '2',
-    testreport_name: '测试报告2',
-    client: 123,
-    tags: ['待审核'],
-  },
-
-];
-
-class List extends React.Component{
-	render(){
-		return(
-		<div>
-		<Breadcrumb>
-			<Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
-			<Breadcrumb.Item>测试报告列表</Breadcrumb.Item>
-		</Breadcrumb>
-		<br />
-		<Table columns={columns} dataSource={data} />
-		<Button a href="/report_edit.html">新建</Button>
-		</div>
-		);
-	}
+const namespace = 'testReport';
+const mapStateToProps = (state) => {
+  const listdata = state[namespace];
+  return {
+    listdata,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onDidMount: () => {
+      dispatch({
+        type: `${namespace}/GetAlltestReport`,
+      })
+    },
+    DeleteTestReport: (params) => {
+      dispatch({
+        type: `${namespace}/DeleteTestReport`,
+        payload: params
+      })
+    }
+  }
 }
 
-export default List;
+@connect(mapStateToProps, mapDispatchToProps)
+export default class ReportList extends Component {
+  componentDidMount() {
+    this.props.onDidMount();
+  }
 
+  columns = [
+    {
+      title: '测试报告ID',
+      dataIndex: 'pid',
+      key: 'pid',
+      render: text => <a href="javascript:;">{text}</a>,
+    },
+    {
+      title: '操作',
+      key: 'action',
+      render: (key) => (
+        <span>
+          {<Link to = {{pathname: './report-detail', query: {pid: key.pid}}}>查看测试报告详情</Link>}
+          <Divider type="vertical"/>
+          {<Link to = {{pathname: '../../report-edit', query: {pid: key.pid}}}>编辑</Link>}
+          <Divider type="vertical"/>
+          <span style = {{color: 'red', cursor: 'pointer'}} onClick = {this.showDeleteConfirm.bind(this, key)}>删除</span>
+        </span>
+      ),
+    },
+  ]
 
+  showDeleteConfirm(key) {
+    var that = this
+    confirm({
+      title: '您是否要删除本测试报告?',
+      content: `测试报告ID:${key.pid}  用户名:${key.name}`,
+      okText: '确认删除',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk() {
+        that.props.DeleteTestReport({pid: key.pid})
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <Breadcrumb>
+          <Breadcrumb.Item hr="/basic-list.html">测试报告列表</Breadcrumb.Item>
+        </Breadcrumb>
+        {/* <div class="" */}
+        <Table style={{marginTop: 50}} columns={this.columns} dataSource={this.props.listdata.data}/>
+        <Button
+          style={{marginLeft: 400}}
+          type="primary"
+          href="/basic-form.html">
+          新建委托
+        </Button>
+      </div>
+    );
+  }
+}

@@ -2,6 +2,7 @@ package com.example.stc.controller;
 
 import com.example.stc.domain.Entrust;
 import com.example.stc.domain.User;
+import com.example.stc.framework.util.AuthorityUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +35,9 @@ public class EntrustControllerTest {
     @Autowired
     private UserController userController;
 
+    @Autowired
+    private AuthorityUtils authorityUtils;
+
     private static final Logger logger = LoggerFactory.getLogger(EntrustControllerTest.class);
 
     //进行认证操作 , 避免之后无法调用方法
@@ -65,14 +69,21 @@ public class EntrustControllerTest {
     @Test
     @WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS", "USER"})
     public void NewRepDelTest() throws Exception {
-        User user = new User();
-        user.setUsername("CUSA");
-        user.setPassword("cusa");
-        user.setUserID("u20190605134344");
-        user.setId(5L);
+//        User user = new User();
+//        user.setUsername("CUSA");
+//        user.setPassword("cusa");
+//        user.setUserID("u20190605134344");
+//        user.setId(5L);
         Entrust record = new Entrust();
         record.setProcessInstanceID("");
-        record.setUser(user);
+//        record.setUser(user);
+        record.setUser(authorityUtils.getLoginUser());
+        logger.info("-----------------------------------");
+        logger.info("");
+        logger.info("User: id = " + record.getUser().getId() + ", uid = " + record.getUser().getUserID() +
+                ", username = " + record.getUser().getUsername());
+        logger.info("");
+        logger.info("-----------------------------------");
         record.setVersion("1.0");
         // 添加
         ResponseEntity<?> entity = entrustController.addNewEntrust(record);

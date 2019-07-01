@@ -87,7 +87,7 @@ public class UserController {
         }
 
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
-        return "DEBUG: 用户登录";
+        return "用户登录：roles = " + authorityUtils.getLoginUser().getRoles();
     }
 
     /**
