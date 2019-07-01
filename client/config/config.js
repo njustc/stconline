@@ -58,13 +58,14 @@ export default {
         //   name: 'more-blocks',
         //   icon: 'block',
         // },
+
+        //entrustlist
         {
           //name: 'basic-form',
           //icon: 'dashboard',
           path: '/basic-form',
           component: './entrust/basic-form',
         },
-        //entrustlist
         {
           name: '委托列表',
           icon: 'pie-chart',
@@ -76,6 +77,8 @@ export default {
           path: '/basic-check',
           component: './entrust/basic-check',
         },
+        
+        //contract
         {
           name: '合同',
           icon: 'pie-chart',
@@ -95,37 +98,39 @@ export default {
             }
           ]
         },
-		{
-			path:'/contract_detail',
-			component:'./contract/contract_detail',
-		},
-		{
-			path:'/contract_edit',
-			component: './contract/contract_edit',
-		},
-		{
-			path:'/contract_list',
-			component: './contract/contract_list',
-		},
-    {
-      name: '测试方案',
-      icon: 'pie-chart',
-      path: '/testplan',
-      routes:[
         {
-          path:'/plan_check',
-          name:'测试方案详情',
+          path:'/contract_detail',
+          component:'./contract/contract_detail',
         },
         {
-          path:'/plan_edit',
-          name:'测试方案编辑',
+          path:'/contract_edit',
+          component: './contract/contract_edit',
         },
         {
-          path:'/plan_list',
-          name:'测试方案列表',
-        }
-      ]
-    },
+          path:'/contract_list',
+          component: './contract/contract_list',
+        },
+        
+        //testplan
+        // {
+        //   name: '测试方案',
+        //   icon: 'pie-chart',
+        //   path: '/testplan',
+        //   routes:[
+        //     {
+        //       path:'/plan_check',
+        //       name:'测试方案详情',
+        //     },
+        //     {
+        //       path:'/plan_edit',
+        //       name:'测试方案编辑',
+        //     },
+        //     {
+        //       path:'/plan_list',
+        //       name:'测试方案列表',
+        //     }
+        //   ]
+        // },
         {
           //name: '测试方案详情',
           //icon: 'pie-chart',
@@ -133,8 +138,8 @@ export default {
           component: './testplan/plan_check',
         },
         {
-          //name: '测试方案列表',
-          //icon: 'pie-chart',
+          name: '测试方案列表',
+          icon: 'pie-chart',
           path: '/plan_list',
           component: './testplan/plan_list',
         },
@@ -144,43 +149,32 @@ export default {
           path: '/plan_edit',
           component: './testplan/plan_edit',
         },
+        
+        //test-report
         {
-          name: '测试报告',
+          name: '测试报告列表',
           icon: 'pie-chart',
-          path: '/testreport',
-          routes:[
-            {
-              path:'/report_detail',
-              name:'测试报告详情',
-            },
-            {
-              path:'/report_edit',
-              name:'测试报告编辑',
-            },
-            {
-              path:'/report_list',
-              name:'测试报告列表',
-            }
-          ]
+          path: '/report-list',
+          component: './test-report/report-list',
         },
-          {
-            path:'/report_detail',
-            component:'./testreport/report_detail',
-          },
-          {
-            path:'/report_edit',
-            component: './testreport/newTestReport',
-          },
-          {
-            path:'/report_list',
-            component: './testreport/report_list',
-          },
-          {
-            name: '登陆',
-            icon: 'smile',
-            path: '/user-login',
-            component: './user-login',
-          },
+        {
+          //测试报告详情
+          path: '/report-detail',
+          component: './test-report/report-detail',
+        },
+        {
+          //测试报告编辑
+          path: '/report-edit',
+          component: './test-report/report-edit',
+        },
+        
+        //user-login
+        {
+          name: '登陆',
+          icon: 'smile',
+          path: '/user-login',
+          component: './user-login',
+        },
       ],
     },
   ],

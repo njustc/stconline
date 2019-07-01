@@ -8,6 +8,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.stc.activiti.ContractAction;
 import com.example.stc.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
@@ -20,9 +21,13 @@ import com.example.stc.domain.Contract;
 /**
  * 客户的合同相关接口
  */
+@RestController
 public class ContractController extends BaseController {
     @Autowired
     private ContractService contractService;
+
+    @Autowired
+    private ContractAction contractAction;
 
     private static Resource<Contract> toResource(Contract contract) {
         return new Resource<>(contract
@@ -97,5 +102,41 @@ public class ContractController extends BaseController {
     ResponseEntity<?> deleteContract(@PathVariable String pid) {
         contractService.deleteContractByPid(pid);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 提交合同
+     * @param pid
+     * @return
+     * @throws URISyntaxException
+     */
+    @PostMapping(path = "/contract/submit")
+    public @ResponseBody
+    ResponseEntity<?> submitContract(@RequestParam(value = "pid")String pid) throws URISyntaxException {
+        Contract contract = contractService.findContractByPid(pid);
+        contractAction.submitContractProcess(contract);
+        Contract updatedContract = contractService.updateContract(pid, contract);
+        Resource<Contract> resource = toResource(updatedContract);
+        return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
+    }
+
+    /**
+     * 评审合同
+     * @param comment
+     * @param pid
+     * @param operation
+     * @return
+     * @throws URISyntaxException
+     */
+    @PostMapping(path = "/contract/review")
+    public @ResponseBody
+    ResponseEntity<?> reviewEntrust(@RequestBody String comment,
+                                    @RequestParam(value = "pid") String pid,
+                                    @RequestParam(value = "operation") String operation) throws URISyntaxException {
+        Contract contract = contractService.findContractByPid(pid);
+        contractAction.reviewContractProcess(contract, operation, comment);
+        Contract updatedContract = contractService.updateContract(pid, contract);
+        Resource<Contract> resource = toResource(updatedContract);
+        return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 }

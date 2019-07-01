@@ -4,12 +4,15 @@ import { replaceEntrust,getOneEntrust ,deleteEntrust ,updateEntrustProcess,addNe
 export default {
   namespace: 'entrustForm',
 
-  state: {data:{}},
+  state: {
+    data:{},
+    pid:"",
+    needJump:false
+},
 
   effects: {
     *replaceEntrust({ payload }, { call ,put}) {
       yield call(replaceEntrust, payload);
-      // console.log(payload)
       const response=yield call(getOneEntrust, payload);
       yield put({type:'initData',payload:response})
       message.success('保存成功');
@@ -20,17 +23,24 @@ export default {
       yield put({type:'initData',payload:response})
       message.success('新建成功');
     },
-    *submitform({ payload }, { call ,put}) {
-      yield call(updateEntrustProcess, payload);
-      console.log(payload)
+    *submitForm({ payload }, { call ,put}) {
+      console.log("submit",payload)
+      if(payload.pid!=""){//已存在
+        yield call(replaceEntrust, payload);
+        console.log("sub old",payload.pid)
+        const response=yield call(updateEntrustProcess, payload.pid);
+      }
+      else{
+        const newform=yield call(addNewEntrust, payload);
+        console.log("newForm",payload)
+        const response=yield call(updateEntrustProcess, newform.pid);
+      }
+      yield put({type:'changeStatus'})
       message.success('提交成功');
     },
     *getOneEntrust({ payload }, { call , put}) {
-      console.log(payload)
       const response=yield call(getOneEntrust, payload);
-      yield put({type:'initData',payload:response})
-      console.log("fetch",response)
-    
+      yield put({type:'initData',payload:response}) 
     },
     *DeleteEntrust({payload},{call,put}){
       // console.log(payload.pid)
@@ -45,6 +55,13 @@ export default {
       return{
         ...state,
         data:action.payload,
+        pid:action.payload.pid
+      }
+    },
+    changeStatus(state){
+      return{
+        ...state,
+        needJump:true
       }
     }
   }
