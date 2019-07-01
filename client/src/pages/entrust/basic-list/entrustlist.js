@@ -45,7 +45,7 @@ var userLinkMaper={
   {}
   {key.processState === 'Submit' ? <Link to={{pathname: '../../basic-form', query: {pid: key.pid}}}>编辑</Link>:<span />}
   <Divider type="vertical"/>
-  <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
+  <span style={{color: 'red', cursor: 'pointer'}} onClick={()=>{this.showDeleteConfirm.bind(this, key)}}>删除</span>
   </span>
   )
 }
