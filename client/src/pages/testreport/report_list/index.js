@@ -78,7 +78,7 @@ class List extends React.Component{
 		</Breadcrumb>
 		<br />
 		<Table columns={columns} dataSource={data} />
-		<Button a href="/testreport/newTestReport.html">新建</Button>
+		<Button a href="/report_edit.html">新建</Button>
 		</div>
 		);
 	}
