@@ -40,8 +40,8 @@ const columns = [
     key: 'action',
     render: (key) => (
       <span>
-        {key.processState == 'Submit' ? <Link to={{pathname: './contract_detail', query: {pid: 'kkk'}}}>查看详情</Link> :
-          <Link to={{pathname: './contract_detail', query: {pid: 'kkk'}}}>查看详情</Link>}
+        {key.processState == 'Submit' ? <Link to={{pathname: './contract_detail', query: {pid: key.pid}}}>查看详情</Link> :
+          <Link to={{pathname: './contract_detail', query: {pid: key.pid}}}>查看详情</Link>}
         <Divider type="vertical"/>
         {/*<a href="/plan_edit.html">编辑</a>*/}
         {<Link to={{pathname: '../../contract_edit', query: {pid: key.pid}}}>编辑</Link>}
@@ -82,7 +82,7 @@ const columns = [
 const namespace='contractList';
 const mapStateToProps = (state) => {
   const dataList = state[namespace].data;
-  console.log(dataList);
+  //console.log(dataList);
   return {
     dataList,
   };

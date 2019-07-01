@@ -7,7 +7,7 @@ export async function getOneContract(params) {
 }
 
 export async function getAllContract() {
-  console.log("getAllContract");
+  //console.log("getAllContract");
   return request('api/project/contract');
   //return request('/dev/api/project/contract');
 }
