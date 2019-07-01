@@ -139,8 +139,9 @@ export default class entrustCheck extends Component {
           <p>重述：<FormattedMessage id={this.props.entrustdata.entrust.reqword || ' '}/></p>
           <p>用户文档：<FormattedMessage id={this.props.entrustdata.entrust.userDocumentation || ' '}/></p>
           <p>操作文档：<FormattedMessage id={this.props.entrustdata.entrust.operationDocument || ' '}/></p>
-          <p>确认意见(单选)：<FormattedMessage id={this.props.entrustdata.entrust.opinions || ' '}/></p>
-          <p>受理意见(单选)：<FormattedMessage id={this.props.entrustdata.entrust.acceptOpinions || ' '}/></p>
+          {/* <p>确认意见(单选)：<FormattedMessage id={this.props.entrustdata.entrust.opinions || ' '}/></p> */}
+          {/* <p>受理意见(单选)：<FormattedMessage id={this.props.entrustdata.entrust.acceptOpinions || ' '}/></p> */}
+          <p>评审意见：<FormattedMessage id={this.props.entrustdata.entrust.comment || ' '}/></p>
           <p>流程状态：{this.props.entrustdata.entrust.processState || ' '}</p>
           {/* <p>测试项目编号：<FormattedMessage id={this.props.entrustdata.entrust.test_number||' '}/></p>
         <p>备注：<FormattedMessage id={this.props.entrustdata.entrust.remarks||' '}/></p>

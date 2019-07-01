@@ -20,6 +20,7 @@ import {
 import PageHeaderWrapper from './components/PageHeaderWrapper';
 import styles from './style.less';
 import moment from 'moment';
+import router from 'umi/router';
 const FormItem = Form.Item;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -66,22 +67,7 @@ function showDeleteConfirm() {
   });
 }
 
-//提交按钮的对话框方法，点击“提交”调取提交方法
-function showConfirm() {
-  confirm({
-    title: '您是否要提交本委托?',
-    content: '委托一旦提交，将无法从线上更改，但您可以在“委托列表”查看本委托详情。提交的委托将由工作人员进行核对。',
-    okText: '提交',
-    cancelText: '取消',
-    onOk() {
-      console.log('OK');
-      //在此方法里提交
-    },
-    onCancel() {
-      console.log('Cancel');
-    },
-  });
-}
+
 
 
 
@@ -111,17 +97,21 @@ class BasicForm extends PureComponent {
 constructor(props){
   super(props)
   this.state={
-    pid:""
+    pid:"",
+    confirmVisible:false,
+    deleteVisible:false
   }
 } 
 
   componentDidMount() {
     const {dispatch}=this.props;
-    console.log(this.props.location.query)
     if(this.props.location.query.pid){
       this.state.pid=this.props.location.query.pid
-      // console.log(this.state.pid)
-
+    }
+    else{
+      this.state.pid=this.props.entrustdata.pid
+    }
+    if(this.state.pid!=""){
     dispatch({
       type:'entrustForm/getOneEntrust',
       payload:this.props.location.query,
@@ -129,7 +119,7 @@ constructor(props){
   }
 
   else{
-    console.log(this.state.pid)
+    console.log("isNew")
   }
   }
 
@@ -146,50 +136,108 @@ constructor(props){
     });
   };
 
-  submit = () => {
-    this.setState({
-      visible: true,
-      current: undefined,
-    });
-    dispatch({
-      type: 'basicForm/saveForm',
-      payload: values,
-    });
-  };
 
-  saveForm=(form)=>{
-    // console.log(form)
+  addForm=(form)=>{
     const { dispatch } = this.props;  
-
+    this.state.pid=this.props.entrustdata.pid
     form.validateFields((err,value) => {
-      console.log(value)
-      if (this.state.pid=="") {
-        //新建
-        value.pid=this.state.pid
-        value.processInstanceID=""
-        value.processState="ToSubmit"
-        value.entrustEntity=""
-        value.comment=""
-        value.userId="5"
-        console.log("start adds")
-        console.log("afterpack",value)
-        dispatch({
-          type: 'entrustForm/addNewEntrust',
-          payload: value,
-        });
-      } else {
-        //保存
-
-        value.pid=this.state.pid
-        dispatch({
-          type: 'entrustForm/replaceEntrust',
-          payload: value,
-        });
-      }
-
+      //新建
+      value.pid=this.state.pid
+      // 补充新建属性
+      value.processInstanceID=""
+      value.processState="ToSubmit"
+      value.entrustEntity=""
+      value.comment=""
+      //补充完毕
+      dispatch({
+        type: 'entrustForm/addNewEntrust',
+        payload: value,
+      });
     })
   }
 
+  saveForm=(form)=>{
+    const { dispatch } = this.props;  
+    this.state.pid=this.props.entrustdata.pid
+    form.validateFields((err,value) => {
+    //保存
+    value.pid=this.state.pid
+    dispatch({
+      type: 'entrustForm/replaceEntrust',
+      payload: value,
+ });
+    })
+  }
+
+  //保存
+  save=(form)=>{
+    const { dispatch } = this.props;  
+    this.state.pid=this.props.entrustdata.pid
+      if (this.state.pid=="") {
+        this.addForm(form)
+      } 
+      else {
+       this.saveForm(form)
+      }
+  }
+
+  //提交
+  submit = (form) => {
+    const { dispatch } = this.props;  
+    this.state.pid=this.props.entrustdata.pid
+    form.validateFields((err,value) => {
+      //新建
+      value.pid=this.state.pid
+      // 补充新建属性
+      value.processInstanceID=""
+      value.processState="ToSubmit"
+      value.entrustEntity=""
+      value.comment=""
+      //补充完毕
+      dispatch({
+        type: 'entrustForm/submitForm',
+        payload: value,
+      });
+    })
+    // if(this.props.entrustdata.needJump){
+    // router.push('/basic-list');
+    // }
+  };
+
+
+  // showConfirm=(form)=> {
+  //   confirm({
+  //     title: '您是否要提交委托?',
+  //     content: '委托提交后进入审核状态，不可编辑',
+  //     okText: '确认提交',
+  //     okType: 'primary',
+  //     cancelText: '取消',
+  //     onOk() {
+  //       console.log('OK');
+  //       console.log(this)
+  //       //在此方法里使用submit
+  //       this.submit(form)
+  //     },
+  //     onCancel() {
+  //       console.log('Cancel');
+  //     },
+  //   });
+  // }
+
+  showConfirmModal = () => {
+    this.setState({
+      conformVisible: true,
+    })
+  };
+
+  handleCancel = () => {
+    console.log('Clicked cancel button');
+    this.setState({
+      confirmVisible: false,
+      deleteVisible:false
+    });
+  };
+  
 
   render() {
     const {submitting} = this.props;
@@ -238,7 +286,7 @@ constructor(props){
               {/* //测试类型 */}
               <div>
                 {getFieldDecorator('testType', {
-                  initialValue: this.props.entrustdata.data || 'basic-form.radio.confirm',
+                  initialValue: this.props.entrustdata.data.testType || 'basic-form.radio.confirm',
                 })(
                   <Radio.Group>
                     <Radio value="basic-form.radio.confirm">
@@ -1325,11 +1373,19 @@ constructor(props){
             </Dragger>
 
               <FormItem {...submitFormLayout} style={{marginTop: 32}}>
-                <Button type="primary" onClick={showConfirm.bind(this)}>
+                <Button type="primary" onClick={()=>{this.submit(this.props.form)}}>
                   <FormattedMessage id="basic-form.form.submit"/>
                 </Button>
+                {/* <Modal
+                  title="您是否要提交委托?"
+                  visible={this.state.confirmVisible}
+                  onOk={this.submit(this.props.form)}
+                  onCancel={this.handleCancel}
+                >
+                  <p>委托提交后进入审核状态，不可编辑</p>
+                </Modal> */}
 
-                <Button htmlType="submit" style={{marginLeft: 8}} onClick={()=>{this.saveForm(this.props.form)}}>
+                <Button  style={{marginLeft: 8}} onClick={()=>{this.save(this.props.form)}}>
                   <FormattedMessage id="basic-form.form.save"/>
                 </Button>
 
