@@ -1,57 +1,62 @@
 package com.example.stc.service;
 
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import com.example.stc.domain.*;
-import com.example.stc.repository.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 
 @Service
-public interface UserService extends BaseService<User>{
+public interface UserService extends BaseService<User> {
     /**
      * 编辑用户信息
+     *
      * @param params
      * @param user
      */
     //@Secured("ROLE_ADMIN")
-    public void editUser(JSONObject params, User user);
+    void editUser(JSONObject params, User user);
 
     /**
      * 删除用户
+     *
      * @param userId
      */
     //@Secured("ROLE_ADMIN")
-    public void deleteUserById(Long userId);
+    void deleteUserById(Long userId);
 
     /**
      * 添加新用户
+     *
      * @param user
      */
-    public User newUser(User user);
+    User newUser(User user);
 
     /**
      * 查询User
+     *
      * @param username
      * @return
      */
-    //@Secured("ROLE_ADMIN")
-    public User getUserByUsername(String username);
+    User getUserByUsername(String username);
 
     /**
      * 根据用户uid查找用户
+     *
      * @param uid
      * @return
      */
-    //@Secured("ROLE_ADMIN")
-    public User findUserByUid(String uid);
+    User findUserByUid(String uid);
 
     /**
      * 根据用户uid删除用户
+     *
      * @param uid
      * @return
      */
-    //@Secured("ROLE_ADMIN")
-    public int deleteUserByUid(String uid);
+    int deleteUserByUid(String uid);
+
+    String userLogin(User user, HttpServletResponse response);
 }

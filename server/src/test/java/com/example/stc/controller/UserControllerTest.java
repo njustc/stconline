@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -14,8 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -39,8 +39,8 @@ public class UserControllerTest {
     @Test
     public void checkNotAuth() throws Exception {
         //check not auth
-//        mockMvc.perform(get("/api/project/entrust"))
-//                .andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/api/project/entrust"))
+                .andExpect(status().isUnauthorized());
     }
 
     /**
@@ -63,6 +63,5 @@ public class UserControllerTest {
                 .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
     }
-
 
 }

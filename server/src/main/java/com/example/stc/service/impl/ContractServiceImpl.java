@@ -107,7 +107,7 @@ public class ContractServiceImpl implements ContractService{
     public void deleteContractByPid(String pid) {
         logger.info("deleteContractByPid: ");
         Contract contract = this.findContractByPid(pid);
-        contractAction.deleteContractProcess(contract);
+        //contractAction.deleteContractProcess(contract);
 
         int n = contractRepository.deleteByPid(pid);
         if (0 == n) {
