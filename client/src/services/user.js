@@ -57,9 +57,10 @@ export async function addNewEntrust(params) {
 // }
 
 export async function updateEntrustProcess(params) {
-  return request('/api/process/entrust', {
+  // console.log(typeof(params))
+  return request(`api/project/entrust/submit?pid=${params}`, {
     method: 'POST',
-    data: params,
+    data: ""
   });
 }
 
