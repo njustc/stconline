@@ -29,7 +29,7 @@ const mapDispatchToProps = (dispatch) => {
     }
   }
 }
-
+const data=[];
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class EntrustList extends Component {
@@ -128,7 +128,7 @@ export default class EntrustList extends Component {
           style={{marginLeft: 100, width: 200}}
         />
         {/* <div class="" */}
-        <Table style={{marginTop: 50}} columns={this.columns} dataSource={this.props.listdata.data}/>
+        <Table style={{marginTop: 50}} columns={this.columns} dataSource={(!this.props.listdata.data.length)?data:this.props.listdata.data}/>
         <Button
           style={{marginLeft: 400}}
           type="primary"
