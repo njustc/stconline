@@ -154,15 +154,15 @@ public class EntrustServiceImpl implements EntrustService {
     @Override
     public Entrust updateEntrust(String pid, Entrust record) {
         logger.info("updateEntrust: ");
-        /**
-         * TODO: 增加更新逻辑
-         */
         Entrust entrust = entrustRepository.findByPid(pid); // 找到应修改的委托并检查，若为客户，只能访问本人的委托
         record.setId(entrust.getId());
         record.setPid(pid);
         record.setUser(entrust.getUser());
-        record.setProcessState(entrust.getProcessState());
-        record.setProcessInstanceID(entrust.getProcessInstanceID());
+        if (record.getProcessInstanceID().equals("")) {
+            // record.setProcessState(entrust.getProcessState());
+            record.setProcessInstanceID(entrust.getProcessInstanceID());
+            record.setProcessState(entrustAction.getEntrustProcessState(entrust.getProcessInstanceID()));
+        }
         return entrustRepository.save(record);
         // return entrustRepository.findByPid(pid); // .orElseThrow(() -> new EntrustNotFoundException(pid));
     }

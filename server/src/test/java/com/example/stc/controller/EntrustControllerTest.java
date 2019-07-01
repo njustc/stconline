@@ -131,6 +131,7 @@ public class EntrustControllerTest {
                         .getContent();
         assertThat(updatedEntrust).isNotNull();
         assertThat(updatedEntrust.getVersion()).isEqualTo("3.0");
+        assertThat(updatedEntrust.getProcessInstanceID()).isEqualTo("");
         //submit the entrust
         //第一步 ToSubmit
         entrust = ((Resource<Entrust>) entrustController

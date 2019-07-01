@@ -38,6 +38,7 @@ public class ProcessEntity extends BaseEntity{
         ProcessState states[] = ProcessState.values();
         for (ProcessState processState: states) {
             if (state.equals(processState.getName())) {
+
                 this.processState = processState;
                 return;
             }
