@@ -42,7 +42,7 @@ export default class EntrustList extends Component {
       title: '委托ID',
       dataIndex: 'pid',
       key: 'pid',
-      render: text => <a href="javascript:;">{text}</a>,
+      render: text => <a href="javascript:">{text}</a>,
     },
     // {
     //   title: '用户名',
@@ -78,7 +78,7 @@ export default class EntrustList extends Component {
       key: 'action',
       render: (key) => (
         <span>
-          {key.processState == 'Submit' ? <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link> :
+          {key.processState === 'Submit' ? <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link> :
             <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link>}
           <Divider type="vertical"/>
           {<Link to={{pathname: '../../basic-form', query: {pid: key.pid}}}>编辑</Link>}

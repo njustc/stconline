@@ -5,6 +5,7 @@ import Link from 'umi/link';
 import {Checkbox, Alert, Icon} from 'antd';
 import {Login} from 'ant-design-pro';
 import styles from './style.less';
+import {readCookie} from "../../utils/cookieUtils";
 
 const {Tab, UserName, Password, Mobile, Captcha, Submit} = Login;
 
@@ -36,7 +37,7 @@ class LoginPage extends Component {
           type,
         },
       }).then(res => {
-        console.log(res)
+        //TODO: 登录成功与失败处理逻辑
       });
     }
   };

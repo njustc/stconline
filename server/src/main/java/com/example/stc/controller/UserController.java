@@ -2,28 +2,14 @@ package com.example.stc.controller;
 
 import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
-import com.example.stc.framework.exception.EntrustNotFoundException;
 import com.example.stc.framework.exception.UserNotFoundException;
-import com.example.stc.framework.util.AuthorityUtils;
-import com.example.stc.framework.util.CookieUtils;
 import com.example.stc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import java.io.UnsupportedEncodingException;
-
-import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 @RestController
 public class UserController {
@@ -31,13 +17,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private AuthorityUtils authorityUtils;
-
-    @Autowired
-    private CookieUtils cookieUtils;
-    @Resource(name = "authenticationManager")
-    private AuthenticationManager authManager;
 
     /**
      * 用户基本信息
@@ -61,33 +40,14 @@ public class UserController {
     }
 
     /**
-     * DEBUG: 登录界面
+     * 用户登录
      */
+//    @Secured(value = "USER")
     @PostMapping("/api/login")
     public String userLogin(HttpServletRequest req,
                             HttpServletResponse response,
                             @RequestBody User user) {
-        //TODO: 将具体逻辑加入到service层
-        UsernamePasswordAuthenticationToken authReq
-                = new UsernamePasswordAuthenticationToken(user.getUsername(),
-                user.getPassword());
-        Authentication auth = authManager.authenticate(authReq);
-        SecurityContext sc = SecurityContextHolder.getContext();
-        sc.setAuthentication(auth);
-        HttpSession session = req.getSession(true);
-
-        //add cookie
-        try {
-            cookieUtils.addCookie(response,
-                    "roles",
-                    authorityUtils.getLoginUser().getRoles(),
-                    60 * 60);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
-        return "用户登录：roles = " + authorityUtils.getLoginUser().getRoles();
+        return userService.userLogin(user, response);
     }
 
     /**
