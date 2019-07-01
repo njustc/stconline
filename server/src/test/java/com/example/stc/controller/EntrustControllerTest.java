@@ -110,7 +110,7 @@ public class EntrustControllerTest {
      * 委托的流程推进测试
      */
     @Test
-    @WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS", "USER"})
+    @WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS", "USER", "SS"})
     public void entrustProcessTest() throws URISyntaxException {
         //ini
         Entrust entrust = new Entrust();
@@ -140,12 +140,23 @@ public class EntrustControllerTest {
         String processStateName = entrust.getProcessState().getName();
         assertThat(processStateName).isNotNull();
         //状态应该是To review
-        //TODO:此处的无法通过
         assertThat(processStateName).isEqualTo(ProcessState.Review.getName());
         //审批不通过
-        //TODO: 操作类型不同推进不同的processState
-//        entrustController
-//                .reviewEntrust("", entrust.getPid(), "");
+        //ReviewPass 通过
+        //ReviewDisprove 不通过
+
+
+        //首先不通过
+        entrust = ((Resource<Entrust>) entrustController
+                .reviewEntrust("", entrust.getPid(), "ReviewDisprove")
+                .getBody()).getContent();
+        assertThat(entrust.getProcessState().getName()).isEqualTo(ProcessState.Submit.getName());
+        //通过评审
+        entrust = ((Resource<Entrust>) entrustController
+                .reviewEntrust("", entrust.getPid(), "ReviewPass")
+                .getBody()).getContent();
+        assertThat(entrust.getProcessState().getName()).isEqualTo(ProcessState.Approve.getName());
+        //删除委托 , 携带一并删除流程
         entrustController.deleteEntrust(entrust.getPid());
 
     }
