@@ -59,10 +59,10 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public List<Entrust> findEntrustsByAuthority() {
-        List<Entrust> allEntrusts = this.findAllEntrusts();
         User curUser = authorityUtils.getLoginUser();
         logger.info("findEntrustsByAuthority: 当前登录者id = " + curUser.getUserID() +
                 ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
+        // 若为用户，返回该用户全部委托
         if (authorityUtils.hasAuthority(Role.Customer)) {
             logger.info("findEntrustsByAuthority: 仅查看当前客户委托");
             //                    logger.info("findEntrustsByAuthority: 不可见（name = " + entrust.getUser().getUsername() + "）");
