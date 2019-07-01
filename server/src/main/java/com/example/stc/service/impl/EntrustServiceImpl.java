@@ -64,12 +64,20 @@ public class EntrustServiceImpl implements EntrustService {
                 ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
         // 若为用户，返回该用户全部委托
         if (authorityUtils.hasAuthority(Role.Customer)) {
-            logger.info("findEntrustsByAuthority: 仅查看当前客户委托");
-            //                    logger.info("findEntrustsByAuthority: 不可见（name = " + entrust.getUser().getUsername() + "）");
-            // 不是当前客户的委托不可见
-            allEntrusts.removeIf(entrust -> !entrust.getUser().getUsername().equals(curUser.getUsername()));
-        } else logger.info("findEntrustsByAuthority: 查看全部委托");
-//        logger.info("findEntrustsByAuthority: 最终查询委托数：" + allEntrusts.size());
+            return findEntrustsByUser(curUser.getUserID());
+        }
+        // 若为工作人员，返回待审核的全部委托
+        if (authorityUtils.hasAuthority(Role.STAFF)) {
+            return findReviewEntrusts();
+        }
+        return findAllEntrusts();
+    }
+
+    @Override
+    public List<Entrust> findReviewEntrusts() {
+        logger.info("findSubmitEntrusts: 仅查看待审核的所有委托");
+        List<Entrust> allEntrusts = this.findAllEntrusts();
+        allEntrusts.removeIf(entrust -> entrust.getProcessState() != ProcessState.Review);
         return allEntrusts;
     }
 
@@ -139,7 +147,7 @@ public class EntrustServiceImpl implements EntrustService {
         entrust.setUser(authorityUtils.getLoginUser());
         //根据某一个算法增加新的id
         entrust.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
-        entrust.setProcessState(ProcessState.NotExist.getName());
+        entrust.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
         return entrustRepository.save(entrust);
     }
 
