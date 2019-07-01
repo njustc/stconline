@@ -29,7 +29,7 @@ const mapDispatchToProps = (dispatch) => {
     }
   }
 }
-
+const data=[];
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class EntrustList extends Component {
@@ -42,7 +42,7 @@ export default class EntrustList extends Component {
       title: '委托ID',
       dataIndex: 'pid',
       key: 'pid',
-      render: text => <a href="javascript:;">{text}</a>,
+      render: text => <a href="javascript:">{text}</a>,
     },
     // {
     //   title: '用户名',
@@ -78,7 +78,7 @@ export default class EntrustList extends Component {
       key: 'action',
       render: (key) => (
         <span>
-          {key.processState == 'Submit' ? <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link> :
+          {key.processState === 'Submit' ? <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link> :
             <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link>}
           <Divider type="vertical"/>
           {<Link to={{pathname: '../../basic-form', query: {pid: key.pid}}}>编辑</Link>}
@@ -128,7 +128,7 @@ export default class EntrustList extends Component {
           style={{marginLeft: 100, width: 200}}
         />
         {/* <div class="" */}
-        <Table style={{marginTop: 50}} columns={this.columns} dataSource={this.props.listdata.data}/>
+        <Table style={{marginTop: 50}} columns={this.columns} dataSource={(!this.props.listdata.data.length)?data:this.props.listdata.data}/>
         <Button
           style={{marginLeft: 400}}
           type="primary"

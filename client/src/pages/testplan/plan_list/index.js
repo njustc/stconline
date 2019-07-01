@@ -4,30 +4,11 @@ import {connect} from "dva";
 const confirm = Modal.confirm;
 import Link from 'umi/link'
 
-// const data = [
-//   {
-//     key: '1',
-//     testplan_name: 'mmm测试',
-//     client: "林黛玉",
-//     tags: ['审核通过'],
-//   },
-//   {
-//     key: '2',
-//     testplan_name: 'kkk测试',
-//     client: 123,
-//     tags: ['未通过'],
-//   },
-//   {
-//     key: '3',
-//     testplan_name: 'xxx测试',
-//     client: '李逵',
-//     tags: ['待提交审核'],
-//   },
-// ];
-
+const data = [];
 const namespace='testplanList';
 const mapStateToProps = (state) => {
   const dataList = state[namespace].data;
+  console.log(dataList);
   return {
     dataList,
   };
@@ -192,7 +173,7 @@ export default class List extends React.Component{
         </Breadcrumb>
         <br/>
 
-        <Table columns={this.columns} dataSource={this.props.dataList}/>
+        <Table columns={this.columns} dataSource={(!this.props.dataList.length)?data:this.props.dataList}/>
 
         {/*<div>*/}
         {/*  <Button onClick={*/}
