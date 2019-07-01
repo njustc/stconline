@@ -17,12 +17,14 @@ export default {
       yield put({type:'initData',payload:response})
       message.success('保存成功');
     },
+
     *addNewEntrust({ payload }, { call ,put}) {
       const response=yield call(addNewEntrust, payload);
       console.log("newid=",response)
       yield put({type:'initData',payload:response})
       message.success('新建成功');
     },
+    
     *submitForm({ payload }, { call ,put}) {
       console.log("submit",payload)
       if(payload.pid!=""){//已存在

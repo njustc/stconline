@@ -1,18 +1,51 @@
-import {Card, Table, Divider, Tag, Input, Button, Breadcrumb, DatePicker, Upload, Icon, message} from 'antd';
+import {Card, Table, Divider, Tag, Input, Button, Breadcrumb, DatePicker, Upload, Icon, message,Form,Descriptions} from 'antd';
 import {formatMessage, FormattedMessage} from 'umi/locale';
 import {connect} from 'dva';
 import React, {Component} from 'react'
 import moment from 'moment';
-import Link from 'umi/link'
+import Link from 'umi/link';
+import {getRole} from "../../../utils/cookieUtils";
+import { func } from 'prop-types';
+
 
 const namespace = 'checkentrust';
 const {RangePicker} = DatePicker;
+const FormItem = Form.Item;
+const { TextArea } = Input;
+
 const mapStateToProps = (state) => {
   const entrustdata = state[namespace];
   return {
     entrustdata,
   };
 };
+
+//动态渲染button
+var userMaper={
+  "SS":<div class="ssSpace">
+          <FormItem label={<FormattedMessage id="form.sample_document.label"/>}>
+                <TextArea
+                  style={{minHeight: 32}}
+                  placeholder={formatMessage({id: '请填写您的审批意见，以便客户修改'})}
+                  rows={10}
+                />
+            </FormItem> 
+    <Button>通过</Button>
+    <Button>不通过</Button>
+    </div> ,
+
+    "CUS":
+    <Descriptions title="委托状态及意见">
+      <Descriptions.Item label="委托状态">审核未通过</Descriptions.Item>
+      <Descriptions.Item label="委托意见">重写</Descriptions.Item>
+      <Descriptions.Item label="已提交样品">a.zip</Descriptions.Item>
+    </Descriptions>
+}
+
+
+function getUserRole(){
+  return userMaper[getRole()[0]]
+}
 
 
 const style = {
@@ -52,7 +85,7 @@ export default class entrustCheck extends Component {
       type: 'checkentrust/getOneEntrust',
       payload: this.props.location.query,
     });
-    console.log(this.props.entrustdata)
+    // console.log(this.props.entrustdata)
     // this.props.entrustdata.entrust.testBasis.map(item=>{console.log(item)})
   }
 
@@ -139,9 +172,7 @@ export default class entrustCheck extends Component {
           <p>重述：<FormattedMessage id={this.props.entrustdata.entrust.reqword || ' '}/></p>
           <p>用户文档：<FormattedMessage id={this.props.entrustdata.entrust.userDocumentation || ' '}/></p>
           <p>操作文档：<FormattedMessage id={this.props.entrustdata.entrust.operationDocument || ' '}/></p>
-          {/* <p>确认意见(单选)：<FormattedMessage id={this.props.entrustdata.entrust.opinions || ' '}/></p> */}
-          {/* <p>受理意见(单选)：<FormattedMessage id={this.props.entrustdata.entrust.acceptOpinions || ' '}/></p> */}
-          <p>评审意见：<FormattedMessage id={this.props.entrustdata.entrust.comment || ' '}/></p>
+          {/* <p>评审意见：<FormattedMessage id={this.props.entrustdata.entrust.comment || ' '}/></p> */}
           <p>流程状态：{this.props.entrustdata.entrust.processState || ' '}</p>
           {/* <p>测试项目编号：<FormattedMessage id={this.props.entrustdata.entrust.test_number||' '}/></p>
         <p>备注：<FormattedMessage id={this.props.entrustdata.entrust.remarks||' '}/></p>
@@ -151,23 +182,8 @@ export default class entrustCheck extends Component {
         <p>委托人签名：<FormattedMessage id={this.props.entrustdata.entrust.client_signature||' '}/></p>
         <p>委托人签名日期：<FormattedMessage id={this.props.entrustdata.entrust.client_signature_time||' '}/></p> */}
         </Card>
-
-        {/* <div><h3>NST-04-JS002-2011-软件项目委托测试申请表(只读)</h3></div>
-      <div style={{ width: "100%", border:"1px solid"}}>
-        测试类型：软件确认测试，成果技术鉴定测试<br/>
-        软件名称：小猪佩奇软件测试
-      </div>
-      <Table columns={columns} dataSource={modelListData} pagination={false} />
-      <div><h3>委托状态及意见</h3></div>
-      <div>待受理/已受理/已驳回</div>
-      <Input.TextArea style={{width:400,height:200}} placeholder="//意见" />
-      <div>已提交样品：a.zip</div> */}
-
-        <br/>
-
-        {/* <Button style={{marginLeft:300}} type="primary">通过</Button>
-      <Button style={{marginLeft:300}} type="primary">不通过</Button> */}
-
+        {getUserRole()}
+        {/* {test("SS")} */}
       </div>
     )
   }
