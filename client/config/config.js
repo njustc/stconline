@@ -109,25 +109,25 @@ export default {
           path: '/contract_list',
           component: './contract/contract_list',
         },
-        {
-          name: '测试方案',
-          icon: 'pie-chart',
-          path: '/testplan',
-          routes: [
-            {
-              path: '/plan_check',
-              name: '测试方案详情',
-            },
-            {
-              path: '/plan_edit',
-              name: '测试方案编辑',
-            },
-            {
-              path: '/plan_list',
-              name: '测试方案列表',
-            }
-          ]
-        },
+        // {
+        //   name: '测试方案',
+        //   icon: 'pie-chart',
+        //   path: '/testplan',
+        //   routes: [
+        //     {
+        //       path: '/plan_check',
+        //       name: '测试方案详情',
+        //     },
+        //     {
+        //       path: '/plan_edit',
+        //       name: '测试方案编辑',
+        //     },
+        //     {
+        //       path: '/plan_list',
+        //       name: '测试方案列表',
+        //     }
+        //   ]
+        // },
 
         {
           //name: '测试方案详情',
@@ -136,8 +136,8 @@ export default {
           component: './testplan/plan_check',
         },
         {
-          //name: '测试方案列表',
-          //icon: 'pie-chart',
+          name: '测试方案列表',
+          icon: 'pie-chart',
           path: '/plan_list',
           component: './testplan/plan_list',
         },

@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+@Service
 public class ContractServiceImpl implements ContractService{
     Logger logger = LoggerFactory.getLogger(ContractServiceImpl.class);
 

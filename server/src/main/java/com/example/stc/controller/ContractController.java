@@ -20,6 +20,7 @@ import com.example.stc.domain.Contract;
 /**
  * 客户的合同相关接口
  */
+@RestController
 public class ContractController extends BaseController {
     @Autowired
     private ContractService contractService;
