@@ -58,13 +58,14 @@ export default {
         //   name: 'more-blocks',
         //   icon: 'block',
         // },
+
+        //entrustlist
         {
           //name: 'basic-form',
           //icon: 'dashboard',
           path: '/basic-form',
           component: './entrust/basic-form',
         },
-        //entrustlist
         {
           name: '委托列表',
           icon: 'pie-chart',
@@ -76,6 +77,8 @@ export default {
           path: '/basic-check',
           component: './entrust/basic-check',
         },
+        
+        //contract
         {
           name: '合同',
           icon: 'pie-chart',
@@ -107,6 +110,8 @@ export default {
           path:'/contract_list',
           component: './contract/contract_list',
         },
+        
+        //testplan
         // {
         //   name: '测试方案',
         //   icon: 'pie-chart',
@@ -144,37 +149,26 @@ export default {
           path: '/plan_edit',
           component: './testplan/plan_edit',
         },
+        
+        //test-report
         {
-          name: '测试报告',
+          name: '测试报告列表',
           icon: 'pie-chart',
-          path: '/testreport',
-          routes:[
-            {
-              path:'/report_detail',
-              name:'测试报告详情',
-            },
-            {
-              path:'/report_edit',
-              name:'测试报告编辑',
-            },
-            {
-              path:'/report_list',
-              name:'测试报告列表',
-            }
-          ]
+          path: '/report-list',
+          component: './test-report/report-list',
         },
         {
-          path:'/report_detail',
-          component:'./testreport/report_detail',
+          //测试报告详情
+          path: '/report-detail',
+          component: './test-report/report-detail',
         },
         {
-          path:'/report_edit',
-          component: './testreport/newTestReport',
+          //测试报告编辑
+          path: '/report-edit',
+          component: './test-report/report-edit',
         },
-        {
-          path:'/report_list',
-          component: './testreport/report_list',
-        },
+        
+        //user-login
         {
           name: '登陆',
           icon: 'smile',
