@@ -59,9 +59,13 @@ public class ContractAction {
      * @param contract
      */
     public void submitContractProcess(Contract contract) {
+        if (!authorityUtils.hasAuthority(Role.SalesStaff)) {
+            return;
+        }
+
         String processInstanceId = contract.getProcessInstanceID();
         Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-        // taskService.setAssignee(task.getId(), authorityUtils.getLoginUser().getUserID());
+        taskService.setAssignee(task.getId(), authorityUtils.getLoginUser().getUserID());
         taskService.complete(task.getId());
     }
 
