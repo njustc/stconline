@@ -1,6 +1,7 @@
 package com.example.stc.service.impl;
 
 import com.example.stc.activiti.EntrustAction;
+import com.example.stc.activiti.ProcessState;
 import com.example.stc.domain.Entrust;
 import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
@@ -58,23 +59,31 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public List<Entrust> findEntrustsByAuthority() {
-        List<Entrust> allEntrusts = this.findAllEntrusts();
         User curUser = authorityUtils.getLoginUser();
         logger.info("findEntrustsByAuthority: 当前登录者id = " + curUser.getUserID() +
                 ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
+        // 若为用户，返回该用户全部委托
         if (authorityUtils.hasAuthority(Role.Customer)) {
-            logger.info("findEntrustsByAuthority: 仅查看当前客户委托");
-            Iterator<Entrust> it = allEntrusts.iterator();
-            while (it.hasNext()) {
-                Entrust entrust = it.next();
-                if (!entrust.getUser().getUsername().equals(curUser.getUsername())) {
-//                    logger.info("findEntrustsByAuthority: 不可见（name = " + entrust.getUser().getUsername() + "）");
-                    it.remove(); // 不是当前客户的委托不可见
-                }
+            return findEntrustsByUser(curUser.getUserID());
+        }
+        // 若为工作人员，返回待审核的全部委托
+        if (authorityUtils.hasAuthority(Role.STAFF)) {
+            return findReviewEntrusts();
+        }
+        return findAllEntrusts();
+    }
+
+    @Override
+    public List<Entrust> findReviewEntrusts() {
+        List<Entrust> allEntrusts = this.findAllEntrusts();
+        logger.info("findSubmitEntrusts: 仅查看待审核的所有委托");
+        Iterator<Entrust> it = allEntrusts.iterator();
+        while (it.hasNext()) {
+            Entrust entrust = it.next();
+            if (entrust.getProcessState() != ProcessState.Review) {
+                it.remove(); // 仅待审核的委托可见
             }
         }
-        else logger.info("findEntrustsByAuthority: 查看全部委托");
-//        logger.info("findEntrustsByAuthority: 最终查询委托数：" + allEntrusts.size());
         return allEntrusts;
     }
 
