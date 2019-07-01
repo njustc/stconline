@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -40,10 +41,14 @@ public class AuthorityUtils {
         if (!isAuthenticated())
             return null; // 未登录
 
+        logger.info("getLoginUser: Name = " + SecurityContextHolder.getContext()
+                .getAuthentication().getName());
+
         User user = userRepository.findByUsername(SecurityContextHolder.getContext()
                 .getAuthentication().getName());
 
-        logger.info("Get Authenticated User: " + user.getUsername());
+        logger.info("getLoginUser: id = " + user.getUserID() + ", name = " + user.getUsername() +
+                ", roles = " + user.getRoles());
 
         return user;
     }
@@ -53,11 +58,9 @@ public class AuthorityUtils {
         if (!isAuthenticated())
             return false; // 未登录
 
-        // 获得当前登陆用户对应的对象
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
         // 获取权限集
-        List<GrantedAuthority> authorList = new ArrayList<>(userDetails.getAuthorities());
+        List<GrantedAuthority> authorList = new ArrayList<>(SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities());
 
         // 判断是否具有role角色
         boolean isRole = false;
