@@ -32,7 +32,7 @@ import java.util.List;
 @Service
 public class EntrustServiceImpl implements EntrustService {
 
-    Logger logger = LoggerFactory.getLogger(EntrustServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(EntrustServiceImpl.class);
 
     @Autowired
     private EntrustRepository entrustRepository;
@@ -64,39 +64,20 @@ public class EntrustServiceImpl implements EntrustService {
                 ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
         // 若为用户，返回该用户全部委托
         if (authorityUtils.hasAuthority(Role.Customer)) {
-            return findEntrustsByUser(curUser.getUserID());
-        }
-        // 若为工作人员，返回待审核的全部委托
-        if (authorityUtils.hasAuthority(Role.STAFF)) {
-            return findReviewEntrusts();
-        }
-        return findAllEntrusts();
-    }
-
-    @Override
-    public List<Entrust> findReviewEntrusts() {
-        List<Entrust> allEntrusts = this.findAllEntrusts();
-        logger.info("findSubmitEntrusts: 仅查看待审核的所有委托");
-        Iterator<Entrust> it = allEntrusts.iterator();
-        while (it.hasNext()) {
-            Entrust entrust = it.next();
-            if (entrust.getProcessState() != ProcessState.Review) {
-                it.remove(); // 仅待审核的委托可见
-            }
-        }
+            logger.info("findEntrustsByAuthority: 仅查看当前客户委托");
+            //                    logger.info("findEntrustsByAuthority: 不可见（name = " + entrust.getUser().getUsername() + "）");
+            // 不是当前客户的委托不可见
+            allEntrusts.removeIf(entrust -> !entrust.getUser().getUsername().equals(curUser.getUsername()));
+        } else logger.info("findEntrustsByAuthority: 查看全部委托");
+//        logger.info("findEntrustsByAuthority: 最终查询委托数：" + allEntrusts.size());
         return allEntrusts;
     }
 
     @Override
     public List<Entrust> findEntrustsByUser(String uid) {
         logger.info("findEntrustsByUser: 查看用户" + uid + "的全部委托");
-        List<Entrust> allEntrusts =  this.findAllEntrusts();
-        Iterator<Entrust> it = allEntrusts.iterator();
-        while (it.hasNext()) {
-            Entrust entrust = it.next();
-            if (!entrust.getUser().getUserID().equals(uid))
-                it.remove();
-        }
+        List<Entrust> allEntrusts = this.findAllEntrusts();
+        allEntrusts.removeIf(entrust -> !entrust.getUser().getUserID().equals(uid));
         return allEntrusts;
     }
 
@@ -142,7 +123,7 @@ public class EntrustServiceImpl implements EntrustService {
     public void deleteEntrustById(Long id) {
         logger.info("deleteEntrustById: ");
         Entrust entrust = this.findEntrustById(id); // 找到应删除的委托并检查，若为客户，只能访问本人的委托
-        entrustRepository.deleteById(id);
+        entrustRepository.deleteById(id);           // 如果找不到就会报错
     }
 
     @Override
@@ -158,7 +139,7 @@ public class EntrustServiceImpl implements EntrustService {
         entrust.setUser(authorityUtils.getLoginUser());
         //根据某一个算法增加新的id
         entrust.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
-        entrust.setProcessState("ToSubmit");
+        entrust.setProcessState(ProcessState.NotExist.getName());
         return entrustRepository.save(entrust);
     }
 
