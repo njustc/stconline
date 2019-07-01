@@ -3,7 +3,7 @@ import Link from 'umi/link'
 import React from "react";
 import {connect} from "dva";
 
-
+const data=[];
 const columns = [
   {
     title: '方案ID',
@@ -112,7 +112,7 @@ class List extends React.Component{
 			<Breadcrumb.Item>合同列表</Breadcrumb.Item>
 		</Breadcrumb>
 		<br />
-		<Table columns={columns} dataSource={this.props.dataList} />
+		<Table columns={columns} dataSource={(!this.props.dataList.length)?data:this.props.dataList} />
 		<Button a href="contract_edit.html">新建</Button>
 		</div>
 		);

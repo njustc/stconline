@@ -5,7 +5,7 @@ const Search = Input.Search;
 
 import {connect} from 'dva';
 import Link from 'umi/link'
-
+const data=[];
 const confirm = Modal.confirm;
 
 const namespace = 'testReport';
@@ -83,7 +83,7 @@ export default class ReportList extends Component {
           <Breadcrumb.Item hr="/basic-list.html">测试报告列表</Breadcrumb.Item>
         </Breadcrumb>
         {/* <div class="" */}
-        <Table style={{marginTop: 50}} columns={this.columns} dataSource={this.props.listdata.data}/>
+        <Table style={{marginTop: 50}} columns={this.columns} dataSource={(!this.props.listdata.data.length)?data:this.props.listdata.data}/>
         <Button
           style={{marginLeft: 400}}
           type="primary"
