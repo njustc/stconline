@@ -104,7 +104,6 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public Entrust findEntrustById(Long id) {
-        // 获取委托
         Entrust entrust = entrustRepository.findById(id)
                 .orElseThrow(() -> new EntrustNotFoundException(id));
         logger.info("findEntrustById: ");
@@ -116,7 +115,6 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public Entrust findEntrustByPid(String pid) {
-        // 获取委托
         Entrust entrust = entrustRepository.findByPid(pid);
         if (entrust == null)
             throw new EntrustNotFoundException(pid);
@@ -164,6 +162,5 @@ public class EntrustServiceImpl implements EntrustService {
         record.setProcessState(entrust.getProcessState());
         record.setProcessInstanceID(entrust.getProcessInstanceID());
         return entrustRepository.save(record);
-        // return entrustRepository.findByPid(pid); // .orElseThrow(() -> new EntrustNotFoundException(pid));
     }
 }

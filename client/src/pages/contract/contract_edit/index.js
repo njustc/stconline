@@ -22,14 +22,22 @@ const { Option } = Select;
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const confirm=Modal.confirm;
-
+const namespace = 'contractEdit';
 const dateFormat = 'YYYY/MM/DD';
+
+const mapStateToProps = (state) => {
+  const dataEdit = state[namespace];
+  console.log (dataEdit);
+  return {
+    dataEdit,
+  };
+};
 
 //删除按钮的对话框方法，点击“确认删除”调取delete方法
 function showDeleteConfirm() {
   confirm({
-    title: '您是否要删除本委托?',
-    content: '委托一旦删除不可恢复',
+    title: '您是否要删除本合同?',
+    content: '合同一旦删除不可恢复',
     okText: '确认删除',
     okType: 'danger',
     cancelText: '取消',
@@ -46,8 +54,8 @@ function showDeleteConfirm() {
 //提交按钮的对话框方法，点击“提交”调取提交方法
 function showConfirm() {
   confirm({
-    title: '您是否要提交本委托?',
-    content: '委托一旦提交，将无法从线上更改，但您可以在“委托列表”查看本委托详情。提交的委托将由工作人员进行核对。',
+    title: '您是否要提交合同?',
+    content: '合同一旦提交，将无法从线上更改，但您可以在“合同列表”查看本合同详情。提交的合同将由工作人员进行核对。',
     okText: '提交',
     cancelText: '取消',
     onOk() {
@@ -60,37 +68,19 @@ function showConfirm() {
   });
 }
 
-@connect(({ loading }) => ({
-  submitting: loading.effects['basicForm/submitRegularForm'],
-}))
 @Form.create()
+@connect(mapStateToProps)
 class BasicForm extends PureComponent {
-  handleSubmit = e => {
-    const { dispatch, form } = this.props;
-    e.preventDefault();
-    form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        dispatch({
-          type: 'basicForm/submitRegularForm',
-          payload: values,
-        });
-      }
-    });
-  };
+  componentDidMount() {
+    const {dispatch} = this.props;
 
-  submit = () => {
-    this.setState({
-      visible: true,
-      current: undefined,
-    });
     dispatch({
-      type: 'basicForm/submitRegularForm',
-      payload: values,
+      type: `${namespace}/queryGetOneCon`,
+      payload: this.props.location.query,
     });
-  };
+  }
 
   render() {
-    const { submitting } = this.props;
     const {
       form: { getFieldDecorator, getFieldValue },
     } = this.props;
@@ -127,7 +117,9 @@ class BasicForm extends PureComponent {
 		<br />
         <Card bordered={false}>
 			<FormItem {...formItemLayout} label={<FormattedMessage id="contract.project_name.label" />}>
-              {getFieldDecorator('project_name', {
+              {getFieldDecorator('project_name',{
+                initialValue: this.props.dataEdit.editdata.client || '',
+              } ,{
                 rules: [
                   {
                     required: true,
@@ -161,7 +153,9 @@ class BasicForm extends PureComponent {
 		<Card>
 			<h1>委托方</h1>
 			<FormItem {...formItemLayout} label={<FormattedMessage id="这里写一写" />}>
-              {getFieldDecorator('project_name', {
+              {getFieldDecorator('project_name',{
+                initialValue: this.props.dataEdit.editdata.client || '',
+              } ,{
                 rules: [
                   {
                     required: true,
