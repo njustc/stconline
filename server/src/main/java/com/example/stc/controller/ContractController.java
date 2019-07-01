@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.stc.domain.Contract;
@@ -43,7 +44,7 @@ public class ContractController extends BaseController {
     @GetMapping(path = "/contract")
     public @ResponseBody
     Resources<Resource<Contract>> getAllContract() {
-        List<Resource<Contract>> contracts = contractService.findAllContracts().stream()
+        List<Resource<Contract>> contracts = contractService.findContractsByAuthority().stream()
                 .map(ContractController::toResource)
                 .collect(Collectors.toList());
         return new Resources<>(contracts,
@@ -52,11 +53,13 @@ public class ContractController extends BaseController {
 
     /**
      * 查看某一用户全部合同
+     * 专门用于 STAFF 角色查询某一个用户的合同列表
      */
+    @Secured({"ROLE_STAFF"})
     @GetMapping(path = "/contract/user/{uid}")
     public @ResponseBody
     Resources<Resource<Contract>> getUserContract(@PathVariable String uid) {
-        List<Resource<Contract>> contracts = contractService.findAllContracts().stream()
+        List<Resource<Contract>> contracts = contractService.findContractByUser(uid).stream()
                 .map(ContractController::toResource)
                 .collect(Collectors.toList());
         return new Resources<>(contracts,
@@ -66,6 +69,7 @@ public class ContractController extends BaseController {
     /**
      * 新建合同
      */
+    @Secured({"ROLE_SS"}) // 市场部工作人员
     @PostMapping(path = "/contract")
     public @ResponseBody
     ResponseEntity<?> addNewContract(@RequestBody Contract contract) throws URISyntaxException {
@@ -74,7 +78,7 @@ public class ContractController extends BaseController {
     }
 
     /**
-     * 查看单个委托
+     * 查看单个合同
      */
     @GetMapping(path = "/contract/{pid}")
     public @ResponseBody
@@ -84,8 +88,9 @@ public class ContractController extends BaseController {
     }
 
     /**
-     * 修改单个委托
+     * 修改单个合同
      */
+    @Secured({"ROLE_SS"}) // 市场部工作人员
     @PutMapping(path = "/contract/{pid}")
     public @ResponseBody
     ResponseEntity<?> replaceContract(@PathVariable String pid, @RequestBody Contract contract) throws URISyntaxException {
@@ -95,8 +100,9 @@ public class ContractController extends BaseController {
     }
 
     /**
-     * 删除单个委托
+     * 删除单个合同
      */
+    @Secured({"ROLE_SS"}) // 市场部工作人员
     @DeleteMapping(path = "/contract/{pid}")
     public @ResponseBody
     ResponseEntity<?> deleteContract(@PathVariable String pid) {
@@ -110,6 +116,7 @@ public class ContractController extends BaseController {
      * @return
      * @throws URISyntaxException
      */
+    @Secured({"ROLE_SS"}) // 市场部工作人员
     @PostMapping(path = "/contract/submit")
     public @ResponseBody
     ResponseEntity<?> submitContract(@RequestParam(value = "pid")String pid) throws URISyntaxException {
@@ -128,6 +135,7 @@ public class ContractController extends BaseController {
      * @return
      * @throws URISyntaxException
      */
+    @Secured({"ROLE_SM", "ROLE_QM"}) // 市场部主任或质量部主任
     @PostMapping(path = "/contract/review")
     public @ResponseBody
     ResponseEntity<?> reviewEntrust(@RequestBody String comment,
