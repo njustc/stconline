@@ -4,9 +4,60 @@ import {Table, Select, Input, Button, Breadcrumb, Divider, Tag, Menu, Modal} fro
 const Search = Input.Search;
 import {connect} from 'dva';
 import Link from 'umi/link'
+import {getRole} from "../../../utils/cookieUtils";
+
 
 const confirm = Modal.confirm;
 const namespace = 'entrustlist';
+
+
+var userFootMaper={
+    "SS":<div></div>,
+
+    "CUS":
+    <Button
+    style={{marginLeft: 400}}
+    type="primary"
+    href="/basic-form.html">
+    新建委托
+  </Button>
+}
+
+
+function footer(){
+  return userFootMaper[getRole()[0]]
+}
+
+var userLinkMaper={
+  "SS":(key) => (
+  <span>
+  {key.processState === 'ToReview' ? <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>审核</Link> :<span></span>}
+  <Divider type="vertical"/>
+  {<Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看详情</Link>}
+  </span>
+  ),
+
+  "CUS":(key) => (
+  <span>
+  {key.processState === 'Submit' ? <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link> :
+    <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link>}
+  <Divider type="vertical"/>
+  {}
+  {key.processState === 'Submit' ? <Link to={{pathname: '../../basic-form', query: {pid: key.pid}}}>编辑</Link>:<span />}
+  <Divider type="vertical"/>
+  <span style={{color: 'red', cursor: 'pointer'}} onClick={()=>{this.showDeleteConfirm.bind(this, key)}}>删除</span>
+  </span>
+  )
+}
+
+
+function link(){
+  return userLinkMaper[getRole()[0]]
+}
+
+
+
+
 
 const mapStateToProps = (state) => {
   const listdata = state[namespace];
@@ -76,16 +127,17 @@ export default class EntrustList extends Component {
     {
       title: '操作',
       key: 'action',
-      render: (key) => (
-        <span>
-          {key.processState === 'Submit' ? <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link> :
-            <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link>}
-          <Divider type="vertical"/>
-          {<Link to={{pathname: '../../basic-form', query: {pid: key.pid}}}>编辑</Link>}
-          <Divider type="vertical"/>
-          <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
-        </span>
-      ),
+      render:link()
+      // (key) => (
+      //   <span>
+      //     {key.processState === 'Submit' ? <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link> :
+      //       <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link>}
+      //     <Divider type="vertical"/>
+      //     {<Link to={{pathname: '../../basic-form', query: {pid: key.pid}}}>编辑</Link>}
+      //     <Divider type="vertical"/>
+      //     <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
+      //   </span>
+      // ),
     },
   ]
 
@@ -129,12 +181,8 @@ export default class EntrustList extends Component {
         />
         {/* <div class="" */}
         <Table style={{marginTop: 50}} columns={this.columns} dataSource={(!this.props.listdata.data.length)?data:this.props.listdata.data}/>
-        <Button
-          style={{marginLeft: 400}}
-          type="primary"
-          href="/basic-form.html">
-          新建委托
-        </Button>
+
+        {footer()}
       </div>
     );
   }

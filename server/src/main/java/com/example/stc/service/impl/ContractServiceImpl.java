@@ -1,8 +1,10 @@
 package com.example.stc.service.impl;
 
 import com.example.stc.activiti.ContractAction;
+import com.example.stc.activiti.ProcessState;
 import com.example.stc.domain.Contract;
 import com.example.stc.domain.Role;
+import com.example.stc.domain.User;
 import com.example.stc.framework.exception.ContractNotFoundException;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.DateUtils;
@@ -50,40 +52,46 @@ public class ContractServiceImpl implements ContractService{
 
     @Override
     public List<Contract> findContractsByAuthority() {
-        List<Contract> allContracts = this.findAllContracts();
+        User curUser = authorityUtils.getLoginUser();
+        logger.info("findContractsByAuthority: 当前登录者id = " + curUser.getUserID() +
+                ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
+        // 若为用户，返回该用户全部合同
         if (authorityUtils.hasAuthority(Role.Customer)) {
-            logger.info("findContractByAuthority: 仅查看当前客户合同");
-            Iterator<Contract> it = allContracts.iterator();
-            while (it.hasNext()) {
-                Contract contract = it.next();
-                if (!contract.getUser().getUsername().equals(authorityUtils.getLoginUser().getUsername()))
-                    it.remove();
-            }
-        } else logger.info("findContractsByAuthority: 查看全部合同");
-        return allContracts;
+            return findContractByUser(curUser.getUserID());
+        }
+        // 若为工作人员，返回全部合同
+        return findAllContracts();
     }
 
     @Override
     public List<Contract> findContractByUser(String uid) {
         logger.info("findContractsByUser: 查看某用户全部合同");
         List<Contract> allContracts = this.findAllContracts();
-        Iterator<Contract> it = allContracts.iterator();
-        while (it.hasNext()) {
-            Contract contract = it.next();
-            if (!contract.getUser().getUsername().equals(uid))
-                it.remove();
-        }
+        allContracts.removeIf(contract -> !contract.getUser().getUserID().equals(uid));
         return allContracts;
     }
 
     /**
      * 对于客户，检查访问的是否是本人的合同；若不是，权限异常
      */
+    private void customerAccessCheck(Contract contract) {
+        if (authorityUtils.hasAuthority(Role.Customer)) {
+            User curUser = authorityUtils.getLoginUser();
+            if (!contract.getUser().getUsername().equals(curUser.getUsername())) {
+                logger.info("customerAccessCheck: 没有查看权限，客户只能查看自己的合同");
+                throw new AccessDeniedException("没有查看权限，客户只能查看自己的合同");
+            }
+        }
+    }
+
     @Override
     public Contract findContractById(Long id) {
         Contract contract = contractRepository.findById(id)
                 .orElseThrow(() -> new ContractNotFoundException(id));
         logger.info("findContractById: ");
+
+        this.customerAccessCheck(contract); // 若为客户，只能访问本人的合同
+
         return contract;
     }
 
@@ -93,6 +101,9 @@ public class ContractServiceImpl implements ContractService{
         if (contract == null)
             throw new ContractNotFoundException(pid);
         logger.info("findContractByPid: ");
+
+        this.customerAccessCheck(contract); // 若为客户，只能访问本人的合同
+
         return contract;
     }
 
@@ -107,19 +118,14 @@ public class ContractServiceImpl implements ContractService{
     public void deleteContractByPid(String pid) {
         logger.info("deleteContractByPid: ");
         Contract contract = this.findContractByPid(pid);
-        //contractAction.deleteContractProcess(contract);
-
-        int n = contractRepository.deleteByPid(pid);
-        if (0 == n) {
-            throw new ContractNotFoundException("record not found");
-        }
+        contractRepository.deleteByPid(pid);
     }
 
     @Override
     public Contract newContract(Contract contract) {
         logger.info("newContract: ");
-        //contract.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
-        contract.setProcessState("ToSubmit");
+        contract.setUser(authorityUtils.getLoginUser());
+        contract.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
         return contractRepository.save(contract);
     }
 

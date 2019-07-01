@@ -55,3 +55,15 @@ function clearCookie() {
     document.cookie = varName[0] + "=''; expires=" + myDate.toGMTString();
   }
 }
+
+export function getRole(){
+  let roleList=[]
+  if(readCookie('roles').indexOf(",")>0){
+    roleList=readCookie('roles').split(",")
+  }
+  else{
+    roleList[0]="ADMIN"
+    roleList[1]=readCookie('roles')
+  }
+  return roleList
+}

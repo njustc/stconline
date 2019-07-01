@@ -124,7 +124,6 @@ constructor(props){
 
   //保存
   save=(form)=>{
-    console.log("save")
     const { dispatch } = this.props;  
     this.state.pid=this.props.entrustdata.pid
       if (this.state.pid=="") {

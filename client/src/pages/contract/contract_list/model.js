@@ -25,18 +25,19 @@ export default {
     },
 
     *queryDeleteCon({payload},{call,put}){
-      console.log("到这里啦")
+      //console.log("到这里啦")
       yield call(deleteContract,{pid:payload.pid})
-      console.log(response)
+      //console.log(response)
       const list=yield call(getAllContract)
-      console.log(list)
+      //console.log(list)
       console.log('_embedded' in list)
       if(!('_embedded' in list)){
-        console.log("put []")
-        yield put({type:'addListData',payload: list})
+        console.log("XXXXXXXXXX")
+        yield put({type:'getData',payload: list})
       }
       else{
-        yield put({type:'addListData',payload: list._embedded.entrusts})
+        console.log("WWWWWWWWWWW")
+        yield put({type:'getData',payload: list._embedded.contracts})
       }
     }
 
