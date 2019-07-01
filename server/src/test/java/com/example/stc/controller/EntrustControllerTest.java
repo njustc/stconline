@@ -1,5 +1,6 @@
 package com.example.stc.controller;
 
+import com.example.stc.activiti.ProcessState;
 import com.example.stc.domain.Entrust;
 import com.example.stc.domain.User;
 import com.example.stc.framework.util.AuthorityUtils;
@@ -19,7 +20,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.net.URISyntaxException;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -65,7 +70,7 @@ public class EntrustControllerTest {
 
     /**
      * 添加+修改+删除委托
-     * */
+     */
     @Test
     @WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS", "USER"})
     public void NewRepDelTest() throws Exception {
@@ -99,5 +104,48 @@ public class EntrustControllerTest {
         assertThat(entrust.getVersion()).isEqualTo("2.0");
         // 删除
         entrustController.deleteEntrust(entrustNew.getPid());
+    }
+
+    /**
+     * 委托的流程推进测试
+     */
+    @Test
+    @WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS", "USER"})
+    public void entrustProcessTest() throws URISyntaxException {
+        //ini
+        Entrust entrust = new Entrust();
+        entrust.setProcessInstanceID("");
+        entrust.setUser(authorityUtils.getLoginUser());
+        //add entrust
+        ResponseEntity<?> entity = entrustController.addNewEntrust(entrust);
+        assertThat(entity).isNotNull();
+        Resource<Entrust> resource = (Resource<Entrust>) entity.getBody();
+        Entrust entrustNew = entrustController.getOneEntrust(resource.getContent().getPid()).getContent();
+        assertThat(entrustNew).isNotNull();
+        //change the info of entrust
+        entrustNew.setVersion("3.0");
+        entrustController.replaceEntrust(entrustNew.getPid(),
+                entrustNew);
+        Entrust updatedEntrust =
+                entrustController.getOneEntrust(entrustNew.getPid())
+                        .getContent();
+        assertThat(updatedEntrust).isNotNull();
+        assertThat(updatedEntrust.getVersion()).isEqualTo("3.0");
+        //submit the entrust
+        //第一步 ToSubmit
+        entrust = ((Resource<Entrust>) entrustController
+                .submitEntrust(updatedEntrust.getPid())
+                .getBody()).getContent();
+        String processStateName = entrust.getProcessState().getName();
+        assertThat(processStateName).isNotNull();
+        //状态应该是To review
+        //TODO:此处的无法通过
+        assertThat(processStateName).isEqualTo(ProcessState.Review.getName());
+        //审批不通过
+        //TODO: 操作类型不同推进不同的processState
+//        entrustController
+//                .reviewEntrust("", entrust.getPid(), "");
+        entrustController.deleteEntrust(entrust.getPid());
+
     }
 }

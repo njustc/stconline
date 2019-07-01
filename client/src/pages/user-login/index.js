@@ -38,6 +38,8 @@ class LoginPage extends Component {
         },
       }).then(res => {
         //TODO: 登录成功与失败处理逻辑
+        //cookie内容
+        console.log(readCookie('roles'))
       });
     }
   };

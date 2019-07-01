@@ -70,6 +70,7 @@ public class EntrustController extends BaseController {
 
     /**
      * 查看某一用户全部委托
+     * 专门用于 STAFF 角色查询某一个用户的委托列表
      */
     @Secured({"ROLE_STAFF"})
     @GetMapping(path = "/entrust/user/{uid}")
@@ -136,6 +137,7 @@ public class EntrustController extends BaseController {
 
     /**
      * 提交委托
+     *
      * @param pid
      * @return
      * @throws URISyntaxException
@@ -143,16 +145,20 @@ public class EntrustController extends BaseController {
     @Secured({"ROLE_CUS"})
     @PostMapping(path = "/entrust/submit")
     public @ResponseBody
-    ResponseEntity<?> submitEntrust(@RequestParam(value = "pid")String pid) throws URISyntaxException {
+    ResponseEntity<?> submitEntrust(@RequestParam(value = "pid") String pid) throws URISyntaxException {
         Entrust entrust = entrustService.findEntrustByPid(pid);
+        //推动流程
         entrustAction.submitEntrustProcess(entrust);
+        //更新委托信息
         Entrust updatedEntrust = entrustService.updateEntrust(pid, entrust);
+        //资源包装
         Resource<Entrust> resource = toResource(updatedEntrust);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
     /**
      * 评审委托
+     *
      * @param comment
      * @param pid
      * @param operation
