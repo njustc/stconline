@@ -20,7 +20,7 @@ export default {
     },
     *DeleteTestReport({payload},{call,put}){
       yield call(deleteTestReport, {pid:payload.pid})
-      const lis = yield call(getAlltestReport)
+      const list = yield call(getAlltestReport)
       console.log(list)
       console.log('_embedded' in list)
       if(!('_embedded' in list)){
