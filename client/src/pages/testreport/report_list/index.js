@@ -1,5 +1,5 @@
 import {Table, Divider, Button, Tag, Breadcrumb, Modal} from 'antd';
-import React from "react";
+import React, {Component} from "react";
 import {connect} from "dva";
 const confirm = Modal.confirm;
 import Link from 'umi/link'
@@ -12,8 +12,6 @@ const columns = [
     key: 'name',
     render: text => <a href="javascript:;">{text}</a>,
   },
-
-
   {
     title: '状态',
     key: 'tags',
