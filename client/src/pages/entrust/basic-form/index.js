@@ -84,6 +84,13 @@ const mapDispatchToProps=(dispatch)=>{
         type:`${namespace}/DeleteEntrust`,
         payload:params
       })
+    },
+    SubmitEntrust:(value)=>{
+      dispatch({
+        type: 'entrustForm/submitForm',
+        payload: value,
+      });
+      router.push('/basic-list.html')
     }
   }
 }
@@ -182,61 +189,59 @@ constructor(props){
   }
 
   //提交
-  submit = (form) => {
-    const { dispatch } = this.props;  
-    this.state.pid=this.props.entrustdata.pid
-    form.validateFields((err,value) => {
-      //新建
-      value.pid=this.state.pid
-      // 补充新建属性
-      value.processInstanceID=""
-      value.processState="ToSubmit"
-      value.entrustEntity=""
-      value.comment=""
-      //补充完毕
-      dispatch({
-        type: 'entrustForm/submitForm',
-        payload: value,
-      });
-    })
-    // if(this.props.entrustdata.needJump){
-    // router.push('/basic-list');
-    // }
-  };
+  // submit = (form) => {
+  //   const { dispatch } = this.props;
+  //   this.state.pid=this.props.entrustdata.pid
+  //   form.validateFields((err,value) => {
+  //     //新建
+  //     value.pid=this.state.pid
+  //     // 补充新建属性
+  //     value.processInstanceID=""
+  //     value.processState="ToSubmit"
+  //     value.entrustEntity=""
+  //     value.comment=""
+  //     //补充完毕
+  //     dispatch({
+  //       type: 'entrustForm/submitForm',
+  //       payload: value,
+  //     });
+  //   })
+  //   // if(this.props.entrustdata.needJump){
+  //   // router.push('/basic-list');
+  //   // }
+  // };
 
 
-  // showConfirm=(form)=> {
-  //   confirm({
-  //     title: '您是否要提交委托?',
-  //     content: '委托提交后进入审核状态，不可编辑',
-  //     okText: '确认提交',
-  //     okType: 'primary',
-  //     cancelText: '取消',
-  //     onOk() {
-  //       console.log('OK');
-  //       console.log(this)
-  //       //在此方法里使用submit
-  //       this.submit(form)
-  //     },
-  //     onCancel() {
-  //       console.log('Cancel');
-  //     },
-  //   });
-  // }
+  showConfirm(form){
+    var that=this
+    confirm({
+      title: '您是否要提交委托?',
+      content: '委托提交后进入审核状态，不可编辑',
+      okText: '确认提交',
+      okType: 'primary',
+      cancelText: '取消',
+      onOk() {
+        console.log('OK');
+        console.log(this)
+        //在此方法里使用submit
+        that.state.pid=that.props.entrustdata.pid
+        form.validateFields((err,value) => {
+            //新建
+            value.pid=that.state.pid
+            // 补充新建属性
+            value.processInstanceID=""
+            value.processState="ToSubmit"
+            value.entrustEntity=""
+            value.comment=""
+            that.props.SubmitEntrust(value)
+          })
+    },
+      onCancel() {
+        console.log('Cancel');
+      },
+  })
+}
 
-  showConfirmModal = () => {
-    this.setState({
-      conformVisible: true,
-    })
-  };
-
-  handleCancel = () => {
-    console.log('Clicked cancel button');
-    this.setState({
-      confirmVisible: false,
-      deleteVisible:false
-    });
-  };
   
 
   render() {
@@ -1143,223 +1148,6 @@ constructor(props){
                   )}
                 </div>
               </FormItem>
-             {/* <FormItem
-                {...formItemLayout}
-                label={<FormattedMessage id="basic-form.others.reqword.label"/>}
-              >
-                <div>
-                  {getFieldDecorator('reqword', {
-                    initialValue: this.props.entrustdata.data.reqword || 'basic-form.others.reqword.plan',
-                  })(
-                    <Radio.Group>
-                      <Radio value="basic-form.others.reqword.plan">
-                        <FormattedMessage id="basic-form.others.reqword.plan"/>
-                      </Radio>
-                      <Radio value="basic-form.others.reqword.report">
-                        <FormattedMessage id="basic-form.others.reqword.report"/>
-                      </Radio>
-                      <Radio value="basic-form.others.reqword.contract">
-                        <FormattedMessage id="basic-form.others.reqword.contract"/>
-                      </Radio>
-                    </Radio.Group>
-                  )}
-                </div>
-              </FormItem>
-              <FormItem
-                {...formItemLayout}
-                label={<FormattedMessage id="basic-form.others.userword.label"/>}
-              >
-                <div>
-                  {getFieldDecorator('userDocumentation', {
-                    initialValue: this.props.entrustdata.data.userDocumentation || 'basic-form.others.userword.book',
-                  })(
-                    <Radio.Group>
-                      <Radio value="basic-form.others.userword.book">
-                        <FormattedMessage id="basic-form.others.userword.book"/>
-                      </Radio>
-                      <Radio value="basic-form.others.userword.guide">
-                        <FormattedMessage id="basic-form.others.userword.guide"/>
-                      </Radio>
-                    </Radio.Group>
-                  )}
-                </div>
-              </FormItem>
-              <FormItem
-                {...formItemLayout}
-                label={<FormattedMessage id="basic-form.others.opword.label"/>}
-              >
-                <div>
-                  {getFieldDecorator('operationDocument', {
-                    initialValue: this.props.entrustdata.data.operationDocument || 'basic-form.others.opword.book1',
-                  })(
-                    <Radio.Group>
-                      <Radio value="basic-form.others.opword.book1">
-                        <FormattedMessage id="basic-form.others.opword.book1"/>
-                      </Radio>
-                      <Radio value="basic-form.others.opword.book2">
-                        <FormattedMessage id="basic-form.others.opword.book2"/>
-                      </Radio>
-                      <Radio value="basic-form.others.opword.book3">
-                        <FormattedMessage id="basic-form.others.opword.book3"/>
-                      </Radio>
-                      <Radio value="basic-form.others.opword.book4">
-                        <FormattedMessage id="basic-form.others.opword.book4"/>
-                      </Radio>
-                    </Radio.Group>
-                  )}
-                </div>
-              </FormItem>
-                  */}
-
-              {/* <FormItem 
-                {...formItemLayout}
-                label={<FormattedMessage id="form.Confirmation.label"/>}
-              >
-                <div>
-                  {getFieldDecorator('opinions', {
-                    initialValue: this.props.entrustdata.data.confirmationOpinions || 'form.Confirmation.radio.one',
-                  })(
-                    <Radio.Group>
-                      <Radio value="form.Confirmation.radio.one">
-                        <FormattedMessage id="form.Confirmation.radio.one"/>
-                      </Radio>
-                      <Radio value="form.Confirmation.radio.two">
-                        <FormattedMessage id="form.Confirmation.radio.two"/>
-                      </Radio>
-                      <Radio value="form.Confirmation.radio.three">
-                        <FormattedMessage id="form.Confirmation.radio.three"/>
-                      </Radio>
-                      <Radio value="form.Confirmation.radio.four">
-                        <FormattedMessage id="form.Confirmation.radio.four"/>
-                      </Radio>
-                    </Radio.Group>
-                  )}
-                </div>
-              </FormItem>
-               */}
-              
-              {/* <FormItem
-                {...formItemLayout}
-                label={<FormattedMessage id="form.Acceptance_opinion.label"/>}
-              >
-                <div>
-                  {getFieldDecorator('acceptOpinions', {
-                    initialValue: this.props.entrustdata.data.acceptOpinions || 'form.Acceptance_opinion.radio.one',
-                  })(
-                    <Radio.Group>
-                      <Radio value="form.Acceptance_opinion.radio.one">
-                        <FormattedMessage id="form.Acceptance_opinion.radio.one"/>
-                      </Radio>
-                      <Radio value="form.Acceptance_opinion.radio.two">
-                        <FormattedMessage id="form.Acceptance_opinion.radio.two"/>
-                      </Radio>
-                      <Radio value="form.Acceptance_opinion.radio.three">
-                        <FormattedMessage id="form.Acceptance_opinion.radio.three"/>
-                      </Radio>
-                    </Radio.Group>
-                  )}
-                </div>
-              </FormItem> */}
-
-              {/* <FormItem {...formItemLayout} label={<FormattedMessage id="form.test_number.label"/>}>
-                {getFieldDecorator('test_number', {
-                  initialValue: this.props.entrustdata.data.test_number || '',
-                }, {
-                  rules: [
-                    {
-                      required: true,
-                      message: formatMessage({id: 'validation.test_number.required'}),
-                    },
-                  ],
-                })(<Input placeholder={formatMessage({id: 'form.test_number.placeholder'})}/>)}
-              </FormItem>
-              <FormItem {...formItemLayout} label={<FormattedMessage id="form.remarks.label"/>}>
-                {getFieldDecorator('remarks', {
-                  initialValue: this.props.entrustdata.data.remarks || '',
-                }, {
-                  rules: [
-                    {
-                      required: true,
-                      message: formatMessage({id: 'validation.remarks.required'}),
-                    },
-                  ],
-                })(
-                  <TextArea
-                    style={{minHeight: 32}}
-                    placeholder={formatMessage({id: 'form.remarks.placeholder'})}
-                    rows={10}
-                  />
-                )}
-              </FormItem>
-
-              <FormItem {...formItemLayout} label={<FormattedMessage id="form.acceptee_signature.label"/>}>
-                {getFieldDecorator('acceptee_signature', {
-                  initialValue: this.props.entrustdata.data.acceptee_signature || '',
-                }, {
-                  rules: [
-                    {
-                      required: true,
-                      message: formatMessage({id: 'validation.acceptee_signature.required'}),
-                    },
-                  ],
-                })(<Input placeholder={formatMessage({id: 'form.acceptee_signature.placeholder'})}/>)}
-              </FormItem>
-
-              <FormItem {...formItemLayout} label={<FormattedMessage id="form.acceptee_signature_time.label"/>}>
-                {getFieldDecorator('acceptee_signature_time', {
-                  initialValue: this.props.entrustdata.data.acceptee_signature_time || '',
-                }, {
-                  rules: [
-                    {
-                      required: true,
-                      message: formatMessage({id: 'validation.acceptee_signature_time.required'}),
-                    },
-                  ],
-                })(<Input placeholder={formatMessage({id: 'form.acceptee_signature_time.placeholder'})}/>)}
-              </FormItem>
-              <FormItem {...formItemLayout} label={<FormattedMessage id="form.client.label"/>}>
-                {getFieldDecorator('completedByClient', {
-                  initialValue: this.props.entrustdata.data.completedByClient || '',
-                }, {
-                  rules: [
-                    {
-                      required: true,
-                      message: formatMessage({id: 'validation.client.required'}),
-                    },
-                  ],
-                })(
-                  <TextArea
-                    style={{minHeight: 32}}
-                    placeholder={formatMessage({id: 'form.client.placeholder'})}
-                    rows={8}
-                  />
-                )}
-              </FormItem>
-
-              <FormItem {...formItemLayout} label={<FormattedMessage id="form.client_signature.label"/>}>
-                {getFieldDecorator('client_signature', {
-                  initialValue: this.props.entrustdata.data.client_signature || '',
-                }, {
-                  rules: [
-                    {
-                      required: true,
-                      message: formatMessage({id: 'validation.client_signature.required'}),
-                    },
-                  ],
-                })(<Input placeholder={formatMessage({id: 'form.client_signature.placeholder'})}/>)}
-              </FormItem>
-              <FormItem {...formItemLayout} label={<FormattedMessage id="form.client_signature_time.label"/>}>
-                {getFieldDecorator('client_signature_time', {
-                  initialValue: this.props.entrustdata.data.client_signature_time || '',
-                }, {
-                  rules: [
-                    {
-                      required: true,
-                      message: formatMessage({id: 'validation.client_signature_time.required'}),
-                    },
-                  ],
-                })(<Input placeholder={formatMessage({id: 'form.client_signature_time.placeholder'})}/>)}
-              </FormItem> */}
 
               <Dragger {...props}>
                <p className="提交栏">
@@ -1373,17 +1161,9 @@ constructor(props){
             </Dragger>
 
               <FormItem {...submitFormLayout} style={{marginTop: 32}}>
-                <Button type="primary" onClick={()=>{this.submit(this.props.form)}}>
+                <Button type="primary" onClick={this.showConfirm.bind(this,this.props.form)}>
                   <FormattedMessage id="basic-form.form.submit"/>
                 </Button>
-                {/* <Modal
-                  title="您是否要提交委托?"
-                  visible={this.state.confirmVisible}
-                  onOk={this.submit(this.props.form)}
-                  onCancel={this.handleCancel}
-                >
-                  <p>委托提交后进入审核状态，不可编辑</p>
-                </Modal> */}
 
                 <Button  style={{marginLeft: 8}} onClick={()=>{this.save(this.props.form)}}>
                   <FormattedMessage id="basic-form.form.save"/>
