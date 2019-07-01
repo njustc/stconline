@@ -11,7 +11,7 @@ const namespace='testplanEdit';
 
 const mapStateToProps = (state) => {
   const dataEdit = state[namespace];
-  // console.log(dataEdit);
+  console.log(dataEdit);
   return {
     dataEdit,
   };
