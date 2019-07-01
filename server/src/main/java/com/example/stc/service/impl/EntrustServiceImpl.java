@@ -96,9 +96,11 @@ public class EntrustServiceImpl implements EntrustService {
      */
     private void customerAccessCheck(Entrust entrust) {
         if (authorityUtils.hasAuthority(Role.Customer)) {
-            if (!entrust.getUser().getUsername().equals(authorityUtils.getLoginUser().getUsername()))
+            User curUser = authorityUtils.getLoginUser();
+            if (!entrust.getUser().getUsername().equals(curUser.getUsername())) {
                 logger.info("customerAccessCheck: 没有查看权限，客户只能查看自己的委托");
                 throw new AccessDeniedException("没有查看权限，客户只能查看自己的委托");
+            }
         }
     }
 
