@@ -74,8 +74,6 @@ public class ProcessTest {
         String processInstanceId = contractAction.createContractProcess(contract, user);
         System.out.println(processInstanceId);
 
-        contractAction.submitContractProcess(contract);
-
         List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
         System.out.println(tasks.size());
 
