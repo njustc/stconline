@@ -2,7 +2,7 @@
 import { primaryColor } from '../src/defaultSettings';
 export default {
   base: '/',
-  publicPath: 'http://localhost:8080',
+  publicPath: 'http://114.212.133.244:8080/',
   treeShaking: true,
   exportStatic: { htmlSuffix: true },
   plugins: [
@@ -44,7 +44,7 @@ export default {
       routes: [
         {
           path: '/',
-          redirect: '/welcome',
+          redirect: '/user-login',
         },
         // dashboard
         {
@@ -53,30 +53,35 @@ export default {
           icon: 'smile',
           component: './Welcome',
         },
-        // {
-        //   path: 'https://github.com/umijs/umi-blocks/tree/master/ant-design-pro',
-        //   name: 'more-blocks',
-        //   icon: 'block',
-        // },
-
         //entrustlist
-        {
-          //name: 'basic-form',
-          //icon: 'dashboard',
-          path: '/basic-form',
-          component: './entrust/basic-form',
-        },
+        // {
+        //   //name: 'basic-form',
+        //   //icon: 'dashboard',
+        //   path: '/basic-form',
+        //   component: './entrust/basic-form',
+        // },
         {
           name: '委托列表',
           icon: 'pie-chart',
           path: '/basic-list',
           component: './entrust/basic-list/entrustlist',
+          routes :[
+            {
+              path: '/basic-form',
+              component: './entrust/basic-form',
+            },
+            {
+              //name: '委托详情',
+              path: '/basic-check',
+              component: './entrust/basic-check',
+            },
+          ]
         },
-        {
-          //name: '委托详情',
-          path: '/basic-check',
-          component: './entrust/basic-check',
-        },
+        // {
+        //   //name: '委托详情',
+        //   path: '/basic-check',
+        //   component: './entrust/basic-check',
+        // },
         
         //contract
         // {
@@ -98,23 +103,32 @@ export default {
         //     }
         //   ]
         // },
-        {
-          path:'/contract_detail',
-          component:'./contract/contract_detail',
-        },
-        {
-          path:'/contract_edit',
-          component: './contract/contract_edit',
-        },
+
+
+        // {
+        //   path:'/contract_detail',
+        //   component:'./contract/contract_detail',
+        // },
+        // {
+        //   path:'/contract_edit',
+        //   component: './contract/contract_edit',
+        // },
+
         {
           path: '/contract_list',
           component: './contract/contract_list',
           icon: 'pie-chart',
           name: '合同列表',
-        },
-        {
-          path: '/contract_new',
-          component: './contract/contract_edit/contract_new'
+          routes :[
+            {
+              path:'/contract_detail',
+              component:'./contract/contract_detail',
+            },
+            {
+              path:'/contract_edit',
+              component: './contract/contract_edit',
+            },
+          ]
         },
         
         //testplan
@@ -197,7 +211,7 @@ export default {
   lessLoaderOptions: { javascriptEnabled: true },
   proxy: {
     '/api': {
-      target: 'http://localhost:8080',
+      target: 'http://114.212.133.244:8080',
       changeOrigin: true,
     },
   },
