@@ -269,6 +269,8 @@ export default {
   'basic-form.form.submit': '提交',
   'basic-form.form.save': '保存',
   'basic-form.form.delete': '删除',
+  'basic-form.form.agree': '通过',
+  'basic-form.form.disagree': '不通过',
 
   'basic-form.date.required': '请选择日期',
   'basic-form.date.label': '希望测试完成时间',

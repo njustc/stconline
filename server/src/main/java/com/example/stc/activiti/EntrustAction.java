@@ -5,6 +5,7 @@ import com.example.stc.domain.Entrust;
 import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
 import com.example.stc.framework.util.AuthorityUtils;
+import com.example.stc.framework.util.ProcessUtils;
 import com.example.stc.service.EntrustService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
@@ -18,6 +19,9 @@ import java.util.Map;
 @Service
 public class EntrustAction {
 
+    private static final String REVIEW = "reviewEntrustResult";
+    private static final String COMMENT = "reviewEntrustComment";
+
     @Autowired
     private STCProcessEngine stcProcessEngine;
 
@@ -27,17 +31,8 @@ public class EntrustAction {
     @Autowired
     private AuthorityUtils authorityUtils;
 
-    /**
-     * 检查是否为客户本人的委托，参见EntrustServiceImpl.java
-     * @param entrust
-     */
-    private void customerAccessCheck(Entrust entrust) {
-        boolean isCustomer = authorityUtils.hasAuthority(Role.Customer);
-        if (isCustomer) {
-            if (!entrust.getUser().getUsername().equals(authorityUtils.getLoginUser().getUsername()))
-                throw new AccessDeniedException("没有查看权限，客户只能查看自己的委托");
-        }
-    }
+    @Autowired
+    private ProcessUtils processUtils;
 
     /**
      * 根据JSON数据创建Process
@@ -63,54 +58,71 @@ public class EntrustAction {
          * TODO: 根据具体的权限策略(Spring Security or Shiro?)从当前用户组中取出可以进行委托审核操作的工作人员组
          *       是否需要修改.bpmn.xml？工作人员组可能在流程创立之后发生变动，需要使用安全框架实时更新权限组，待研究
          */
-        variable.put("WorkerIDs", "w1");
-        variable.put("WorkerIDs", "w2");
+//        variable.put("WorkerIDs", "w1");
+//        variable.put("WorkerIDs", "w2");
 
         entrust.setProcessInstanceID(stcProcessEngine.createProcess("Entrust", variable));
-        entrust.setProcessState(ProcessState.ToReview);
+        // entrust.setProcessState(ProcessState.Review);
         return entrust.getProcessInstanceID();
     }
 
     /**
-     * 获取EntrustProcess状态
-     * @param processInstanceId
-     * @return 状态信息
+     * 提交Entrust对应流程
+     * @param entrust
      */
-    public String getEntrustProcessState(String processInstanceId) {
-        return stcProcessEngine.getProcessState(processInstanceId);
+    public void submitEntrustProcess(Entrust entrust) {
+        User user = entrust.getUser();
+        String processInstanceId = entrust.getProcessInstanceID();
+        if (processInstanceId.equals("")) {
+            createEntrustProcess(entrust, user);
+            processInstanceId = entrust.getProcessInstanceID();
+        }
+        else {
+            Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+            processUtils.checkTask(task, "ToSubmit");
+            taskService.complete(task.getId());
+        }
+
+        entrust.setProcessState(processUtils.getEntrustProcessState(processInstanceId));
     }
 
     /**
-     * 更新委托流程状态
+     * 评审Entrust，并给出具体意见
      * @param entrust
      * @param operation
-     * @throws Exception
+     * @param comment
      */
-    public void updateEntrustProcess(Entrust entrust, String operation, String comment) throws Exception {
-        /**
-         * TODO: 验证user，需要用到安全框架
-         */
-        Task task = taskService.createTaskQuery().processInstanceId(entrust.getProcessInstanceID()).singleResult();
-        switch (task.getName()) {
-            case "Submit":
-                customerAccessCheck(entrust);
-                taskService.complete(task.getId());
-                break;
-            case "Review":
-                authorityUtils.roleAccessCheck(Role.SalesStaff);
-                Map<String, Object> variable = new HashMap<>();
-                variable.put("reviewEntrustResult", operation);
-                taskService.complete(task.getId(), variable);
-                break;
-            default: throw new Exception();
+    public void reviewEntrustProcess(Entrust entrust, String operation, String comment) {
+        User currentUser = authorityUtils.getLoginUser();
+        currentUser.setUserID("u20190605134944");
+        String processInstanceId = entrust.getProcessInstanceID();
+        Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+
+        if (!processUtils.checkUser("STAFF", currentUser.getUserID())) {
+            System.out.println("不是工作人员！");
+            return;
         }
-        task = taskService.createTaskQuery().processInstanceId(entrust.getProcessInstanceID()).singleResult();
-        entrust.setProcessState(task.getName());
+
+        processUtils.checkTask(task, "ToReview");
+        taskService.setAssignee(task.getId(), currentUser.getUserID());
+        Map<String, Object> value = new HashMap<>();
+        value.put(REVIEW, operation);
+        if (!comment.equals("")) {
+            value.put(COMMENT, comment);
+            entrust.setComment(comment);
+        }
+        taskService.complete(task.getId(), value);
+
+        entrust.setProcessState(processUtils.getEntrustProcessState(processInstanceId));
     }
 
+    /**
+     * 删除委托流程
+     * @param entrust
+     */
     public void deleteEntrustProcess(Entrust entrust) {
         String processInstanceId = entrust.getProcessInstanceID();
-        if (!processInstanceId.equals(""))
+        if (!processInstanceId.equals("") && !stcProcessEngine.getProcessState(processInstanceId).equals("Approve"))
             stcProcessEngine.deleteProcessInstance(processInstanceId);
     }
 

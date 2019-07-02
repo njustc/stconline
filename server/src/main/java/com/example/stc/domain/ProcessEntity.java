@@ -15,6 +15,9 @@ public class ProcessEntity extends BaseEntity{
     @Column
     private ProcessState processState;
 
+    @Column
+    private String pid;
+
     public String getProcessInstanceID() {
         return processInstanceId;
     }
@@ -35,9 +38,18 @@ public class ProcessEntity extends BaseEntity{
         ProcessState states[] = ProcessState.values();
         for (ProcessState processState: states) {
             if (state.equals(processState.getName())) {
+
                 this.processState = processState;
                 return;
             }
         }
+    }
+
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
     }
 }

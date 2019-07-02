@@ -1,6 +1,8 @@
 package com.example.stc.service.impl;
 
 import com.example.stc.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -19,6 +21,8 @@ import java.util.List;
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
+    Logger logger = LoggerFactory.getLogger(UserDetailsService.class);
+
     @Autowired
     private UserService userService;
 
@@ -27,6 +31,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         com.example.stc.domain.User user = userService.getUserByUsername(s);
         if (user == null)
             throw new UsernameNotFoundException("找不到该帐户信息");
+
+        logger.info("User登录：id = " + user.getUserID() + ", name = " + user.getUsername() +
+                ", roles = " + user.getRoles());
 
         return new User(s, user.getPassword(), getRoles(s)); // org.springframework.security.core.userdetails.User
     }

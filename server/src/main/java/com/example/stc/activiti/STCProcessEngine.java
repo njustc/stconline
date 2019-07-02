@@ -50,10 +50,15 @@ public class STCProcessEngine {
         List<HistoricActivityInstance> piHistory = historyService.createHistoricActivityInstanceQuery()
                 .processInstanceId(processInstanceId).list();
         if (pi == null && !piHistory.isEmpty()) {
-            return "Finished";
+            return "Approve";
         } else if (pi != null) {
-            Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-            return task.getName();
+            List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+            if (tasks.size() > 1) {
+                return "ToReview";
+            }
+            else {
+                return tasks.get(0).getName();
+            }
         } else {
             return "NotExist";
         }

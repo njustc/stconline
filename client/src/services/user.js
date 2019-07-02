@@ -22,45 +22,38 @@ export async function getAllEntrust() {
   return request(`api/project/entrust`);
 }
 
-// export async function deleteEntrust(params) {
-//   // console.log(params.pid);
-//   return request(`api/project/entrust/?${stringify(params)}`);
-// }
-
 export async function deleteEntrust(params) {
-  console.log(params.pid);
+  // console.log(params.pid);
   return request(`api/project/entrust/${params.pid}`,{
     method: 'DELETE',
   });
 }
 
 export async function replaceEntrust(params) {
-  return request(`api/basic-form/save/${stringify(params.pid)}`, {
-    
+  // console.log(params)
+  return request(`api/project/entrust/${params.pid}`, {
+    method: 'PUT',
+    data: params,
   });
 }
 export async function addNewEntrust(params) {
-  return request('api/project/entrust/new', {
+  // console.log("addnew",params)
+  return request('api/project/entrust', {
     method: 'POST',
     data: params,
   });
 }
-// export async function getOneEntrust(params) {
-//   // console.log(params)
-//   return request('/api/basic-form/initGetData', {
-//     method: 'POST',
-//     data: params,
-//   });
-// }
 
 export async function updateEntrustProcess(params) {
-  return request('/api/process/entrust', {
+  // console.log(typeof(params))
+  return request(`api/project/entrust/submit?pid=${params}`, {
     method: 'POST',
-    data: params,
+    data: ""
   });
 }
 
 export async function getOneEntrust(params) {
-  //console.log(params)
+  // console.log(params)
   return request(`api/project/entrust/${params.pid}`);
 }
+

@@ -6,15 +6,10 @@ import javax.persistence.*;
 @Table(name = "TBL_SYS_ENTRUST")
 public class Entrust extends ProcessEntity {
 
-    /**
-     * 项目Id
-     */
-    private String pid;
-
-    /**
-     * 存储测试文档整体
-     */
-    private String entrustEntity;
+//    /**
+//     * 存储测试文档整体
+//     */
+//    private String entrustEntity;
 
     /**
      * 测试类型（多选）
@@ -247,14 +242,9 @@ public class Entrust extends ProcessEntity {
     private String checkSample;
 
     /**
-     * 确认意见（单选）
+     * 评审意见
      */
-    private String opinions;
-
-    /**
-     * 受理意见（单选）
-     */
-    private String acceptOpinions;
+    private String comment;
 
     /**
      * 用户信息
@@ -264,26 +254,13 @@ public class Entrust extends ProcessEntity {
     //@JSONField(serialize = false)
     private User user;
 
-    /**
-     * 委托所在的项目
-     */
-    //private Project project;
-
-    public String getPid() {
-        return pid;
-    }
-
-    public void setPid(String pid) {
-        this.pid = pid;
-    }
-
-    public String getEntrustEntity() {
-        return entrustEntity;
-    }
-
-    public void setEntrustEntity(String entrustEntity) {
-        this.entrustEntity = entrustEntity;
-    }
+//    public String getEntrustEntity() {
+//        return entrustEntity;
+//    }
+//
+//    public void setEntrustEntity(String entrustEntity) {
+//        this.entrustEntity = entrustEntity;
+//    }
 
     public String getTestType() {
         return testType;
@@ -649,27 +626,19 @@ public class Entrust extends ProcessEntity {
         this.checkSample = checkSample;
     }
 
-    public String getOpinions() {
-        return opinions;
-    }
-
-    public void setOpinions(String opinions) {
-        this.opinions = opinions;
-    }
-
-    public String getAcceptOpinions() {
-        return acceptOpinions;
-    }
-
-    public void setAcceptOpinions(String acceptOpinions) {
-        this.acceptOpinions = acceptOpinions;
-    }
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

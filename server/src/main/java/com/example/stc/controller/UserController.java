@@ -2,22 +2,14 @@ package com.example.stc.controller;
 
 import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
-import com.example.stc.framework.exception.EntrustNotFoundException;
 import com.example.stc.framework.exception.UserNotFoundException;
 import com.example.stc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class UserController {
@@ -25,10 +17,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Resource(name = "authenticationManager")
-    private AuthenticationManager authManager;
 
-    /** 用户基本信息 */
+    /**
+     * 用户基本信息
+     */
     @GetMapping("/api/userdetail/{uid}")
     public User getUserDetail(@PathVariable String uid) {
         User user = userService.findUserByUid(uid);
@@ -48,22 +40,14 @@ public class UserController {
     }
 
     /**
-     * DEBUG: 登录界面
+     * 用户登录
      */
+//    @Secured(value = "USER")
     @PostMapping("/api/login")
     public String userLogin(HttpServletRequest req,
+                            HttpServletResponse response,
                             @RequestBody User user) {
-        //TODO: 将具体逻辑加入到service层
-        UsernamePasswordAuthenticationToken authReq
-                = new UsernamePasswordAuthenticationToken(user.getUsername(),
-                user.getPassword());
-        Authentication auth = authManager.authenticate(authReq);
-        SecurityContext sc = SecurityContextHolder.getContext();
-        sc.setAuthentication(auth);
-        HttpSession session = req.getSession(true);
-
-        session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
-        return "DEBUG: 用户登录";
+        return userService.userLogin(user, response);
     }
 
     /**
@@ -84,6 +68,7 @@ public class UserController {
     @PostMapping("/api/register/salesStaff")
     public @ResponseBody
     User registerSalesStaff(@RequestBody User user) {
+        user.addRole(Role.STAFF.str());
         user.addRole(Role.SalesStaff.str());
         user.addRole(Role.USER.str());
         userService.newUser(user);
@@ -96,6 +81,7 @@ public class UserController {
     @PostMapping("/api/register/salesManager")
     public @ResponseBody
     User registerSalesManager(@RequestBody User user) {
+        user.addRole(Role.STAFF.str());
         user.addRole(Role.SalesManager.str());
         user.addRole(Role.USER.str());
         userService.newUser(user);
@@ -108,6 +94,7 @@ public class UserController {
     @PostMapping("/api/register/testStaff")
     public @ResponseBody
     User registerTestStaff(@RequestBody User user) {
+        user.addRole(Role.STAFF.str());
         user.addRole(Role.TestStaff.str());
         user.addRole(Role.USER.str());
         userService.newUser(user);
@@ -120,6 +107,7 @@ public class UserController {
     @PostMapping("/api/register/testManager")
     public @ResponseBody
     User registerTestManager(@RequestBody User user) {
+        user.addRole(Role.STAFF.str());
         user.addRole(Role.TestManager.str());
         user.addRole(Role.USER.str());
         userService.newUser(user);
@@ -132,6 +120,7 @@ public class UserController {
     @PostMapping("/api/register/qualityManager")
     public @ResponseBody
     User registerQualityManager(@RequestBody User user) {
+        user.addRole(Role.STAFF.str());
         user.addRole(Role.QualityManager.str());
         user.addRole(Role.USER.str());
         userService.newUser(user);

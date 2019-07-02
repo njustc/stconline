@@ -5,8 +5,10 @@ import com.example.stc.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,6 +21,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
  */
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean("authenticationManager")
@@ -47,22 +50,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-//                .exceptionHandling().authenticationEntryPoint(new RestAuthenticationEntryPoint())
-//                .and()
+                .exceptionHandling().authenticationEntryPoint(new RestAuthenticationEntryPoint())
+                .and()
                 .cors()
                 .and()
 
                 .formLogin() // 转到的登录界面信息(若注释掉下行，则使用Spring默认登录界面)
                 //.loginPage("/login") // 自己的登录界面
-                .defaultSuccessUrl("/api/project")
+                .defaultSuccessUrl("/api/project/entrust")
 
                 // 使用Spring默认登出URL: http://localhost:8080/logout(http://localhost:8080/login?logout)
 
                 .and()
                 .authorizeRequests() // 定义需要保护和不需要保护的URL
                 .antMatchers("/*/**", "*", "/").permitAll()
-//                .antMatchers("/register", "/api/register/**", "/login", "/api/login").permitAll()
-//                .antMatchers("/api/project/**").hasRole(Role.USER.str())
+                .antMatchers("/api/register/**", "/api/login").permitAll()
+                .antMatchers("/api/project/**").hasRole(Role.USER.str())
                 // TODO: 其他针对角色拦截的URL
                 .anyRequest().authenticated() // 任何请求,登录后可以访问
 
