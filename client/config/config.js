@@ -58,46 +58,23 @@ export default {
           icon: 'smile',
           component: './Welcome',
         },
-
+        {
+          path: 'basic-form',
+          component: './entrust/basic-form',
+        },
+        {
+          path: 'basic-check',
+          component: './entrust/basic-check',
+        },
         {
           name: '委托列表',
           icon: 'pie-chart',
           path: '/basic-list',
           component: './entrust/basic-list/entrustlist',
-          routes: [
-            {
-              path: 'basic-form',
-              component: './entrust/basic-form',
-            },
-            {
-              path: 'basic-check',
-              component: './entrust/basic-check',
-            }
-          ]
         },
 
 
         //contract
-        // {
-        //   name: '合同',
-        //   icon: 'pie-chart',
-        //   path: '/contract',
-        //   routes:[
-        //     {
-        //       path:'/contract_detail',
-        //       name:'合同详情',
-        //     },
-        //     {
-        //       path:'/contract_edit',
-        //       name:'合同编辑',
-        //     },
-        //     {
-        //       path:'/contract_list',
-        //       name:'合同列表',
-        //     }
-        //   ]
-        // },
-
 
         {
           path: '/contract_detail',
@@ -113,38 +90,10 @@ export default {
           component: './contract/contract_list',
           icon: 'pie-chart',
           name: '合同列表',
-          // routes :[
-          //   {
-          //     path:'/contract_detail',
-          //     component:'./contract/contract_detail',
-          //   },
-          //   {
-          //     path:'/contract_edit',
-          //     component: './contract/contract_edit',
-          //   },
-          // ]
         },
 
         //testplan
-        // {
-        //   name: '测试方案',
-        //   icon: 'pie-chart',
-        //   path: '/testplan',
-        //   routes:[
-        //     {
-        //       path:'/plan_check',
-        //       name:'测试方案详情',
-        //     },
-        //     {
-        //       path:'/plan_edit',
-        //       name:'测试方案编辑',
-        //     },
-        //     {
-        //       path:'/plan_list',
-        //       name:'测试方案列表',
-        //     }
-        //   ]
-        // },
+
         {
           //name: '测试方案详情',
           //icon: 'pie-chart',
