@@ -3,11 +3,7 @@ import {primaryColor} from '../src/defaultSettings';
 
 export default {
   base: '/',
-<<<<<<< HEAD
-  publicPath: 'http://114.212.133.244:8080',
-=======
   publicPath: 'http://localhost:8080/',
->>>>>>> 38dbc7c8d652537eeab90274e84693a57291c37d
   treeShaking: true,
   exportStatic: {htmlSuffix: true},
   plugins: [
