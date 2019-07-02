@@ -28,6 +28,8 @@ export default {
     *submitForm({ payload }, {call}) {
       console.log("submit",payload)
       if(payload.pid!=""){//已存在
+        //添加属性
+        
         yield call(replaceEntrust, payload);
         const response=yield call(updateEntrustProcess, payload.pid);
       }
