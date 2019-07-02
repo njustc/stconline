@@ -1,17 +1,22 @@
 // ref: https://umijs.org/config/
-import { primaryColor } from '../src/defaultSettings';
+import {primaryColor} from '../src/defaultSettings';
+
 export default {
   base: '/',
+<<<<<<< HEAD
   publicPath: 'http://114.212.133.244:8080',
+=======
+  publicPath: 'http://localhost:8080/',
+>>>>>>> 38dbc7c8d652537eeab90274e84693a57291c37d
   treeShaking: true,
-  exportStatic: { htmlSuffix: true },
+  exportStatic: {htmlSuffix: true},
   plugins: [
     [
       'umi-plugin-react',
       {
         antd: true,
-        dva: { hmr: true },
-        targets: { ie: 11 },
+        dva: {hmr: true},
+        targets: {ie: 11},
         locale: {
           enable: true,
           // default false
@@ -20,7 +25,7 @@ export default {
           baseNavigator: true,
         },
         // default true, when it is true, will use `navigator.language` overwrite default
-        dynamicImport: { loadingComponent: './components/PageLoading/index' },
+        dynamicImport: {loadingComponent: './components/PageLoading/index'},
       },
     ],
     [
@@ -33,7 +38,7 @@ export default {
       },
     ],
   ],
-  targets: { ie: 11 },
+  targets: {ie: 11},
   /**
    * 路由相关配置
    */
@@ -44,7 +49,7 @@ export default {
       routes: [
         {
           path: '/',
-          redirect: '/welcome',
+          redirect: '/user-login',
         },
         // dashboard
         {
@@ -53,31 +58,25 @@ export default {
           icon: 'smile',
           component: './Welcome',
         },
-        // {
-        //   path: 'https://github.com/umijs/umi-blocks/tree/master/ant-design-pro',
-        //   name: 'more-blocks',
-        //   icon: 'block',
-        // },
 
-        //entrustlist
-        {
-          //name: 'basic-form',
-          //icon: 'dashboard',
-          path: '/basic-form',
-          component: './entrust/basic-form',
-        },
         {
           name: '委托列表',
           icon: 'pie-chart',
           path: '/basic-list',
           component: './entrust/basic-list/entrustlist',
+          routes: [
+            {
+              path: 'basic-form',
+              component: './entrust/basic-form',
+            },
+            {
+              path: 'basic-check',
+              component: './entrust/basic-check',
+            }
+          ]
         },
-        {
-          //name: '委托详情',
-          path: '/basic-check',
-          component: './entrust/basic-check',
-        },
-        
+
+
         //contract
         // {
         //   name: '合同',
@@ -98,21 +97,34 @@ export default {
         //     }
         //   ]
         // },
+
+
         {
-          path:'/contract_detail',
-          component:'./contract/contract_detail',
+          path: '/contract_detail',
+          component: './contract/contract_detail',
         },
         {
-          path:'/contract_edit',
+          path: '/contract_edit',
           component: './contract/contract_edit',
         },
+
         {
           path: '/contract_list',
           component: './contract/contract_list',
           icon: 'pie-chart',
           name: '合同列表',
+          // routes :[
+          //   {
+          //     path:'/contract_detail',
+          //     component:'./contract/contract_detail',
+          //   },
+          //   {
+          //     path:'/contract_edit',
+          //     component: './contract/contract_edit',
+          //   },
+          // ]
         },
-        
+
         //testplan
         // {
         //   name: '测试方案',
@@ -151,7 +163,7 @@ export default {
           path: '/plan_edit',
           component: './testplan/plan_edit',
         },
-        
+
         //test-report
         {
           name: '测试报告列表',
@@ -169,7 +181,7 @@ export default {
           path: '/report-edit',
           component: './test-report/report-edit',
         },
-        
+
         //user-login
         {
           name: '登陆',
@@ -184,13 +196,13 @@ export default {
   /**
    * webpack 相关配置
    */
-  define: { APP_TYPE: process.env.APP_TYPE || '' },
+  define: {APP_TYPE: process.env.APP_TYPE || ''},
   // Theme for antd
   // https://ant.design/docs/react/customize-theme-cn
-  theme: { 'primary-color': primaryColor },
-  externals: { '@antv/data-set': 'DataSet' },
+  theme: {'primary-color': primaryColor},
+  externals: {'@antv/data-set': 'DataSet'},
   ignoreMomentLocale: true,
-  lessLoaderOptions: { javascriptEnabled: true },
+  lessLoaderOptions: {javascriptEnabled: true},
   proxy: {
     '/api': {
       target: 'http://114.212.133.244:8080',

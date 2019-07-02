@@ -30,16 +30,14 @@ var userMaper={
                   rows={10}
                 />
             </FormItem>
-
     <Button type = "primary"><FormattedMessage id = "basic-form.form.agree"/></Button>
     <Button type = "primary" style={{marginLeft: 8}}><FormattedMessage id = "basic-form.form.disagree"/></Button>
     </div> ,
 
     "CUS":
     <Descriptions title="委托状态及意见">
-      <Descriptions.Item label="委托状态">审核未通过</Descriptions.Item>
-      <Descriptions.Item label="委托意见">重写</Descriptions.Item>
-      <Descriptions.Item label="已提交样品">a.zip</Descriptions.Item>
+      <Descriptions.Item label="委托状态">待审核</Descriptions.Item>
+      <Descriptions.Item label="委托意见">无</Descriptions.Item>
     </Descriptions>
 }
 
@@ -184,7 +182,6 @@ export default class entrustCheck extends Component {
         <p>委托人签名日期：<FormattedMessage id={this.props.entrustdata.entrust.client_signature_time||' '}/></p> */}
         </Card>
         {getUserRole()}
-        {/* {test("SS")} */}
       </div>
     )
   }

@@ -18,3 +18,10 @@ export async function deleteContract(params) {
     method: 'DELETE',
   });
 }
+
+export async function replaceContract(params) {
+  return request(`api/project/contract/${params.pid}`,{
+    method: 'PUT',
+    data: params,
+  });
+}

@@ -1,10 +1,10 @@
 package com.example.stc.framework.util;
 
 import com.example.stc.activiti.STCProcessEngine;
+import com.example.stc.domain.User;
 import com.example.stc.service.UserService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.identity.Group;
-import org.activiti.engine.identity.User;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -49,20 +49,15 @@ public class ProcessUtils {
     /**
      * 加载时更新用户组
      */
-    private void initGroup() {
-        System.out.println("initGroup");
-        List<com.example.stc.domain.User> users = userService.findAllUsers();
-        List<Group> groups = identityService.createGroupQuery().orderByGroupId().asc().list();
-        for (Group group: groups) {
-            /** 更新用户组 */
-            System.out.println("Group: " + group.getId());
-            for (com.example.stc.domain.User user: users) {
-                System.out.println("User: " + user.getUsername() + user.getUserID());
-                if (user.getRoles().contains(group.getId())) {
-                    /** 用户在组内，建立映射 */
-                    identityService.createMembership(user.getUserID(), group.getId());
-                }
-            }
+    private void initGroup(String group) {
+        List<User> users = userService.findUserByRoles(group);
+        Group gr = identityService.newGroup(group);
+        identityService.saveGroup(gr);
+        for (User user : users) {
+            org.activiti.engine.identity.User u = identityService.newUser(user.getUserID());
+            u.setPassword(user.getPassword());
+            identityService.saveUser(u);
+            identityService.createMembership(user.getUserID(), gr.getId());
         }
     }
 
@@ -73,15 +68,20 @@ public class ProcessUtils {
      * @return
      */
     public boolean checkUser(String group, String userId) {
-        System.out.println("Group: " + group + ", uid: " + userId);
-        List<User> users = identityService.createUserQuery().memberOfGroup(group).list();
-        if (users.isEmpty()) {
+        System.out.println("\n\n" + group + "\n\n");
+        Group gr = identityService.createGroupQuery().groupId(group).singleResult();
+        if (gr == null) {
             /** 根据当前用户数据库在组内动态更新用户组 */
-            initGroup();
+            initGroup(group);
         }
 
         List<Group> groups = identityService.createGroupQuery().groupMember(userId).list();
-        return groups.contains(identityService.createGroupQuery().groupId(group).singleResult());
+        Group curGroup = identityService.createGroupQuery().groupId(group).singleResult();
+        for (Group group1: groups) {
+            if (group1.getId().equals(curGroup.getId()))
+                return true;
+        }
+        return false;
     }
 
 }
