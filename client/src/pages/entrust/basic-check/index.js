@@ -185,14 +185,15 @@ export default class entrustCheck extends Component {
 
   reviewDisagree=(form)=>{
     const { dispatch } = this.props;
-    console.log(this.props.entrustdata);
-    this.state.pid=this.props.entrustdata.pid;
-    this.state.comment=this.props.entrustdata.comment;
+    console.log(this.props.entrustdata.entrust);
+    this.state.pid=this.props.entrustdata.entrust.pid;
+    this.state.comment=this.props.entrustdata.entrust.comment;
     form.validateFields((err,value) => {
+      console.log(this.state);
       value.pid=this.state.pid;
       value.comment=this.state.comment;
       dispatch({
-        type: `${namespace}/DisagreeEntrust`,
+        type: `${namespace}/DisAgreeEntrust`,
         payload: value,
       });
     })
