@@ -29,9 +29,10 @@ var userMaper={
                   placeholder={formatMessage({id: '请填写您的审批意见，以便客户修改'})}
                   rows={10}
                 />
-            </FormItem> 
-    <Button>通过</Button>
-    <Button>不通过</Button>
+            </FormItem>
+
+    <Button type = "primary"><FormattedMessage id = "basic-form.form.agree"/></Button>
+    <Button type = "primary" style={{marginLeft: 8}}><FormattedMessage id = "basic-form.form.disagree"/></Button>
     </div> ,
 
     "CUS":
