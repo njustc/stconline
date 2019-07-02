@@ -115,7 +115,7 @@ class List extends React.Component{
 		</Breadcrumb>
 		<br />
 		<Table columns={this.columns} dataSource={(!this.props.dataList.length)?data:this.props.dataList} />
-		<Button href="/contract_new.html">新建</Button>
+		{/*<Button href="/contract_new.html">新建</Button>*/}
 		</div>
 		);
 	}
