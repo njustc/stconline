@@ -22,6 +22,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -47,6 +48,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public List<User> findUserByRoles(String role) {
+        List<User> allUsers = userRepository.findAll();
+        allUsers.removeIf(user -> !user.getRoles().contains(role));
+        return allUsers;
     }
 
     @Override

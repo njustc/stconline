@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.example.stc.domain.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 
 @Service
@@ -49,6 +50,14 @@ public interface UserService extends BaseService<User> {
      * @return
      */
     User findUserByUid(String uid);
+
+    /**
+     * 根据用户角色查找用户
+     *
+     * @param role
+     * @return
+     */
+    List<User> findUserByRoles(String role);
 
     /**
      * 根据用户uid删除用户
