@@ -112,6 +112,10 @@ export default {
           icon: 'pie-chart',
           name: '合同列表',
         },
+        {
+          path: '/contract_new',
+          component: './contract/contract_edit/contract_new'
+        },
         
         //testplan
         // {
