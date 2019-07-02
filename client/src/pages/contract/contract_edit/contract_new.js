@@ -34,67 +34,44 @@ const mapStateToProps = (state) => {
   };
 };
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     onDidMount: () => {
-//       dispatch({
-//         type: `${namespace}/queryInitContracts`,
-//       });
-//     },
-//     querySaveCon:(params) =>{
-//       dispatch({
-//         type:`${namespace}/querySaveCon`,
-//         payload:params
-//       })
-//     },
-//   };
-// };
-
 //删除按钮的对话框方法，点击“确认删除”调取delete方法
-//      
-// function showSaveConfirm() {
-//   confirm({
-//     title: '是否保存',
-//     content: '冲冲冲',
-//     okText: '确认保存',
-//     concelText: '取消',
-//     onOk() {
-//       console.log('SAVESAVESAVESAVESAVESAVESAVESAVESAVESAVESAVESAVESAVESAVESAVESAVE');
-//       that.props.querySaveCon({pid: key.pid});
-//     },
-//     onCancel() {
-//       console.log('CANCELCANCELCANCELCANCELCANCELCANCELCANCELCANCELCANCELCANCELCANCEL');
-//     },
-//   });
-// }
+function showDeleteConfirm() {
+  confirm({
+    title: '您是否要删除本合同?',
+    content: '合同一旦删除不可恢复',
+    okText: '确认删除',
+    okType: 'danger',
+    cancelText: '取消',
+    onOk() {
+      console.log('OK');
+      //在此方法里使用delete
+    },
+    onCancel() {
+      console.log('Cancel');
+    },
+  });
+}
 
 //提交按钮的对话框方法，点击“提交”调取提交方法
-// function showConfirm() {
-//   confirm({
-//     title: '您是否要提交合同?',
-//     content: '合同一旦提交，将无法从线上更改，但您可以在“合同列表”查看本合同详情。提交的合同将由工作人员进行核对。',
-//     okText: '提交',
-//     cancelText: '取消',
-//     onOk() {
-//       console.log('OK');
-//       //在此方法里提交
-//     },
-//     onCancel() {
-//       console.log('Cancel');
-//     },
-//   });
-// }
+function showConfirm() {
+  confirm({
+    title: '您是否要提交合同?',
+    content: '合同一旦提交，将无法从线上更改，但您可以在“合同列表”查看本合同详情。提交的合同将由工作人员进行核对。',
+    okText: '提交',
+    cancelText: '取消',
+    onOk() {
+      console.log('OK');
+      //在此方法里提交
+    },
+    onCancel() {
+      console.log('Cancel');
+    },
+  });
+}
 
 @Form.create()
 @connect(mapStateToProps)
 class BasicForm extends PureComponent {
-  constructor(props){
-    super(props)
-    this.state={
-      pid:""
-    }
-  }
-
   componentDidMount() {
     const {dispatch} = this.props;
 
@@ -102,32 +79,6 @@ class BasicForm extends PureComponent {
       type: `${namespace}/queryGetOneCon`,
       payload: this.props.location.query,
     });
-  };
-
-  saveCon=(form)=>{
-    //console.log("AAAAAAAASDASDASDADASDASDASDASDS")
-    const {dispatch} = this.props;
-    this.state.pid=this.props.dataEdit.editdata.pid
-    //console.log(this.state.pid)
-    form.validateFields((err,value) => {
-      value.pid=this.state.pid
-      dispatch({
-        type: 'contractEdit/querySaveCon',
-        payload: value,
-      })
-    })
-  }
-
-  save=(form)=>{
-    const {dispatch} = this.props;
-    this.state.pid=this.props.dataEdit.editdata.pid
-    if(this.state.pid == ""){
-      //
-    }
-    else{
-      //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-      this.saveCon(form)
-    }
   }
 
   render() {
@@ -168,8 +119,6 @@ class BasicForm extends PureComponent {
         <Card bordered={false}>
 			<FormItem {...formItemLayout} label={<FormattedMessage id="contract.project_name.label" />}>
               {getFieldDecorator('project_name',{
-                initialValue: this.props.dataEdit.editdata.pid || '',
-              } ,{
                 rules: [
                   {
                     required: true,
@@ -179,7 +128,7 @@ class BasicForm extends PureComponent {
               })(<Input placeholder={formatMessage({ id: 'contract.project_name.placeholder' })} />)}
             </FormItem>
 			<FormItem {...formItemLayout} label={<FormattedMessage id="contract.sign_data.label" />}>
-				<DatePicker defaultValue={moment(this.props.dataEdit.editdata.signData, dateFormat)} format={dateFormat} />
+				<DatePicker defaultValue={moment("2017,11,27", dateFormat)} format={dateFormat} />
 			</FormItem>
         </Card>
 		<br />
@@ -188,19 +137,9 @@ class BasicForm extends PureComponent {
 			<br />
 			<h1>
 			乙方按照国家软件质量测试标准和测试规范，完成甲方委托的软件
-			<FormItem>
-          {getFieldDecorator('软件',{
-            initialValue: this.props.dataEdit.editdata.quality || '',
-          } 
-          )(<Input style={{width:300}} />)}
-      </FormItem>
+			<Input  placeholder=" " style={{width:300}}  />
 			(下称受测软件)的质量特性
-      <FormItem>
-          {getFieldDecorator('质量特性',{
-            initialValue: this.props.dataEdit.editdata.quality || '',
-          } 
-          )(<Input style={{width:300}} />)}
-      </FormItem>
+			<Input  placeholder=" " style={{width:300}}  />
 			，进行测试，并出具相应的测试报告。
 			</h1>
 		</Card>
@@ -213,9 +152,7 @@ class BasicForm extends PureComponent {
 		<Card>
 			<h1>委托方</h1>
 			<FormItem {...formItemLayout} label={<FormattedMessage id="单位全称" />}>
-              {getFieldDecorator('clientCompanyName',{
-                initialValue: this.props.dataEdit.editdata.clientCompanyName || '',
-              } ,{
+              {getFieldDecorator('project_name',{
                 rules: [
                   {
                     required: true,
@@ -228,9 +165,7 @@ class BasicForm extends PureComponent {
 		<Card>
 			<h1>受托方</h1>
 			<FormItem {...formItemLayout} label={<FormattedMessage id="单位全称" />}>
-              {getFieldDecorator('assigneeCompanyName',{
-                initialValue: this.props.dataEdit.editdata.assigneeCompanyName || '',
-              }, {
+              {getFieldDecorator('project_name',{
                 rules: [
                   {
                     required: true,
@@ -242,13 +177,13 @@ class BasicForm extends PureComponent {
 		</Card>
 		
 		<FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
-        <Button type="primary" /*onClick={showConfirm}*/>
+        <Button type="primary" onClick={showConfirm}>
 				    <FormattedMessage id="basic-form.form.submit" />
         </Button>
-        <Button style={{ marginLeft: 8 }} onClick={() =>this.save(this.props.form)}>
+        <Button style={{ marginLeft: 8 }}>
             <FormattedMessage id="basic-form.form.save" />
         </Button>
-			  <Button style={{ marginLeft: 8}} type="danger" /*onClick={showDeleteConfirm}*/>
+			  <Button style={{ marginLeft: 8}} type="danger" onClick={showDeleteConfirm}>
 			      <FormattedMessage id="basic-form.form.delete" />
 			  </Button>
     </FormItem>
