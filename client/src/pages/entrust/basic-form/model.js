@@ -30,15 +30,13 @@ export default {
       if(payload.pid!=""){//已存在
         yield call(replaceEntrust, payload);
         const response=yield call(updateEntrustProcess, payload.pid);
-        router.push("/basic-list.html")
       }
       else{
         const newform=yield call(addNewEntrust, payload);
         const response=yield call(updateEntrustProcess, newform.pid);
-        router.push("/basic-list.html")
       }
 
-      
+      router.push("/basic-list.html")
       message.success('提交成功');
     },
 

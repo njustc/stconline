@@ -54,34 +54,34 @@ export default {
           component: './Welcome',
         },
         //entrustlist
-        // {
-        //   //name: 'basic-form',
-        //   //icon: 'dashboard',
-        //   path: '/basic-form',
-        //   component: './entrust/basic-form',
-        // },
+        {
+          //name: 'basic-form',
+          //icon: 'dashboard',
+          path: '/basic-form',
+          component: './entrust/basic-form',
+        },
         {
           name: '委托列表',
           icon: 'pie-chart',
           path: '/basic-list',
           component: './entrust/basic-list/entrustlist',
-          routes :[
-            {
-              path: '/basic-form',
-              component: './entrust/basic-form',
-            },
-            {
-              //name: '委托详情',
-              path: '/basic-check',
-              component: './entrust/basic-check',
-            },
-          ]
+          // routes :[
+          //   {
+          //     path: '/basic-form',
+          //     component: './entrust/basic-form',
+          //   },
+          //   {
+          //     //name: '委托详情',
+          //     path: '/basic-check',
+          //     component: './entrust/basic-check',
+          //   },
+          // ]
         },
-        // {
-        //   //name: '委托详情',
-        //   path: '/basic-check',
-        //   component: './entrust/basic-check',
-        // },
+        {
+          //name: '委托详情',
+          path: '/basic-check',
+          component: './entrust/basic-check',
+        },
         
         //contract
         // {
@@ -105,30 +105,30 @@ export default {
         // },
 
 
-        // {
-        //   path:'/contract_detail',
-        //   component:'./contract/contract_detail',
-        // },
-        // {
-        //   path:'/contract_edit',
-        //   component: './contract/contract_edit',
-        // },
+        {
+          path:'/contract_detail',
+          component:'./contract/contract_detail',
+        },
+        {
+          path:'/contract_edit',
+          component: './contract/contract_edit',
+        },
 
         {
           path: '/contract_list',
           component: './contract/contract_list',
           icon: 'pie-chart',
           name: '合同列表',
-          routes :[
-            {
-              path:'/contract_detail',
-              component:'./contract/contract_detail',
-            },
-            {
-              path:'/contract_edit',
-              component: './contract/contract_edit',
-            },
-          ]
+          // routes :[
+          //   {
+          //     path:'/contract_detail',
+          //     component:'./contract/contract_detail',
+          //   },
+          //   {
+          //     path:'/contract_edit',
+          //     component: './contract/contract_edit',
+          //   },
+          // ]
         },
         
         //testplan
