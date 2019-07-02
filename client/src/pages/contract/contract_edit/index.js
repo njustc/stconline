@@ -27,6 +27,7 @@ const dateFormat = 'YYYY/MM/DD';
 
 const mapStateToProps = (state) => {
   const dataEdit = state[namespace];
+  console.log ("DATEEDIT_____________________");
   console.log (dataEdit);
   return {
     dataEdit,
@@ -118,7 +119,7 @@ class BasicForm extends PureComponent {
         <Card bordered={false}>
 			<FormItem {...formItemLayout} label={<FormattedMessage id="contract.project_name.label" />}>
               {getFieldDecorator('project_name',{
-                initialValue: this.props.dataEdit.editdata.client || '',
+                initialValue: this.props.dataEdit.editdata.pid || '',
               } ,{
                 rules: [
                   {
@@ -129,7 +130,7 @@ class BasicForm extends PureComponent {
               })(<Input placeholder={formatMessage({ id: 'contract.project_name.placeholder' })} />)}
             </FormItem>
 			<FormItem {...formItemLayout} label={<FormattedMessage id="contract.sign_data.label" />}>
-				<DatePicker defaultValue={moment('2019/01/01', dateFormat)} format={dateFormat} />
+				<DatePicker defaultValue={moment(this.props.dataEdit.editdata.signData, dateFormat)} format={dateFormat} />
 			</FormItem>
         </Card>
 		<br />
@@ -138,9 +139,9 @@ class BasicForm extends PureComponent {
 			<br />
 			<h1>
 			乙方按照国家软件质量测试标准和测试规范，完成甲方委托的软件
-			<Input  placeholder=" " style={{width:300}}/>
+			<Input  placeholder=" " style={{width:300}}  value={this.props.dataEdit.editdata.quality} />
 			(下称受测软件)的质量特性
-			<Input  placeholder=" " style={{width:300}}/>
+			<Input  placeholder=" " style={{width:300}}  value={this.props.dataEdit.editdata.quality} />
 			，进行测试，并出具相应的测试报告。
 			</h1>
 		</Card>
@@ -152,9 +153,9 @@ class BasicForm extends PureComponent {
 		</Card>
 		<Card>
 			<h1>委托方</h1>
-			<FormItem {...formItemLayout} label={<FormattedMessage id="这里写一写" />}>
+			<FormItem {...formItemLayout} label={<FormattedMessage id="单位全称" />}>
               {getFieldDecorator('project_name',{
-                initialValue: this.props.dataEdit.editdata.client || '',
+                initialValue: this.props.dataEdit.editdata.clientCompanyName || '',
               } ,{
                 rules: [
                   {
@@ -167,8 +168,10 @@ class BasicForm extends PureComponent {
 		</Card>
 		<Card>
 			<h1>受托方</h1>
-			<FormItem {...formItemLayout} label={<FormattedMessage id="这里写一写" />}>
-              {getFieldDecorator('project_name', {
+			<FormItem {...formItemLayout} label={<FormattedMessage id="单位全称" />}>
+              {getFieldDecorator('project_name',{
+                initialValue: this.props.dataEdit.editdata.assigneeCompanyName || '',
+              }, {
                 rules: [
                   {
                     required: true,

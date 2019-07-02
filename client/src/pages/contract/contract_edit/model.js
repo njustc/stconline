@@ -9,7 +9,8 @@ export default {
     },
     effects: {
         *queryGetOneCon({payload}, {call,put}) {
-            const response = yield call(getOneCon, payload);
+            const response = yield call(getOneContract, payload);
+            console.log(response);
             yield put({type: 'updataData', payload: response});
         },
     },
