@@ -52,6 +52,14 @@ public interface UserService extends BaseService<User> {
     User findUserByUid(String uid);
 
     /**
+     * 根据用户角色查找用户
+     *
+     * @param role
+     * @return
+     */
+    List<User> findUserByRoles(String role);
+
+    /**
      * 根据用户uid删除用户
      *
      * @param uid

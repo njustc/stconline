@@ -88,7 +88,7 @@ export default class ReportList extends Component {
           style={{marginLeft: 400}}
           type="primary"
           href="/basic-form.html">
-          新建委托
+          新建测试报告
         </Button>
       </div>
     );

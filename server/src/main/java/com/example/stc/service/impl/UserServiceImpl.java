@@ -51,6 +51,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findUserByRoles(String role) {
+        List<User> allUsers = userRepository.findAll();
+        allUsers.removeIf(user -> !user.getRoles().contains(role));
+        return allUsers;
+    }
+
+    @Override
     public void deleteUserById(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
