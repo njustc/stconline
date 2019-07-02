@@ -25,7 +25,7 @@ export default {
       message.success('新建成功');
     },
     
-    *submitForm({ payload }, { call ,put}) {
+    *submitForm({ payload }, {call}) {
       console.log("submit",payload)
       if(payload.pid!=""){//已存在
         yield call(replaceEntrust, payload);

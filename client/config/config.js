@@ -105,30 +105,30 @@ export default {
         // },
 
 
-        {
-          path:'/contract_detail',
-          component:'./contract/contract_detail',
-        },
-        {
-          path:'/contract_edit',
-          component: './contract/contract_edit',
-        },
+        // {
+        //   path:'/contract_detail',
+        //   component:'./contract/contract_detail',
+        // },
+        // {
+        //   path:'/contract_edit',
+        //   component: './contract/contract_edit',
+        // },
 
         {
           path: '/contract_list',
           component: './contract/contract_list',
           icon: 'pie-chart',
           name: '合同列表',
-          // routes :[
-          //   {
-          //     path:'/contract_detail',
-          //     component:'./contract/contract_detail',
-          //   },
-          //   {
-          //     path:'/contract_edit',
-          //     component: './contract/contract_edit',
-          //   },
-          // ]
+          routes :[
+            {
+              path:'/contract_detail',
+              component:'./contract/contract_detail',
+            },
+            {
+              path:'/contract_edit',
+              component: './contract/contract_edit',
+            },
+          ]
         },
         
         //testplan
