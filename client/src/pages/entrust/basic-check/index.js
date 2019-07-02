@@ -36,8 +36,8 @@ var userMaper={
 
     "CUS":
     <Descriptions title="委托状态及意见">
-      <Descriptions.Item label="委托状态">{this.props.entrustdata.entrust.processState || ' '}</Descriptions.Item>
-      <Descriptions.Item label="委托意见">{this.props.entrustdata.entrust.comment || ' '}</Descriptions.Item>
+      <Descriptions.Item label="委托状态">待审核</Descriptions.Item>
+      <Descriptions.Item label="委托意见">无</Descriptions.Item>
     </Descriptions>
 }
 
