@@ -151,12 +151,17 @@ public class EntrustControllerTest {
                 .reviewEntrust("", entrust.getPid(), "ReviewDisprove")
                 .getBody()).getContent();
         assertThat(entrust.getProcessState().getName()).isEqualTo(ProcessState.Submit.getName());
+        //再次提交
+        entrust = ((Resource<Entrust>) entrustController
+                .submitEntrust(updatedEntrust.getPid())
+                .getBody()).getContent();
         //通过评审
         entrust = ((Resource<Entrust>) entrustController
                 .reviewEntrust("", entrust.getPid(), "ReviewPass")
                 .getBody()).getContent();
         assertThat(entrust.getProcessState().getName()).isEqualTo(ProcessState.Approve.getName());
         //删除委托 , 携带一并删除流程
+        //TODO: 此处报错, 查找不到相关processId
         entrustController.deleteEntrust(entrust.getPid());
 
     }
