@@ -150,7 +150,7 @@ export default {
   lessLoaderOptions: {javascriptEnabled: true},
   proxy: {
     '/api': {
-      target: 'http://114.212.133.244:8080',
+      target: 'http://localhost:8080',
       changeOrigin: true,
     },
   },
