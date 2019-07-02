@@ -79,9 +79,10 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public List<Entrust> findReviewEntrusts() {
-        logger.info("findSubmitEntrusts: 仅查看待审核的所有委托");
+        logger.info("findSubmitEntrusts: 仅查看待审核和已审核通过的所有委托");
         List<Entrust> allEntrusts = this.findAllEntrusts();
-        allEntrusts.removeIf(entrust -> entrust.getProcessState() != ProcessState.Review);
+        allEntrusts.removeIf(entrust -> (entrust.getProcessState() != ProcessState.Review &&
+                entrust.getProcessState() != ProcessState.Approve));
         return allEntrusts;
     }
 

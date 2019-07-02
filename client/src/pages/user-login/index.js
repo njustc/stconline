@@ -5,7 +5,9 @@ import Link from 'umi/link';
 import {Checkbox, Alert, Icon} from 'antd';
 import {Login} from 'ant-design-pro';
 import styles from './style.less';
-import {readCookie} from "../../utils/cookieUtils";
+import {readCookie, getRole} from "../../utils/cookieUtils";
+import router from 'umi/router';
+
 
 const {Tab, UserName, Password, Mobile, Captcha, Submit} = Login;
 
@@ -38,6 +40,15 @@ class LoginPage extends Component {
         },
       }).then(res => {
         //TODO: 登录成功与失败处理逻辑
+        console.log(res)
+        //401
+        if(res.status==401){
+          
+        }
+        else{
+          router.push("/welcome")
+        }
+        
         //cookie内容
       });
     }

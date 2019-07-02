@@ -160,5 +160,6 @@ public class EntrustControllerTest {
                 .reviewEntrust("", entrust.getPid(), "ReviewPass")
                 .getBody()).getContent();
         assertThat(entrust.getProcessState().getName()).isEqualTo(ProcessState.Approve.getName());
+        entrustController.deleteEntrust(entrustNew.getPid());
     }
 }

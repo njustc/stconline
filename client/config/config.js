@@ -1,17 +1,18 @@
 // ref: https://umijs.org/config/
-import { primaryColor } from '../src/defaultSettings';
+import {primaryColor} from '../src/defaultSettings';
+
 export default {
   base: '/',
-  publicPath: 'http://localhost:8080',
+  publicPath: 'http://localhost:8080/',
   treeShaking: true,
-  exportStatic: { htmlSuffix: true },
+  exportStatic: {htmlSuffix: true},
   plugins: [
     [
       'umi-plugin-react',
       {
         antd: true,
-        dva: { hmr: true },
-        targets: { ie: 11 },
+        dva: {hmr: true},
+        targets: {ie: 11},
         locale: {
           enable: true,
           // default false
@@ -20,7 +21,7 @@ export default {
           baseNavigator: true,
         },
         // default true, when it is true, will use `navigator.language` overwrite default
-        dynamicImport: { loadingComponent: './components/PageLoading/index' },
+        dynamicImport: {loadingComponent: './components/PageLoading/index'},
       },
     ],
     [
@@ -33,7 +34,7 @@ export default {
       },
     ],
   ],
-  targets: { ie: 11 },
+  targets: {ie: 11},
   /**
    * 路由相关配置
    */
@@ -44,7 +45,7 @@ export default {
       routes: [
         {
           path: '/',
-          redirect: '/welcome',
+          redirect: '/user-login',
         },
         // dashboard
         {
@@ -53,18 +54,13 @@ export default {
           icon: 'smile',
           component: './Welcome',
         },
-        // {
-        //   path: 'https://github.com/umijs/umi-blocks/tree/master/ant-design-pro',
-        //   name: 'more-blocks',
-        //   icon: 'block',
-        // },
-
-        //entrustlist
         {
-          //name: 'basic-form',
-          //icon: 'dashboard',
-          path: '/basic-form',
+          path: 'basic-form',
           component: './entrust/basic-form',
+        },
+        {
+          path: 'basic-check',
+          component: './entrust/basic-check',
         },
         {
           name: '委托列表',
@@ -72,71 +68,28 @@ export default {
           path: '/basic-list',
           component: './entrust/basic-list/entrustlist',
         },
-        {
-          //name: '委托详情',
-          path: '/basic-check',
-          component: './entrust/basic-check',
-        },
-        
+
+
         //contract
-        // {
-        //   name: '合同',
-        //   icon: 'pie-chart',
-        //   path: '/contract',
-        //   routes:[
-        //     {
-        //       path:'/contract_detail',
-        //       name:'合同详情',
-        //     },
-        //     {
-        //       path:'/contract_edit',
-        //       name:'合同编辑',
-        //     },
-        //     {
-        //       path:'/contract_list',
-        //       name:'合同列表',
-        //     }
-        //   ]
-        // },
+
         {
-          path:'/contract_detail',
-          component:'./contract/contract_detail',
+          path: '/contract_detail',
+          component: './contract/contract_detail',
         },
         {
-          path:'/contract_edit',
+          path: '/contract_edit',
           component: './contract/contract_edit',
         },
+
         {
           path: '/contract_list',
           component: './contract/contract_list',
           icon: 'pie-chart',
           name: '合同列表',
         },
-        {
-          path: '/contract_new',
-          component: './contract/contract_edit/contract_new'
-        },
-        
+
         //testplan
-        // {
-        //   name: '测试方案',
-        //   icon: 'pie-chart',
-        //   path: '/testplan',
-        //   routes:[
-        //     {
-        //       path:'/plan_check',
-        //       name:'测试方案详情',
-        //     },
-        //     {
-        //       path:'/plan_edit',
-        //       name:'测试方案编辑',
-        //     },
-        //     {
-        //       path:'/plan_list',
-        //       name:'测试方案列表',
-        //     }
-        //   ]
-        // },
+
         {
           //name: '测试方案详情',
           //icon: 'pie-chart',
@@ -155,7 +108,7 @@ export default {
           path: '/plan_edit',
           component: './testplan/plan_edit',
         },
-        
+
         //test-report
         {
           name: '测试报告列表',
@@ -173,7 +126,7 @@ export default {
           path: '/report-edit',
           component: './test-report/report-edit',
         },
-        
+
         //user-login
         {
           name: '登陆',
@@ -188,13 +141,13 @@ export default {
   /**
    * webpack 相关配置
    */
-  define: { APP_TYPE: process.env.APP_TYPE || '' },
+  define: {APP_TYPE: process.env.APP_TYPE || ''},
   // Theme for antd
   // https://ant.design/docs/react/customize-theme-cn
-  theme: { 'primary-color': primaryColor },
-  externals: { '@antv/data-set': 'DataSet' },
+  theme: {'primary-color': primaryColor},
+  externals: {'@antv/data-set': 'DataSet'},
   ignoreMomentLocale: true,
-  lessLoaderOptions: { javascriptEnabled: true },
+  lessLoaderOptions: {javascriptEnabled: true},
   proxy: {
     '/api': {
       target: 'http://localhost:8080',

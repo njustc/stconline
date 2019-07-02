@@ -79,7 +79,7 @@ public class EntrustAction {
         }
         else {
             Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-            // processUtils.checkTask(task, "ToSubmit");
+            processUtils.checkTask(task, "ToSubmit");
             taskService.complete(task.getId());
         }
 
@@ -98,10 +98,10 @@ public class EntrustAction {
         String processInstanceId = entrust.getProcessInstanceID();
         Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
 
-//        if (!processUtils.checkUser("STAFF", currentUser.getUserID())) {
-//            System.out.println("不是工作人员！");
-//            return;
-//        }
+        if (!processUtils.checkUser("STAFF", currentUser.getUserID())) {
+            System.out.println("不是工作人员！");
+            return;
+        }
 
         processUtils.checkTask(task, "ToReview");
         taskService.setAssignee(task.getId(), currentUser.getUserID());

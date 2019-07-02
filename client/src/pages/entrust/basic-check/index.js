@@ -337,6 +337,7 @@ export default class entrustCheck extends Component {
 
         {/*{getUserRole()}*/}
         {/* {test("SS")} */}
+        {/*{getUserRole()}*/}
       </div>
     )
   }
