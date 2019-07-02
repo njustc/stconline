@@ -36,7 +36,7 @@ export default class report_detail extends React.Component{
           <h2>软件委托测试报告</h2>
           <p>软件名称：<FormattedMessage id={this.props.dataCheck.check.softwareName || ' '}/></p>
           <p>批准人：<FormattedMessage id={this.props.dataCheck.check.approver || ' '}/></p>
-        
+          <p>批准日期：<FormattedMessage id={this.props.dataCheck.check.approverDate || ' '}/></p>
 
         </Card>
       </div>
