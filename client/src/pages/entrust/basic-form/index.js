@@ -872,18 +872,21 @@ constructor(props){
 
 <FormItem
               {...formItemLayout}
-              label={<FormattedMessage id="form.sample.label"/>}
+              label={<FormattedMessage id="form.sampleType.label"/>}
             >
               <div>
                 {getFieldDecorator('sampleType', {
-                  initialValue: this.props.entrustdata.data.sampleType || 'form.sample.radio.destruction',
+                  initialValue: this.props.entrustdata.data.sampleType || 'basic-form.mediumg.label',
                 })(
                   <Radio.Group>
-                    <Radio value="form.sample.radio.destruction">
-                      <FormattedMessage id="form.sample.radio.destruction"/>
+                    <Radio value="basic-form.mediumg.label">
+                      <FormattedMessage id="basic-form.mediumg.label"/>
                     </Radio>
-                    <Radio value="form.sample.radio.return">
-                      <FormattedMessage id="form.sample.radio.return"/>
+                    <Radio value="basic-form.mediumu.label">
+                      <FormattedMessage id="basic-form.mediumu.label"/>
+                    </Radio>
+                    <Radio value="basic-form.mediumo.label">
+                      <FormattedMessage id="basic-form.mediumo.label"/>
                     </Radio>
                   </Radio.Group>
                 )}
