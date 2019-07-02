@@ -207,6 +207,85 @@ class BasicForm extends PureComponent {
 		<br />
 		<Card bordered={false}>
 		</Card>
+    <Card title="合同属性排列">
+      <FormItem {...formItemLayout} label={<FormattedMessage id="委托方(甲方)" />}>
+        {getFieldDecorator('client',{
+          initialValue: this.props.dataEdit.editdata.client || '',
+        } ,)
+        (<Input placeholder={formatMessage({ id: '这里写一写' })} />)}
+      </FormItem>
+
+      <FormItem {...formItemLayout} label={<FormattedMessage id="委托方(乙方)" />}>
+        {getFieldDecorator('assignee',{
+          initialValue: this.props.dataEdit.editdata.assignee || '',
+        } ,)
+        (<Input placeholder={formatMessage({ id: '这里写一写' })} />)}
+      </FormItem>
+
+      <FormItem {...formItemLayout} label={<FormattedMessage id="签订地点" />}>
+        {getFieldDecorator('signPlace',{
+          initialValue: this.props.dataEdit.editdata.signPlace || '',
+        } ,)
+        (<Input placeholder={formatMessage({ id: '这里写一写' })} />)}
+      </FormItem>
+
+      <FormItem {...formItemLayout} label={<FormattedMessage id="签订日期" />}>
+        {getFieldDecorator('signDate',{
+          initialValue: this.props.dataEdit.editdata.signDate || '',
+        } ,)
+        (<Input placeholder={formatMessage({ id: '这里写一写' })} />)}
+      </FormItem>
+
+      <FormItem {...formItemLayout} label={<FormattedMessage id="质量特性" />}>
+        {getFieldDecorator('quality',{
+          initialValue: this.props.dataEdit.editdata.quality || '',
+        } ,)
+        (<Input placeholder={formatMessage({ id: '这里写一写' })} />)}
+      </FormItem>
+
+      <FormItem {...formItemLayout} label={<FormattedMessage id="履行期限" />}>
+        {getFieldDecorator('finishTime',{
+          initialValue: this.props.dataEdit.editdata.finishTime || '',
+        } ,)
+        (<Input placeholder={formatMessage({ id: '这里写一写' })} />)}
+      </FormItem>
+
+      <FormItem {...formItemLayout} label={<FormattedMessage id="合同价款" />}>
+        {getFieldDecorator('price',{
+          initialValue: this.props.dataEdit.editdata.price || '',
+        } ,)
+        (<Input placeholder={formatMessage({ id: '这里写一写' })} />)}
+      </FormItem>
+
+      <FormItem {...formItemLayout} label={<FormattedMessage id="委托方--单位全称" />}>
+        {getFieldDecorator('clientCompanyName',{
+          initialValue: this.props.dataEdit.editdata.clientCompanyName || '',
+        } ,)
+        (<Input placeholder={formatMessage({ id: '这里写一写' })} />)}
+      </FormItem>
+
+      <FormItem {...formItemLayout} label={<FormattedMessage id="委托方--授权代表" />}>
+        {getFieldDecorator('clientAuthRepre',{
+          initialValue: this.props.dataEdit.editdata.clientAuthRepre || '',
+        } ,)
+        (<Input placeholder={formatMessage({ id: '这里写一写' })} />)}
+      </FormItem>
+
+      <FormItem {...formItemLayout} label={<FormattedMessage id="委托方--签章日期" />}>
+        {getFieldDecorator('clientSignDate',{
+          initialValue: this.props.dataEdit.editdata.clientSignDate || '',
+        } ,)
+        (<Input placeholder={formatMessage({ id: '这里写一写' })} />)}
+      </FormItem>
+
+      <FormItem {...formItemLayout} label={<FormattedMessage id="委托方--联系人" />}>
+        {getFieldDecorator('clientContact',{
+          initialValue: this.props.dataEdit.editdata.clientContact || '',
+        } ,)
+        (<Input placeholder={formatMessage({ id: '这里写一写' })} />)}
+      </FormItem>
+    </Card >
+    <br />
 		<Card>
 			<h2>十二、签章</h2>
 		</Card>
