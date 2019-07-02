@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.example.stc.domain.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 
 @Service
@@ -59,4 +60,6 @@ public interface UserService extends BaseService<User> {
     int deleteUserByUid(String uid);
 
     String userLogin(User user, HttpServletResponse response);
+
+    List<User> findAllUsers();
 }

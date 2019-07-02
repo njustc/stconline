@@ -7,7 +7,7 @@
       </extensionElements>
     </startEvent>
     <endEvent id="end" name="结束"/>
-    <userTask activiti:exclusive="true" id="submitContract" name="WorkerSubmitContract">
+    <userTask activiti:exclusive="true" id="submitContract" name="ToSubmit">
       <extensionElements>
         <activiti:formProperty id="user" name="worker" type="string" value="worker"/>
       </extensionElements>

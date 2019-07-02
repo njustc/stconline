@@ -8,6 +8,7 @@ import com.example.stc.domain.User;
 import com.example.stc.framework.exception.EntrustNotFoundException;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.DateUtils;
+import com.example.stc.framework.util.ProcessUtils;
 import com.example.stc.repository.EntrustRepository;
 import com.example.stc.repository.ProjectRepository;
 import com.example.stc.repository.UserRepository;
@@ -48,6 +49,9 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Autowired
     private AuthorityUtils authorityUtils;
+
+    @Autowired
+    private ProcessUtils processUtils;
 
     @Autowired
     private EntrustAction entrustAction;
@@ -159,7 +163,7 @@ public class EntrustServiceImpl implements EntrustService {
         if (record.getProcessInstanceID().equals("")) {
             // record.setProcessState(entrust.getProcessState());
             record.setProcessInstanceID(entrust.getProcessInstanceID());
-            record.setProcessState(entrustAction.getEntrustProcessState(entrust.getProcessInstanceID()));
+            record.setProcessState(processUtils.getEntrustProcessState(entrust.getProcessInstanceID()));
         }
         return entrustRepository.save(record);
     }

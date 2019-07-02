@@ -110,7 +110,7 @@ public class EntrustControllerTest {
      * 委托的流程推进测试
      */
     @Test
-    @WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS", "USER", "SS"})
+    @WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS", "USER", "SS", "STAFF"})
     public void entrustProcessTest() throws URISyntaxException {
         //ini
         Entrust entrust = new Entrust();
