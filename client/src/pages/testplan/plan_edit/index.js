@@ -118,7 +118,7 @@ export default class EditPlan extends React.Component{
         <br/>
         <Card bordered={false}>
           <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.edit.label"/>}>
-            {getFieldDecorator('edit', {
+            {getFieldDecorator('author', {
               initialValue: this.props.dataEdit.editdata.author || '',
             }, {rules: [
                 {
@@ -129,7 +129,7 @@ export default class EditPlan extends React.Component{
             })(<Input placeholder={formatMessage({id: 'testplan.edit.placeholder'})}/>)}
           </FormItem>
           <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.check.label"/>}>
-            {getFieldDecorator('check', {
+            {getFieldDecorator('auditor', {
                 initialValue: this.props.dataEdit.editdata.auditor || '',
               },{
               rules: [
@@ -141,7 +141,7 @@ export default class EditPlan extends React.Component{
             })(<Input placeholder={formatMessage({id: 'testplan.check.placeholder'})}/>)}
           </FormItem>
           <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.approve.label"/>}>
-            {getFieldDecorator('approve', {
+            {getFieldDecorator('approver', {
               initialValue: this.props.dataEdit.editdata.approver || '',
             }, {
               rules: [
