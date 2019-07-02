@@ -1,17 +1,18 @@
 // ref: https://umijs.org/config/
-import { primaryColor } from '../src/defaultSettings';
+import {primaryColor} from '../src/defaultSettings';
+
 export default {
   base: '/',
   publicPath: 'http://localhost:8080/',
   treeShaking: true,
-  exportStatic: { htmlSuffix: true },
+  exportStatic: {htmlSuffix: true},
   plugins: [
     [
       'umi-plugin-react',
       {
         antd: true,
-        dva: { hmr: true },
-        targets: { ie: 11 },
+        dva: {hmr: true},
+        targets: {ie: 11},
         locale: {
           enable: true,
           // default false
@@ -20,7 +21,7 @@ export default {
           baseNavigator: true,
         },
         // default true, when it is true, will use `navigator.language` overwrite default
-        dynamicImport: { loadingComponent: './components/PageLoading/index' },
+        dynamicImport: {loadingComponent: './components/PageLoading/index'},
       },
     ],
     [
@@ -33,7 +34,7 @@ export default {
       },
     ],
   ],
-  targets: { ie: 11 },
+  targets: {ie: 11},
   /**
    * 路由相关配置
    */
@@ -53,36 +54,25 @@ export default {
           icon: 'smile',
           component: './Welcome',
         },
-        //entrustlist
-        {
-          //name: 'basic-form',
-          //icon: 'dashboard',
-          path: '/basic-form',
-          component: './entrust/basic-form',
-        },
+
         {
           name: '委托列表',
           icon: 'pie-chart',
           path: '/basic-list',
           component: './entrust/basic-list/entrustlist',
-          // routes :[
-          //   {
-          //     path: '/basic-form',
-          //     component: './entrust/basic-form',
-          //   },
-          //   {
-          //     //name: '委托详情',
-          //     path: '/basic-check',
-          //     component: './entrust/basic-check',
-          //   },
-          // ]
+          routes: [
+            {
+              path: 'basic-form',
+              component: './entrust/basic-form',
+            },
+            {
+              path: 'basic-check',
+              component: './entrust/basic-check',
+            }
+          ]
         },
-        {
-          //name: '委托详情',
-          path: '/basic-check',
-          component: './entrust/basic-check',
-        },
-        
+
+
         //contract
         // {
         //   name: '合同',
@@ -106,11 +96,11 @@ export default {
 
 
         {
-          path:'/contract_detail',
-          component:'./contract/contract_detail',
+          path: '/contract_detail',
+          component: './contract/contract_detail',
         },
         {
-          path:'/contract_edit',
+          path: '/contract_edit',
           component: './contract/contract_edit',
         },
 
@@ -130,7 +120,7 @@ export default {
           //   },
           // ]
         },
-        
+
         //testplan
         // {
         //   name: '测试方案',
@@ -169,7 +159,7 @@ export default {
           path: '/plan_edit',
           component: './testplan/plan_edit',
         },
-        
+
         //test-report
         {
           name: '测试报告列表',
@@ -187,7 +177,7 @@ export default {
           path: '/report-edit',
           component: './test-report/report-edit',
         },
-        
+
         //user-login
         {
           name: '登陆',
@@ -202,13 +192,13 @@ export default {
   /**
    * webpack 相关配置
    */
-  define: { APP_TYPE: process.env.APP_TYPE || '' },
+  define: {APP_TYPE: process.env.APP_TYPE || ''},
   // Theme for antd
   // https://ant.design/docs/react/customize-theme-cn
-  theme: { 'primary-color': primaryColor },
-  externals: { '@antv/data-set': 'DataSet' },
+  theme: {'primary-color': primaryColor},
+  externals: {'@antv/data-set': 'DataSet'},
   ignoreMomentLocale: true,
-  lessLoaderOptions: { javascriptEnabled: true },
+  lessLoaderOptions: {javascriptEnabled: true},
   proxy: {
     '/api': {
       target: 'http://localhost:8080',
