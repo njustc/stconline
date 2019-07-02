@@ -79,7 +79,7 @@ class List extends React.Component{
           {/*<a href="/plan_edit.html">编辑</a>*/}
           {<Link to={{pathname: '../../contract_edit', query: {pid: key.pid}}}>编辑</Link>}
           <Divider type="vertical"/>
-            <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this,key)}>删除</span>
+          <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this,key)}>删除</span>
         </span>
       ),
     },
