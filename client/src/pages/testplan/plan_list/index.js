@@ -8,7 +8,7 @@ const data = [];
 const namespace='testplanList';
 const mapStateToProps = (state) => {
   const dataList = state[namespace].data;
-  console.log(dataList);
+  // console.log(dataList);
   return {
     dataList,
   };

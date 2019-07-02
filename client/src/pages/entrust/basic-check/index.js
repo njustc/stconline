@@ -20,77 +20,187 @@ const mapStateToProps = (state) => {
   };
 };
 
+// function reviewAgree(form) {
+//   const { dispatch } = this.props;
+//   this.state.pid=this.props.entrustdata.pid;
+//   this.state.comment=this.props.entrustdata.comment;
+//   form.validateFields((err,value) => {
+//     value.pid=this.state.pid;
+//     value.comment=this.state.comment;
+//     dispatch({
+//       type: 'checkentrust/AgreeEntrust',
+//       payload: value,
+//     });
+//   })
+// }
+//
+// function reviewDisagree(form) {
+//   const { dispatch } = this.props;
+//   this.state.pid=this.props.entrustdata.pid;
+//   this.state.comment=this.props.entrustdata.comment;
+//   form.validateFields((err,value) => {
+//     value.pid=this.state.pid;
+//     value.comment=this.state.comment;
+//     dispatch({
+//       type: 'checkentrust/DisagreeEntrust',
+//       payload: value,
+//     });
+//   })
+// }
+
 //动态渲染button
-var userMaper={
-  "SS":<div class="ssSpace">
-          <FormItem label={<FormattedMessage id="form.sample_document.label"/>}>
-                <TextArea
-                  style={{minHeight: 32}}
-                  placeholder={formatMessage({id: '请填写您的审批意见，以便客户修改'})}
-                  rows={10}
-                />
-            </FormItem>
+// var userMaper={
+//   "SS":<div class="ssSpace">
+//           <FormItem label={<FormattedMessage id="form.sample_document.label"/>}>
+//                 <TextArea
+//                   style={{minHeight: 32}}
+//                   placeholder={formatMessage({id: '请填写您的审批意见，以便客户修改'})}
+//                   rows={10}
+//                 />
+//             </FormItem>
+//
+//     {/*<Button type = "primary"><FormattedMessage id = "basic-form.form.agree"/></Button>*/}
+//     <Button onClick={()=>{reviewAgree(this.props.form)}} style={{marginLeft: 8}}
+//             type="primary">
+//       <FormattedMessage id="basic-form.form.agree"/>
+//     </Button>
+//
+//     {/*<Button type = "primary" style={{marginLeft: 8}}><FormattedMessage id = "basic-form.form.disagree"/></Button>*/}
+//     <Button onClick={()=>{reviewDisagree(this.props.form)}} style={{marginLeft: 8}}
+//             type="primary">
+//       <FormattedMessage id="basic-form.form.disagree"/>
+//     </Button>
+//   </div> ,
+//
+//     "CUS":
+//     <Descriptions title="委托状态及意见">
+//       <Descriptions.Item label="委托状态">审核未通过</Descriptions.Item>
+//       <Descriptions.Item label="委托意见">重写</Descriptions.Item>
+//       <Descriptions.Item label="已提交样品">a.zip</Descriptions.Item>
+//     </Descriptions>
+// }
 
-    <Button type = "primary"><FormattedMessage id = "basic-form.form.agree"/></Button>
-    <Button type = "primary" style={{marginLeft: 8}}><FormattedMessage id = "basic-form.form.disagree"/></Button>
-    </div> ,
 
-    "CUS":
-    <Descriptions title="委托状态及意见">
-      <Descriptions.Item label="委托状态">审核未通过</Descriptions.Item>
-      <Descriptions.Item label="委托意见">重写</Descriptions.Item>
-      <Descriptions.Item label="已提交样品">a.zip</Descriptions.Item>
-    </Descriptions>
-}
+// function getUserRole(){
+//   return userMaper[getRole()[0]]
+// }
 
 
-function getUserRole(){
-  return userMaper[getRole()[0]]
-}
-
-
-const style = {
-  width: '400px',
-  margin: '30px',
-  boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)',
-  border: '1px solid #e8e8e8',
-}
-const columns = [
-  {
-    title: '模块编号',
-    dataIndex: 'name',
-    key: 'name',
-    render: text => <a href="javascript:;">{text}</a>,
-  },
-  {
-    title: '模块名称',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: '功能描述',
-    key: 'action',
-    render: (text, record) => (
-      <span>
-        {record.describe}
-      </span>
-    ),
-  },
-];
+// const style = {
+//   width: '400px',
+//   margin: '30px',
+//   boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)',
+//   border: '1px solid #e8e8e8',
+// }
+// const columns = [
+//   {
+//     title: '模块编号',
+//     dataIndex: 'name',
+//     key: 'name',
+//     render: text => <a href="javascript:;">{text}</a>,
+//   },
+//   {
+//     title: '模块名称',
+//     dataIndex: 'age',
+//     key: 'age',
+//   },
+//   {
+//     title: '功能描述',
+//     key: 'action',
+//     render: (text, record) => (
+//       <span>
+//         {record.describe}
+//       </span>
+//     ),
+//   },
+// ];
+@Form.create()
 @connect(mapStateToProps)
 export default class entrustCheck extends Component {
+  constructor(props){
+    super(props)
+    this.state={
+      pid:"",
+      comment:""
+    }
+  }
   componentDidMount() {
     const {dispatch} = this.props;
-
+    if(this.props.location.query.comment){
+      this.state.comment=this.props.location.query.comment
+    }
+    else{
+      this.state.comment=this.props.entrustdata.comment
+    }
     dispatch({
       type: 'checkentrust/getOneEntrust',
       payload: this.props.location.query,
     });
-    // console.log(this.props.entrustdata)
-    // this.props.entrustdata.entrust.testBasis.map(item=>{console.log(item)})
+  }
+
+  //审核
+  // review=(form)=> {
+  //   const { dispatch } = this.props;
+  //   this.state.comment=this.props.entrustdata.comment;
+  //   form.validateFields((err,value) => {
+  //     //修改属性
+  //     value.comment=this.state.comment;
+  //     dispatch({
+  //       type: `${namespace}/queryReviewEntrust`,
+  //       payload: value,
+  //     });
+  //   })
+  // };
+
+  // saveCon=(form)=>{
+  //   //console.log("AAAAAAAASDASDASDADASDASDASDASDS")
+  //   const {dispatch} = this.props;
+  //   this.state.pid=this.props.dataEdit.editdata.pid
+  //   //console.log(this.state.pid)
+  //   form.validateFields((err,value) => {
+  //     value.pid=this.state.pid
+  //     dispatch({
+  //       type: 'contractEdit/querySaveCon',
+  //       payload: value,
+  //     })
+  //   })
+  // }
+
+  reviewAgree=(form)=>{
+    const {dispatch} = this.props;
+    console.log(this.props.entrustdata.entrust);
+    this.state.pid = this.props.entrustdata.entrust.pid;
+    this.state.comment = this.props.entrustdata.entrust.comment;
+    form.validateFields((err, value) => {
+      value.pid = this.state.pid;
+      value.comment = this.state.comment;
+      dispatch({
+        type: `${namespace}/AgreeEntrust`,
+        payload: value,
+      });
+    })
+  }
+
+  reviewDisagree=(form)=>{
+    const { dispatch } = this.props;
+    console.log(this.props.entrustdata);
+    this.state.pid=this.props.entrustdata.pid;
+    this.state.comment=this.props.entrustdata.comment;
+    form.validateFields((err,value) => {
+      value.pid=this.state.pid;
+      value.comment=this.state.comment;
+      dispatch({
+        type: `${namespace}/DisagreeEntrust`,
+        payload: value,
+      });
+    })
   }
 
   render() {
+    const {
+      form: {getFieldDecorator, getFieldValue},
+    } = this.props;
+
     return (
       <div>
         <Breadcrumb>
@@ -183,7 +293,49 @@ export default class entrustCheck extends Component {
         <p>委托人签名：<FormattedMessage id={this.props.entrustdata.entrust.client_signature||' '}/></p>
         <p>委托人签名日期：<FormattedMessage id={this.props.entrustdata.entrust.client_signature_time||' '}/></p> */}
         </Card>
-        {getUserRole()}
+        {/*{userMaper[getRole()[0]]}*/}
+        {
+          {
+            "SS": <div class="ssSpace">
+              <FormItem label={<FormattedMessage id="审批意见"/>}>
+                {getFieldDecorator('comment', {
+                  initialValue: this.props.entrustdata.entrust.comment || '',
+                }, {
+                  rules: [
+                    {
+                      required: true,
+                      message: formatMessage({id: '需要审批意见'}),
+                    },
+                  ],
+                })(<Input placeholder={formatMessage({id: '输入审批意见'})}/>)}
+              </FormItem>
+              {/*<Button type = "primary"><FormattedMessage id = "basic-form.form.agree"/></Button>*/}
+              <Button onClick={() => {
+                this.reviewAgree(this.props.form)
+              }} style={{marginLeft: 8}}
+                      type="primary">
+                <FormattedMessage id="basic-form.form.agree"/>
+              </Button>
+
+              {/*<Button type = "primary" style={{marginLeft: 8}}><FormattedMessage id = "basic-form.form.disagree"/></Button>*/}
+              <Button onClick={() => {
+                this.reviewDisagree(this.props.form)
+              }} style={{marginLeft: 8}}
+                      type="primary">
+                <FormattedMessage id="basic-form.form.disagree"/>
+              </Button>
+            </div>,
+
+            "CUS":
+              <Descriptions title="委托状态及意见">
+                <Descriptions.Item label="委托状态">审核未通过</Descriptions.Item>
+                <Descriptions.Item label="委托意见">重写</Descriptions.Item>
+                <Descriptions.Item label="已提交样品">a.zip</Descriptions.Item>
+              </Descriptions>
+          }[getRole()[0]]
+        }
+
+        {/*{getUserRole()}*/}
         {/* {test("SS")} */}
       </div>
     )

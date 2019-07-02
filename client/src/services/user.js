@@ -57,3 +57,21 @@ export async function getOneEntrust(params) {
   return request(`api/project/entrust/${params.pid}`);
 }
 
+export async function reviewEntrust(param1,param2) {
+  {
+    console.log('reviewEntrust');
+    console.log(param1);
+    console.log(param2);
+    return request(`api/project/entrust/review`, {
+      method: 'POST',
+      params:{
+        pid:param1.pid,
+        operation:param2,
+      },
+      data: {
+        comment:param1.entrust.comment,
+      },
+    });
+  }
+
+}

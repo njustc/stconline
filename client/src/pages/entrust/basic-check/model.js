@@ -1,4 +1,6 @@
-import { getOneEntrust } from '@/services/user'
+import { getOneEntrust, reviewEntrust} from '@/services/user'
+import router from "umi/router";
+import {message} from "antd";
 export default {
   namespace: 'checkentrust',
   state: {
@@ -53,37 +55,29 @@ export default {
       },
     ],
     entrust: {},
-    data: [
-      {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-        tags: ['nice', 'developer'],
-      },
-      {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-        tags: ['loser'],
-      },
-      {
-        key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sidney No. 1 Lake Park',
-        tags: ['cool', 'teacher'],
-      },
-    ]
   },
   effects: {
     * getOneEntrust({payload}, {call, put}) {
       const response = yield call(getOneEntrust, payload);
-      console.log("get res")
-      console.log(response)
+      console.log("get res");
+      console.log(response);
       yield put({type: 'initData', payload: response})
     },
+    * AgreeEntrust({payload},{call,put}) {
+      console.log(payload);
+      const response = yield call(reviewEntrust, payload, "ReviewPass");
+      console.log(response);
+      yield put({type: 'initData', payload: response});
+
+    },
+    * DisAgreeEntrust({payload},{call,put}) {
+      console.log(payload);
+      const response = yield call(reviewEntrust,payload,"ReviewDisprove");
+      console.log(response);
+      yield put({type:'initData',payload:response});
+    }
+
+
   },
   reducers: {
     initData(state, action) {
