@@ -83,11 +83,10 @@ public class EntrustControllerTest {
         Entrust record = new Entrust();
         record.setProcessInstanceID("");
 //        record.setUser(user);
-        record.setUser(authorityUtils.getLoginUser());
+        record.setUserId(authorityUtils.getLoginUser().getUserID());
         logger.info("-----------------------------------");
         logger.info("");
-        logger.info("User: id = " + record.getUser().getId() + ", uid = " + record.getUser().getUserID() +
-                ", username = " + record.getUser().getUsername());
+        logger.info("User: uid = " + record.getUserId());
         logger.info("");
         logger.info("-----------------------------------");
         record.setVersion("1.0");
