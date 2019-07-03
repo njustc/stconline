@@ -9,20 +9,13 @@ import com.example.stc.framework.exception.ContractNotFoundException;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.DateUtils;
 import com.example.stc.repository.ContractRepository;
-import com.example.stc.repository.ProjectRepository;
 import com.example.stc.service.ContractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -31,9 +24,6 @@ public class ContractServiceImpl implements ContractService{
 
     @Autowired
     private ContractRepository contractRepository;
-
-    @Autowired
-    private ProjectRepository projectRepository;
 
     @Autowired
     private DateUtils dateUtils;

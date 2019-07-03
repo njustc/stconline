@@ -1,7 +1,8 @@
-import {Card ,Breadcrumb ,Button} from 'antd';
+import {Card ,Breadcrumb ,Button ,Descriptions} from 'antd';
 import React from "react";
 import {connect} from "dva";
 import { FormattedMessage } from 'umi/locale';
+import {getRole} from "../../../utils/cookieUtils";
 
 const namespace='contractDetail';
 
@@ -70,8 +71,60 @@ export default class Detail extends React.Component{
         <Card>
           <h1>二、双方的主要义务</h1>
         </Card>
-        <Button>通过</Button>
-        <Button>不通过</Button>
+        <br />
+        {
+          {
+            "SS":
+            <div>
+              <h1>市场部工作人员</h1>
+              <h1>要提交去编辑页面提交</h1>
+            </div>,
+
+            "CUS":
+            <div>
+              <Descriptions title="客户">
+                <Descriptions.Item label="委托状态">审核未通过</Descriptions.Item>
+                <Descriptions.Item label="委托意见">重写</Descriptions.Item>
+                <Descriptions.Item label="已提交样品">a.zip</Descriptions.Item>
+              </Descriptions>
+              <Button
+              style={{marginLeft: 350}}
+              type="primary"
+              >确认</Button>
+              <Button
+              style={{marginLeft: 20}}
+              type="danger"
+              >否决</Button>
+            </div>,
+
+            "SM":
+            <div>
+              <h1>市场部主任</h1>
+              <Button
+              style={{marginLeft: 350}}
+              type="primary"
+              >通过</Button>
+              <Button
+              style={{marginLeft: 20}}
+              type="danger"
+              >不通过</Button>
+            </div>,
+
+            "QM":
+            <div>
+              <h1>质量部主任</h1>
+              <Button
+              style={{marginLeft: 350}}
+              type="primary"
+              >通过</Button>
+              <Button
+              style={{marginLeft: 20}}
+              type="danger"
+              >不通过</Button>
+            </div>,
+          }[getRole()[0]]
+        }
+
       </div>
     )
   }

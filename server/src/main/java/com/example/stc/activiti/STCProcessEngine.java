@@ -1,12 +1,17 @@
 package com.example.stc.activiti;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.example.stc.domain.ProcessEntity;
+import com.example.stc.domain.User;
+import com.example.stc.framework.util.AuthorityUtils;
+import com.example.stc.framework.util.ProcessUtils;
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
-import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -15,27 +20,89 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
 @Service
 public class STCProcessEngine {
-    @Autowired
-    RuntimeService runtimeService;
+
+    private static final String REVIEW = "ReviewResult";
+    private static final String COMMENT = "ReviewComment";
 
     @Autowired
-    TaskService taskService;
+    private RuntimeService runtimeService;
 
     @Autowired
-    HistoryService historyService;
+    private TaskService taskService;
 
     @Autowired
-    FormService formService;
+    private HistoryService historyService;
 
+    @Autowired
+    private FormService formService;
+
+    @Autowired
+    private ProcessUtils processUtils;
+
+    @Autowired
+    private AuthorityUtils authorityUtils;
+
+    /**
+     * 创建流程实例
+     * @param processId
+     * @param variables
+     * @return
+     */
     public String createProcess(String processId, Map<String, Object> variables){
         ProcessInstance pi = runtimeService.startProcessInstanceByKey(processId, variables);
         return pi.getProcessInstanceId();
+    }
+
+    /**
+     * 更新流程实例
+     * @param entity
+     */
+    public void updateProcess(ProcessEntity entity) {
+        User user = authorityUtils.getLoginUser();
+        String processInstanceId = entity.getProcessInstanceID();
+        String processState = entity.getProcessState().getName();
+        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+        boolean completeTask = false;
+        for (Task task : tasks) {
+            /** 检查用户权限是否对应，流程状态是否对应 */
+            if (!(processUtils.checkUser(task, user.getUserID()) && processUtils.checkTask(processInstanceId, processState))) {
+                continue;
+            }
+
+            if (task.getAssignee() != null) {
+                /** 候选组，未指定执行者，在此处执行 */
+                taskService.claim(task.getId(), user.getUserID());
+            }
+
+            if (processState.equals("Review")) {
+                /** 评审流程，需要从数据中取出operation和comment */
+                JSONObject object = (JSONObject) JSON.toJSON(entity);
+                String operation = object.getString("operation");
+                String comment = object.getString("comment");
+                Map<String, Object> value = new HashMap<>();
+                value.put(REVIEW, operation);
+                value.put(COMMENT, comment);
+                taskService.complete(task.getId(), value);
+            }
+            else {
+                /** 其他流程，直接完成即可 */
+                taskService.complete(task.getId());
+            }
+
+            completeTask = true;
+            break;
+        }
+
+        if (!completeTask) {
+            // TODO: 抛出异常，流程调用错误
+        }
     }
 
     /**
@@ -45,23 +112,7 @@ public class STCProcessEngine {
      * // @throws Exception 获取流程实例状态失败
      */
     public String getProcessState(String processInstanceId) {
-        ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId)
-                .singleResult();
-        List<HistoricActivityInstance> piHistory = historyService.createHistoricActivityInstanceQuery()
-                .processInstanceId(processInstanceId).list();
-        if (pi == null && !piHistory.isEmpty()) {
-            return "Approve";
-        } else if (pi != null) {
-            List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
-            if (tasks.size() > 1) {
-                return "ToReview";
-            }
-            else {
-                return tasks.get(0).getName();
-            }
-        } else {
-            return "NotExist";
-        }
+        return processUtils.getEntrustProcessState(processInstanceId);
     }
 
     /**

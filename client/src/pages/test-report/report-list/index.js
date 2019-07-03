@@ -5,10 +5,11 @@ const Search = Input.Search;
 
 import {connect} from 'dva';
 import Link from 'umi/link'
-const data=[];
+const data = [];
+import {getRole} from "../../../utils/cookieUtils";
 const confirm = Modal.confirm;
 
-const namespace = 'testReport';
+const namespace = 'test-report';
 const mapStateToProps = (state) => {
   const listdata = state[namespace];
   return {
@@ -36,6 +37,36 @@ export default class ReportList extends Component {
   componentDidMount() {
     this.props.onDidMount();
   }
+  
+ //不同用户显示不同页面
+ userLinkMaper={
+  "SS":(key) => (
+  <span>
+  { <Link to={{pathname: './report-detail', query: {pid: key.pid}}}>审核</Link> }
+  <Divider type="vertical"/>
+  {<Link to={{pathname: './report-detail', query: {pid: key.pid}}}>查看项目详情</Link>}
+</span>
+  ),
+
+  "CUS":(key) => (
+    <span>
+  {<Link to={{pathname: './report-detail', query: {pid: key.pid}}}>查看项目详情</Link> }
+
+  <Divider type="vertical"/>
+
+  {<Link to={{pathname: '../../report-edit', query: {pid: key.pid}}}>编辑</Link>}
+  <Divider type="vertical"/>
+
+</span>
+  )
+}
+
+
+
+
+
+
+
 
   columns = [
     {
@@ -47,23 +78,30 @@ export default class ReportList extends Component {
     {
       title: '操作',
       key: 'action',
-      render: (key) => (
-        <span>
-          {<Link to = {{pathname: './report-detail', query: {pid: key.pid}}}>查看测试报告详情</Link>}
-          <Divider type="vertical"/>
-          {<Link to = {{pathname: '../../report-edit', query: {pid: key.pid}}}>编辑</Link>}
-          <Divider type="vertical"/>
-          <span style = {{color: 'red', cursor: 'pointer'}} onClick = {this.showDeleteConfirm.bind(this, key)}>删除</span>
-        </span>
-      ),
+      render: this.link()
+      // (key) => (
+      // //   <span>
+      // //     {<Link to = {{pathname: './report-detail', query: {pid: key.pid}}}>查看测试报告详情</Link>}
+      // //     <Divider type="vertical"/>
+      // //     {<Link to = {{pathname: '../../report-edit', query: {pid: key.pid}}}>编辑</Link>}
+      // //     <Divider type="vertical"/>
+      // //     <span style = {{color: 'red', cursor: 'pointer'}} onClick = {this.showDeleteConfirm.bind(this, key)}>删除</span>
+      // //   </span>
+      // // ),
     },
   ]
+
+  link(){
+    return this.userLinkMaper[getRole()[0]]
+  }
+
+
 
   showDeleteConfirm(key) {
     var that = this
     confirm({
       title: '您是否要删除本测试报告?',
-      content: `测试报告ID:${key.pid}  用户名:${key.name}`,
+      content: `测试报告ID:${key.pid}`,
       okText: '确认删除',
       okType: 'danger',
       cancelText: '取消',
@@ -80,14 +118,14 @@ export default class ReportList extends Component {
     return (
       <div>
         <Breadcrumb>
-          <Breadcrumb.Item hr="/basic-list.html">测试报告列表</Breadcrumb.Item>
+          <Breadcrumb.Item hr="/report-list.html">测试报告列表</Breadcrumb.Item>
         </Breadcrumb>
         {/* <div class="" */}
         <Table style={{marginTop: 50}} columns={this.columns} dataSource={(!this.props.listdata.data.length)?data:this.props.listdata.data}/>
         <Button
           style={{marginLeft: 400}}
           type="primary"
-          href="/basic-form.html">
+          href="/report-edit.html">
           新建测试报告
         </Button>
       </div>

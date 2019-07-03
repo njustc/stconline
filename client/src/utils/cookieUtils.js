@@ -65,5 +65,6 @@ export function getRole(){
     roleList[0]="ADMIN"
     roleList[1]=readCookie('roles')
   }
+  console.log(roleList)
   return roleList
 }

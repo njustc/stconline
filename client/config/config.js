@@ -3,7 +3,7 @@ import {primaryColor} from '../src/defaultSettings';
 
 export default {
   base: '/',
-  publicPath: 'http://localhost:8080/',
+  publicPath: 'http://localhost:8080/', //这几行千万别再改了,求求各位了
   treeShaking: true,
   exportStatic: {htmlSuffix: true},
   plugins: [
@@ -17,7 +17,7 @@ export default {
           enable: true,
           // default false
           default: 'zh-CN',
-          // default zh-CN
+          // default zh-CNY
           baseNavigator: true,
         },
         // default true, when it is true, will use `navigator.language` overwrite default

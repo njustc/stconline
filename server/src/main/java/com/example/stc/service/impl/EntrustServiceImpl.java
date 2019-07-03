@@ -10,21 +10,15 @@ import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.DateUtils;
 import com.example.stc.framework.util.ProcessUtils;
 import com.example.stc.repository.EntrustRepository;
-import com.example.stc.repository.ProjectRepository;
 import com.example.stc.repository.UserRepository;
 import com.example.stc.service.EntrustService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -40,9 +34,6 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private ProjectRepository projectRepository;
 
     @Autowired
     private DateUtils dateUtils;

@@ -36,11 +36,14 @@ public class UserControllerTest {
         assertThat(mockMvc).isNotNull();
     }
 
+    /**
+     * 测试未鉴权之后的用户 , 不应该
+     * */
     @Test
     public void checkNotAuth() throws Exception {
         //check not auth
-//        mockMvc.perform(get("/api/project/entrust"))
-//                .andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/api/project/entrust"))
+                .andExpect(status().isUnauthorized());
     }
 
     /**
