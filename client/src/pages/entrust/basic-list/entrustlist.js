@@ -28,14 +28,6 @@ function footer(){
   return userFootMaper[getRole()[0]]
 }
 
-
-
-
-
-
-
-
-
 const mapStateToProps = (state) => {
   const listdata = state[namespace];
   return {

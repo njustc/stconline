@@ -253,27 +253,14 @@ const mapDispatchToProps=(dispatch)=>{
 }))
 @Form.create()
 class newTestReport extends PureComponent {
-constructor(props){
-  super(props)
+  constructor(props){
+    super(props)
 
-  this.state={
-    pid:""
+    this.state={
+      pid:""
+    }
   }
-}
 
-  // componentDidMount() {
-  //   const {dispatch}=this.props;
-
-  //   if(this.props.location.query.pid){
-
-  //     this.state.pid=this.props.location.query.pid
-  //     console.log(this.state.pid)
-
-  //   dispatch({
-  //     type:`${namespace}/getTestReport`,
-  //     payload:this.props.location.query,
-  //   })
-  // }
   componentDidMount() {
     const {dispatch} = this.props;
     console.log(this.props.location.query)
@@ -316,22 +303,20 @@ constructor(props){
         //新建
         value.pid=this.state.pid
         dispatch({
-          type: 'entrustForm/addNewEntrust',//TODO
+          type: 'report-edit/queryAddReport',//TODO
           payload: value,
         });
       } else {
         //保存
         value.pid=this.state.pid
         dispatch({
-          type: 'entrustForm/replaceEntrust',//TODO
+          type: 'report-edit/queryReplaceReport',//TODO
           payload: value,
         });
       }
       console.log("finish save")
-
     })
   }
-
 
   render() {
     const {submitting} = this.props;
@@ -801,7 +786,7 @@ constructor(props){
             </FormItem>
             <h2>参考资料</h2>
             
-            //  <FormItem {...formItemLayout}>
+            <FormItem {...formItemLayout}>
                   {getFieldDecorator('testBasic', {
                     initialValue: this.props.dataReport.reportdata.auditor || '',
                   }, {
@@ -837,7 +822,7 @@ constructor(props){
                 <Button type="primary" style={{ marginLeft: 8 }} onClick={this.handleReset}>
                   删除
                 </Button>
-                <Button type="primary" style={{ marginLeft: 8 }} onClick={this.handleReset}>
+                <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>this.saveForm(this.props.form)}>
                   保存
                 </Button>
                 <Button type="primary" style={{ marginLeft: 8 }} onClick={this.handleReset}>
