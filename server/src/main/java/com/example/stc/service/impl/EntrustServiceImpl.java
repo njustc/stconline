@@ -1,6 +1,5 @@
 package com.example.stc.service.impl;
 
-import com.example.stc.activiti.EntrustAction;
 import com.example.stc.activiti.ProcessState;
 import com.example.stc.domain.Entrust;
 import com.example.stc.domain.Role;
@@ -78,13 +77,8 @@ public class EntrustServiceImpl implements EntrustService {
     public List<Entrust> findEntrustsByUser(String uid) {
         logger.info("findEntrustsByUser: 查看用户" + uid + "的全部委托");
         List<Entrust> allEntrusts = this.findAllEntrusts();
-<<<<<<< HEAD
-        allEntrusts.removeIf(entrust -> !entrust.getUser().getUserID().equals(uid));
-        return setState(allEntrusts);
-=======
         allEntrusts.removeIf(entrust -> !entrust.getUserId().equals(uid));
         return allEntrusts;
->>>>>>> 87cd5eda658d64d25eb3bde658c5283436a1f802
     }
 
     /**
@@ -154,24 +148,15 @@ public class EntrustServiceImpl implements EntrustService {
         Entrust entrust = entrustRepository.findByPid(pid); // 找到应修改的委托并检查，若为客户，只能访问本人的委托
         record.setId(entrust.getId());
         record.setPid(pid);
-<<<<<<< HEAD
-        record.setUser(entrust.getUser());
-        if (record.getProcessInstanceId().equals("")) {
-=======
         record.setUserId(entrust.getUserId());
         logger.info("getProcessState: old = " + entrust.getProcessState());
-        if (record.getProcessInstanceID().equals("")) {
->>>>>>> 87cd5eda658d64d25eb3bde658c5283436a1f802
+        if (record.getProcessInstanceId().equals("")) {
             // record.setProcessState(entrust.getProcessState());
             record.setProcessInstanceId(entrust.getProcessInstanceId());
             record.setProcessState(processUtils.getProcessState(entrust.getProcessInstanceId()));
         }
-<<<<<<< HEAD
-        return setState(entrustRepository.save(record));
-=======
         logger.info("getProcessState: new = " + record.getProcessState());
-        return entrustRepository.save(record);
->>>>>>> 87cd5eda658d64d25eb3bde658c5283436a1f802
+        return setState(entrustRepository.save(record));
     }
 
     public List<Entrust> setState(List<Entrust> entrusts) {

@@ -156,7 +156,7 @@ public class ProcessUtils {
 
     public boolean isVisible(ProcessEntity entity, String type) {
         User user = authorityUtils.getLoginUser();
-        String processInstanceId = entity.getProcessInstanceID();
+        String processInstanceId = entity.getProcessInstanceId();
         if (processInstanceId.equals("")) {
             /** 尚未提交，此时能见者为：规定能够建立该流程的人 */
             return false;
