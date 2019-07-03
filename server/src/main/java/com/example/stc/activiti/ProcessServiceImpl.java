@@ -1,12 +1,10 @@
 package com.example.stc.activiti;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.stc.domain.Contract;
-import com.example.stc.domain.Entrust;
-import com.example.stc.domain.ProcessEntity;
-import com.example.stc.domain.User;
+import com.example.stc.domain.*;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.ProcessUtils;
+import com.example.stc.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,23 +21,35 @@ public class ProcessServiceImpl implements ProcessService {
     private AuthorityUtils authorityUtils;
 
     @Autowired
-    private ProcessUtils processUtils;
+    private EntrustService entrustService;
+
+    @Override
+    public void createProcessInstance(String pid, String type) {
+        switch (type) {
+            case "Entrust": createEntrustProcess(pid); break;
+            case "Contract": createContractProcess(pid); break;
+            default: break;
+        }
+    }
 
     /**
      * 创建委托流程
-     * @param entrust
+     * @param pid
      */
     @Override
-    public void createEntrustProcess(Entrust entrust) {
+    public void createEntrustProcess(String pid) {
+        Entrust entrust = entrustService.findEntrustByPid(pid);
         User user = authorityUtils.getLoginUser();
         Map<String, Object> variable = new HashMap<String, Object>();
-        variable.put("EntrustID", entrust.getPid());
+        variable.put("EntrustID", pid);
         variable.put("ClientID", user.getUserID());
         entrust.setProcessInstanceID(stcProcessEngine.createProcess("Entrust", variable));
+        entrustService.updateEntrust(pid, entrust);
+        queryProcessState(entrust);
     }
 
     @Override
-    public void createContractProcess(Contract contract) {
+    public void createContractProcess(String pid) {
 
     }
 
@@ -52,12 +62,12 @@ public class ProcessServiceImpl implements ProcessService {
 
     @Override
     public void queryProcessState(ProcessEntity entity) {
-        entity.setProcessState(processUtils.getEntrustProcessState(entity.getProcessInstanceID()));
+        entity.setProcessState(stcProcessEngine.getProcessState(entity.getProcessInstanceID()));
     }
 
     @Override
     public void updateProcessInstance(ProcessEntity entity) {
-
+        stcProcessEngine.updateProcess(entity);
     }
 
 }
