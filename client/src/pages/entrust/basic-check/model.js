@@ -64,10 +64,12 @@ export default {
       yield put({type: 'initData', payload: response})
     },
     * AgreeEntrust({payload},{call,put}) {
+      console.log("AgreeEntrust");
       console.log(payload);
       const response = yield call(reviewEntrust, payload, "ReviewPass");
       console.log(response);
       yield put({type: 'initData', payload: response});
+      router.push("/basic-list.html")
 
     },
     * DisAgreeEntrust({payload},{call,put}) {
@@ -75,6 +77,8 @@ export default {
       const response = yield call(reviewEntrust,payload,"ReviewDisprove");
       console.log(response);
       yield put({type:'initData',payload:response});
+      router.push("/basic-list.html")
+
     }
 
 

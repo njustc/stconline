@@ -69,7 +69,7 @@ export async function reviewEntrust(param1,param2) {
         operation:param2,
       },
       data: {
-        comment:param1.entrust.comment,
+        comment:param1.comment,
       },
     });
   }

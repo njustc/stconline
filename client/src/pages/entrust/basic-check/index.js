@@ -166,14 +166,16 @@ export default class entrustCheck extends Component {
   //   })
   // }
 
-  reviewAgree=(form)=>{
+  reviewAgree=(form)=> {
     const {dispatch} = this.props;
     console.log(this.props.entrustdata.entrust);
     this.state.pid = this.props.entrustdata.entrust.pid;
     this.state.comment = this.props.entrustdata.entrust.comment;
     form.validateFields((err, value) => {
+      console.log(this.state);
       value.pid = this.state.pid;
       value.comment = this.state.comment;
+      console.log("value", value);
       dispatch({
         type: `${namespace}/AgreeEntrust`,
         payload: value,
@@ -183,14 +185,15 @@ export default class entrustCheck extends Component {
 
   reviewDisagree=(form)=>{
     const { dispatch } = this.props;
-    console.log(this.props.entrustdata);
-    this.state.pid=this.props.entrustdata.pid;
-    this.state.comment=this.props.entrustdata.comment;
+    console.log(this.props.entrustdata.entrust);
+    this.state.pid=this.props.entrustdata.entrust.pid;
+    this.state.comment=this.props.entrustdata.entrust.comment;
     form.validateFields((err,value) => {
+      console.log(this.state);
       value.pid=this.state.pid;
       value.comment=this.state.comment;
       dispatch({
-        type: `${namespace}/DisagreeEntrust`,
+        type: `${namespace}/DisAgreeEntrust`,
         payload: value,
       });
     })
@@ -285,13 +288,6 @@ export default class entrustCheck extends Component {
           <p>操作文档：<FormattedMessage id={this.props.entrustdata.entrust.operationDocument || ' '}/></p>
           {/* <p>评审意见：<FormattedMessage id={this.props.entrustdata.entrust.comment || ' '}/></p> */}
           <p>流程状态：{this.props.entrustdata.entrust.processState || ' '}</p>
-          {/* <p>测试项目编号：<FormattedMessage id={this.props.entrustdata.entrust.test_number||' '}/></p>
-        <p>备注：<FormattedMessage id={this.props.entrustdata.entrust.remarks||' '}/></p>
-        <p>受理人签名：<FormattedMessage id={this.props.entrustdata.entrust.acceptee_signature||' '}/></p>
-        <p>受理人签名日期：<FormattedMessage id={this.props.entrustdata.entrust.acceptee_signature_time||' '}/></p>
-        <p>委托人填写：<FormattedMessage id={this.props.entrustdata.entrust.completedByClient||' '}/></p>
-        <p>委托人签名：<FormattedMessage id={this.props.entrustdata.entrust.client_signature||' '}/></p>
-        <p>委托人签名日期：<FormattedMessage id={this.props.entrustdata.entrust.client_signature_time||' '}/></p> */}
         </Card>
         {/*{userMaper[getRole()[0]]}*/}
         {
@@ -310,13 +306,14 @@ export default class entrustCheck extends Component {
                 })(<Input placeholder={formatMessage({id: '输入审批意见'})}/>)}
               </FormItem>
               {/*<Button type = "primary"><FormattedMessage id = "basic-form.form.agree"/></Button>*/}
-              <Button onClick={() => {
-                this.reviewAgree(this.props.form)
-              }} style={{marginLeft: 8}}
-                      type="primary">
-                <FormattedMessage id="basic-form.form.agree"/>
-              </Button>
-
+              {/*<Link to="./basic-list">*/}
+                <Button onClick={() => {
+                  this.reviewAgree(this.props.form)
+                }} style={{marginLeft: 8}}
+                        type="primary">
+                  <FormattedMessage id="basic-form.form.agree"/>
+                </Button>
+              {/*</Link>*/}
               {/*<Button type = "primary" style={{marginLeft: 8}}><FormattedMessage id = "basic-form.form.disagree"/></Button>*/}
               <Button onClick={() => {
                 this.reviewDisagree(this.props.form)
