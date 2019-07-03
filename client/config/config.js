@@ -2,10 +2,10 @@
 import {primaryColor} from '../src/defaultSettings';
 
 export default {
-  base: '/',
-  publicPath: 'http://localhost:8080', //这几行千万别再改了,求求各位了
-  treeShaking: true,
-  exportStatic: {htmlSuffix: true},
+  base: '/',                           //-----------------------------
+  publicPath: 'http://localhost:8080', //这几行千万别再改了,求求各位了orz.|
+  exportStatic: {htmlSuffix: true},    //这几行千万别再改了,求求各位了orz.|
+  treeShaking: true,                   //-----------------------------
   plugins: [
     [
       'umi-plugin-react',
