@@ -16,6 +16,6 @@ public interface ProcessService extends BaseService<ProcessEntity> {
 
     void queryProcessState(ProcessEntity entity);
 
-    ProcessEntity updateProcessInstance(ProcessEntity entity);
+    void updateProcessInstance(ProcessEntity entity);
 
 }
