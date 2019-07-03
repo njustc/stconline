@@ -3,6 +3,7 @@ import React from "react";
 import {connect} from "dva";
 const confirm = Modal.confirm;
 import Link from 'umi/link'
+import {getRole} from "../../../utils/cookieUtils";
 
 const data = [];
 const namespace='testplanList';
@@ -115,6 +116,34 @@ export default class List extends React.Component{
     });
   }
 
+  userLinkMapper= {
+    "SS": (key) => (
+      <span>
+  {key.processState === 'ToReview' ? <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>审核</Link> :
+    <span></span>}
+        <Divider type="vertical"/>
+        {<Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看详情</Link>}
+  </span>
+    ),
+
+    "CUS": (key) => (
+
+      <span>
+      {key.processState == 'Submit' ? <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link> :
+        <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
+        <Divider type="vertical"/>
+        {/*<a href="/plan_edit.html">编辑</a>*/}
+        {<Link to={{pathname: '../../plan_edit', query: {pid: key.pid}}}>编辑</Link>}
+        <Divider type="vertical"/>
+        <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
+    </span>
+    ),
+  };
+
+  link(){
+    return this.userLinkMapper[getRole()[0]]
+  }
+
   columns = [
     {
       title: '方案ID',
@@ -149,18 +178,19 @@ export default class List extends React.Component{
     {
       title: '操作',
       key: 'action',
-      render: (key) => (
-
-        <span>
-        {key.processState == 'Submit' ? <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link> :
-          <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
-          <Divider type="vertical"/>
-          {/*<a href="/plan_edit.html">编辑</a>*/}
-          {<Link to={{pathname: '../../plan_edit', query: {pid: key.pid}}}>编辑</Link>}
-          <Divider type="vertical"/>
-          <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
-      </span>
-      ),
+      render: this.link()
+      //   (key) => (
+      //
+      //   <span>
+      //   {key.processState == 'Submit' ? <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link> :
+      //     <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
+      //     <Divider type="vertical"/>
+      //     {/*<a href="/plan_edit.html">编辑</a>*/}
+      //     {<Link to={{pathname: '../../plan_edit', query: {pid: key.pid}}}>编辑</Link>}
+      //     <Divider type="vertical"/>
+      //     <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
+      // </span>
+      // ),
     },
   ];
 
