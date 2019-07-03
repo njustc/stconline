@@ -253,27 +253,14 @@ const mapDispatchToProps=(dispatch)=>{
 }))
 @Form.create()
 class newTestReport extends PureComponent {
-constructor(props){
-  super(props)
+  constructor(props){
+    super(props)
 
-  this.state={
-    pid:""
+    this.state={
+      pid:""
+    }
   }
-}
 
-  // componentDidMount() {
-  //   const {dispatch}=this.props;
-
-  //   if(this.props.location.query.pid){
-
-  //     this.state.pid=this.props.location.query.pid
-  //     console.log(this.state.pid)
-
-  //   dispatch({
-  //     type:`${namespace}/getTestReport`,
-  //     payload:this.props.location.query,
-  //   })
-  // }
   componentDidMount() {
     const {dispatch} = this.props;
     console.log(this.props.location.query)
@@ -328,10 +315,8 @@ constructor(props){
         });
       }
       console.log("finish save")
-
     })
   }
-
 
   render() {
     const {submitting} = this.props;
