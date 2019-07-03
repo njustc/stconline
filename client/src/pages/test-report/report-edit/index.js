@@ -316,14 +316,14 @@ constructor(props){
         //新建
         value.pid=this.state.pid
         dispatch({
-          type: 'entrustForm/addNewEntrust',//TODO
+          type: 'report-edit/queryAddReport',//TODO
           payload: value,
         });
       } else {
         //保存
         value.pid=this.state.pid
         dispatch({
-          type: 'entrustForm/replaceEntrust',//TODO
+          type: 'report-edit/queryReplaceReport',//TODO
           payload: value,
         });
       }
@@ -801,7 +801,7 @@ constructor(props){
             </FormItem>
             <h2>参考资料</h2>
             
-            //  <FormItem {...formItemLayout}>
+            <FormItem {...formItemLayout}>
                   {getFieldDecorator('testBasic', {
                     initialValue: this.props.dataReport.reportdata.auditor || '',
                   }, {
@@ -837,7 +837,7 @@ constructor(props){
                 <Button type="primary" style={{ marginLeft: 8 }} onClick={this.handleReset}>
                   删除
                 </Button>
-                <Button type="primary" style={{ marginLeft: 8 }} onClick={this.handleReset}>
+                <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>this.saveForm(this.props.form)}>
                   保存
                 </Button>
                 <Button type="primary" style={{ marginLeft: 8 }} onClick={this.handleReset}>
