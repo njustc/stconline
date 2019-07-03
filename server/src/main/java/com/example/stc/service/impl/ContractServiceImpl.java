@@ -6,9 +6,11 @@ import com.example.stc.domain.Contract;
 import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
 import com.example.stc.framework.exception.ContractNotFoundException;
+import com.example.stc.framework.exception.UserNotFoundException;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.DateUtils;
 import com.example.stc.repository.ContractRepository;
+import com.example.stc.repository.UserRepository;
 import com.example.stc.service.ContractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,9 @@ public class ContractServiceImpl implements ContractService{
 
     @Autowired
     private ContractRepository contractRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private DateUtils dateUtils;
@@ -115,6 +120,19 @@ public class ContractServiceImpl implements ContractService{
     public Contract newContract(Contract contract) {
         logger.info("newContract: ");
         contract.setUser(authorityUtils.getLoginUser());
+        contract.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
+        return contractRepository.save(contract);
+    }
+
+    @Override
+    public Contract newContractAuto(String pid, String uid) {
+        logger.info("newContractAuto: ");
+        Contract contract = new Contract();
+        contract.setPid(pid);
+        User user = userRepository.findByUid(uid);
+        if (user == null)
+            throw new UserNotFoundException(uid);
+        contract.setUser(user);
         contract.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
         return contractRepository.save(contract);
     }

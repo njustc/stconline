@@ -48,7 +48,7 @@ public class EntrustController extends BaseController {
         return new Resource<>(entrust
                 , linkTo(methodOn(EntrustController.class).getOneEntrust(entrust.getPid())).withSelfRel()
                 , linkTo(methodOn(EntrustController.class).getAllEntrust()).withSelfRel()
-                , linkTo(methodOn(UserController.class).getUserDetail(entrust.getUser().getUserID())).withSelfRel()
+                , linkTo(methodOn(UserController.class).getUserDetail(entrust.getUserId())).withSelfRel()
         );
     }
 
@@ -173,7 +173,9 @@ public class EntrustController extends BaseController {
                                     @RequestParam(value = "operation") String operation) throws URISyntaxException {
         Entrust entrust = entrustService.findEntrustByPid(pid);
         JSONObject commentJson = JSONObject.parseObject(comment);
-        String commentStr = commentJson.getString("comment");
+        String commentStr = "";
+        if (commentJson != null)
+            commentStr = commentJson.getString("comment");
         entrustAction.reviewEntrustProcess(entrust, operation, commentStr);
         Entrust updatedEntrust = entrustService.updateEntrust(pid, entrust);
         Resource<Entrust> resource = toResource(updatedEntrust);
