@@ -1,15 +1,8 @@
 package com.example.stc.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Column;
-
-import com.alibaba.fastjson.annotation.JSONField;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 用户账号类
