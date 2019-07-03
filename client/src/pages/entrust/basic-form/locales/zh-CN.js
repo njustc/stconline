@@ -80,16 +80,16 @@ export default {
   'basic-form.radio.opsystem3': '其他',
 
   // 硬件架构
-  'basic-form.radio.architecture': '架构',
-  'basic-form.radio.architecture1': 'PC服务器',
-  'basic-form.radio.architecture2': 'UNIX/Linux服务器',
-  'basic-form.radio.architecture3': '其他',
+  'basic-form.checkbox.architecture': '架构',
+  'basic-form.checkbox.architecture1': 'PC服务器',
+  'basic-form.checkbox.architecture2': 'UNIX/Linux服务器',
+  'basic-form.checkbox.architecture3': '其他',
 
   // 软件-构架
-  'basic-form.radio.softarch': '构架',
-  'basic-form.radio.softarch1': 'C/S',
-  'basic-form.radio.softarch2': 'B/S',
-  'basic-form.radio.softarch3': '其他',
+  'basic-form.checkbox.softarch': '构架',
+  'basic-form.checkbox.softarch1': 'C/S',
+  'basic-form.checkbox.softarch2': 'B/S',
+  'basic-form.checkbox.softarch3': '其他',
 
 
   // 软件名称，版本号，委托单位（中文），委托单位（英文），开发单位
@@ -250,7 +250,7 @@ export default {
   'basic-form.others.tsample.code':"源代码",
   'basic-form.others.tsample.exe':"可执行文件",
 
-  'basic-form.others.reqword.label':"重述",
+  'basic-form.others.reqword.label':"需求文档",
   'basic-form.others.reqword.plan':"项目计划任务书",
   'basic-form.others.reqword.report':"需求分析报告",
   'basic-form.others.reqword.contract':"合同",
