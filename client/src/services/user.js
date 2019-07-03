@@ -37,7 +37,7 @@ export async function replaceEntrust(params) {
   });
 }
 export async function addNewEntrust(params) {
-  // console.log("addnew",params)
+  console.log("addnew",params)
   return request('api/project/entrust', {
     method: 'POST',
     data: params,
@@ -61,6 +61,7 @@ export async function reviewEntrust(param1,param2) {
   {
     console.log('reviewEntrust');
     console.log(param1);
+    console.log(param1.comment)
     console.log(param2);
     return request(`api/project/entrust/review`, {
       method: 'POST',

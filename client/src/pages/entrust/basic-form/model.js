@@ -25,22 +25,18 @@ export default {
       message.success('新建成功');
     },
     
-    *submitForm({ payload }, {call,put}) {
-      console.log("submit",payload)
+    *submitForm({ payload }, {call}) {
+      console.log("submit",payload.pid!="")
       if(payload.pid!=""){//已存在
         //添加属性
-        
         yield call(replaceEntrust, payload);
         const response=yield call(updateEntrustProcess, payload.pid);
       }
       else{
-//        console.log("不存在")
+        console.log("不存在")
         const newform=yield call(addNewEntrust, payload);
-        yield put({type:'initData',payload:newform})
-        console.log(newform.pid)
         const response=yield call(updateEntrustProcess, newform.pid);
       }
-
       router.push("/basic-list.html")
       message.success('提交成功');
     },
