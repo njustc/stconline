@@ -24,6 +24,7 @@ import java.net.URISyntaxException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -111,11 +112,12 @@ public class EntrustControllerTest {
      */
     @Test
     @WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS", "USER", "SS", "STAFF"})
-    public void entrustProcessTest() throws URISyntaxException {
+    public void entrustProcessTest() throws Exception {
         //ini
         Entrust entrust = new Entrust();
         entrust.setProcessInstanceID("");
         entrust.setUser(authorityUtils.getLoginUser());
+//        mockMvc.perform(post(""))
         //add entrust
         ResponseEntity<?> entity = entrustController.addNewEntrust(entrust);
         assertThat(entity).isNotNull();
