@@ -3,7 +3,7 @@ import {primaryColor} from '../src/defaultSettings';
 
 export default {
   base: '/',
-  publicPath: 'http://localhost:8080/',
+  publicPath: 'http://114.212.133.244:8080',
   treeShaking: true,
   exportStatic: {htmlSuffix: true},
   plugins: [
@@ -150,7 +150,7 @@ export default {
   lessLoaderOptions: {javascriptEnabled: true},
   proxy: {
     '/api': {
-      target: 'http://localhost:8080',
+      target: 'http://114.212.133.244:8080',
       changeOrigin: true,
     },
   },
