@@ -295,7 +295,7 @@ export default class entrustCheck extends Component {
             "SS": <div class="ssSpace">
               <FormItem label={<FormattedMessage id="审批意见"/>}>
                 {getFieldDecorator('comment', {
-                  initialValue: this.props.entrustdata.entrust.comment || '',
+                  initialValue: this.props.entrustdata.entrust.comment || ' ',
                 }, {
                   rules: [
                     {
@@ -308,6 +308,8 @@ export default class entrustCheck extends Component {
               {/*<Button type = "primary"><FormattedMessage id = "basic-form.form.agree"/></Button>*/}
               {/*<Link to="./basic-list">*/}
                 <Button onClick={() => {
+                  console.log("comment here: " + this.props.entrustdata.entrust.comment + " com")
+                  console.log(this.props.entrustdata.entrust.pid)
                   this.reviewAgree(this.props.form)
                 }} style={{marginLeft: 8}}
                         type="primary">

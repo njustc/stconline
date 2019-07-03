@@ -48,23 +48,9 @@ public class User extends BaseEntity {
     @JSONField(serialize = false)
     private List<Entrust> entrusts;
 
-    /** 用户的项目列表 */
-    @OneToMany(cascade = CascadeType.ALL)
- //   @JoinColumn(name = "USER_ID",foreignKey = @ForeignKey(name = "none",value = ConstraintMode.NO_CONSTRAINT))
-    @JSONField(serialize = false)
-    private List<Project> projects;
-
     public List<Entrust> getEntrusts() { return entrusts; }
 
     public void setEntrusts(List<Entrust> entrusts) { this.entrusts = entrusts; }
-
-    public List<Project> getProjects(){
-        return projects;
-    }
-
-    public void setProjects(List<Project> projects){
-        this.projects = projects;
-    }
 
     public String getUserID() {
         return uid;
