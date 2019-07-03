@@ -21,7 +21,7 @@ docker-compose up -d
 
 注：
 
-- mysql映射至本地3306端口，若本地已有数据库运行，需要先关闭，避免端口被占用而使容器生成失败
+- mysql映射至本地33306端口，若本地已有数据库运行，需要先关闭，避免端口被占用而使容器生成失败
 - `/server/mysql` 文件夹初始化时必须为空文件夹，容器初始化后，镜像内的 `/var/lib/mysql/` 目录挂载至`/server/mysql`目录下。之后可以添加数据文件. 
 
 - 查看容器状态 `docker ps` , 若出现
@@ -63,7 +63,4 @@ docker exec -i mysql mysqldump -uroot -pmysql njustc > framework.sql
 
 执行之后，能够将数据库表导出至 `framework.sql`
 
-#### 3 spring部署至tomcat
-
-...未完待续
 

@@ -15,7 +15,10 @@ import {
   Modal,
   Breadcrumb,
   Upload,
-  message
+  message,
+  Checkbox,
+  Row, 
+  Col,
 } from 'antd';
 import PageHeaderWrapper from './components/PageHeaderWrapper';
 import styles from './style.less';
@@ -101,6 +104,10 @@ constructor(props){
       value.processState="ToSubmit"
       value.entrustEntity=""
       value.comment=""
+      value.testType=JSON.stringify(value.testType)
+    
+
+      console.log("new value",value)
       //补充完毕
       dispatch({
         type: 'entrustForm/addNewEntrust',
@@ -239,7 +246,7 @@ constructor(props){
     return (
       <Breadcrumb>
         <Button
-        a href="basic-list">
+        a href="basic-list.html">
           <FormattedMessage id="返回"/>
         </Button>
         <Breadcrumb.Item href="/basic-list.html">委托列表</Breadcrumb.Item>
@@ -260,17 +267,37 @@ constructor(props){
                 {getFieldDecorator('testType', {
                   initialValue: this.props.entrustdata.data.testType || 'basic-form.radio.confirm',
                 })(
-                  <Radio.Group>
-                    <Radio value="basic-form.radio.confirm">
-                      <FormattedMessage id="basic-form.radio.confirm"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.test">
-                      <FormattedMessage id="basic-form.radio.test"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.tothers">
-                      <FormattedMessage id="basic-form.radio.tothers"/>
-                    </Radio>
-                  </Radio.Group>
+
+                  <Checkbox.Group style={{ width: '100%' }} >
+                    <Row>
+                      <Col span={8}>
+                        <Checkbox value="basic-form.radio.confirm">
+                        <FormattedMessage id="basic-form.radio.confirm"/>
+                        </Checkbox>
+                      </Col>
+                      <Col span={8}>
+                        <Checkbox value="basic-form.radio.test">
+                        <FormattedMessage id="basic-form.radio.test"/>
+                          </Checkbox>
+                      </Col>
+                      <Col span={8}>
+                        <Checkbox value="basic-form.radio.tothers">
+                        <FormattedMessage id="basic-form.radio.tothers"/>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                  </Checkbox.Group>,
+                  // <Radio.Group>
+                  //   <Radio value="basic-form.radio.confirm">
+                  //     <FormattedMessage id="basic-form.radio.confirm"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.test">
+                  //     <FormattedMessage id="basic-form.radio.test"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.tothers">
+                  //     <FormattedMessage id="basic-form.radio.tothers"/>
+                  //   </Radio>
+                  // </Radio.Group>
                 )}
               </div>
             </FormItem>
