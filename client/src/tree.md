@@ -1,7 +1,7 @@
 ```
 
 ├── assets
-├── components
+├── components								--组件
 │   ├── GlobalHeader
 │   ├── HeaderDropdown
 │   ├── HeaderSearch
@@ -18,13 +18,13 @@
 │   ├── zh-CN
 │   └── zh-TW
 ├── models
-├── pages
-│   ├── contract
-│   │   ├── contract_detail
+├── pages									--页面js
+│   ├── contract								--合同页面
+│   │   ├── contract_detail	
 │   │   ├── contract_edit
 │   │   │   └── locales
 │   │   └── contract_list
-│   ├── entrust
+│   ├── entrust									--委托页面
 │   │   ├── basic-check
 │   │   │   └── locales
 │   │   ├── basic-form
@@ -32,12 +32,12 @@
 │   │   │   │   └── PageHeaderWrapper
 │   │   │   └── locales
 │   │   └── basic-list
-│   ├── testplan
+│   ├── testplan								--测试用例页面
 │   │   ├── plan_check
 │   │   ├── plan_edit
 │   │   │   └── locales
 │   │   └── plan_list
-│   ├── test-report
+│   ├── test-report								--测试报告页面
 │   │   ├── report-detail
 │   │   ├── report-edit
 │   │   │   ├── components
@@ -45,11 +45,11 @@
 │   │   │   ├── locales
 │   │   │   └── utils
 │   │   └── report-list
-│   └── user-login
+│   └── user-login								--用户登录页面
 │       ├── locales
-│       └── utils
-├── services
-└── utils
+│       └── utils	
+├── services									--网络http层
+└── utils										--工具文件
 ```
 
 
