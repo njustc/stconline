@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.stc.activiti.EntrustAction;
+import com.example.stc.activiti.ProcessService;
 import com.example.stc.framework.exception.EntrustNotFoundException;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.service.*;
@@ -40,6 +41,9 @@ public class EntrustController extends BaseController {
 
     @Autowired
     private EntrustAction entrustAction;
+
+    @Autowired
+    private ProcessService processService;
 
     /**
      * 添加Link，使 Entrust -> Resource<Entrust>
@@ -130,7 +134,7 @@ public class EntrustController extends BaseController {
     @DeleteMapping(path = "/entrust/{pid}")
     public @ResponseBody
     ResponseEntity<?> deleteEntrust(@PathVariable String pid) {
-        entrustAction.deleteEntrustProcess(entrustService.findEntrustByPid(pid));
+        processService.deleteProcessInstance(entrustService.findEntrustByPid(pid));
         entrustService.deleteEntrustByPid(pid);
         return ResponseEntity.noContent().build();
     }

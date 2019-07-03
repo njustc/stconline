@@ -81,7 +81,7 @@ public class EntrustAction {
             taskService.complete(task.getId());
         }
 
-        entrust.setProcessState(processUtils.getEntrustProcessState(processInstanceId));
+        entrust.setProcessState(processUtils.getProcessState(processInstanceId));
     }
 
     /**
@@ -111,7 +111,7 @@ public class EntrustAction {
         }
         taskService.complete(task.getId(), value);
 
-        entrust.setProcessState(processUtils.getEntrustProcessState(processInstanceId));
+        entrust.setProcessState(processUtils.getProcessState(processInstanceId));
     }
 
     /**

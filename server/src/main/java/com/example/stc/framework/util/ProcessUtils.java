@@ -1,13 +1,13 @@
 package com.example.stc.framework.util;
 
+import com.example.stc.activiti.ProcessService;
 import com.example.stc.activiti.STCProcessEngine;
 import com.example.stc.domain.ProcessEntity;
 import com.example.stc.domain.User;
 import com.example.stc.service.UserService;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
+import org.activiti.engine.*;
+import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -40,26 +40,42 @@ public class ProcessUtils {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private FormService formService;
+
     /**
      * 根据具体流程实例的ID获取其在流程中的状态
      * @param processInstanceId 流程实例ID
      * @return 以String形式返回流程实例的状态
      * // @throws Exception 获取流程实例状态失败
      */
-    public String getEntrustProcessState(String processInstanceId) {
+    public String getProcessState(String processInstanceId) {
+        if (processInstanceId.equals("")) {
+            return "Submit";
+        }
+
         ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId)
                 .singleResult();
         List<HistoricActivityInstance> piHistory = historyService.createHistoricActivityInstanceQuery()
                 .processInstanceId(processInstanceId).list();
         if (pi == null && !piHistory.isEmpty()) {
             return "Approve";
-        } else if (pi != null) {
+        }
+        else if (pi != null) {
             List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
             if (tasks.size() > 1) {
-                return "ToReview";
+                return "Review";
             }
             else {
-                return tasks.get(0).getName();
+                Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+                TaskFormData taskFormData = formService.getTaskFormData(task.getId());
+                List<FormProperty> formProperties = taskFormData.getFormProperties();
+                for (FormProperty formProperty: formProperties) {
+                    if (formProperty.getId().equals("taskType")) {
+                        return formProperty.getValue();
+                    }
+                }
+                return "NotExist";
             }
         } else {
             return "NotExist";
@@ -127,7 +143,7 @@ public class ProcessUtils {
      * @return
      */
     public boolean checkTask(String processInstanceId, String processState) {
-        return (processState.equals(getEntrustProcessState(processInstanceId)));
+        return (processState.equals(getProcessState(processInstanceId)));
     }
 
 }
