@@ -1,27 +1,47 @@
 import request from '@/utils/request';
 
-
-export async function getOneContract(params) {
-  console.log(params);
-  return request(`api/project/contract/${params.pid}`);
+/**
+ * 根据pid获取合同
+ * @param: pid:
+ * */
+export async function getOneContract({pid}) {
+  return request(`api/project/contract/${pid}`);
 }
 
+/**
+ * 获取所有的合同内容
+ * */
 export async function getAllContract() {
-  //console.log("getAllContract");
   return request('api/project/contract');
-  //return request('/dev/api/project/contract');
 }
 
-export async function deleteContract(params) {
-  console.log(params);
-  return request(`api/project/contract/${params.pid}`,{
+/**
+ * 根据pid删除合同
+ * */
+export async function deleteContract({pid}) {
+  return request(`api/project/contract/${pid}`, {
     method: 'DELETE',
   });
 }
 
-export async function replaceContract(params) {
-  return request(`api/project/contract/${params.pid}`,{
+/**
+ * 修改合同内容
+ * @param pid: project id
+ * @param data: contract
+ * */
+export async function replaceContract({pid, data}) {
+  return request(`api/project/contract/${pid}`, {
     method: 'PUT',
-    data: params,
+    data: data,
   });
+}
+
+/**
+ * 新增合同,由市场部工作人员执行
+ * @param data: contract
+ * */
+export async function newContract(data) {
+  return request('api/project/contract', {
+    data: data
+  })
 }

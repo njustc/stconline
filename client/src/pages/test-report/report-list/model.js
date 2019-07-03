@@ -1,4 +1,4 @@
-import { getAlltestReport, deleteTestReport} from '@/services/test-report';
+import { getAlltestReport, deleteTestReport} from '@/services/testReport';
 
 export default {
   namespace:'test-report',

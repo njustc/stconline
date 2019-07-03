@@ -2,7 +2,7 @@ import { routerRedux } from 'dva/router';
 import { getPageQuery } from './utils/utils';
 import { setAuthority } from './utils/authority';
 import { reloadAuthorized } from './utils/Authorized';
-import { getOneTestReport, replaceTestReport, addNewTestReport } from '@/services/test-report';
+import { getOneTestReport, replaceTestReport, addNewTestReport } from '@/services/testReport';
 
 export default {
   namespace: 'reportEdit',

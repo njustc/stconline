@@ -1,7 +1,5 @@
 package com.example.stc.framework.util;
 
-import com.example.stc.activiti.ProcessService;
-import com.example.stc.activiti.STCProcessEngine;
 import com.example.stc.domain.ProcessEntity;
 import com.example.stc.domain.User;
 import com.example.stc.service.UserService;

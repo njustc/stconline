@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { replaceTestPlan, getOneTestPlan, deleteTestPlan, addNewTestPlan, submitTestPlan} from '@/services/testplan';
+import { replaceTestPlan, getOneTestPlan, deleteTestPlan, addNewTestPlan, submitTestPlan} from '@/services/testPlan';
 import router from "umi/router";
 
 export default {
