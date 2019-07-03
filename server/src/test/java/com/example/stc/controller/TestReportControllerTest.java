@@ -17,6 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+/**
+ * 测试报告Test
+ * */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureWebMvc
