@@ -105,6 +105,7 @@ constructor(props){
       value.entrustEntity=""
       value.comment=""
       value.testType=JSON.stringify(value.testType)
+    
 
       console.log("new value",value)
       //补充完毕
