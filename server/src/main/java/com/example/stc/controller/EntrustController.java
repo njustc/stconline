@@ -168,11 +168,13 @@ public class EntrustController extends BaseController {
     @Secured({"ROLE_SS"}) // 市场部工作人员负责评审
     @PostMapping(path = "/entrust/review")
     public @ResponseBody
-    ResponseEntity<?> reviewEntrust(@RequestBody String comment,
+    ResponseEntity<?> reviewEntrust(@RequestBody String comment, // Json
                                     @RequestParam(value = "pid") String pid,
                                     @RequestParam(value = "operation") String operation) throws URISyntaxException {
         Entrust entrust = entrustService.findEntrustByPid(pid);
-        entrustAction.reviewEntrustProcess(entrust, operation, comment);
+        JSONObject commentJson = JSONObject.parseObject(comment);
+        String commentStr = commentJson.getString("comment");
+        entrustAction.reviewEntrustProcess(entrust, operation, commentStr);
         Entrust updatedEntrust = entrustService.updateEntrust(pid, entrust);
         Resource<Entrust> resource = toResource(updatedEntrust);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
