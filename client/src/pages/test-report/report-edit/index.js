@@ -28,7 +28,7 @@ const { Option } = Select;
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const confirm=Modal.confirm;
-const namespace = 'entrustForm';
+const namespace = 'reportEdit';
 //此处为假数据，未来在得到用户之前的数据后，mapState2Props里return form
 //在对应的formitem里添加initialValue，此时表单里现实的数据就是从后端的得到的。
 const form={
@@ -230,16 +230,17 @@ function showConfirm() {
 
 
 const mapStateToProps=(state)=>{
-  const entrustdata=state[namespace];
+  const dataReport=state[namespace];
+  console.log(dataReport)
   return{
-    entrustdata,
+    dataReport,
   };
 }
 const mapDispatchToProps=(dispatch)=>{
   return {
     DeleteEntrust:(params)=>{
       dispatch({
-        type:`${namespace}/DeleteEntrust`,
+        type:`${namespace}/DeleteTestReport`,
         payload:params
       })
     }
@@ -248,7 +249,7 @@ const mapDispatchToProps=(dispatch)=>{
 @connect(mapStateToProps,mapDispatchToProps)
 
 @connect(({ loading }) => ({
-  submitting: loading.effects['basicForm/submitRegularForm'],
+  submitting: loading.effects[`${namespace}/SubmitTestReport`],
 }))
 @Form.create()
 class newTestReport extends PureComponent {
@@ -260,23 +261,26 @@ constructor(props){
   }
 }
 
+  // componentDidMount() {
+  //   const {dispatch}=this.props;
+
+  //   if(this.props.location.query.pid){
+
+  //     this.state.pid=this.props.location.query.pid
+  //     console.log(this.state.pid)
+
+  //   dispatch({
+  //     type:`${namespace}/getTestReport`,
+  //     payload:this.props.location.query,
+  //   })
+  // }
   componentDidMount() {
-    const {dispatch}=this.props;
-
-    if(this.props.location.query.pid){
-
-      this.state.pid=this.props.location.query.pid
-      console.log(this.state.pid)
-
+    const {dispatch} = this.props;
+    console.log(this.props.location.query)
     dispatch({
-      type:'entrustForm/getOneEntrust',
-      payload:this.props.location.query,
-    })
-  }
-
-  else{
-
-  }
+      type: `${namespace}/getTestReport`,
+      payload: this.props.location.query,
+    });
   }
 
   handleSubmit = e => {
@@ -285,7 +289,7 @@ constructor(props){
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         dispatch({
-          type: 'basicForm/submitRegularForm',
+          type: 'basicForm/submitRegularForm',//TODO
           payload: values,
         });
       }
@@ -298,7 +302,7 @@ constructor(props){
       current: undefined,
     });
     dispatch({
-      type: 'basicForm/saveForm',
+      type: 'basicForm/saveForm',//TODO:save
       payload: values,
     });
   };
@@ -312,14 +316,14 @@ constructor(props){
         //新建
         value.pid=this.state.pid
         dispatch({
-          type: 'entrustForm/addNewEntrust',
+          type: 'entrustForm/addNewEntrust',//TODO
           payload: value,
         });
       } else {
         //保存
         value.pid=this.state.pid
         dispatch({
-          type: 'entrustForm/replaceEntrust',
+          type: 'entrustForm/replaceEntrust',//TODO
           payload: value,
         });
       }
@@ -391,7 +395,7 @@ constructor(props){
               <Col span={12} style={{display:"block"}}>
               <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.itemNumber"/>}>
                   {getFieldDecorator('itemNumber', {
-                    initialValue:'',
+                    initialValue: this.props.dataReport.reportdata.codeId || '',
                   }, {
                     rules: [
                       {
@@ -403,7 +407,7 @@ constructor(props){
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.sampleName"/>}>
                   {getFieldDecorator('sampleName', {
-                    initialValue:'',
+                    initialValue: this.props.dataReport.reportdata.sampleName || '',
                   }, {
                     rules: [
                       {
@@ -415,7 +419,7 @@ constructor(props){
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.samplingDate"/>}>
                   {getFieldDecorator('samplingDate', {
-                    initialValue:'',
+                    initialValue: this.props.dataReport.reportdata.sampleDate|| '',
                   }, {
                     rules: [
                       {
@@ -425,9 +429,9 @@ constructor(props){
                     ],
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
-                <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.testTime"/>}>
-                  {getFieldDecorator('testTime', {
-                    initialValue:'',
+                <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.testDate"/>}>
+                  {getFieldDecorator('testDate', {
+                    initialValue: this.props.dataReport.reportdata.testDate|| '',
                   }, {
                     rules: [
                       {
@@ -440,8 +444,8 @@ constructor(props){
               </Col>
               <Col span={12} style={{display:"block"}}>
               <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.unitc"/>}>
-                  {getFieldDecorator('softwareName', {
-                    initialValue:'',
+                  {getFieldDecorator('unitc', {
+                    initialValue: this.props.dataReport.reportdata.sampleSate || '',
                   }, {
                     rules: [
                       {
@@ -452,8 +456,8 @@ constructor(props){
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.version"/>}>
-                  {getFieldDecorator('softwareName', {
-                    initialValue:'',
+                  {getFieldDecorator('version', {
+                    initialValue: this.props.dataReport.reportdata.version || '',
                   }, {
                     rules: [
                       {
@@ -464,8 +468,8 @@ constructor(props){
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.testType"/>}>
-                  {getFieldDecorator('softwareName', {
-                    initialValue:'',
+                  {getFieldDecorator('testType', {
+                    initialValue: this.props.dataReport.reportdata.testType || '',
                   }, {
                     rules: [
                       {
@@ -476,8 +480,8 @@ constructor(props){
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.testBasic"/>}>
-                  {getFieldDecorator('softwareName', {
-                    initialValue:'',
+                  {getFieldDecorator('testBasic', {
+                    initialValue: this.props.dataReport.reportdata.testBasis || '',
                   }, {
                     rules: [
                       {
@@ -513,7 +517,7 @@ constructor(props){
                 <Col span={12} style={{display:"block"}}>
                     <FormItem {...formItemLayout1} label={<FormattedMessage id="new-test-report.testDominator"/>}>
                       {getFieldDecorator('testDominator', {
-                        initialValue:'',
+                        initialValue: this.props.dataReport.reportdata.tester || '',
                       }, {
                         rules: [
                           {
@@ -527,8 +531,8 @@ constructor(props){
                 </Col>
                 <Col span={12} style={{display:"block"}}>
                     <FormItem {...formItemLayout2} label={<FormattedMessage id="new-test-report.date"/>}>
-                      {getFieldDecorator('date-testDominator', {
-                        initialValue:'',
+                      {getFieldDecorator('date', {
+                        initialValue: this.props.dataReport.reportdata.testDate || '',
                       }, {
                         rules: [
                           {
@@ -544,7 +548,7 @@ constructor(props){
                 <Col span={12} style={{display:"block"}}>
                     <FormItem {...formItemLayout1} label={<FormattedMessage id="new-test-report.auditor"/>}>
                       {getFieldDecorator('auditor', {
-                        initialValue:'',
+                        initialValue: this.props.dataReport.reportdata.auditor || '',
                       }, {
                         rules: [
                           {
@@ -559,7 +563,7 @@ constructor(props){
                 <Col span={12} style={{display:"block"}}>
                     <FormItem {...formItemLayout2} label={<FormattedMessage id="new-test-report.date"/>}>
                       {getFieldDecorator('date-auditor', {
-                        initialValue:'',
+                        initialValue: this.props.dataReport.reportdata.auditor || '',
                       }, {
                         rules: [
                           {
@@ -576,7 +580,7 @@ constructor(props){
                 <Col span={12} style={{display:"block"}}>
                     <FormItem {...formItemLayout1} label={<FormattedMessage id="new-test-report.approver"/>}>
                       {getFieldDecorator('approver', {
-                        initialValue:'',
+                        initialValue: this.props.dataReport.reportdata.autosize || '',
                       }, {
                         rules: [
                           {
@@ -591,7 +595,7 @@ constructor(props){
                 <Col span={12} style={{display:"block"}}>
                     <FormItem {...formItemLayout2} label={<FormattedMessage id="new-test-report.date"/>}>
                       {getFieldDecorator('date-approver', {
-                        initialValue:'',
+                        initialValue: this.props.dataReport.reportdata.auditor || '',
                       }, {
                         rules: [
                           {
@@ -613,7 +617,7 @@ constructor(props){
               </FormItem>
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.phone.label"/>}>
                   {getFieldDecorator('unitc-phone', {
-                    initialValue:'',
+                    initialValue: this.props.dataReport.reportdata.auditor || '',
                   }, {
                     rules: [
                       {
@@ -625,7 +629,7 @@ constructor(props){
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.fax.label"/>}>
                   {getFieldDecorator('unitc-fax', {
-                    initialValue:'',
+                    initialValue: this.props.dataReport.reportdata.auditor || '',
                   }, {
                     rules: [
                       {
@@ -637,7 +641,7 @@ constructor(props){
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.address.label"/>}>
                   {getFieldDecorator('unitc-address', {
-                    initialValue:'',
+                    initialValue: this.props.dataReport.reportdata.auditor || '',
                   }, {
                     rules: [
                       {
@@ -649,7 +653,7 @@ constructor(props){
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.postcode.label"/>}>
                   {getFieldDecorator('unitc-postcode', {
-                    initialValue:'',
+                    initialValue: this.props.dataReport.reportdata.auditor || '',
                   }, {
                     rules: [
                       {
@@ -661,7 +665,7 @@ constructor(props){
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.contactor.label"/>}>
                   {getFieldDecorator('unitc-contactor', {
-                    initialValue:'',
+                    initialValue: this.props.dataReport.reportdata.auditor || '',
                   }, {
                     rules: [
                       {
@@ -673,7 +677,7 @@ constructor(props){
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.email.label"/>}>
                   {getFieldDecorator('unitc-email', {
-                    initialValue:'',
+                    initialValue: this.props.dataReport.reportdata.auditor || '',
                   }, {
                     rules: [
                       {
@@ -690,7 +694,7 @@ constructor(props){
               </FormItem>
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.phone.label"/>}>
                   {getFieldDecorator('unitt-phone', {
-                    initialValue:'',
+                    initialValue: this.props.dataReport.reportdata.auditor || '',
                   }, {
                     rules: [
                       {
@@ -702,7 +706,7 @@ constructor(props){
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.fax.label"/>}>
                   {getFieldDecorator('unitt-fax', {
-                    initialValue:'',
+                    initialValue: this.props.dataReport.reportdata.auditor || '',
                   }, {
                     rules: [
                       {
@@ -714,7 +718,7 @@ constructor(props){
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.address.label"/>}>
                   {getFieldDecorator('unitt-address', {
-                    initialValue:'',
+                    initialValue: this.props.dataReport.reportdata.auditor || '',
                   }, {
                     rules: [
                       {
@@ -726,7 +730,7 @@ constructor(props){
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.postcode.label"/>}>
                   {getFieldDecorator('unitt-postcode', {
-                    initialValue:'',
+                    initialValue: this.props.dataReport.reportdata.auditor || '',
                   }, {
                     rules: [
                       {
@@ -738,7 +742,7 @@ constructor(props){
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.contactor.label"/>}>
                   {getFieldDecorator('unitt-contactor', {
-                    initialValue:'',
+                    initialValue: this.props.dataReport.reportdata.auditor || '',
                   }, {
                     rules: [
                       {
@@ -750,7 +754,7 @@ constructor(props){
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.email.label"/>}>
                   {getFieldDecorator('unitt-email', {
-                    initialValue:'',
+                    initialValue: this.props.dataReport.reportdata.auditor || '',
                   }, {
                     rules: [
                       {
@@ -771,7 +775,7 @@ constructor(props){
             <p>本次测试使用到的网络环境如下：</p>
             <FormItem {...formItemLayout}>
                   {getFieldDecorator('webEnvi', {
-                    initialValue:'',
+                    initialValue: this.props.dataReport.reportdata.auditor || '',
                   }, {
                     rules: [
                       {
@@ -785,7 +789,7 @@ constructor(props){
             <h2>测试依据</h2>
             <FormItem {...formItemLayout}>
                   {getFieldDecorator('testBasic', {
-                    initialValue:'',
+                    initialValue: this.props.dataReport.reportdata.auditor || '',
                   }, {
                     rules: [
                       {
@@ -796,9 +800,10 @@ constructor(props){
                   })(<TextArea placeholder={formatMessage({id: 'new-test-report.basic.input'})} autosize={{ minRows: 3 , maxRows: '' }}/>)}
             </FormItem>
             <h2>参考资料</h2>
-            <FormItem {...formItemLayout}>
+            
+            //  <FormItem {...formItemLayout}>
                   {getFieldDecorator('testBasic', {
-                    initialValue:'',
+                    initialValue: this.props.dataReport.reportdata.auditor || '',
                   }, {
                     rules: [
                       {
@@ -808,7 +813,7 @@ constructor(props){
                     ],
                   })(<TextArea placeholder={formatMessage({id: 'new-test-report.basic.input'})} autosize={{ minRows: 3 , maxRows: '' }}/>)}
             </FormItem>
-
+            
             <h2>三、测试内容</h2>
             <h2>功能性测试</h2>
             <Table columns={columnsForPerformanceTest } dataSource={dataForPerformanceTest} pagination={ false } size="default " />
