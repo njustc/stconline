@@ -48,7 +48,7 @@ public class FileUploadController extends BaseController {
 
     /** 文件上传 */
     @PostMapping("/files/{pid}")
-    public ResponseEntity<?> uploadFileMulti(@PathVariable String pid, @RequestParam MultipartFile[] files) {
+    public ResponseEntity<?> uploadFileMulti(@PathVariable String pid, @RequestBody MultipartFile[] files) {
 
         logger.info("Multiple File Upload");
 
