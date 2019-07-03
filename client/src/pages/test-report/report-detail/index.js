@@ -55,17 +55,6 @@ export default class report_detail extends React.Component{
           <p>委托单位电话：<FormattedMessage id={this.props.dataCheck.check.clientTel || ' '}/></p>
           <p>委托单位传真：<FormattedMessage id={this.props.dataCheck.check.clientFax || ' '}/></p>
           <p>委托单位地址：<FormattedMessage id={this.props.dataCheck.check.clientAddr || ' '}/></p>
-
-
-
-          <p>委托单位地址：<FormattedMessage id={this.props.dataCheck.check.clientAddr || ' '}/></p>
-          <p>委托单位地址：<FormattedMessage id={this.props.dataCheck.check.clientAddr || ' '}/></p>
-          <p>委托单位地址：<FormattedMessage id={this.props.dataCheck.check.clientAddr || ' '}/></p>
-          <p>委托单位地址：<FormattedMessage id={this.props.dataCheck.check.clientAddr || ' '}/></p>
-          <p>委托单位地址：<FormattedMessage id={this.props.dataCheck.check.clientAddr || ' '}/></p>
-
-          <p>委托单位地址：<FormattedMessage id={this.props.dataCheck.check.clientAddr || ' '}/></p>
-          <p>委托单位地址：<FormattedMessage id={this.props.dataCheck.check.clientAddr || ' '}/></p>
           <p>测试执行记录：<FormattedMessage id={this.props.dataCheck.check.testExeRecord || ' '}/></p>
           <p>流程ID：<FormattedMessage id={this.props.dataCheck.check.processInstanceId || ' '}/></p>
           <p>流程状态：<FormattedMessage id={this.props.dataCheck.check.processState || ' '}/></p>
