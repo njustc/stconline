@@ -46,31 +46,5 @@ public class ContractControllerTest {
         assertThat(resources).isNotNull();
     }
 
-    /**
-     * 合同相关的增删改查测试
-     */
-    @Test
-    @WithMockUser(username = "TSA", password = "tsa", roles = {"USER", "USER", "SS"})
-    public void NewRepDelTest() throws Exception {
-        Contract contract = new Contract();     //新建合同
-        contract.setPid("pid");
-        contract.setProcessInstanceID("");
-        contract.setPrice("3");
-        //add
-        contractController.addNewContract(contract);
-        contract =
-                contractController.getOneContract(contract.getPid()).getContent();
-        assertThat(contract).isNotNull();
-        assertThat(contract.getPrice()).isEqualTo("3");
-        //modify
-        contract.setPrice("4");
-        contractController.replaceContract(contract.getPid(),
-                contract);
-        contract =
-                contractController.getOneContract(contract.getPid()).getContent();
-        assertThat(contract).isNotNull();
-        assertThat(contract.getPrice()).isEqualTo("4");
-        //delete
-        contractController.deleteContract(contract.getPid());
-    }
+
 }

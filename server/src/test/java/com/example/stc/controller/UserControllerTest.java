@@ -37,8 +37,8 @@ public class UserControllerTest {
     }
 
     /**
-     * 测试未鉴权之后的用户 , 不应该
-     * */
+     * 测试未鉴权之后的用户
+     */
     @Test
     public void checkNotAuth() throws Exception {
         //check not auth
