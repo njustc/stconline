@@ -80,14 +80,14 @@ export default class ReportList extends Component {
     return (
       <div>
         <Breadcrumb>
-          <Breadcrumb.Item hr="/basic-list.html">测试报告列表</Breadcrumb.Item>
+          <Breadcrumb.Item hr="/report-list.html">测试报告列表</Breadcrumb.Item>
         </Breadcrumb>
         {/* <div class="" */}
         <Table style={{marginTop: 50}} columns={this.columns} dataSource={(!this.props.listdata.data.length)?data:this.props.listdata.data}/>
         <Button
           style={{marginLeft: 400}}
           type="primary"
-          href="/basic-form.html">
+          href="/report-edit.html">
           新建测试报告
         </Button>
       </div>
