@@ -1,4 +1,5 @@
-.
+```
+
 ├── assets
 ├── components
 │   ├── GlobalHeader
@@ -49,5 +50,6 @@
 │       └── utils
 ├── services
 └── utils
+```
 
-50 directories
+

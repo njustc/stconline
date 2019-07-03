@@ -21,9 +21,7 @@
 ├── server						--后端源代码
 ```
 
-查看前端目录结构：
-
-查看后端目录结构：
+查看[前端](https://github.com/njustc/stconline/blob/dev/client/src/tree.md) / [后端](https://github.com/njustc/stconline/blob/dev/server/tree.md)目录结构
 
 ## 项目地址
 
