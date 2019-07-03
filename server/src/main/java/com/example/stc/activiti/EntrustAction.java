@@ -79,7 +79,7 @@ public class EntrustAction {
         }
         else {
             Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-            processUtils.checkTask(task, "ToSubmit");
+            // processUtils.checkTask(task, "ToSubmit");
             taskService.complete(task.getId());
         }
 
@@ -103,7 +103,7 @@ public class EntrustAction {
             return;
         }
 
-        processUtils.checkTask(task, "ToReview");
+        // processUtils.checkTask(task, "ToReview");
         taskService.setAssignee(task.getId(), currentUser.getUserID());
         Map<String, Object> value = new HashMap<>();
         value.put(REVIEW, operation);
