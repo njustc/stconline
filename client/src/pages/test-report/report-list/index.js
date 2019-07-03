@@ -40,11 +40,14 @@ export default class ReportList extends Component {
   
  //不同用户显示不同页面
  userLinkMaper={
-  "SS":(key) => (
+  "TS":(key) => (
   <span>
-  { <Link to={{pathname: './report-detail', query: {pid: key.pid}}}>审核</Link> }
-  <Divider type="vertical"/>
+  
   {<Link to={{pathname: './report-detail', query: {pid: key.pid}}}>查看项目详情</Link>}
+  <Divider type="vertical"/>
+  {<Link to={{pathname: '../../report-edit', query: {pid: key.pid}}}>编辑</Link>}
+  <Divider type="vertical"/>
+  <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
 </span>
   ),
 
