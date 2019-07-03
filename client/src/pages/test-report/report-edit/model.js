@@ -21,7 +21,7 @@ export default {
     },
     *queryReplaceReport({payload}, {call, put}) {
       yield call(replaceTestReport, payload);
-      // console.log(payload)
+      console.log(payload)
       const response = yield call(getOneTestReport, payload);
       yield put({type: 'updateData', payload: response});
       message.success('保存成功');
