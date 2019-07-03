@@ -5,10 +5,10 @@ const Search = Input.Search;
 
 import {connect} from 'dva';
 import Link from 'umi/link'
-const data=[];
+const data = [];
 const confirm = Modal.confirm;
 
-const namespace = 'testReport';
+const namespace = 'test-report';
 const mapStateToProps = (state) => {
   const listdata = state[namespace];
   return {
@@ -63,7 +63,7 @@ export default class ReportList extends Component {
     var that = this
     confirm({
       title: '您是否要删除本测试报告?',
-      content: `测试报告ID:${key.pid}  用户名:${key.name}`,
+      content: `测试报告ID:${key.pid}`,
       okText: '确认删除',
       okType: 'danger',
       cancelText: '取消',
