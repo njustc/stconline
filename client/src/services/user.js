@@ -30,7 +30,7 @@ export async function deleteEntrust(params) {
 }
 
 export async function replaceEntrust(params) {
-  // console.log(params)
+  console.log(params)
   return request(`api/project/entrust/${params.pid}`, {
     method: 'PUT',
     data: params,
@@ -46,7 +46,15 @@ export async function addNewEntrust(params) {
 
 export async function updateEntrustProcess(params) {
   // console.log(typeof(params))
-  return request(`api/project/entrust/submit?pid=${params}`, {
+  return request(`api/project/process/update`, {
+    method: 'POST',
+    data: params
+  });
+}
+
+export async function createEntrustProcess(params) {
+  // console.log(typeof(params))
+  return request(`api/project/process/create?pid=${params.pid}&type=Entrust`, {
     method: 'POST',
     data: ""
   });
@@ -57,22 +65,15 @@ export async function getOneEntrust(params) {
   return request(`api/project/entrust/${params.pid}`);
 }
 
-export async function reviewEntrust(param1,param2) {
+export async function reviewEntrust(param) {
   {
     console.log('reviewEntrust');
-    console.log(param1);
-    console.log(param1.comment)
-    console.log(param2);
-    return request(`api/project/entrust/review`, {
+    console.log(param);
+    return request(`api/project/process/update`, {
       method: 'POST',
-      params:{
-        pid:param1.pid,
-        operation:param2,
-      },
-      data: {
-        comment:param1.comment,
-      },
+      data: param
     });
   }
 
 }
+
