@@ -2,9 +2,11 @@ import { getAlltestReport, deleteTestReport} from '@/services/test-report';
 
 export default {
   namespace:'test-report',
+  
   state: {
     data: [],
   },
+
   effects:{
     *GetAlltestReport(_, {call,put}) {
       const response = yield call(getAlltestReport)
