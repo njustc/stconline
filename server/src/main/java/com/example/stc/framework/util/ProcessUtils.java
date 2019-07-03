@@ -1,14 +1,20 @@
 package com.example.stc.framework.util;
 
-import com.example.stc.activiti.STCProcessEngine;
+import com.example.stc.domain.ProcessEntity;
 import com.example.stc.domain.User;
 import com.example.stc.service.UserService;
-import org.activiti.engine.IdentityService;
+import org.activiti.engine.*;
+import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -18,32 +24,63 @@ import java.util.List;
 public class ProcessUtils {
 
     @Autowired
+    private RuntimeService runtimeService;
+
+    @Autowired
+    private TaskService taskService;
+
+    @Autowired
+    private HistoryService historyService;
+
+    @Autowired
     private IdentityService identityService;
 
     @Autowired
     private UserService userService;
 
     @Autowired
-    private STCProcessEngine stcProcessEngine;
+    private FormService formService;
+
+    @Autowired
+    private AuthorityUtils authorityUtils;
 
     /**
-     * 检查Task是否对应
-     * @param task
-     * @param taskName
+     * 根据具体流程实例的ID获取其在流程中的状态
+     * @param processInstanceId 流程实例ID
+     * @return 以String形式返回流程实例的状态
+     * // @throws Exception 获取流程实例状态失败
      */
-    public void checkTask(Task task, String taskName) {
-        if (!task.getName().equals(taskName)) {
-            // TODO: 抛出异常
+    public String getProcessState(String processInstanceId) {
+        if (processInstanceId.equals("")) {
+            return "Submit";
         }
-    }
 
-    /**
-     * 获取EntrustProcess状态
-     * @param processInstanceId
-     * @return 状态信息
-     */
-    public String getEntrustProcessState(String processInstanceId) {
-        return stcProcessEngine.getProcessState(processInstanceId);
+        ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId)
+                .singleResult();
+        List<HistoricActivityInstance> piHistory = historyService.createHistoricActivityInstanceQuery()
+                .processInstanceId(processInstanceId).list();
+        if (pi == null && !piHistory.isEmpty()) {
+            return "Approve";
+        }
+        else if (pi != null) {
+            List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+            if (tasks.size() > 1) {
+                return "Review";
+            }
+            else {
+                Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+                TaskFormData taskFormData = formService.getTaskFormData(task.getId());
+                List<FormProperty> formProperties = taskFormData.getFormProperties();
+                for (FormProperty formProperty: formProperties) {
+                    if (formProperty.getId().equals("taskType")) {
+                        return formProperty.getName();
+                    }
+                }
+                return "NotExist";
+            }
+        } else {
+            return "NotExist";
+        }
     }
 
     /**
@@ -68,7 +105,6 @@ public class ProcessUtils {
      * @return
      */
     public boolean checkUser(String group, String userId) {
-        System.out.println("\n\n" + group + "\n\n");
         Group gr = identityService.createGroupQuery().groupId(group).singleResult();
         if (gr == null) {
             /** 根据当前用户数据库在组内动态更新用户组 */
@@ -82,6 +118,62 @@ public class ProcessUtils {
                 return true;
         }
         return false;
+    }
+
+    public boolean checkUser(Task task, String userId) {
+        boolean result = false;
+        List identityLinkList = taskService.getIdentityLinksForTask(task.getId());
+        if (identityLinkList != null && identityLinkList.size() > 0) {
+            for (Iterator iterator = identityLinkList.iterator(); iterator.hasNext(); ) {
+                IdentityLink identityLink = (IdentityLink)iterator.next();
+                if (identityLink.getUserId() != null) {
+                    result |= (userId.equals(identityLink.getUserId()));
+                }
+                else if (identityLink.getGroupId() != null) {
+                    result |= checkUser(identityLink.getGroupId(), userId);
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 判断当前任务是否正确
+     * @param processInstanceId
+     * @param processState
+     * @return
+     */
+    public boolean checkTask(String processInstanceId, String processState) {
+        return (processState.equals(getProcessState(processInstanceId)));
+    }
+
+    public boolean checkMainUser(String processInstanceId, String userId) {
+        return false;
+    }
+
+
+    public boolean isVisible(ProcessEntity entity, String type) {
+        User user = authorityUtils.getLoginUser();
+        String processInstanceId = entity.getProcessInstanceId();
+        if (processInstanceId.equals("")) {
+            /** 尚未提交，此时能见者为：规定能够建立该流程的人 */
+            return false;
+        }
+        else {
+            switch (getProcessState(processInstanceId)) {
+                case "Submit":
+                case "Review":
+                    List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+                    boolean result = false;
+                    for (Task task: tasks) {
+                        result |= checkUser(task, user.getUserID());
+                    }
+                    return result;
+                case "Approve":
+                    return (checkUser("STAFF", user.getUserID()));
+            }
+            return false;
+        }
     }
 
 }

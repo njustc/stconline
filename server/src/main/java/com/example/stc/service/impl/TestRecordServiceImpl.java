@@ -65,7 +65,7 @@ public class TestRecordServiceImpl implements TestRecordService {
         record.setId(testRecord.getId());
         record.setPid(testRecord.getPid());
         record.setProcessState(testRecord.getProcessState());
-        record.setProcessInstanceID(testRecord.getProcessInstanceID());
+        record.setProcessInstanceId(testRecord.getProcessInstanceId());
         return testRecordRepository.save(record);
     }
 }

@@ -25,11 +25,4 @@ public interface UserRepository extends BaseRepository<User> {
     @Transactional
     int deleteByUid(String uid);
 
-
-//    /**
-//     * 通过ID查找对应的账号
-//     * @param uid 待查询账号的ID
-//     * @return 对应的账号
-//     */
-//    User findByUid(String uid);
 }

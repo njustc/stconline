@@ -20,75 +20,51 @@ const mapStateToProps = (state) => {
   };
 };
 
-//动态渲染button
-var userMaper={
-  "SS":<div class="ssSpace">
-          <FormItem label={<FormattedMessage id="form.sample_document.label"/>}>
-                <TextArea
-                  style={{minHeight: 32}}
-                  placeholder={formatMessage({id: '请填写您的审批意见，以便客户修改'})}
-                  rows={10}
-                />
-            </FormItem>
-    <Button type = "primary"><FormattedMessage id = "basic-form.form.agree"/></Button>
-    <Button type = "primary" style={{marginLeft: 8}}><FormattedMessage id = "basic-form.form.disagree"/></Button>
-    </div> ,
-
-    "CUS":
-    <Descriptions title="委托状态及意见">
-      <Descriptions.Item label="委托状态">待审核</Descriptions.Item>
-      <Descriptions.Item label="委托意见">无</Descriptions.Item>
-    </Descriptions>
-}
-
-
-function getUserRole(){
-  return userMaper[getRole()[0]]
-}
-
-
-const style = {
-  width: '400px',
-  margin: '30px',
-  boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)',
-  border: '1px solid #e8e8e8',
-}
-const columns = [
-  {
-    title: '模块编号',
-    dataIndex: 'name',
-    key: 'name',
-    render: text => <a href="javascript:;">{text}</a>,
-  },
-  {
-    title: '模块名称',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: '功能描述',
-    key: 'action',
-    render: (text, record) => (
-      <span>
-        {record.describe}
-      </span>
-    ),
-  },
-];
+@Form.create()
 @connect(mapStateToProps)
 export default class entrustCheck extends Component {
+  constructor(props){
+    super(props)
+    this.state={
+      pid:"",
+      comment:""
+    }
+  }
   componentDidMount() {
     const {dispatch} = this.props;
-
+    if(this.props.location.query.comment){
+      this.state.comment=this.props.location.query.comment
+    }
+    else{
+      this.state.comment=this.props.entrustdata.comment
+    }
     dispatch({
       type: 'checkentrust/getOneEntrust',
       payload: this.props.location.query,
     });
-    // console.log(this.props.entrustdata)
-    // this.props.entrustdata.entrust.testBasis.map(item=>{console.log(item)})
   }
+//审核
+review=(form,operation)=> {
+  const {dispatch} = this.props;
+  this.state.pid = this.props.entrustdata.entrust.pid;
+  this.state.comment = this.props.entrustdata.entrust.comment;
+  form.validateFields((err, value) => {
+    var entrust=this.props.entrustdata.entrust
+    entrust.operation=operation
+    entrust.comment=value.comment
+    console.log("en",entrust);
+    dispatch({
+      type: `${namespace}/ReviewEntrust`,
+      payload: entrust,
+    });
+  })
+}
 
   render() {
+    const {
+      form: {getFieldDecorator, getFieldValue},
+    } = this.props;
+
     return (
       <div>
         <Breadcrumb>
@@ -171,17 +147,53 @@ export default class entrustCheck extends Component {
           <p>重述：<FormattedMessage id={this.props.entrustdata.entrust.reqword || ' '}/></p>
           <p>用户文档：<FormattedMessage id={this.props.entrustdata.entrust.userDocumentation || ' '}/></p>
           <p>操作文档：<FormattedMessage id={this.props.entrustdata.entrust.operationDocument || ' '}/></p>
-          {/* <p>评审意见：<FormattedMessage id={this.props.entrustdata.entrust.comment || ' '}/></p> */}
-          <p>流程状态：{this.props.entrustdata.entrust.processState || ' '}</p>
-          {/* <p>测试项目编号：<FormattedMessage id={this.props.entrustdata.entrust.test_number||' '}/></p>
-        <p>备注：<FormattedMessage id={this.props.entrustdata.entrust.remarks||' '}/></p>
-        <p>受理人签名：<FormattedMessage id={this.props.entrustdata.entrust.acceptee_signature||' '}/></p>
-        <p>受理人签名日期：<FormattedMessage id={this.props.entrustdata.entrust.acceptee_signature_time||' '}/></p>
-        <p>委托人填写：<FormattedMessage id={this.props.entrustdata.entrust.completedByClient||' '}/></p>
-        <p>委托人签名：<FormattedMessage id={this.props.entrustdata.entrust.client_signature||' '}/></p>
-        <p>委托人签名日期：<FormattedMessage id={this.props.entrustdata.entrust.client_signature_time||' '}/></p> */}
         </Card>
-        {getUserRole()}
+        {
+          {
+            "SS": <div class="ssSpace">
+              <FormItem label={<FormattedMessage id="审批意见"/>} >
+                {getFieldDecorator('comment', {
+                  initialValue: this.props.entrustdata.entrust.comment || '无',
+                }, {
+                  rules: [
+                    {
+                      required: true,
+                      message: formatMessage({id: '需要审批意见'}),
+                    },
+                  ],
+                })(<Input placeholder={formatMessage({id: '输入审批意见'})} 
+                          disabled={this.props.entrustdata.entrust.processState!="Review"}
+                          />)}
+              </FormItem>
+
+              {
+                this.props.entrustdata.entrust.processState=="Review"?
+                <div>
+                <Button onClick={() => {
+                  this.review(this.props.form,"ReviewPass")
+                }} style={{marginLeft: 8 }}
+                        type="primary">
+                  <FormattedMessage id="basic-form.form.agree"/>
+                </Button>
+                <Button onClick={() => {
+                  this.review(this.props.form,"ReviewDisprove")
+                }} style={{marginLeft: 8}}
+                        type="primary"
+                        disabled={this.props.entrustdata.entrust.processState!="Review"}>
+                  <FormattedMessage id="basic-form.form.disagree"/>
+                </Button>
+                </div>
+              :null
+              }
+            </div>,
+
+            "CUS":
+              <Descriptions title="委托状态及意见">
+                <Descriptions.Item label="委托状态">{this.props.entrustdata.entrust.processState || ' '}</Descriptions.Item>
+                <Descriptions.Item label="委托意见">{this.props.entrustdata.entrust.comment || ' '}</Descriptions.Item>
+              </Descriptions>
+          }[getRole()[0]]
+        }
       </div>
     )
   }

@@ -24,6 +24,7 @@ import java.net.URISyntaxException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -80,13 +81,12 @@ public class EntrustControllerTest {
 //        user.setUserID("u20190605134344");
 //        user.setId(5L);
         Entrust record = new Entrust();
-        record.setProcessInstanceID("");
+        record.setProcessInstanceId("");
 //        record.setUser(user);
-        record.setUser(authorityUtils.getLoginUser());
+        record.setUserId(authorityUtils.getLoginUser().getUserID());
         logger.info("-----------------------------------");
         logger.info("");
-        logger.info("User: id = " + record.getUser().getId() + ", uid = " + record.getUser().getUserID() +
-                ", username = " + record.getUser().getUsername());
+        logger.info("User: uid = " + record.getUserId());
         logger.info("");
         logger.info("-----------------------------------");
         record.setVersion("1.0");
@@ -106,60 +106,4 @@ public class EntrustControllerTest {
         entrustController.deleteEntrust(entrustNew.getPid());
     }
 
-    /**
-     * 委托的流程推进测试
-     */
-    @Test
-    @WithMockUser(username = "CUSA", password = "cusa", roles = {"CUS", "USER", "SS", "STAFF"})
-    public void entrustProcessTest() throws URISyntaxException {
-        //ini
-        Entrust entrust = new Entrust();
-        entrust.setProcessInstanceID("");
-        entrust.setUser(authorityUtils.getLoginUser());
-        //add entrust
-        ResponseEntity<?> entity = entrustController.addNewEntrust(entrust);
-        assertThat(entity).isNotNull();
-        Resource<Entrust> resource = (Resource<Entrust>) entity.getBody();
-        Entrust entrustNew = entrustController.getOneEntrust(resource.getContent().getPid()).getContent();
-        assertThat(entrustNew).isNotNull();
-        //change the info of entrust
-        entrustNew.setVersion("3.0");
-        entrustController.replaceEntrust(entrustNew.getPid(),
-                entrustNew);
-        Entrust updatedEntrust =
-                entrustController.getOneEntrust(entrustNew.getPid())
-                        .getContent();
-        assertThat(updatedEntrust).isNotNull();
-        assertThat(updatedEntrust.getVersion()).isEqualTo("3.0");
-        assertThat(updatedEntrust.getProcessInstanceID()).isEqualTo("");
-        //submit the entrust
-        //第一步 ToSubmit
-        entrust = ((Resource<Entrust>) entrustController
-                .submitEntrust(updatedEntrust.getPid())
-                .getBody()).getContent();
-        String processStateName = entrust.getProcessState().getName();
-        assertThat(processStateName).isNotNull();
-        //状态应该是To review
-        assertThat(processStateName).isEqualTo(ProcessState.Review.getName());
-        //审批不通过
-        //ReviewPass 通过
-        //ReviewDisprove 不通过
-
-
-        //首先不通过
-        entrust = ((Resource<Entrust>) entrustController
-                .reviewEntrust("", entrust.getPid(), "ReviewDisprove")
-                .getBody()).getContent();
-        assertThat(entrust.getProcessState().getName()).isEqualTo(ProcessState.Submit.getName());
-        //再次提交
-        entrust = ((Resource<Entrust>) entrustController
-                .submitEntrust(updatedEntrust.getPid())
-                .getBody()).getContent();
-        //通过评审
-        entrust = ((Resource<Entrust>) entrustController
-                .reviewEntrust("", entrust.getPid(), "ReviewPass")
-                .getBody()).getContent();
-        assertThat(entrust.getProcessState().getName()).isEqualTo(ProcessState.Approve.getName());
-        entrustController.deleteEntrust(entrustNew.getPid());
-    }
 }

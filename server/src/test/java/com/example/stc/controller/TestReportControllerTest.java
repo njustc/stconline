@@ -17,6 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+/**
+ * 测试报告Test
+ * */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureWebMvc
@@ -51,7 +54,7 @@ public class TestReportControllerTest {
     @WithMockUser(username = "TSA", password = "tsa", roles = {"TS", "USER"})
     public void NewRepDelTest() throws Exception {
         TestReport record = new TestReport();
-        record.setProcessInstanceID("");
+        record.setProcessInstanceId("");
         record.setPid("pid");
         record.setVersion("1.0");
         // 添加

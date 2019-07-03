@@ -1,4 +1,6 @@
-import { getOneEntrust } from '@/services/user'
+import { getOneEntrust, reviewEntrust,replaceEntrust} from '@/services/user'
+import router from "umi/router";
+import {message} from "antd";
 export default {
   namespace: 'checkentrust',
   state: {
@@ -53,37 +55,21 @@ export default {
       },
     ],
     entrust: {},
-    data: [
-      {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-        tags: ['nice', 'developer'],
-      },
-      {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-        tags: ['loser'],
-      },
-      {
-        key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sidney No. 1 Lake Park',
-        tags: ['cool', 'teacher'],
-      },
-    ]
   },
   effects: {
     * getOneEntrust({payload}, {call, put}) {
       const response = yield call(getOneEntrust, payload);
-      console.log("get res")
-      console.log(response)
+      console.log(response);
       yield put({type: 'initData', payload: response})
     },
+    * ReviewEntrust({payload},{call}) {
+      console.log("ReviewEntrust");
+      console.log("res",payload)
+      const res = yield call(reviewEntrust, payload);
+      router.push("/basic-list.html")
+    },
+
+
   },
   reducers: {
     initData(state, action) {

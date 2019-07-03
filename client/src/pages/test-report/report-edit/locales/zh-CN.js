@@ -6,10 +6,10 @@ export default {
   'new-test-report.itemNumber':'项目编号',
   'new-test-report.sampleName':'样品名称',
   'new-test-report.samplingDate':'采样日期',
-  'new-test-report.testTime':'测试时间',
+  'new-test-report.testDate':'测试日期',
   'new-test-report.unitc':'委托单位',
-  'new-test-report.version':'版本/型号',
-  'new-test-report.testType':'测试类型',
+  'new-test-report.version':'版本号',
+  'new-test-report.testType':'测试类别',
   'new-test-report.testBasic':'测试依据',
   
   'new-test-report.sampleList':'样品清单',

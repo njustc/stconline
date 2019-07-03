@@ -3,7 +3,7 @@
   <process id="Contract" isClosed="false" isExecutable="true" name="合同" processType="None">
     <startEvent id="start" name="开始">
       <extensionElements>
-        <activiti:formProperty id="ContractID" name="ID of contract" required="true" type="String"/>
+        <activiti:formProperty id="ContractID" name="ID of contract" required="true" type="string"/>
       </extensionElements>
     </startEvent>
     <endEvent id="end" name="结束"/>
@@ -17,7 +17,7 @@
       <parallelGateway gatewayDirection="Unspecified" id="mApproveJoinGate" name="Join"/>
       <userTask activiti:exclusive="true" id="mmContractReview" name="MMReviewContract">
         <extensionElements>
-          <activiti:formProperty id="reviewContractResult" name="Do you approve this request?" required="true" type="String"/>
+          <activiti:formProperty id="reviewContractResult" name="Do you approve this request?" required="true" type="string"/>
           <activiti:formProperty id="user" name="MM" type="string" value="MarketingManager"/>
           <activiti:formProperty id="reviewContractComment" name="reason about pass or reject" required="true" type="string"/>
         </extensionElements>

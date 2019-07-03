@@ -54,7 +54,7 @@ public class TestRecordControllerTest {
     @WithMockUser(username = "TSA", password = "tsa", roles = {"TS", "USER"})
     public void NewRepDelTest() throws Exception {
         TestRecord record = new TestRecord();
-        record.setProcessInstanceID("");
+        record.setProcessInstanceId("");
         record.setPid("pid");
         record.setTestId("pid-testId");
         record.setBugId("000");

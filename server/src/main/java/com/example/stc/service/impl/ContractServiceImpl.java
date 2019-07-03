@@ -6,23 +6,18 @@ import com.example.stc.domain.Contract;
 import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
 import com.example.stc.framework.exception.ContractNotFoundException;
+import com.example.stc.framework.exception.UserNotFoundException;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.DateUtils;
 import com.example.stc.repository.ContractRepository;
-import com.example.stc.repository.ProjectRepository;
+import com.example.stc.repository.UserRepository;
 import com.example.stc.service.ContractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -33,7 +28,7 @@ public class ContractServiceImpl implements ContractService{
     private ContractRepository contractRepository;
 
     @Autowired
-    private ProjectRepository projectRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private DateUtils dateUtils;
@@ -67,7 +62,7 @@ public class ContractServiceImpl implements ContractService{
     public List<Contract> findContractByUser(String uid) {
         logger.info("findContractsByUser: 查看某用户全部合同");
         List<Contract> allContracts = this.findAllContracts();
-        allContracts.removeIf(contract -> !contract.getUser().getUserID().equals(uid));
+        allContracts.removeIf(contract -> !contract.getUserId().equals(uid));
         return allContracts;
     }
 
@@ -77,7 +72,7 @@ public class ContractServiceImpl implements ContractService{
     private void customerAccessCheck(Contract contract) {
         if (authorityUtils.hasAuthority(Role.Customer)) {
             User curUser = authorityUtils.getLoginUser();
-            if (!contract.getUser().getUsername().equals(curUser.getUsername())) {
+            if (!contract.getUserId().equals(curUser.getUserID())) {
                 logger.info("customerAccessCheck: 没有查看权限，客户只能查看自己的合同");
                 throw new AccessDeniedException("没有查看权限，客户只能查看自己的合同");
             }
@@ -124,7 +119,17 @@ public class ContractServiceImpl implements ContractService{
     @Override
     public Contract newContract(Contract contract) {
         logger.info("newContract: ");
-        contract.setUser(authorityUtils.getLoginUser());
+        contract.setUserId(authorityUtils.getLoginUser().getUserID());
+        contract.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
+        return contractRepository.save(contract);
+    }
+
+    @Override
+    public Contract newContractAuto(String pid, String uid) {
+        logger.info("newContractAuto: ");
+        Contract contract = new Contract();
+        contract.setPid(pid);
+        contract.setUserId(uid);
         contract.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
         return contractRepository.save(contract);
     }
@@ -138,9 +143,9 @@ public class ContractServiceImpl implements ContractService{
         Contract contract = contractRepository.findByPid(pid);
         record.setId(contract.getId());
         record.setPid(pid);
-        record.setUser(contract.getUser());
+        record.setUserId(contract.getUserId());
         record.setProcessState(contract.getProcessState());
-        record.setProcessInstanceID(contract.getProcessInstanceID());
+        record.setProcessInstanceId(contract.getProcessInstanceId());
         return contractRepository.save(record);
     }
 }

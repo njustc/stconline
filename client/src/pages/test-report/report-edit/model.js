@@ -2,57 +2,44 @@ import { routerRedux } from 'dva/router';
 import { getPageQuery } from './utils/utils';
 import { setAuthority } from './utils/authority';
 import { reloadAuthorized } from './utils/Authorized';
-import { fakeAccountLogin, getFakeCaptcha } from './service';
+import { getOneTestReport, replaceTestReport, addNewTestReport } from '@/services/testReport';
 
 export default {
-  namespace: 'userLogin',
+  namespace: 'reportEdit',
 
   state: {
-    status: undefined,
+    reportdata: {},
   },
 
   effects: {
-    *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
-      yield put({
-        type: 'changeLoginStatus',
-        payload: response,
-      });
-      // Login successfully
-      if (response.status === 'ok') {
-        reloadAuthorized();
-        const urlParams = new URL(window.location.href);
-        const params = getPageQuery();
-        let { redirect } = params;
-        if (redirect) {
-          const redirectUrlParams = new URL(redirect);
-          if (redirectUrlParams.origin === urlParams.origin) {
-            redirect = redirect.substr(urlParams.origin.length);
-            if (redirect.match(/^\/.*#/)) {
-              redirect = redirect.substr(redirect.indexOf('#') + 1);
-            }
-          } else {
-            window.location.href = redirect;
-            return;
-          }
-        }
-        yield put(routerRedux.replace(redirect || '/'));
-      }
+    *getTestReport({payload}, {call, put}) {
+      console.log("getOneReport")
+      console.log(payload);
+      const response = yield call(getOneTestReport, payload);
+      console.log(response)
+      yield put({type: 'updateData', payload: response});
     },
-
-    *getCaptcha({ payload }, { call }) {
-      yield call(getFakeCaptcha, payload);
+    *queryReplaceReport({payload}, {call, put}) {
+      yield call(replaceTestReport, payload);
+      console.log(payload)
+      const response = yield call(getOneTestReport, payload);
+      yield put({type: 'updateData', payload: response});
+      message.success('保存成功');
+    },
+    *queryAddReport({payload}, {call, put}) {
+      const response = yield call(addNewTestReport, payload);
+      yield put({type: 'updateData', payload: response});
+      message.success('新建成功');
     },
   },
 
   reducers: {
-    changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
+    updateData(state, action) {
+      // console.log(action.payload)
       return {
         ...state,
-        status: payload.status,
-        type: payload.type,
-      };
-    },
+        reportdata: action.payload,
+      }
+    }
   },
 };

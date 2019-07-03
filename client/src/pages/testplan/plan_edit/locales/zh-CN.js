@@ -23,5 +23,8 @@ export default {
   'validation.staff.required': '请填写测试人员！',
   'testplan.staff.placeholder':' ',
 
+  'plan_edit.form.submit':'提交',
+  'plan_edit.form.save':'保存',
+  'plan_edit.form.delete':'删除',
 
 };

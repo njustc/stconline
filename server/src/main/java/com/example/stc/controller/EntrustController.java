@@ -9,9 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.stc.activiti.EntrustAction;
-import com.example.stc.framework.exception.EntrustNotFoundException;
-import com.example.stc.framework.util.AuthorityUtils;
+import com.example.stc.activiti.ProcessService;
 import com.example.stc.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,12 +18,9 @@ import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.stc.domain.Entrust;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 用户的委托相关接口
@@ -39,7 +34,7 @@ public class EntrustController extends BaseController {
     private EntrustService entrustService;
 
     @Autowired
-    private EntrustAction entrustAction;
+    private ProcessService processService;
 
     /**
      * 添加Link，使 Entrust -> Resource<Entrust>
@@ -48,7 +43,7 @@ public class EntrustController extends BaseController {
         return new Resource<>(entrust
                 , linkTo(methodOn(EntrustController.class).getOneEntrust(entrust.getPid())).withSelfRel()
                 , linkTo(methodOn(EntrustController.class).getAllEntrust()).withSelfRel()
-                , linkTo(methodOn(UserController.class).getUserDetail(entrust.getUser().getUserID())).withSelfRel()
+                , linkTo(methodOn(UserController.class).getUserDetail(entrust.getUserId())).withSelfRel()
         );
     }
 
@@ -130,51 +125,8 @@ public class EntrustController extends BaseController {
     @DeleteMapping(path = "/entrust/{pid}")
     public @ResponseBody
     ResponseEntity<?> deleteEntrust(@PathVariable String pid) {
-        entrustAction.deleteEntrustProcess(entrustService.findEntrustByPid(pid));
+        processService.deleteProcessInstance(entrustService.findEntrustByPid(pid));
         entrustService.deleteEntrustByPid(pid);
         return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * 提交委托
-     *
-     * @param pid
-     * @return
-     * @throws URISyntaxException
-     */
-    @Secured({"ROLE_CUS"})
-    @PostMapping(path = "/entrust/submit")
-    public @ResponseBody
-    ResponseEntity<?> submitEntrust(@RequestParam(value = "pid") String pid) throws URISyntaxException {
-        Entrust entrust = entrustService.findEntrustByPid(pid);
-        //推动流程
-        entrustAction.submitEntrustProcess(entrust);
-        //更新委托信息
-        Entrust updatedEntrust = entrustService.updateEntrust(pid, entrust);
-        //资源包装
-        Resource<Entrust> resource = toResource(updatedEntrust);
-        return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
-    }
-
-    /**
-     * 评审委托
-     *
-     * @param comment
-     * @param pid
-     * @param operation
-     * @return
-     * @throws URISyntaxException
-     */
-    @Secured({"ROLE_SS"}) // 市场部工作人员负责评审
-    @PostMapping(path = "/entrust/review")
-    public @ResponseBody
-    ResponseEntity<?> reviewEntrust(@RequestBody String comment,
-                                    @RequestParam(value = "pid") String pid,
-                                    @RequestParam(value = "operation") String operation) throws URISyntaxException {
-        Entrust entrust = entrustService.findEntrustByPid(pid);
-        entrustAction.reviewEntrustProcess(entrust, operation, comment);
-        Entrust updatedEntrust = entrustService.updateEntrust(pid, entrust);
-        Resource<Entrust> resource = toResource(updatedEntrust);
-        return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 }

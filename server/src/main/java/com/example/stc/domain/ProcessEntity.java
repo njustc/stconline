@@ -18,12 +18,18 @@ public class ProcessEntity extends BaseEntity{
     @Column
     private String pid;
 
-    public String getProcessInstanceID() {
+    @Column(name = "OPERATION")
+    private String operation;
+
+    @Column(name = "COMMENT")
+    private String comment;
+
+    public String getProcessInstanceId() {
         return processInstanceId;
     }
 
-    public void setProcessInstanceID(String processInstanceID) {
-        this.processInstanceId = processInstanceID;
+    public void setProcessInstanceId(String processInstanceId) {
+        this.processInstanceId = processInstanceId;
     }
 
     public ProcessState getProcessState() {
@@ -51,5 +57,21 @@ public class ProcessEntity extends BaseEntity{
 
     public void setPid(String pid) {
         this.pid = pid;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
     }
 }

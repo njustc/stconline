@@ -16,38 +16,39 @@ const mapStateToProps = (state) => {
     dataEdit,
   };
 };
-function showConfirm() {
-  confirm({
-    title: '您是否要提交本委托?',
-    content: '委托一旦提交，将无法从线上更改，但您可以在“委托列表”查看本委托详情。提交的委托将由工作人员进行核对。',
-    okText: '提交',
-    cancelText: '取消',
-    onOk() {
-      console.log('OK');
-      //在此方法里提交
-    },
-    onCancel() {
-      console.log('Cancel');
-    },
-  });
-}
-//删除按钮的对话框方法，点击“确认删除”调取delete方法
-function showDeleteConfirm() {
-  confirm({
-    title: '您是否要删除本委托?',
-    content: '委托一旦删除不可恢复',
-    okText: '确认删除',
-    okType: 'danger',
-    cancelText: '取消',
-    onOk() {
-      console.log('OK');
-      //在此方法里使用delete
-    },
-    onCancel() {
-      console.log('Cancel');
-    },
-  });
-}
+
+// function showConfirm() {
+//   confirm({
+//     title: '您是否要提交本委托?',
+//     content: '委托一旦提交，将无法从线上更改，但您可以在“委托列表”查看本委托详情。提交的委托将由工作人员进行核对。',
+//     okText: '提交',
+//     cancelText: '取消',
+//     onOk() {
+//       console.log('OK');
+//       //在此方法里提交
+//     },
+//     onCancel() {
+//       console.log('Cancel');
+//     },
+//   });
+// }
+// //删除按钮的对话框方法，点击“确认删除”调取delete方法
+// function showDeleteConfirm() {
+//   confirm({
+//     title: '您是否要删除本委托?',
+//     content: '委托一旦删除不可恢复',
+//     okText: '确认删除',
+//     okType: 'danger',
+//     cancelText: '取消',
+//     onOk() {
+//       console.log('OK');
+//       //在此方法里使用delete
+//     },
+//     onCancel() {
+//       console.log('Cancel');
+//     },
+//   });
+// }
 
 // const mapDispatchToProps = (dispatch) => {
 //   return {
@@ -74,17 +75,150 @@ function showDeleteConfirm() {
 @Form.create()
 @connect(mapStateToProps)
 export default class EditPlan extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      pid: ""
+    }
+  }
+
   componentDidMount() {
     const {dispatch} = this.props;
+    if(this.props.location.query.pid){
+      this.state.pid=this.props.location.query.pid
+    }
+    else{
+      this.state.pid=this.props.dataEdit.editdata.pid
+    }
+    if(this.state.pid!="") {
+      dispatch({
+        type: `${namespace}/queryGetOnePlan`,
+        payload: this.props.location.query,
+      });
+    }
+  }
 
-    dispatch({
-      type: `${namespace}/queryGetOnePlan`,
-      payload: this.props.location.query,
+  addPlan=(form)=>{
+    const { dispatch } = this.props;
+    this.state.pid=this.props.dataEdit.editdata.pid;
+    form.validateFields((err,value) => {
+      //新建
+      value.pid=this.state.pid;
+      // 补充新建属性
+      value.processInstanceID="";
+      value.processState="ToSubmit";
+      value.comment="";
+      //补充完毕
+      dispatch({
+        type: `${namespace}/queryAddPlan`,
+        payload: value,
+      });
+    })
+  };
+
+  savePlan=(form)=> {
+    const {dispatch} = this.props;
+    this.state.pid = this.props.dataEdit.editdata.pid;
+
+    form.validateFields((err, value) => {
+      //保存
+      value.pid = this.state.pid;
+      value.processInstanceID = this.props.dataEdit.editdata.processInstanceID;
+      value.processState = this.props.dataEdit.editdata.processState;
+      console.log(value.pid);
+      // value.comment = this.props.dataEdit.editdata.comment;
+      dispatch({
+        type: `${namespace}/queryReplacePlan`,
+        payload: value,
+      });
+    })
+  };
+
+  //保存
+  save=(form)=>{
+    const { dispatch } = this.props;
+    // console.log(this.props.dataEdit);
+    this.state.pid=this.props.dataEdit.editdata.pid;
+    if (this.state.pid=="") {
+      this.addPlan(form)
+    }
+    else {
+      console.log("报告已存在");
+      console.log(this.state.pid);
+      this.savePlan(form)
+    }
+  };
+
+
+  //提交
+  submit=(form)=> {
+    const { dispatch } = this.props;
+    this.state.pid=this.props.dataEdit.editdata.pid;
+    form.validateFields((err,value) => {
+      //新建
+      value.pid=this.state.pid;
+      // 补充新建属性
+      value.processInstanceID=this.props.dataEdit.editdata.processInstanceID;
+      value.processState=this.props.dataEdit.editdata.processState;
+      // value.comment=this.props.dataEdit.editdata.comment;
+      dispatch({
+        type: `${namespace}/querySubmitPlan`,
+        payload: value,
+      });
+    })
+  };
+
+  showSubmit(form) {
+    confirm({
+      title: '您是否要提交方案?',
+      content: '方案提交后进入审核状态，不可编辑',
+      okText: '确认提交',
+      okType: 'primary',
+      cancelText: '取消',
+      onOk() {
+        this.submit(form)
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
     });
   }
+
+  //删除
+  delete=(value)=>{
+    const { dispatch } = this.props;
+    dispatch({
+      type: `${namespace}/queryDeletePlan`,
+      payload: value,
+    })
+  };
+
+  showDelete(form) {
+    var that=this;
+    confirm({
+      title: '您是否要删除本方案?',
+      content: '删除后无法恢复',
+      okText: '确认删除',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk() {
+        that.state.pid=that.props.dataEdit.editdata.pid;
+        form.validateFields((err,value) => {
+          //新建
+          value.pid=that.state.pid;
+          that.delete(value)
+
+        })
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
+
   render() {
     const {
-      form: {getFieldDecorator, getFieldValue},
+      form: {getFieldDecorator},
     } = this.props;
 
     const formItemLayout = {
@@ -118,7 +252,7 @@ export default class EditPlan extends React.Component{
         <br/>
         <Card bordered={false}>
           <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.edit.label"/>}>
-            {getFieldDecorator('edit', {
+            {getFieldDecorator('author', {
               initialValue: this.props.dataEdit.editdata.author || '',
             }, {rules: [
                 {
@@ -129,7 +263,7 @@ export default class EditPlan extends React.Component{
             })(<Input placeholder={formatMessage({id: 'testplan.edit.placeholder'})}/>)}
           </FormItem>
           <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.check.label"/>}>
-            {getFieldDecorator('check', {
+            {getFieldDecorator('auditor', {
                 initialValue: this.props.dataEdit.editdata.auditor || '',
               },{
               rules: [
@@ -141,7 +275,7 @@ export default class EditPlan extends React.Component{
             })(<Input placeholder={formatMessage({id: 'testplan.check.placeholder'})}/>)}
           </FormItem>
           <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.approve.label"/>}>
-            {getFieldDecorator('approve', {
+            {getFieldDecorator('approver', {
               initialValue: this.props.dataEdit.editdata.approver || '',
             }, {
               rules: [
@@ -190,14 +324,15 @@ export default class EditPlan extends React.Component{
           </FormItem>
         </Card>
         <br/>
+
         <FormItem {...submitFormLayout} style={{marginTop: 32}}>
-          <Button type="primary" onClick={showConfirm}>
+          <Button type="primary" onClick={()=>{this.showSubmit(this.props.form)}}>
             <FormattedMessage id="plan_edit.form.submit"/>
           </Button>
-          <Button style={{marginLeft: 8}}>
+          <Button style={{marginLeft: 8}} onClick={()=>{this.save(this.props.form)}}>
             <FormattedMessage id="plan_edit.form.save"/>
           </Button>
-          <Button style={{marginLeft: 8}} type="danger" onClick={showDeleteConfirm}>
+          <Button style={{marginLeft: 8}} type="danger" onClick={()=>{this.showDelete(this.props.form)}}>
             <FormattedMessage id="plan_edit.form.delete"/>
           </Button>
         </FormItem>

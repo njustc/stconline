@@ -2,6 +2,7 @@ import { Table, Divider, Tag ,Breadcrumb, Button, Modal} from 'antd';
 import Link from 'umi/link'
 import React from "react";
 import {connect} from "dva";
+import {getRole} from "../../../utils/cookieUtils";
 
 const data=[];
 const namespace='contractList';
@@ -37,6 +38,34 @@ class List extends React.Component{
     this.props.onDidMount();
   };
 
+  userMap={
+    "SS":(key) => (
+        <span>
+          <Link to={{pathname: './contract_detail', query: {pid: key.pid}}}>查看详情</Link>
+          <Divider type="vertical"/>
+          {/*<a href="/plan_edit.html">编辑</a>*/}
+          <Link to={{pathname: '../../contract_edit', query: {pid: key.pid}}}>编辑</Link>
+          <Divider type="vertical"/>
+          <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this,key)}>删除</span>
+        </span>
+    ),
+    "CUS":(key) => (
+      <span>
+        <Link to={{pathname: './contract_detail',query: {pid: key.pid}}}>查看详情</Link>
+      </span>
+    ),
+    "SM":(key)=>(
+      <span>
+        <Link to={{pathname: './contract_detail',query: {pid:key.pid}}}>查看详情</Link>
+      </span>
+    ),
+    "QM":(key)=>(
+      <span>
+        <Link to={{pathname: './contract_detail',query: {pid:key.pid}}}>查看详情</Link>
+      </span>
+    )
+  }
+
   columns = [
     {
       title: '方案ID',
@@ -71,19 +100,24 @@ class List extends React.Component{
     {
       title: '操作',
       key: 'action',
-      render: (key) => (
-        <span>
-          {key.processState == 'Submit' ? <Link to={{pathname: './contract_detail', query: {pid: key.pid}}}>查看详情</Link> :
-            <Link to={{pathname: './contract_detail', query: {pid: key.pid}}}>查看详情</Link>}
-          <Divider type="vertical"/>
-          {/*<a href="/plan_edit.html">编辑</a>*/}
-          {<Link to={{pathname: '../../contract_edit', query: {pid: key.pid}}}>编辑</Link>}
-          <Divider type="vertical"/>
-          <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this,key)}>删除</span>
-        </span>
-      ),
+      render: this.link()
+      // (key) => (
+      //   <span>
+      //     {key.processState == 'Submit' ? <Link to={{pathname: './contract_detail', query: {pid: key.pid}}}>查看详情</Link> :
+      //       <Link to={{pathname: './contract_detail', query: {pid: key.pid}}}>查看详情</Link>}
+      //     <Divider type="vertical"/>
+      //     {/*<a href="/plan_edit.html">编辑</a>*/}
+      //     {<Link to={{pathname: '../../contract_edit', query: {pid: key.pid}}}>编辑</Link>}
+      //     <Divider type="vertical"/>
+      //     <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this,key)}>删除</span>
+      //   </span>
+      // ),
     },
   ];
+
+  link(){
+    return this.userMap[getRole()[0]]
+  }
 
   showDeleteConfirm(key) {
     var that = this;

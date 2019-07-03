@@ -1,24 +1,26 @@
-import { getOneTestReport} from '@/services/test-report';
+import { getOneTestReport} from '@/services/testReport';
 
 export default {
-  namespace:'testreportCheck',
+  namespace:'report-detail',
+
   state: {
-    check: {},
-    counter: 0,
+    data: {},
   },
+
   effects: {
-    * queryOneTestReport({payload}, {call, put}) {
+    *GetOneTestReport({payload}, {call, put}) {
       const response = yield call(getOneTestReport, payload);
       console.log(response)
       yield put({type: 'getReportData', payload: response})
+    },
   },
-},
+
   //响应action并修改state
   reducers:{
     getReportData(state,action){
       return{
         ...state,
-        check:action.payload,
+        data:action.payload,
       }
     },
   },

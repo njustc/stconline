@@ -1,6 +1,8 @@
 package com.example.stc.domain;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Column;
 
 /**
  * 合同
@@ -186,18 +188,9 @@ public class Contract extends ProcessEntity {
     private String contractBody;
 
     /**
-     * 评审意见
-     */
-    @Column(name = "COMMENT")
-    private String comment;
-
-    /**
      * 用户信息
      */
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
-    //@JSONField(serialize = false)
-    private User user;
+    private String userId;
 
     public String getClient() {
         return client;
@@ -431,19 +424,11 @@ public class Contract extends ProcessEntity {
         this.contractBody = contractBody;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

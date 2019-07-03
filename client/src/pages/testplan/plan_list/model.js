@@ -1,4 +1,4 @@
-import { getAllTestPlan,addNewTestPlan,deleteTestPlan} from '@/services/testplan';
+import { getAllTestPlan,addNewTestPlan,deleteTestPlan} from '@/services/testPlan';
 
 export default {
   namespace:'testplanList',
@@ -33,7 +33,7 @@ export default {
       //获取服务器端数据
       const response = yield call(getAllTestPlan);
       // console.log('GetAllTestPlan')
-      console.log(response);
+      // console.log(response);
       //_embedded复制粘贴的委托
       console.log('_embedded' in response);
       if (!('_embedded' in response)) {

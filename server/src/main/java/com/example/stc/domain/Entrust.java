@@ -6,11 +6,6 @@ import javax.persistence.*;
 @Table(name = "TBL_SYS_ENTRUST")
 public class Entrust extends ProcessEntity {
 
-//    /**
-//     * 存储测试文档整体
-//     */
-//    private String entrustEntity;
-
     /**
      * 测试类型（多选）
      */
@@ -242,25 +237,9 @@ public class Entrust extends ProcessEntity {
     private String checkSample;
 
     /**
-     * 评审意见
-     */
-    private String comment;
-
-    /**
      * 用户信息
      */
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
-    //@JSONField(serialize = false)
-    private User user;
-
-//    public String getEntrustEntity() {
-//        return entrustEntity;
-//    }
-//
-//    public void setEntrustEntity(String entrustEntity) {
-//        this.entrustEntity = entrustEntity;
-//    }
+    private String userId;
 
     public String getTestType() {
         return testType;
@@ -626,19 +605,11 @@ public class Entrust extends ProcessEntity {
         this.checkSample = checkSample;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

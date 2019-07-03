@@ -15,7 +15,10 @@ import {
   Modal,
   Breadcrumb,
   Upload,
-  message
+  message,
+  Checkbox,
+  Row, 
+  Col,
 } from 'antd';
 import PageHeaderWrapper from './components/PageHeaderWrapper';
 import styles from './style.less';
@@ -97,10 +100,10 @@ constructor(props){
       //新建
       value.pid=this.state.pid
       // 补充新建属性
-      value.processInstanceID=""
-      value.processState="ToSubmit"
-      value.entrustEntity=""
+      value.processInstanceId=""
+      
       value.comment=""
+      console.log("new value",value)
       //补充完毕
       dispatch({
         type: 'entrustForm/addNewEntrust',
@@ -115,6 +118,9 @@ constructor(props){
     form.validateFields((err,value) => {
     //保存
     value.pid=this.state.pid
+    value.processInstanceId=this.props.entrustdata.data.processInstanceId
+    value.processState=this.props.entrustdata.data.processState
+    value.comment=this.props.entrustdata.data.comment
     dispatch({
       type: 'entrustForm/replaceEntrust',
       payload: value,
@@ -142,10 +148,8 @@ constructor(props){
       //新建
       value.pid=this.state.pid
       // 补充新建属性
-      value.processInstanceID=""
-      value.processState="ToSubmit"
-      value.entrustEntity=""
-      value.comment=""
+      value.processInstanceId=this.props.entrustdata.data.processInstanceId||""
+      value.comment=this.props.entrustdata.data.comment||""
       //补充完毕
       dispatch({
         type: 'entrustForm/submitForm',
@@ -237,7 +241,7 @@ constructor(props){
     return (
       <Breadcrumb>
         <Button
-        a href="basic-list">
+        a href="basic-list.html">
           <FormattedMessage id="返回"/>
         </Button>
         <Breadcrumb.Item href="/basic-list.html">委托列表</Breadcrumb.Item>
@@ -258,17 +262,37 @@ constructor(props){
                 {getFieldDecorator('testType', {
                   initialValue: this.props.entrustdata.data.testType || 'basic-form.radio.confirm',
                 })(
-                  <Radio.Group>
-                    <Radio value="basic-form.radio.confirm">
-                      <FormattedMessage id="basic-form.radio.confirm"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.test">
-                      <FormattedMessage id="basic-form.radio.test"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.tothers">
-                      <FormattedMessage id="basic-form.radio.tothers"/>
-                    </Radio>
-                  </Radio.Group>
+
+                  <Checkbox.Group style={{ width: '100%' }} >
+                    <Row>
+                      <Col span={8}>
+                        <Checkbox value="basic-form.radio.confirm">
+                        <FormattedMessage id="basic-form.radio.confirm"/>
+                        </Checkbox>
+                      </Col>
+                      <Col span={8}>
+                        <Checkbox value="basic-form.radio.test">
+                        <FormattedMessage id="basic-form.radio.test"/>
+                          </Checkbox>
+                      </Col>
+                      <Col span={8}>
+                        <Checkbox value="basic-form.radio.tothers">
+                        <FormattedMessage id="basic-form.radio.tothers"/>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                  </Checkbox.Group>
+                  // <Radio.Group>
+                  //   <Radio value="basic-form.radio.confirm">
+                  //     <FormattedMessage id="basic-form.radio.confirm"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.test">
+                  //     <FormattedMessage id="basic-form.radio.test"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.tothers">
+                  //     <FormattedMessage id="basic-form.radio.tothers"/>
+                  //   </Radio>
+                  // </Radio.Group>
                 )}
               </div>
             </FormItem>
@@ -416,23 +440,54 @@ constructor(props){
                 {getFieldDecorator('testBasis', {
                   initialValue: this.props.entrustdata.data.testBasis || 'basic-form.radio.basis1',
                 })(
-                  <Radio.Group>
-                    <Radio value="basic-form.radio.basis1">
+
+                  <Checkbox.Group style={{ width: '100%' }} >
+                  <Row>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.basis1">
                       <FormattedMessage id="basic-form.radio.basis1"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.basis2">
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.basis2">
                       <FormattedMessage id="basic-form.radio.basis2"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.basis3">
+                        </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.basis3">
                       <FormattedMessage id="basic-form.radio.basis3"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.basis4">
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.basis4">
                       <FormattedMessage id="basic-form.radio.basis4"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.basis5">
-                      <FormattedMessage id="basic-form.radio.basis5"/>
-                    </Radio>
-                  </Radio.Group>
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.basis4">
+                      <FormattedMessage id="basic-form.radio.basis4"/>
+                      </Checkbox>
+                    </Col>
+                  </Row>
+                </Checkbox.Group>,
+
+                  // <Radio.Group>
+                  //   <Radio value="basic-form.radio.basis1">
+                  //     <FormattedMessage id="basic-form.radio.basis1"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.basis2">
+                  //     <FormattedMessage id="basic-form.radio.basis2"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.basis3">
+                  //     <FormattedMessage id="basic-form.radio.basis3"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.basis4">
+                  //     <FormattedMessage id="basic-form.radio.basis4"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.basis5">
+                  //     <FormattedMessage id="basic-form.radio.basis5"/>
+                  //   </Radio>
+                  // </Radio.Group>
                 )}
               </div>
             </FormItem>
@@ -444,47 +499,117 @@ constructor(props){
                 {getFieldDecorator('testSpecification', {
                   initialValue: this.props.entrustdata.data.testSpecification || 'basic-form.radio.target1',
                 })(
-                  <Radio.Group>
-                    <Radio value="basic-form.radio.target1">
+
+                  <Checkbox.Group style={{ width: '100%' }} >
+                  <Row>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.target1">
                       <FormattedMessage id="basic-form.radio.target1"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.target2">
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.target2">
                       <FormattedMessage id="basic-form.radio.target2"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.target3">
+                        </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.target3">
                       <FormattedMessage id="basic-form.radio.target3"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.target4">
+                        </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.target4">
                       <FormattedMessage id="basic-form.radio.target4"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.target5">
+                        </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.target5">
                       <FormattedMessage id="basic-form.radio.target5"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.target6">
+                        </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.target6">
                       <FormattedMessage id="basic-form.radio.target6"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.target7">
+                        </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.target7">
                       <FormattedMessage id="basic-form.radio.target7"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.target8">
+                        </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.target8">
                       <FormattedMessage id="basic-form.radio.target8"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.target9">
+                        </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.target9">
                       <FormattedMessage id="basic-form.radio.target9"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.target10">
+                        </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.target10">
                       <FormattedMessage id="basic-form.radio.target10"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.target11">
+                        </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.target11">
                       <FormattedMessage id="basic-form.radio.target11"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.target12">
+                        </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.target12">
                       <FormattedMessage id="basic-form.radio.target12"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.target13">
+                        </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.target13">
                       <FormattedMessage id="basic-form.radio.target13"/>
-                    </Radio>
-                  </Radio.Group>
+                        </Checkbox>
+                    </Col>
+                  </Row>
+                </Checkbox.Group>
+                  // <Radio.Group>
+                  //   <Radio value="basic-form.radio.target1">
+                  //     <FormattedMessage id="basic-form.radio.target1"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.target2">
+                  //     <FormattedMessage id="basic-form.radio.target2"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.target3">
+                  //     <FormattedMessage id="basic-form.radio.target3"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.target4">
+                  //     <FormattedMessage id="basic-form.radio.target4"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.target5">
+                  //     <FormattedMessage id="basic-form.radio.target5"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.target6">
+                  //     <FormattedMessage id="basic-form.radio.target6"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.target7">
+                  //     <FormattedMessage id="basic-form.radio.target7"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.target8">
+                  //     <FormattedMessage id="basic-form.radio.target8"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.target9">
+                  //     <FormattedMessage id="basic-form.radio.target9"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.target10">
+                  //     <FormattedMessage id="basic-form.radio.target10"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.target11">
+                  //     <FormattedMessage id="basic-form.radio.target11"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.target12">
+                  //     <FormattedMessage id="basic-form.radio.target12"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.target13">
+                  //     <FormattedMessage id="basic-form.radio.target13"/>
+                  //   </Radio>
+                  // </Radio.Group>
                 )}
               </div>
             </FormItem>
@@ -636,19 +761,40 @@ constructor(props){
             >
               <div>
                 {getFieldDecorator('clientSystem', {
-                  initialValue: this.props.entrustdata.data.clientSystem || 'basic-form.radio.opsystem1',
+                  initialValue: this.props.entrustdata.data.clientSystem ||['basic-form.radio.opsystem1','basic-form.radio.opsystem3'] ,
                 })(
-                  <Radio.Group>
-                    <Radio value="basic-form.radio.opsystem1">
+
+                  <Checkbox.Group style={{ width: '100%' }} >
+                  <Row>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.opsystem1">
                       <FormattedMessage id="basic-form.radio.opsystem1"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.opsystem2">
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.opsystem2">
                       <FormattedMessage id="basic-form.radio.opsystem2"/>
-                    </Radio>
-                    <Radio value="basic-form.radio.opsystem3">
+                        </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="basic-form.radio.opsystem3">
                       <FormattedMessage id="basic-form.radio.opsystem3"/>
-                    </Radio>
-                  </Radio.Group>
+                      </Checkbox>
+                    </Col>
+                  </Row>
+                </Checkbox.Group>
+
+                  // <Radio.Group>
+                  //   <Radio value="basic-form.radio.opsystem1">
+                  //     <FormattedMessage id="basic-form.radio.opsystem1"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.opsystem2">
+                  //     <FormattedMessage id="basic-form.radio.opsystem2"/>
+                  //   </Radio>
+                  //   <Radio value="basic-form.radio.opsystem3">
+                  //     <FormattedMessage id="basic-form.radio.opsystem3"/>
+                  //   </Radio>
+                  // </Radio.Group>
                 )}
               </div>
             </FormItem>

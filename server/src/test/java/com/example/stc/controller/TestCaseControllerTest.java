@@ -1,5 +1,6 @@
 package com.example.stc.controller;
 
+import com.example.stc.domain.Entrust;
 import com.example.stc.domain.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,12 +50,12 @@ public class TestCaseControllerTest {
 
     /**
      * 添加+修改+删除测试方案
-     * */
+     */
     @Test
     @WithMockUser(username = "TSA", password = "tsa", roles = {"TS", "USER"})
     public void NewRepDelTest() throws Exception {
         TestCase record = new TestCase();
-        record.setProcessInstanceID("");
+        record.setProcessInstanceId("");
         record.setPid("pid");
         record.setDesigner("designer1");
         // 添加
