@@ -63,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests() // 定义需要保护和不需要保护的URL
-                .antMatchers("/*/**", "*", "/").permitAll()
+                .antMatchers("/*", "*", "/").permitAll()
                 .antMatchers("/api/register/**", "/api/login").permitAll()
                 .antMatchers("/api/project/**").hasRole(Role.USER.str())
                 // TODO: 其他针对角色拦截的URL
