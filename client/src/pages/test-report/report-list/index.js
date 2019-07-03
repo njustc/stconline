@@ -54,14 +54,23 @@ export default class ReportList extends Component {
   "CUS":(key) => (
     <span>
   {<Link to={{pathname: './report-detail', query: {pid: key.pid}}}>查看项目详情</Link> }
-
   <Divider type="vertical"/>
-
-  {<Link to={{pathname: '../../report-edit', query: {pid: key.pid}}}>编辑</Link>}
+  <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
   <Divider type="vertical"/>
+</span>
+  ),
 
+  "QM":(key) => (
+    <span>
+  {<Link to={{pathname: './report-detail', query: {pid: key.pid}}}>查看项目详情</Link> }
+  <Divider type="vertical"/>
+ 
+  <Divider type="vertical"/>
 </span>
   )
+
+
+
 }
 
 
