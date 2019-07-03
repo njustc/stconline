@@ -31,7 +31,8 @@ export default {
     
     *submitForm({ payload }, {call}) {
       console.log("submit",payload.pid!="")
-      if(payload.pid==""){//已存在
+      payload=EnArr2Str(payload)
+      if(payload.pid==""){//不存在
         const newform=yield call(addNewEntrust, payload);
         payload = newform
       }

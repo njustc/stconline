@@ -12,11 +12,6 @@ export async function queryNotices() {
   return request('/api/notices');
 }
 
-// export async function getAllEntrust(cid) {
-//   // console.log(cid)
-//   return request(`/dev/api/customers/${cid}/projects`);
-// }
-
 export async function getAllEntrust() {
   // return request('dev/api/customers/cid/projects');
   return request(`api/project/entrust`);
