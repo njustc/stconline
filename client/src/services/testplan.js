@@ -14,7 +14,7 @@ export async function getOneTestPlan(params) {
 
 export async function addNewTestPlan(params) {
   console.log(params);
-  return request(`dev/api/project/testplan/`, {
+  return request(`dev/api/project/testplan`, {
     method: 'POST',
     data: params,
   });
@@ -28,17 +28,18 @@ export async function deleteTestPlan(params) {
 }
 
 export async function replaceTestPlan(params) {
-  // console.log(params)
+  console.log(params);
   return request(`api/project/testplan/${params.pid}`, {
     method: 'PUT',
     data: params,
   });
 }
 
-// export async function updateTestPlanProcess(params) {
-//   return request('/api/process/testplan', {
-//     method: 'POST',
-//     data: params,
-//   });
-// }
+export async function submitTestPlan(params) {
+  // console.log(typeof(params))
+  return request(`api/project/testplan/submit?pid=${params}`, {
+    method: 'POST',
+    data: ""
+  });
+}
 
