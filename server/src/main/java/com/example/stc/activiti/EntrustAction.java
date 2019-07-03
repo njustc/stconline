@@ -73,7 +73,7 @@ public class EntrustAction {
     public void submitEntrustProcess(Entrust entrust) {
         User user = entrust.getUser();
         String processInstanceId = entrust.getProcessInstanceID();
-        if (processInstanceId.equals("")) {
+        if (processInstanceId == null || processInstanceId.equals("")) {
             createEntrustProcess(entrust, user);
             processInstanceId = entrust.getProcessInstanceID();
         }
