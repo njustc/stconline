@@ -6,6 +6,7 @@ import com.example.stc.domain.ProcessEntity;
 import com.example.stc.domain.User;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.ProcessUtils;
+import com.example.stc.service.EntrustService;
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
@@ -112,7 +113,7 @@ public class STCProcessEngine {
      * // @throws Exception 获取流程实例状态失败
      */
     public String getProcessState(String processInstanceId) {
-        return processUtils.getEntrustProcessState(processInstanceId);
+        return processUtils.getProcessState(processInstanceId);
     }
 
     /**

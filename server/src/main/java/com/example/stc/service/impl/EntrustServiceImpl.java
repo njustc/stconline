@@ -44,9 +44,6 @@ public class EntrustServiceImpl implements EntrustService {
     @Autowired
     private ProcessUtils processUtils;
 
-    @Autowired
-    private EntrustAction entrustAction;
-
     @Override
     public List<Entrust> findAllEntrusts() {
         return entrustRepository.findAll();
@@ -155,8 +152,20 @@ public class EntrustServiceImpl implements EntrustService {
         if (record.getProcessInstanceID().equals("")) {
             // record.setProcessState(entrust.getProcessState());
             record.setProcessInstanceID(entrust.getProcessInstanceID());
-            record.setProcessState(processUtils.getEntrustProcessState(entrust.getProcessInstanceID()));
+            record.setProcessState(processUtils.getProcessState(entrust.getProcessInstanceID()));
         }
         return entrustRepository.save(record);
+    }
+
+    public List<Entrust> setState(List<Entrust> entrusts) {
+        for (Entrust entrust: entrusts) {
+            entrust.setProcessState(processUtils.getProcessState(entrust.getProcessInstanceID()));
+        }
+        return entrusts;
+    }
+
+    public Entrust setState(Entrust entrust) {
+        entrust.setProcessState(processUtils.getProcessState(entrust.getProcessInstanceID()));
+        return entrust;
     }
 }

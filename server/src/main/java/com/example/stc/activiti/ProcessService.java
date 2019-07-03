@@ -8,9 +8,11 @@ import com.example.stc.service.BaseService;
 
 public interface ProcessService extends BaseService<ProcessEntity> {
 
-    void createEntrustProcess(Entrust entrust);
+    void createProcessInstance(String pid, String type);
 
-    void createContractProcess(Contract contract);
+    void createEntrustProcess(String pid);
+
+    void createContractProcess(String pid);
 
     void deleteProcessInstance(ProcessEntity entity);
 
