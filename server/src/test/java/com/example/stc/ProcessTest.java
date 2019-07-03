@@ -7,7 +7,11 @@ import com.example.stc.controller.UserController;
 import com.example.stc.domain.Contract;
 import com.example.stc.domain.Entrust;
 import com.example.stc.domain.User;
+import com.example.stc.framework.util.ProcessUtils;
+import org.activiti.engine.IdentityService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.identity.Group;
+import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +31,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +58,12 @@ public class ProcessTest {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private IdentityService identityService;
+
+    @Autowired
+    private ProcessUtils processUtils;
+
     @Before
     public void before() {
         user = new User();
@@ -71,34 +82,23 @@ public class ProcessTest {
 
     @Test
     public void testProcess() {
-        String processInstanceId = contractAction.createContractProcess(contract, user);
+        String processInstanceId = entrustAction.createEntrustProcess(entrust, user);
         System.out.println(processInstanceId);
 
-        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
-        System.out.println(tasks.size());
-
-        Task task1 = tasks.get(0);
-        Task task2 = tasks.get(1);
-        System.out.println("1: " + task1.getName() + "; 2: " + task2.getName());
-
-        Map<String, Object> value1 = new HashMap<>();
-        Map<String, Object> value2 = new HashMap<>();
-
-        value1.put("reviewContractResult", "ReviewDisprove");
-        taskService.complete(task1.getId(), value1);
-        taskService.complete(task2.getId(), value1);
-
-        tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
-        System.out.println(tasks.size());
-        for (Task task: tasks) {
-            if (task.getName().equals("WorkerSubmitContract")) {
-                taskService.complete(task.getId());
+        Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+        List identityLinkList = taskService.getIdentityLinksForTask(task.getId());
+        if (identityLinkList != null && identityLinkList.size() > 0) {
+            for (Iterator iterator = identityLinkList.iterator(); iterator.hasNext(); ) {
+                IdentityLink identityLink = (IdentityLink)iterator.next();
+                if (identityLink.getUserId() != null) {
+                    org.activiti.engine.identity.User user = identityService.createUserQuery().userId(identityLink.getUserId()).singleResult();
+                    System.out.println("User:" + user.getId());
+                }
+                else if (identityLink.getGroupId() != null) {
+                    Group group = identityService.createGroupQuery().groupId(identityLink.getGroupId()).singleResult();
+                    System.out.println("Group:" + group.getId());
+                }
             }
         }
-
-        tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
-        System.out.println(tasks.size());
-
-        // contractAction.deleteContractProcess(contract);
     }
 }
