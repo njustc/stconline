@@ -37,31 +37,35 @@ public class EntrustAction {
     /**
      * 根据JSON数据创建Process
      * @param param
-     * @param user
+     * @param uid
      */
-    public void createEntrustProcess(JSONObject param, User user) {
+    public void createEntrustProcess(JSONObject param, String uid) {
         Entrust entrust = JSONObject.toJavaObject(param, Entrust.class);
-        createEntrustProcess(entrust, user);
+        createEntrustProcess(entrust, uid);
     }
 
     /**
      * 根据Entrust实体创建Process
      * @param entrust
-     * @param user
+     * @param uid
      */
-    public String createEntrustProcess(Entrust entrust, User user) {
+    public String createEntrustProcess(Entrust entrust, String uid) {
         Map<String, Object> variable = new HashMap<String, Object>();
         variable.put("EntrustID", entrust.getPid());
-        variable.put("ClientID", user.getUserID());
+        variable.put("ClientID", uid);
 
         /**
          * TODO: 根据具体的权限策略(Spring Security or Shiro?)从当前用户组中取出可以进行委托审核操作的工作人员组
          *       是否需要修改.bpmn.xml？工作人员组可能在流程创立之后发生变动，需要使用安全框架实时更新权限组，待研究
          */
+<<<<<<< HEAD
 //        variable.put("WorkerIDs", "w1");
 //        variable.put("WorkerIDs", "w2");
 
         entrust.setProcessInstanceId(stcProcessEngine.createProcess("Entrust", variable));
+=======
+        entrust.setProcessInstanceID(stcProcessEngine.createProcess("Entrust", variable));
+>>>>>>> 87cd5eda658d64d25eb3bde658c5283436a1f802
         // entrust.setProcessState(ProcessState.Review);
         return entrust.getProcessInstanceId();
     }
@@ -71,11 +75,20 @@ public class EntrustAction {
      * @param entrust
      */
     public void submitEntrustProcess(Entrust entrust) {
+<<<<<<< HEAD
         User user = entrust.getUser();
         String processInstanceId = entrust.getProcessInstanceId();
         if (processInstanceId == null || processInstanceId.equals("")) {
             createEntrustProcess(entrust, user);
             processInstanceId = entrust.getProcessInstanceId();
+=======
+
+        String uid = entrust.getUserId();
+        String processInstanceId = entrust.getProcessInstanceID();
+        if (processInstanceId == null || processInstanceId.equals("")) {
+            createEntrustProcess(entrust, uid);
+            processInstanceId = entrust.getProcessInstanceID();
+>>>>>>> 87cd5eda658d64d25eb3bde658c5283436a1f802
         }
         else {
             Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();

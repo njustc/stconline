@@ -52,7 +52,7 @@ public class EntrustServiceImpl implements EntrustService {
     @Override
     public List<Entrust> findEntrustsByAuthority() {
         User curUser = authorityUtils.getLoginUser();
-        logger.info("findEntrustsByAuthority: 当前登录者id = " + curUser.getUserID() +
+        logger.info("findEntrustsByAuthority: 当前登录者uid = " + curUser.getUserID() +
                 ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
         // 若为用户，返回该用户全部委托
         if (authorityUtils.hasAuthority(Role.Customer)) {
@@ -78,8 +78,13 @@ public class EntrustServiceImpl implements EntrustService {
     public List<Entrust> findEntrustsByUser(String uid) {
         logger.info("findEntrustsByUser: 查看用户" + uid + "的全部委托");
         List<Entrust> allEntrusts = this.findAllEntrusts();
+<<<<<<< HEAD
         allEntrusts.removeIf(entrust -> !entrust.getUser().getUserID().equals(uid));
         return setState(allEntrusts);
+=======
+        allEntrusts.removeIf(entrust -> !entrust.getUserId().equals(uid));
+        return allEntrusts;
+>>>>>>> 87cd5eda658d64d25eb3bde658c5283436a1f802
     }
 
     /**
@@ -88,7 +93,7 @@ public class EntrustServiceImpl implements EntrustService {
     private void customerAccessCheck(Entrust entrust) {
         if (authorityUtils.hasAuthority(Role.Customer)) {
             User curUser = authorityUtils.getLoginUser();
-            if (!entrust.getUser().getUsername().equals(curUser.getUsername())) {
+            if (!entrust.getUserId().equals(curUser.getUserID())) {
                 logger.info("customerAccessCheck: 没有查看权限，客户只能查看自己的委托");
                 throw new AccessDeniedException("没有查看权限，客户只能查看自己的委托");
             }
@@ -135,7 +140,7 @@ public class EntrustServiceImpl implements EntrustService {
     @Override
     public Entrust newEntrust(Entrust entrust) {
         logger.info("newEntrust: ");
-        entrust.setUser(authorityUtils.getLoginUser());
+        entrust.setUserId(authorityUtils.getLoginUser().getUserID());
         //根据某一个算法增加新的id
         entrust.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         entrust.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
@@ -149,13 +154,24 @@ public class EntrustServiceImpl implements EntrustService {
         Entrust entrust = entrustRepository.findByPid(pid); // 找到应修改的委托并检查，若为客户，只能访问本人的委托
         record.setId(entrust.getId());
         record.setPid(pid);
+<<<<<<< HEAD
         record.setUser(entrust.getUser());
         if (record.getProcessInstanceId().equals("")) {
+=======
+        record.setUserId(entrust.getUserId());
+        logger.info("getProcessState: old = " + entrust.getProcessState());
+        if (record.getProcessInstanceID().equals("")) {
+>>>>>>> 87cd5eda658d64d25eb3bde658c5283436a1f802
             // record.setProcessState(entrust.getProcessState());
             record.setProcessInstanceId(entrust.getProcessInstanceId());
             record.setProcessState(processUtils.getProcessState(entrust.getProcessInstanceId()));
         }
+<<<<<<< HEAD
         return setState(entrustRepository.save(record));
+=======
+        logger.info("getProcessState: new = " + record.getProcessState());
+        return entrustRepository.save(record);
+>>>>>>> 87cd5eda658d64d25eb3bde658c5283436a1f802
     }
 
     public List<Entrust> setState(List<Entrust> entrusts) {

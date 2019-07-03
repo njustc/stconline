@@ -1,15 +1,8 @@
 package com.example.stc.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Column;
-
-import com.alibaba.fastjson.annotation.JSONField;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 用户账号类
@@ -41,16 +34,6 @@ public class User extends BaseEntity {
         else
             setRoles(role);
     }
-
-    /** 用户的委托列表 */
-    @OneToMany(cascade = CascadeType.ALL)
- //   @JoinColumn(name = "USER_ID",foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT))
-    @JSONField(serialize = false)
-    private List<Entrust> entrusts;
-
-    public List<Entrust> getEntrusts() { return entrusts; }
-
-    public void setEntrusts(List<Entrust> entrusts) { this.entrusts = entrusts; }
 
     public String getUserID() {
         return uid;

@@ -34,7 +34,7 @@ public class ContractController extends BaseController {
         return new Resource<>(contract
                 , linkTo(methodOn(ContractController.class).getOneContract(contract.getPid())).withSelfRel()
                 , linkTo(methodOn(ContractController.class).getAllContract()).withSelfRel()
-                , linkTo(methodOn(UserController.class).getUserDetail(contract.getUser().getUserID())).withSelfRel()
+                , linkTo(methodOn(UserController.class).getUserDetail(contract.getUserId())).withSelfRel()
         );
     }
 
