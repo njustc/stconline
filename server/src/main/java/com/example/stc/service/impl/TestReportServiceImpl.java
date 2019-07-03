@@ -41,7 +41,7 @@ public class TestReportServiceImpl implements TestReportService {
         record.setId(testReport.getId());
         record.setPid(testReport.getPid());
         record.setProcessState(testReport.getProcessState());
-        record.setProcessInstanceID(testReport.getProcessInstanceID());
+        record.setProcessInstanceId(testReport.getProcessInstanceId());
         return testReportRepository.save(record);
     }
 

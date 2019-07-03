@@ -66,7 +66,7 @@ public class TestCaseServiceImpl implements TestCaseService {
         record.setId(testCase.getId());
         record.setPid(testCase.getPid());
         record.setProcessState(testCase.getProcessState());
-        record.setProcessInstanceID(testCase.getProcessInstanceID());
+        record.setProcessInstanceId(testCase.getProcessInstanceId());
         return testCaseRepository.save(record);
     }
 }

@@ -8,12 +8,12 @@
     </startEvent>
     <userTask activiti:assignee="${ClientID}" activiti:exclusive="true" id="submitEntrust" name="CusSubmit">
       <extensionElements>
-        <activiti:formProperty id="taskType" name="Type of this task" type="string" value="Submit"/>
+        <activiti:formProperty id="taskType" name="Submit" type="string" value="Submit"/>
       </extensionElements>
     </userTask>
     <userTask activiti:exclusive="true" id="reviewEntrust" name="StaffReview" activiti:candidateGroups="STAFF">
       <extensionElements>
-        <activiti:formProperty id="taskType" name="Type of this task" type="string" value="Review"/>
+        <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
         <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
         <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
       </extensionElements>
@@ -23,10 +23,10 @@
     <exclusiveGateway gatewayDirection="Unspecified" id="approveGate" name="是否通过"/>
     <sequenceFlow id="fReviewToApprove" sourceRef="reviewEntrust" targetRef="approveGate"/>
     <sequenceFlow id="fApproveToEnd" name="通过" sourceRef="approveGate" targetRef="end">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewEntrustResult == 'ReviewPass'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ReviewResult == 'ReviewPass'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="fApproveToSubmit" name="未通过" sourceRef="approveGate" targetRef="submitEntrust">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewEntrustResult == 'ReviewDisprove'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ReviewResult == 'ReviewDisprove'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="fStartToReview" sourceRef="start" targetRef="reviewEntrust"/>
   </process>

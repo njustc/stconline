@@ -72,7 +72,7 @@ public class ProcessUtils {
                 List<FormProperty> formProperties = taskFormData.getFormProperties();
                 for (FormProperty formProperty: formProperties) {
                     if (formProperty.getId().equals("taskType")) {
-                        return formProperty.getValue();
+                        return formProperty.getName();
                     }
                 }
                 return "NotExist";

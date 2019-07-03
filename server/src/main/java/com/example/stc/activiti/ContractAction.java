@@ -49,9 +49,9 @@ public class ContractAction {
         variable.put("ContractID", contract.getPid());
         variable.put("ClientID", user.getUserID());
 
-        contract.setProcessInstanceID(stcProcessEngine.createProcess("Contract", variable));
+        contract.setProcessInstanceId(stcProcessEngine.createProcess("Contract", variable));
         // contract.setProcessState(ProcessState.ToReview);
-        return contract.getProcessInstanceID();
+        return contract.getProcessInstanceId();
     }
 
     /**
@@ -63,7 +63,7 @@ public class ContractAction {
             return;
         }
 
-        String processInstanceId = contract.getProcessInstanceID();
+        String processInstanceId = contract.getProcessInstanceId();
         Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
         taskService.setAssignee(task.getId(), authorityUtils.getLoginUser().getUserID());
         taskService.complete(task.getId());
@@ -76,7 +76,7 @@ public class ContractAction {
      * @param comment
      */
     public void reviewContractProcess(Contract contract, String operation, String comment) {
-        String processInstanceId = contract.getProcessInstanceID();
+        String processInstanceId = contract.getProcessInstanceId();
         List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
         for (Task task: tasks) {
             Role role;
@@ -118,7 +118,7 @@ public class ContractAction {
      * @param contract
      */
     public void deleteContractProcess(Contract contract) {
-        String processInstanceId = contract.getProcessInstanceID();
+        String processInstanceId = contract.getProcessInstanceId();
         if (!processInstanceId.equals(""))
             stcProcessEngine.deleteProcessInstance(processInstanceId);
     }

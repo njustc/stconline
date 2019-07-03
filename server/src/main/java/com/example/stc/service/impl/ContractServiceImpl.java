@@ -130,7 +130,7 @@ public class ContractServiceImpl implements ContractService{
         record.setPid(pid);
         record.setUser(contract.getUser());
         record.setProcessState(contract.getProcessState());
-        record.setProcessInstanceID(contract.getProcessInstanceID());
+        record.setProcessInstanceId(contract.getProcessInstanceId());
         return contractRepository.save(record);
     }
 }

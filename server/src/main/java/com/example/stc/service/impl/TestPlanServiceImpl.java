@@ -41,7 +41,7 @@ public class TestPlanServiceImpl implements TestPlanService {
         record.setId(testPlan.getId());
         record.setPid(testPlan.getPid());
         record.setProcessState(testPlan.getProcessState());
-        record.setProcessInstanceID(testPlan.getProcessInstanceID());
+        record.setProcessInstanceId(testPlan.getProcessInstanceId());
         return testPlanRepository.save(record);
     }
 

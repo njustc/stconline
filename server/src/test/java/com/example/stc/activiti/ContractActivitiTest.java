@@ -38,7 +38,7 @@ public class ContractActivitiTest {
     public void NewRepDelTest() throws Exception {
         Contract contract = new Contract();     //新建合同
         contract.setPid("pid");
-        contract.setProcessInstanceID("");
+        contract.setProcessInstanceId("");
         contract.setPrice("3");
         //add
         contractController.addNewContract(contract);

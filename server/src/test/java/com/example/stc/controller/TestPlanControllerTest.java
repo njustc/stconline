@@ -53,7 +53,7 @@ public class TestPlanControllerTest {
     @WithMockUser(username = "TSA", password = "tsa", roles = {"TS", "USER"})
     public void NewRepDelTest() throws Exception {
         TestPlan record = new TestPlan();
-        record.setProcessInstanceID("");
+        record.setProcessInstanceId("");
         record.setPid("pid");
         record.setBody("body1");
         // 添加

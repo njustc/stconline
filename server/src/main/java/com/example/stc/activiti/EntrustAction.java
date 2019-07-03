@@ -19,8 +19,8 @@ import java.util.Map;
 @Service
 public class EntrustAction {
 
-    private static final String REVIEW = "reviewEntrustResult";
-    private static final String COMMENT = "reviewEntrustComment";
+    private static final String REVIEW = "ReviewResult";
+    private static final String COMMENT = "ReviewComment";
 
     @Autowired
     private STCProcessEngine stcProcessEngine;
@@ -61,9 +61,9 @@ public class EntrustAction {
 //        variable.put("WorkerIDs", "w1");
 //        variable.put("WorkerIDs", "w2");
 
-        entrust.setProcessInstanceID(stcProcessEngine.createProcess("Entrust", variable));
+        entrust.setProcessInstanceId(stcProcessEngine.createProcess("Entrust", variable));
         // entrust.setProcessState(ProcessState.Review);
-        return entrust.getProcessInstanceID();
+        return entrust.getProcessInstanceId();
     }
 
     /**
@@ -72,10 +72,10 @@ public class EntrustAction {
      */
     public void submitEntrustProcess(Entrust entrust) {
         User user = entrust.getUser();
-        String processInstanceId = entrust.getProcessInstanceID();
+        String processInstanceId = entrust.getProcessInstanceId();
         if (processInstanceId == null || processInstanceId.equals("")) {
             createEntrustProcess(entrust, user);
-            processInstanceId = entrust.getProcessInstanceID();
+            processInstanceId = entrust.getProcessInstanceId();
         }
         else {
             Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
@@ -95,7 +95,7 @@ public class EntrustAction {
     public void reviewEntrustProcess(Entrust entrust, String operation, String comment) {
         User currentUser = authorityUtils.getLoginUser();
         currentUser.setUserID("u20190605134944");
-        String processInstanceId = entrust.getProcessInstanceID();
+        String processInstanceId = entrust.getProcessInstanceId();
         Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
 
         if (!processUtils.checkUser("STAFF", currentUser.getUserID())) {
@@ -121,7 +121,7 @@ public class EntrustAction {
      * @param entrust
      */
     public void deleteEntrustProcess(Entrust entrust) {
-        String processInstanceId = entrust.getProcessInstanceID();
+        String processInstanceId = entrust.getProcessInstanceId();
         if (!processInstanceId.equals("") && !stcProcessEngine.getProcessState(processInstanceId).equals("Approve"))
             stcProcessEngine.deleteProcessInstance(processInstanceId);
     }
