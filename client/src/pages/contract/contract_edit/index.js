@@ -125,7 +125,7 @@ class BasicForm extends PureComponent {
       //
     }
     else{
-      //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+      console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
       this.saveCon(form)
     }
   }
