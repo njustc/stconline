@@ -5,10 +5,10 @@ const Search = Input.Search;
 
 import {connect} from 'dva';
 import Link from 'umi/link'
-const data=[];
+const data = [];
 const confirm = Modal.confirm;
 
-const namespace = 'testReport';
+const namespace = 'test-report';
 const mapStateToProps = (state) => {
   const listdata = state[namespace];
   return {
@@ -36,7 +36,7 @@ export default class ReportList extends Component {
   componentDidMount() {
     this.props.onDidMount();
   }
-
+  
   columns = [
     {
       title: '测试报告ID',
@@ -63,7 +63,7 @@ export default class ReportList extends Component {
     var that = this
     confirm({
       title: '您是否要删除本测试报告?',
-      content: `测试报告ID:${key.pid}  用户名:${key.name}`,
+      content: `测试报告ID:${key.pid}`,
       okText: '确认删除',
       okType: 'danger',
       cancelText: '取消',
@@ -80,14 +80,14 @@ export default class ReportList extends Component {
     return (
       <div>
         <Breadcrumb>
-          <Breadcrumb.Item hr="/basic-list.html">测试报告列表</Breadcrumb.Item>
+          <Breadcrumb.Item hr="/report-list.html">测试报告列表</Breadcrumb.Item>
         </Breadcrumb>
         {/* <div class="" */}
         <Table style={{marginTop: 50}} columns={this.columns} dataSource={(!this.props.listdata.data.length)?data:this.props.listdata.data}/>
         <Button
           style={{marginLeft: 400}}
           type="primary"
-          href="/basic-form.html">
+          href="/report-edit.html">
           新建测试报告
         </Button>
       </div>

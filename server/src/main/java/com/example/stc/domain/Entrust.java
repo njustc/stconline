@@ -242,11 +242,6 @@ public class Entrust extends ProcessEntity {
     private String checkSample;
 
     /**
-     * 评审意见
-     */
-    private String comment;
-
-    /**
      * 用户信息
      */
     @ManyToOne(cascade = CascadeType.REFRESH)
@@ -632,13 +627,5 @@ public class Entrust extends ProcessEntity {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 }

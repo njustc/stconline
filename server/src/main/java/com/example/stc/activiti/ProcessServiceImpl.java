@@ -56,8 +56,8 @@ public class ProcessServiceImpl implements ProcessService {
     }
 
     @Override
-    public ProcessEntity updateProcessInstance(ProcessEntity entity) {
-        return null;
+    public void updateProcessInstance(ProcessEntity entity) {
+
     }
 
 }
