@@ -2,6 +2,7 @@ import { Card, Table, Divider, Button, Tag ,Breadcrumb} from 'antd';
 import React from "react";
 import {connect} from "dva";
 import { FormattedMessage } from 'umi/locale';
+import {getRole} from "../../../utils/cookieUtils";
 
 
 const namespace = 'report-detail';
@@ -62,6 +63,62 @@ export default class report_detail extends React.Component{
           <p>流程ID：<FormattedMessage id={this.props.reportdata.data.processInstanceId || ' '}/></p>
           <p>流程状态：<FormattedMessage id={this.props.reportdata.data.processState || ' '}/></p>
         </Card>
+
+        {/* <Card>
+          <h1>一、任务表述</h1>
+        </Card> */}
+        {/* <Card>
+          <h1>二、双方的主要义务</h1>
+        </Card> */}
+        <br />
+        {
+          {
+         
+            "CUS":
+            <div>
+              {/* <Descriptions title="客户">
+                <Descriptions.Item label="委托状态">审核未通过</Descriptions.Item>
+                <Descriptions.Item label="委托意见">重写</Descriptions.Item>
+                <Descriptions.Item label="已提交样品">a.zip</Descriptions.Item>
+              </Descriptions> */}
+              <Button
+              style={{marginLeft: 350}}
+              type="primary"
+              >确认</Button>
+              <Button
+              style={{marginLeft: 20}}
+              type="danger"
+              >拒绝</Button>
+            </div>,
+
+            "SM":
+            <div>
+              <h1>市场部主任</h1>
+              <Button
+              style={{marginLeft: 350}}
+              type="primary"
+              >通过</Button>
+              <Button
+              style={{marginLeft: 20}}
+              type="danger"
+              >不通过</Button>
+            </div>,
+
+            "QM":
+            <div>
+              <h1>质量部主任</h1>
+              <Button
+              style={{marginLeft: 350}}
+              type="primary"
+              >通过</Button>
+              <Button
+              style={{marginLeft: 20}}
+              type="danger"
+              >不通过</Button>
+            </div>,
+          }[getRole()[0]]
+        }
+
       </div>
     )
   }
