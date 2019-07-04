@@ -14,6 +14,10 @@ public interface ProcessService extends BaseService<ProcessEntity> {
 
     void createContractProcess(String pid);
 
+    void createTestPlanProcess(String pid);
+
+    void createTestReportProcess(String pid);
+
     void deleteProcessInstance(ProcessEntity entity);
 
     void queryProcessState(ProcessEntity entity);
