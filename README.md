@@ -17,7 +17,7 @@
 ```
 ├── client						--前端源代码
 ├── pom.xml						--父级maven
-├── PROBLEM.md					--问题
+├── PROBLEM.md				--问题
 ├── server						--后端源代码
 ```
 
