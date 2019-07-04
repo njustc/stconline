@@ -140,13 +140,13 @@ public class ProcessServiceImpl implements ProcessService {
      * @param type
      */
     private void save(ProcessEntity entity, String type) {
-        switch (type) {
-            case "Entrust": entrustService.updateEntrust(entity.getPid(), (Entrust)entity); break;
-            case "Contract": contractService.updateContract(entity.getPid(), (Contract)entity); break;
-            case "TestPlan": testPlanService.updateTestPlan(entity.getPid(), (TestPlan)entity); break;
-            case "TestReport": testReportService.updateTestReport(entity.getPid(), (TestReport)entity); break;
-            default: throw new ActivitiException("未知流程类型。");
-        }
+//        switch (type) {
+//            case "Entrust": entrustService.updateEntrust(entity.getPid(), (Entrust)entity); break;
+//            case "Contract": contractService.updateContract(entity.getPid(), (Contract)entity); break;
+//            case "TestPlan": testPlanService.updateTestPlan(entity.getPid(), (TestPlan)entity); break;
+//            case "TestReport": testReportService.updateTestReport(entity.getPid(), (TestReport)entity); break;
+//            default: throw new ActivitiException("未知流程类型。");
+//        }
     }
 
 }
