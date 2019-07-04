@@ -100,9 +100,8 @@ constructor(props){
       //新建
       value.pid=this.state.pid
       // 补充新建属性
-      value.processInstanceID=""
-      value.processState="ToSubmit"
-      value.entrustEntity=""
+      value.processInstanceId=""
+      
       value.comment=""
       console.log("new value",value)
       //补充完毕
@@ -119,7 +118,7 @@ constructor(props){
     form.validateFields((err,value) => {
     //保存
     value.pid=this.state.pid
-    value.processInstanceID=this.props.entrustdata.data.processInstanceID
+    value.processInstanceId=this.props.entrustdata.data.processInstanceId
     value.processState=this.props.entrustdata.data.processState
     value.comment=this.props.entrustdata.data.comment
     dispatch({
@@ -149,9 +148,8 @@ constructor(props){
       //新建
       value.pid=this.state.pid
       // 补充新建属性
-      value.processInstanceID=this.props.entrustdata.data.processInstanceID
-      value.processState=this.props.entrustdata.data.processState
-      value.comment=this.props.entrustdata.data.comment
+      value.processInstanceId=this.props.entrustdata.data.processInstanceId||""
+      value.comment=this.props.entrustdata.data.comment||""
       //补充完毕
       dispatch({
         type: 'entrustForm/submitForm',

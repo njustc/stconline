@@ -1,6 +1,5 @@
 package com.example.stc.service.impl;
 
-import com.example.stc.activiti.EntrustAction;
 import com.example.stc.activiti.ProcessState;
 import com.example.stc.domain.Entrust;
 import com.example.stc.domain.Role;
@@ -46,7 +45,7 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public List<Entrust> findAllEntrusts() {
-        return entrustRepository.findAll();
+        return setState(entrustRepository.findAll());
     }
 
     @Override
@@ -71,7 +70,7 @@ public class EntrustServiceImpl implements EntrustService {
         List<Entrust> allEntrusts = this.findAllEntrusts();
         allEntrusts.removeIf(entrust -> (entrust.getProcessState() != ProcessState.Review &&
                 entrust.getProcessState() != ProcessState.Approve));
-        return allEntrusts;
+        return setState(allEntrusts);
     }
 
     @Override
@@ -115,7 +114,7 @@ public class EntrustServiceImpl implements EntrustService {
 
         this.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
 
-        return entrust;
+        return setState(entrust);
     }
 
     @Override
@@ -139,35 +138,36 @@ public class EntrustServiceImpl implements EntrustService {
         //根据某一个算法增加新的id
         entrust.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         entrust.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
-        return entrustRepository.save(entrust);
+        return setState(entrustRepository.save(entrust));
     }
 
     @Override
     public Entrust updateEntrust(String pid, Entrust record) {
         logger.info("updateEntrust: ");
+        logger.info(record.getComment());
         Entrust entrust = entrustRepository.findByPid(pid); // 找到应修改的委托并检查，若为客户，只能访问本人的委托
         record.setId(entrust.getId());
         record.setPid(pid);
         record.setUserId(entrust.getUserId());
         logger.info("getProcessState: old = " + entrust.getProcessState());
-        if (record.getProcessInstanceID().equals("")) {
+        if (record.getProcessInstanceId().equals("")) {
             // record.setProcessState(entrust.getProcessState());
-            record.setProcessInstanceID(entrust.getProcessInstanceID());
-            record.setProcessState(processUtils.getProcessState(entrust.getProcessInstanceID()));
+            record.setProcessInstanceId(entrust.getProcessInstanceId());
+            record.setProcessState(processUtils.getProcessState(entrust.getProcessInstanceId()));
         }
         logger.info("getProcessState: new = " + record.getProcessState());
-        return entrustRepository.save(record);
+        return setState(entrustRepository.save(record));
     }
 
     public List<Entrust> setState(List<Entrust> entrusts) {
         for (Entrust entrust: entrusts) {
-            entrust.setProcessState(processUtils.getProcessState(entrust.getProcessInstanceID()));
+            entrust.setProcessState(processUtils.getProcessState(entrust.getProcessInstanceId()));
         }
         return entrusts;
     }
 
     public Entrust setState(Entrust entrust) {
-        entrust.setProcessState(processUtils.getProcessState(entrust.getProcessInstanceID()));
+        entrust.setProcessState(processUtils.getProcessState(entrust.getProcessInstanceId()));
         return entrust;
     }
 }

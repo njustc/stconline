@@ -44,32 +44,21 @@ export default class entrustCheck extends Component {
     });
   }
 //审核
-  reviewAgree=(form)=> {
-    const {dispatch} = this.props;
-    this.state.pid = this.props.entrustdata.entrust.pid;
-    this.state.comment = this.props.entrustdata.entrust.comment;
-    form.validateFields((err, value) => {
-      value.pid = this.state.pid;
-      console.log("value", value);
-      dispatch({
-        type: `${namespace}/AgreeEntrust`,
-        payload: value,
-      });
-    })
-  }
-
-  reviewDisagree=(form)=>{
-    const { dispatch } = this.props;
-    this.state.pid=this.props.entrustdata.entrust.pid;
-    this.state.comment=this.props.entrustdata.entrust.comment;
-    form.validateFields((err,value) => {
-      value.pid=this.state.pid;
-      dispatch({
-        type: `${namespace}/DisAgreeEntrust`,
-        payload: value,
-      });
-    })
-  }
+review=(form,operation)=> {
+  const {dispatch} = this.props;
+  this.state.pid = this.props.entrustdata.entrust.pid;
+  this.state.comment = this.props.entrustdata.entrust.comment;
+  form.validateFields((err, value) => {
+    var entrust=this.props.entrustdata.entrust
+    entrust.operation=operation
+    entrust.comment=value.comment
+    console.log("en",entrust);
+    dispatch({
+      type: `${namespace}/ReviewEntrust`,
+      payload: entrust,
+    });
+  })
+}
 
   render() {
     const {
@@ -181,13 +170,13 @@ export default class entrustCheck extends Component {
                 this.props.entrustdata.entrust.processState=="Review"?
                 <div>
                 <Button onClick={() => {
-                  this.reviewAgree(this.props.form)
+                  this.review(this.props.form,"ReviewPass")
                 }} style={{marginLeft: 8 }}
                         type="primary">
                   <FormattedMessage id="basic-form.form.agree"/>
                 </Button>
                 <Button onClick={() => {
-                  this.reviewDisagree(this.props.form)
+                  this.review(this.props.form,"ReviewDisprove")
                 }} style={{marginLeft: 8}}
                         type="primary"
                         disabled={this.props.entrustdata.entrust.processState!="Review"}>

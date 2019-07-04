@@ -1,4 +1,4 @@
-import { getOneEntrust, reviewEntrust} from '@/services/user'
+import { getOneEntrust, reviewEntrust,replaceEntrust} from '@/services/user'
 import router from "umi/router";
 import {message} from "antd";
 export default {
@@ -62,23 +62,12 @@ export default {
       console.log(response);
       yield put({type: 'initData', payload: response})
     },
-    * AgreeEntrust({payload},{call,put}) {
-      console.log("AgreeEntrust");
-      console.log(payload);
-      const response = yield call(reviewEntrust, payload, "ReviewPass");
-      console.log(response);
-      yield put({type: 'initData', payload: response});
+    * ReviewEntrust({payload},{call}) {
+      console.log("ReviewEntrust");
+      console.log("res",payload)
+      const res = yield call(reviewEntrust, payload);
       router.push("/basic-list.html")
-
     },
-    * DisAgreeEntrust({payload},{call,put}) {
-      console.log(payload);
-      const response = yield call(reviewEntrust,payload,"ReviewDisprove");
-      console.log(response);
-      yield put({type:'initData',payload:response});
-      router.push("/basic-list.html")
-
-    }
 
 
   },

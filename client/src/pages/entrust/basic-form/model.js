@@ -30,17 +30,26 @@ export default {
     },
     
     *submitForm({ payload }, {call}) {
+      console.log("submit",payload.pid!="")
       payload=EnArr2Str(payload)
-      if(payload.pid!=""){//已存在
-        //添加属性
-        yield call(replaceEntrust, payload);
-        const response=yield call(updateEntrustProcess, payload.pid);
+      if(payload.pid==""){//不存在
+        const newform=yield call(addNewEntrust, payload);
+        payload = newform
       }
       else{
-        console.log("不存在")
-        const newform=yield call(addNewEntrust, payload);
-        const response=yield call(updateEntrustProcess, newform.pid);
+        console.log("save")
+        const res=yield call(replaceEntrust, payload);
+        console.log(res)
+        payload = res
       }
+      console.log(payload)
+      if (payload.processInstanceId==''){
+        const response=yield call(createEntrustProcess,payload)
+      }
+      else{
+        const response=yield call(updateEntrustProcess, payload);
+      }
+
       router.push("/basic-list.html")
       message.success('提交成功');
     },

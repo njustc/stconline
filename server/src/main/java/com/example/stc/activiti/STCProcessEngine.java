@@ -67,8 +67,8 @@ public class STCProcessEngine {
      */
     public void updateProcess(ProcessEntity entity) {
         User user = authorityUtils.getLoginUser();
-        String processInstanceId = entity.getProcessInstanceID();
-        String processState = entity.getProcessState().getName();
+        String processInstanceId = entity.getProcessInstanceId();
+        String processState = processUtils.getProcessState(processInstanceId);
         List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
         boolean completeTask = false;
         for (Task task : tasks) {

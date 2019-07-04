@@ -55,7 +55,7 @@ public class TestCaseControllerTest {
     @WithMockUser(username = "TSA", password = "tsa", roles = {"TS", "USER"})
     public void NewRepDelTest() throws Exception {
         TestCase record = new TestCase();
-        record.setProcessInstanceID("");
+        record.setProcessInstanceId("");
         record.setPid("pid");
         record.setDesigner("designer1");
         // 添加

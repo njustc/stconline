@@ -43,7 +43,7 @@ public class ProcessServiceImpl implements ProcessService {
         Map<String, Object> variable = new HashMap<String, Object>();
         variable.put("EntrustID", pid);
         variable.put("ClientID", user.getUserID());
-        entrust.setProcessInstanceID(stcProcessEngine.createProcess("Entrust", variable));
+        entrust.setProcessInstanceId(stcProcessEngine.createProcess("Entrust", variable));
         entrustService.updateEntrust(pid, entrust);
         queryProcessState(entrust);
     }
@@ -55,14 +55,14 @@ public class ProcessServiceImpl implements ProcessService {
 
     @Override
     public void deleteProcessInstance(ProcessEntity entity) {
-        if (!entity.getProcessInstanceID().equals("")) {
-            stcProcessEngine.deleteProcessInstance(entity.getProcessInstanceID());
+        if (!entity.getProcessInstanceId().equals("")) {
+            stcProcessEngine.deleteProcessInstance(entity.getProcessInstanceId());
         }
     }
 
     @Override
     public void queryProcessState(ProcessEntity entity) {
-        entity.setProcessState(stcProcessEngine.getProcessState(entity.getProcessInstanceID()));
+        entity.setProcessState(stcProcessEngine.getProcessState(entity.getProcessInstanceId()));
     }
 
     @Override

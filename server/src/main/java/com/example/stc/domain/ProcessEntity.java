@@ -27,12 +27,12 @@ public class ProcessEntity extends BaseEntity{
     @Column(name = "COMMENT")
     private String comment;
 
-    public String getProcessInstanceID() {
+    public String getProcessInstanceId() {
         return processInstanceId;
     }
 
-    public void setProcessInstanceID(String processInstanceID) {
-        this.processInstanceId = processInstanceID;
+    public void setProcessInstanceId(String processInstanceId) {
+        this.processInstanceId = processInstanceId;
     }
 
     public ProcessState getProcessState() {

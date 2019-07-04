@@ -1,7 +1,5 @@
 package com.example.stc.framework.util;
 
-import com.example.stc.activiti.ProcessService;
-import com.example.stc.activiti.STCProcessEngine;
 import com.example.stc.domain.ProcessEntity;
 import com.example.stc.domain.User;
 import com.example.stc.service.UserService;
@@ -43,6 +41,9 @@ public class ProcessUtils {
     @Autowired
     private FormService formService;
 
+    @Autowired
+    private AuthorityUtils authorityUtils;
+
     /**
      * 根据具体流程实例的ID获取其在流程中的状态
      * @param processInstanceId 流程实例ID
@@ -72,7 +73,7 @@ public class ProcessUtils {
                 List<FormProperty> formProperties = taskFormData.getFormProperties();
                 for (FormProperty formProperty: formProperties) {
                     if (formProperty.getId().equals("taskType")) {
-                        return formProperty.getValue();
+                        return formProperty.getName();
                     }
                 }
                 return "NotExist";
@@ -144,6 +145,35 @@ public class ProcessUtils {
      */
     public boolean checkTask(String processInstanceId, String processState) {
         return (processState.equals(getProcessState(processInstanceId)));
+    }
+
+    public boolean checkMainUser(String processInstanceId, String userId) {
+        return false;
+    }
+
+
+    public boolean isVisible(ProcessEntity entity, String type) {
+        User user = authorityUtils.getLoginUser();
+        String processInstanceId = entity.getProcessInstanceId();
+        if (processInstanceId.equals("")) {
+            /** 尚未提交，此时能见者为：规定能够建立该流程的人 */
+            return false;
+        }
+        else {
+            switch (getProcessState(processInstanceId)) {
+                case "Submit":
+                case "Review":
+                    List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+                    boolean result = false;
+                    for (Task task: tasks) {
+                        result |= checkUser(task, user.getUserID());
+                    }
+                    return result;
+                case "Approve":
+                    return (checkUser("STAFF", user.getUserID()));
+            }
+            return false;
+        }
     }
 
 }
