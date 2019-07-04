@@ -64,10 +64,10 @@ public class TestPlanController extends BaseController {
      *
      * @throws URISyntaxException
      */
-    @PostMapping(path = "/testplan")
+    @PostMapping(path = "/testplan/{pid}")
     public @ResponseBody
-    ResponseEntity<?> addNewTestPlan(@RequestBody TestPlan testPlan) throws URISyntaxException {
-        Resource<TestPlan> resource = toResource(testPlanService.newTestPlan(testPlan));
+    ResponseEntity<?> addNewTestPlan(@PathVariable String pid, @RequestParam String uid) throws URISyntaxException {
+        Resource<TestPlan> resource = toResource(testPlanService.newTestPlan(pid, uid));
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 

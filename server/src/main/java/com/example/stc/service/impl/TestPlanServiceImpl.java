@@ -1,9 +1,12 @@
 package com.example.stc.service.impl;
 
+import com.example.stc.activiti.ProcessState;
 import com.example.stc.domain.TestPlan;
 import com.example.stc.framework.exception.TestPlanNotFoundException;
 import com.example.stc.repository.TestPlanRepository;
 import com.example.stc.service.TestPlanService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +14,8 @@ import java.util.List;
 
 @Service
 public class TestPlanServiceImpl implements TestPlanService {
+
+    Logger logger = LoggerFactory.getLogger(ContractServiceImpl.class);
 
     @Autowired
     private TestPlanRepository testPlanRepository;
@@ -29,9 +34,12 @@ public class TestPlanServiceImpl implements TestPlanService {
     }
 
     @Override
-    public TestPlan newTestPlan(TestPlan testPlan) {
-        // 要求pid在前端已经设置好
-        // TODO: 流程引擎
+    public TestPlan newTestPlan(String pid, String uid) {
+        logger.info("newTestPlanAuto: ");
+        TestPlan testPlan = new TestPlan();
+        testPlan.setPid(pid);
+        testPlan.setUserId(uid);
+        testPlan.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
         return testPlanRepository.save(testPlan);
     }
 

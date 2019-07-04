@@ -22,6 +22,7 @@ import java.util.List;
 
 @Service
 public class ContractServiceImpl implements ContractService{
+
     Logger logger = LoggerFactory.getLogger(ContractServiceImpl.class);
 
     @Autowired

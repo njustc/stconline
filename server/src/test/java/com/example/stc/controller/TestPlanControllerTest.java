@@ -2,6 +2,7 @@ package com.example.stc.controller;
 
 import com.example.stc.domain.TestPlan;
 import com.example.stc.domain.User;
+import com.example.stc.framework.util.AuthorityUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -34,6 +35,9 @@ public class TestPlanControllerTest {
     @Autowired
     private UserController userController;
 
+    @Autowired
+    private AuthorityUtils authorityUtils;
+
     private static final Logger logger = LoggerFactory.getLogger(TestPlanControllerTest.class);
 
     /**
@@ -52,13 +56,12 @@ public class TestPlanControllerTest {
     @Test
     @WithMockUser(username = "TSA", password = "tsa", roles = {"TS", "USER"})
     public void NewRepDelTest() throws Exception {
-        TestPlan record = new TestPlan();
-        record.setProcessInstanceId("");
-        record.setPid("pid");
-        record.setBody("body1");
         // 添加
-        testPlanController.addNewTestPlan(record);
-        TestPlan testPlanNew = testPlanController.getOneTestPlan(record.getPid()).getContent();
+        ResponseEntity<?> entity = testPlanController.addNewTestPlan("pid", authorityUtils.getLoginUser().getUserID());
+        Resource<TestPlan> resource = (Resource<TestPlan>) entity.getBody();
+        resource.getContent().setBody("body1");
+        testPlanController.replaceTestPlan(resource.getContent().getPid(), resource.getContent());
+        TestPlan testPlanNew = testPlanController.getOneTestPlan(resource.getContent().getPid()).getContent();
         assertThat(testPlanNew).isNotNull();
         assertThat(testPlanNew.getBody()).isEqualTo("body1");
         // 修改
