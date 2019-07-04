@@ -1,5 +1,6 @@
 package com.example.stc.activiti;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.stc.controller.BaseController;
 import com.example.stc.domain.ProcessEntity;
@@ -51,6 +52,8 @@ public class ProcessInstanceController extends BaseController {
     public @ResponseBody
     ResponseEntity<?> updateProcessState(@RequestBody ProcessEntity object,
                                          @RequestParam(value = "type")String type) {
+        JSONObject obj = (JSONObject)JSON.toJSON(object);
+        System.out.println(obj);
         processService.updateProcessInstance(object, type);
         return ResponseEntity.noContent().build();
     }
