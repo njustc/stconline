@@ -51,7 +51,7 @@ public class ProcessUtils {
      * // @throws Exception 获取流程实例状态失败
      */
     public String getProcessState(String processInstanceId) {
-        if (processInstanceId.equals("")) {
+        if (processInstanceId == null || processInstanceId.equals("")) {
             return "Submit";
         }
 

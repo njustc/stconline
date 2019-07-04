@@ -321,7 +321,7 @@ class newTestReport extends PureComponent {
     else {
       console.log("报告已存在");
       console.log(this.state.pid);
-      this.savePlan(form)
+      this.saveForm(form)
     }
   };
 
@@ -829,7 +829,7 @@ class newTestReport extends PureComponent {
                 <Button type="primary" style={{ marginLeft: 8 }} onClick={this.handleReset}>
                   删除
                 </Button>
-                <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>this.saveForm(this.props.form)}>
+                <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>this.save(this.props.form)}>
                   保存
                 </Button>
                 <Button type="primary" style={{ marginLeft: 8 }} onClick={this.handleReset}>
