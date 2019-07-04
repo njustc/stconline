@@ -25,7 +25,7 @@
       <userTask activiti:exclusive="true" id="qmContractReview" name="QMReviewContract" activiti:candidateGroups="QM">
         <extensionElements>
           <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
-          <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="String"/>
+          <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
           <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
         </extensionElements>
       </userTask>
@@ -44,7 +44,7 @@
       <userTask activiti:assignee="${ClientID}" activiti:exclusive="true" id="cusContractReview" name="CusReviewContract">
         <extensionElements>
           <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
-          <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="String"/>
+          <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
           <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
         </extensionElements>
       </userTask>
