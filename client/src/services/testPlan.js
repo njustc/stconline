@@ -54,3 +54,20 @@ export async function submitTestPlan({pid}) {
   });
 }
 
+export async function updateTestPlanProcess(params) {
+  console.log(typeof(params),params)
+  return request(`api/project/process/update?type=TestPlan`, {
+    method: 'POST',
+    data: params
+  });
+}
+
+export async function createTestPlanProcess(params) {
+  // console.log(typeof(params))
+  return request(`api/project/process/create?pid=${params.pid}&type=TestPlan`, {
+    method: 'POST',
+    data: ""
+  });
+}
+
+

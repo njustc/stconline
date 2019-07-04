@@ -117,19 +117,19 @@ export default class List extends React.Component{
   }
 
   userLinkMapper= {
-    "SS": (key) => (
+    "QM": (key) => (
       <span>
-  {key.processState === 'ToReview' ? <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>审核</Link> :
-    <span></span>}
+  {/*{key.processState === 'ToReview' ? <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>审核</Link> :*/}
+  {/*  <span></span>}*/}
         <Divider type="vertical"/>
-        {<Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看详情</Link>}
+        {<Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
   </span>
     ),
 
-    "CUS": (key) => (
+    "TS": (key) => (
 
       <span>
-      {key.processState == 'Submit' ? <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link> :
+        {key.processState === 'Submit' ? <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link> :
         <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
         <Divider type="vertical"/>
         {/*<a href="/plan_edit.html">编辑</a>*/}
@@ -161,12 +161,9 @@ export default class List extends React.Component{
       key: 'processState',
       dataIndex: 'processState',
       render: processState => {
-        var color = processState === 'Approve' ? 'purple' : 'green';
-        if (processState === 'ToReview') {
-          color = 'orange';
-        }
-        if (processState === 'ToSubmit') {
-          color = 'blue';
+        var color = processState === 'Review' ? 'geekblue' : 'green'
+        if (processState === 'Submit') {
+          color = 'grey'
         }
         return (
           <Tag color={color} key={processState}>
@@ -174,6 +171,21 @@ export default class List extends React.Component{
           </Tag>
         );
       }
+
+      // render: processState => {
+      //   var color = processState === 'Approve' ? 'purple' : 'green';
+      //   if (processState === 'ToReview') {
+      //     color = 'orange';
+      //   }
+      //   if (processState === 'ToSubmit') {
+      //     color = 'blue';
+      //   }
+      //   return (
+      //     <Tag color={color} key={processState}>
+      //       {processState}
+      //     </Tag>
+      //   );
+      // }
     },
     {
       title: '操作',
