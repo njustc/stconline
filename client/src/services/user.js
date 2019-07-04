@@ -25,14 +25,14 @@ export async function deleteEntrust(params) {
 }
 
 export async function replaceEntrust(params) {
-  console.log(params)
+  // console.log(params)
   return request(`api/project/entrust/${params.pid}`, {
     method: 'PUT',
     data: params,
   });
 }
 export async function addNewEntrust(params) {
-  console.log("addnew",params)
+  // console.log("addnew",params)
   return request('api/project/entrust', {
     method: 'POST',
     data: params,
@@ -40,7 +40,7 @@ export async function addNewEntrust(params) {
 }
 
 export async function updateEntrustProcess(params) {
-  // console.log(typeof(params))
+  // console.log(typeof(params),params)
   return request(`api/project/process/update`, {
     method: 'POST',
     data: params
