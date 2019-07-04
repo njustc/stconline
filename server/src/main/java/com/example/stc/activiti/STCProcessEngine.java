@@ -88,6 +88,16 @@ public class STCProcessEngine {
                 value.put(REVIEW, operation);
                 value.put(COMMENT, comment);
                 taskService.complete(task.getId(), value);
+
+                /** 并行任务恢复 */
+                if (operation.equals("ReviewDisprove") && (tasks.size() > 1)) {
+                    for (Task task1 : tasks) {
+                        if (task1 != task) {
+                            /** 强行结束流程 */
+                            taskService.complete(task1.getId(), value);
+                        }
+                    }
+                }
             }
             else {
                 /** 其他流程，直接完成即可 */
