@@ -57,6 +57,22 @@ export default class List extends React.Component{
       payload: this.props.location.query,
     });
   }
+  //审核
+  review=(form,operation)=> {
+    const {dispatch} = this.props;
+    this.state.pid = this.props.dataCheck.check.pid;
+    this.state.comment = this.props.dataCheck.check.comment;
+    form.validateFields((err, value) => {
+      var checkvalue=this.props.dataCheck.check;
+      checkvalue.operation=operation;
+      checkvalue.comment=value.comment;
+      console.log("checkvalue",checkvalue);
+      dispatch({
+        type: `${namespace}/queryReviewTestPlan`,
+        payload: checkvalue,
+      });
+    })
+  }
 
   render(){
     const {
