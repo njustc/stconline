@@ -23,6 +23,7 @@ export default {
       yield call(replaceTestReport, payload);
       console.log(payload)
       const response = yield call(getOneTestReport, payload);
+      console.log(response);
       yield put({type: 'updateData', payload: response});
       message.success('保存成功');
     },
