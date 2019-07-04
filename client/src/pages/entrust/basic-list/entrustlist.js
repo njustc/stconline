@@ -5,26 +5,35 @@ const Search = Input.Search;
 import {connect} from 'dva';
 import Link from 'umi/link'
 import {getRole} from "../../../utils/cookieUtils";
-
+import style from './style.scss'
+import router from 'umi/router'
 
 const confirm = Modal.confirm;
 const namespace = 'entrustlist';
 
 
-var userFootMaper={
-    "SS":<div></div>,
+var userFootMaper = {
+  "SS": <div></div>,
 
-    "CUS":
+  "CUS":
     <Button
-    style={{marginLeft: 400}}
-    type="primary"
-    href="/basic-form.html">
-    新建委托
-  </Button>
+      style={{marginLeft: 400}}
+      type="primary"
+      // onClick={handleJump.bind(this, '/basic-form')}
+      href="/basic-form.html"
+    >
+      新建委托
+    </Button>
+
+}
+/**
+ * 处理路由跳转函数
+ * */
+function handleJump(url, e) {
+  router.push(url)
 }
 
-
-function footer(){
+function footer() {
   return userFootMaper[getRole()[0]]
 }
 
@@ -49,7 +58,7 @@ const mapDispatchToProps = (dispatch) => {
     }
   }
 }
-const data=[];
+const data = [];
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class EntrustList extends Component {
@@ -57,22 +66,24 @@ export default class EntrustList extends Component {
     this.props.onDidMount();
   }
 
-  userLinkMaper={
-    "SS":(key) => (
+  userLinkMaper = {
+    "SS": (key) => (
       <span>
-  {key.processState === 'ToReview' ? <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>审核</Link> :<span></span>}
+  {key.processState === 'ToReview' ? <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>审核</Link> :
+    <span></span>}
         <Divider type="vertical"/>
         {<Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看详情</Link>}
   </span>
     ),
 
-    "CUS":(key) => (
+    "CUS": (key) => (
       <span>
   {key.processState === 'Submit' ? <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link> :
     <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link>}
         <Divider type="vertical"/>
         {}
-        {key.processState === 'Submit' ? <Link to={{pathname: '../../basic-form', query: {pid: key.pid}}}>编辑</Link>:<span />}
+        {key.processState === 'Submit' ? <Link to={{pathname: '../../basic-form', query: {pid: key.pid}}}>编辑</Link> :
+          <span/>}
         <Divider type="vertical"/>
   <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
   </span>
@@ -119,7 +130,7 @@ export default class EntrustList extends Component {
     {
       title: '操作',
       key: 'action',
-      render:this.link()
+      render: this.link()
       // (key) => (
       //   <span>
       //     {key.processState === 'Submit' ? <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link> :
@@ -134,7 +145,7 @@ export default class EntrustList extends Component {
   ]
 
 
-  link(){
+  link() {
     return this.userLinkMaper[getRole()[0]]
   }
 
@@ -177,7 +188,8 @@ export default class EntrustList extends Component {
           style={{marginLeft: 100, width: 200}}
         />
         {/* <div class="" */}
-        <Table style={{marginTop: 50}} columns={this.columns} dataSource={(!this.props.listdata.data.length)?data:this.props.listdata.data}/>
+        <Table style={{marginTop: 50}} columns={this.columns}
+               dataSource={(!this.props.listdata.data.length) ? data : this.props.listdata.data}/>
 
         {footer()}
       </div>
