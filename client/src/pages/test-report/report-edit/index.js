@@ -193,39 +193,39 @@ const dataForEfficiencyTest = [
   }
 ];
 //删除按钮的对话框方法，点击“确认删除”调取delete方法
-function showDeleteConfirm() {
-  confirm({
-    title: '您是否要删除本委托?',
-    content: '委托一旦删除不可恢复',
-    okText: '确认删除',
-    okType: 'danger',
-    cancelText: '取消',
-    onOk() {
-      console.log('OK');
-      //在此方法里使用delete
-    },
-    onCancel() {
-      console.log('Cancel');
-    },
-  });
-}
+// function showDeleteConfirm() {
+//   confirm({
+//     title: '您是否要删除本委托?',
+//     content: '委托一旦删除不可恢复',
+//     okText: '确认删除',
+//     okType: 'danger',
+//     cancelText: '取消',
+//     onOk() {
+//       console.log('OK');
+//       //在此方法里使用delete
+//     },
+//     onCancel() {
+//       console.log('Cancel');
+//     },
+//   });
+// }
 
-//提交按钮的对话框方法，点击“提交”调取提交方法
-function showConfirm() {
-  confirm({
-    title: '您是否要提交本委托?',
-    content: '委托一旦提交，将无法从线上更改，但您可以在“委托列表”查看本委托详情。提交的委托将由工作人员进行核对。',
-    okText: '提交',
-    cancelText: '取消',
-    onOk() {
-      console.log('OK');
-      //在此方法里提交
-    },
-    onCancel() {
-      console.log('Cancel');
-    },
-  });
-}
+// //提交按钮的对话框方法，点击“提交”调取提交方法
+// function showConfirm() {
+//   confirm({
+//     title: '您是否要提交本委托?',
+//     content: '委托一旦提交，将无法从线上更改，但您可以在“委托列表”查看本委托详情。提交的委托将由工作人员进行核对。',
+//     okText: '提交',
+//     cancelText: '取消',
+//     onOk() {
+//       console.log('OK');
+//       //在此方法里提交
+//     },
+//     onCancel() {
+//       console.log('Cancel');
+//     },
+//   });
+// }
 
 
 
@@ -303,11 +303,12 @@ class newTestReport extends PureComponent {
       value.pid=this.state.pid
       value.processInstanceID = this.props.dataReport.reportdata.processInstanceID;
       value.processState = this.props.dataReport.reportdata.processState;
+      //console.log("验证走到这里与否");
       dispatch({
-        type: 'report-edit/queryReplaceReport',
+        type: `${namespace}/queryReplaceReport`,
         payload: value,
       });
-      console.log("finish save")
+      //console.log("finish save")
     })
   }
 
@@ -324,6 +325,42 @@ class newTestReport extends PureComponent {
       this.saveForm(form)
     }
   };
+
+
+  //删除
+  delete=(value)=>{
+    const { dispatch } = this.props;
+    console.log("?");
+    dispatch({
+      type: `${namespace}/queryDeleteReport`,
+      payload: value,
+    })
+    //console.log("???")
+  };
+
+  showDelete(form) {
+    var that=this;
+    confirm({
+      title: '您是否要删除本测试报告?',
+      content: '删除后无法恢复',
+      okText: '确认删除',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk() {
+        that.state.pid=that.props.dataReport.reportdata.pid;
+        form.validateFields((err,value) => {
+          //新建
+         // console.log("???")
+          value.pid=that.state.pid;
+          that.delete(value)
+
+        })
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
 
   render() {
     const {submitting} = this.props;
@@ -823,10 +860,10 @@ class newTestReport extends PureComponent {
             <br/>
               <Row>
               <Col span={24} style={{ textAlign: 'right' }}>
-                <Button type="primary" htmlType="submit">
+                {/* <Button type="primary" htmlType="submit">
                   返回
-                </Button>
-                <Button type="primary" style={{ marginLeft: 8 }} onClick={this.handleReset}>
+                </Button> */}
+                <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>{this.showDelete(this.props.form)}}>
                   删除
                 </Button>
                 <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>this.save(this.props.form)}>

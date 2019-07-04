@@ -2,6 +2,7 @@ package com.example.stc.framework.exception.advice;
 
 import com.example.stc.framework.exception.FunctionNotFoundException;
 import com.example.stc.framework.exception.ParamMissingException;
+import org.activiti.engine.ActivitiException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
@@ -62,6 +63,16 @@ public class NormalAdvice {
     @ExceptionHandler({ParamMissingException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     private String rapamMissExceptionHandler(ParamMissingException e) {
+        return e.getMessage();
+    }
+
+    /**
+     * 流程调用错误
+     */
+    @ResponseBody
+    @ExceptionHandler({ActivitiException.class})
+    @ResponseStatus(HttpStatus.CONFLICT)
+    private String activitiExceptionHandler(ActivitiException e) {
         return e.getMessage();
     }
 
