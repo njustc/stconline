@@ -13,7 +13,7 @@ export default {
 
   effects: {
     *replaceEntrust({ payload }, { call ,put}) {
-      // payload=EnArr2Str(payload)
+      payload=EnArr2Str(payload)
       yield call(replaceEntrust, payload);
       const response=yield call(getOneEntrust, payload);
       yield put({type:'initData',payload:EnStr2Arr(response)})
