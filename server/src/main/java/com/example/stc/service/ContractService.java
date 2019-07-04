@@ -59,11 +59,18 @@ public interface ContractService extends BaseService<Contract>{
     /**
      * 自动创建单个合同
      */
-    Contract newContractAuto(String pid, String uid);
+    Contract newContract(String pid, String uid);
 
     /**
      * 通过合同ID修改单个合同记录
      */
     @Secured({"ROLE_USER", "ROLE_CUS"})
     Contract updateContract(String pid, Contract record);
+
+    /**
+     * 修改评审意见
+     * @param pid
+     * @param comment
+     */
+    void saveComment(String pid, String comment);
 }

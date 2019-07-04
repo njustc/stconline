@@ -81,7 +81,6 @@ public class UserController {
     @PostMapping("/api/register/salesManager")
     public @ResponseBody
     User registerSalesManager(@RequestBody User user) {
-        user.addRole(Role.STAFF.str());
         user.addRole(Role.SalesManager.str());
         user.addRole(Role.USER.str());
         userService.newUser(user);
@@ -107,7 +106,6 @@ public class UserController {
     @PostMapping("/api/register/testManager")
     public @ResponseBody
     User registerTestManager(@RequestBody User user) {
-        user.addRole(Role.STAFF.str());
         user.addRole(Role.TestManager.str());
         user.addRole(Role.USER.str());
         userService.newUser(user);
@@ -120,7 +118,6 @@ public class UserController {
     @PostMapping("/api/register/qualityManager")
     public @ResponseBody
     User registerQualityManager(@RequestBody User user) {
-        user.addRole(Role.STAFF.str());
         user.addRole(Role.QualityManager.str());
         user.addRole(Role.USER.str());
         userService.newUser(user);

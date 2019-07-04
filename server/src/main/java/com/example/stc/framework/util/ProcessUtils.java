@@ -51,7 +51,7 @@ public class ProcessUtils {
      * // @throws Exception 获取流程实例状态失败
      */
     public String getProcessState(String processInstanceId) {
-        if (processInstanceId.equals("")) {
+        if (processInstanceId == null || processInstanceId.equals("")) {
             return "Submit";
         }
 
@@ -91,9 +91,11 @@ public class ProcessUtils {
         Group gr = identityService.newGroup(group);
         identityService.saveGroup(gr);
         for (User user : users) {
-            org.activiti.engine.identity.User u = identityService.newUser(user.getUserID());
-            u.setPassword(user.getPassword());
-            identityService.saveUser(u);
+            org.activiti.engine.identity.User searchUser = identityService.createUserQuery().userId(user.getUserID()).singleResult();
+            if (searchUser == null) {
+                org.activiti.engine.identity.User u = identityService.newUser(user.getUserID());
+                identityService.saveUser(u);
+            }
             identityService.createMembership(user.getUserID(), gr.getId());
         }
     }
@@ -117,6 +119,8 @@ public class ProcessUtils {
             if (group1.getId().equals(curGroup.getId()))
                 return true;
         }
+
+        System.out.println("用户不在" + group +"组内");
         return false;
     }
 
@@ -147,17 +151,24 @@ public class ProcessUtils {
         return (processState.equals(getProcessState(processInstanceId)));
     }
 
-    public boolean checkMainUser(String processInstanceId, String userId) {
-        return false;
-    }
-
-
+    /**
+     * 判断当前用户是否有权限操作该流程
+     * @param entity
+     * @param type
+     * @return
+     */
     public boolean isVisible(ProcessEntity entity, String type) {
         User user = authorityUtils.getLoginUser();
         String processInstanceId = entity.getProcessInstanceId();
         if (processInstanceId.equals("")) {
             /** 尚未提交，此时能见者为：规定能够建立该流程的人 */
-            return false;
+            switch (type) {
+                case "Entrust": return user.getUserID().equals(entity.getUserId());
+                case "Contract": return checkUser("SS", user.getUserID());
+                case "TestPlan":
+                case "TestReport": return checkUser("TS", user.getUserID());
+                default: return false;
+            }
         }
         else {
             switch (getProcessState(processInstanceId)) {
@@ -170,9 +181,9 @@ public class ProcessUtils {
                     }
                     return result;
                 case "Approve":
-                    return (checkUser("STAFF", user.getUserID()));
+                    return (user.getUserID().equals(entity.getUserId()) || checkUser("STAFF", user.getUserID()));
+                default: return false;
             }
-            return false;
         }
     }
 

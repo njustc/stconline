@@ -1,9 +1,15 @@
 package com.example.stc.service.impl;
 
+import com.example.stc.activiti.ProcessState;
 import com.example.stc.domain.TestPlan;
+import com.example.stc.domain.User;
 import com.example.stc.framework.exception.TestPlanNotFoundException;
+import com.example.stc.framework.util.AuthorityUtils;
+import com.example.stc.framework.util.ProcessUtils;
 import com.example.stc.repository.TestPlanRepository;
 import com.example.stc.service.TestPlanService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +18,30 @@ import java.util.List;
 @Service
 public class TestPlanServiceImpl implements TestPlanService {
 
+    Logger logger = LoggerFactory.getLogger(TestPlanServiceImpl.class);
+
     @Autowired
     private TestPlanRepository testPlanRepository;
 
+    @Autowired
+    private AuthorityUtils authorityUtils;
+
+    @Autowired
+    private ProcessUtils processUtils;
+
     @Override
     public List<TestPlan> findAllTestPlans() {
-        return testPlanRepository.findAll();
+        return setState(testPlanRepository.findAll());
+    }
+
+    @Override
+    public List<TestPlan> findTestPlansByAuthority() {
+        User curUser = authorityUtils.getLoginUser();
+        logger.info("findTestPlansByAuthority: 当前登录者id = " + curUser.getUserID() +
+                ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
+        List<TestPlan> allTestPlans = this.findAllTestPlans();
+        allTestPlans.removeIf(testPlan -> !processUtils.isVisible(testPlan, "TestPlan"));
+        return setState(allTestPlans);
     }
 
     @Override
@@ -25,14 +49,17 @@ public class TestPlanServiceImpl implements TestPlanService {
         TestPlan testPlan = testPlanRepository.findByPid(pid);
         if (testPlan == null)
             throw new TestPlanNotFoundException(pid);
-        return testPlan;
+        return setState(testPlan);
     }
 
     @Override
-    public TestPlan newTestPlan(TestPlan testPlan) {
-        // 要求pid在前端已经设置好
-        // TODO: 流程引擎
-        return testPlanRepository.save(testPlan);
+    public TestPlan newTestPlan(String pid, String uid) {
+        logger.info("newTestPlanAuto: ");
+        TestPlan testPlan = new TestPlan();
+        testPlan.setPid(pid);
+        testPlan.setUserId(uid);
+        testPlan.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
+        return setState(testPlanRepository.save(testPlan));
     }
 
     @Override
@@ -42,7 +69,7 @@ public class TestPlanServiceImpl implements TestPlanService {
         record.setPid(testPlan.getPid());
         record.setProcessState(testPlan.getProcessState());
         record.setProcessInstanceId(testPlan.getProcessInstanceId());
-        return testPlanRepository.save(record);
+        return setState(testPlanRepository.save(record));
     }
 
     @Override
@@ -56,5 +83,24 @@ public class TestPlanServiceImpl implements TestPlanService {
         if (testPlan == null)
             throw new TestPlanNotFoundException(pid);
         testPlanRepository.deleteByPid(pid);
+    }
+
+    @Override
+    public void saveComment(String pid, String comment) {
+        TestPlan testPlan = this.findTestPlanByPid(pid);
+        testPlan.setComment(comment);
+        this.updateTestPlan(testPlan.getPid(), testPlan);
+    }
+
+    public List<TestPlan> setState(List<TestPlan> testPlans) {
+        for (TestPlan testPlan: testPlans) {
+            testPlan.setProcessState(processUtils.getProcessState(testPlan.getProcessInstanceId()));
+        }
+        return testPlans;
+    }
+
+    public TestPlan setState(TestPlan testPlan) {
+        testPlan.setProcessState(processUtils.getProcessState(testPlan.getProcessInstanceId()));
+        return testPlan;
     }
 }

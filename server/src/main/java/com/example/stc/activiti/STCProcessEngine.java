@@ -7,10 +7,7 @@ import com.example.stc.domain.User;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.ProcessUtils;
 import com.example.stc.service.EntrustService;
-import org.activiti.engine.FormService;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
+import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricTaskInstance;
@@ -91,6 +88,16 @@ public class STCProcessEngine {
                 value.put(REVIEW, operation);
                 value.put(COMMENT, comment);
                 taskService.complete(task.getId(), value);
+
+                /** 并行任务恢复 */
+                if (operation.equals("ReviewDisprove") && (tasks.size() > 1)) {
+                    for (Task task1 : tasks) {
+                        if (task1 != task) {
+                            /** 强行结束流程 */
+                            taskService.complete(task1.getId(), value);
+                        }
+                    }
+                }
             }
             else {
                 /** 其他流程，直接完成即可 */
@@ -102,7 +109,7 @@ public class STCProcessEngine {
         }
 
         if (!completeTask) {
-            // TODO: 抛出异常，流程调用错误
+            throw new ActivitiException("流程调用错误，当前用户对当前流程没有任何合法操作。");
         }
     }
 
@@ -117,80 +124,9 @@ public class STCProcessEngine {
     }
 
     /**
-     * 获取当前task的用户类型，若流程结束，返回nouser
-     * @param processInstanceId 流程实例ID
-     * @return 以String形式返回用户任务的候选执行者
-     * @throws Exception 获取当前task的用户类型为空
+     * 删除流程实例
+     * @param processInstanceId
      */
-    public String getTaskAssignee(String processInstanceId) throws Exception {
-        Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-        String S = this.getProcessState(processInstanceId);
-        String user = "";
-        if (S.equals("Finished")) {
-            user = "NoUser";
-            return user;
-        }
-        TaskFormData taskFormData = formService.getTaskFormData(task.getId());
-        List<FormProperty> formProperties = taskFormData.getFormProperties();
-        if (formProperties.isEmpty() == false) {
-            for (FormProperty formProperty : formProperties) {
-                if ("user".equals(formProperty.getId().toString()))
-                    user = formProperty.getName();
-            }
-        } else
-            throw new Exception("empty error");
-        return user;
-    }
-
-    /**
-     * 查询某个流程实例的历史活动的详细信息
-     * @param processInstanceId 流程实例ID
-     * @return 以String形式返回历史任务的信息
-     * @throws Exception 查询流程实例的历史活动为空
-     */
-    public List<String> queryHistoricTask(String processInstanceId) throws Exception {
-        List<HistoricTaskInstance> hti = historyService.createHistoricTaskInstanceQuery()
-                .processInstanceId(processInstanceId).orderByHistoricTaskInstanceStartTime().asc().list();
-        List<String> htiList = new ArrayList<String>();
-        if (hti.isEmpty() == false) {
-            for (HistoricTaskInstance temp : hti) {
-                htiList.add(temp.getId() + " " + temp.getAssignee() + " " + temp.getName() + " " + temp.getEndTime()
-                        + '\n');
-            }
-            return htiList;
-        } else
-            throw new Exception("historicList is null");
-    }
-
-    /**
-     * 获取用户意见
-     * @param processInstanceId 流程实例ID
-     * @return 以String形式返回意见
-     * @throws Exception 获取用户意见失败
-     */
-    public List<String> getComments(String processInstanceId) throws Exception {
-        List<String> list = new ArrayList<String>();
-        List<HistoricVariableInstance> hviList = historyService.createHistoricVariableInstanceQuery()
-                .processInstanceId(processInstanceId).orderByVariableName().desc().list();
-        for (HistoricVariableInstance hvi : hviList) {
-            if (hvi.getVariableName().contains("comments"))
-                list.add(hvi.getVariableName() + "   " + hvi.getValue());
-        }
-        return list;
-    }
-
-    /**
-     * 获取历史任务
-     * @param processInstanceId 流程实例ID
-     * @return 以String形式返回历史任务的ID
-     * @throws Exception 获取历史任务失败
-     */
-    public String getLastTask(String processInstanceId) throws Exception{
-        List<HistoricTaskInstance> htiList = historyService.createHistoricTaskInstanceQuery().processInstanceId(processInstanceId)
-                .orderByHistoricTaskInstanceStartTime().desc().list();
-        return htiList.get(0).getName().toString();
-    }
-
     public void deleteProcessInstance(String processInstanceId) {
         runtimeService.deleteProcessInstance(processInstanceId, "用户已取消");
     }

@@ -1,7 +1,9 @@
-import { Card, Table, Divider, Button, Tag ,Breadcrumb} from 'antd';
+import {Card, Table, Divider, Tag, Input, Button, Breadcrumb, DatePicker, Upload, Icon, message,Form,Descriptions} from 'antd';
+import {formatMessage, FormattedMessage} from 'umi/locale';
+import {connect} from 'dva';
+import {getRole} from "../../../utils/cookieUtils";
 import React from "react";
-import {connect} from "dva";
-import { FormattedMessage } from 'umi/locale';
+
 
 // const data= {
 //   /** 编制人 */
@@ -27,6 +29,7 @@ import { FormattedMessage } from 'umi/locale';
 // };
 
 const namespace='testplanCheck';
+const FormItem = Form.Item;
 
 const mapStateToProps = (state) => {
   const dataCheck = state[namespace];
@@ -36,8 +39,16 @@ const mapStateToProps = (state) => {
   };
 };
 
+@Form.create()
 @connect(mapStateToProps)
 export default class List extends React.Component{
+  constructor(props){
+    super(props)
+    this.state={
+      pid:"",
+      comment:""
+    }
+  }
   componentDidMount() {
     const {dispatch} = this.props;
 
@@ -46,7 +57,28 @@ export default class List extends React.Component{
       payload: this.props.location.query,
     });
   }
+  //审核
+  review=(form,operation)=> {
+    const {dispatch} = this.props;
+    this.state.pid = this.props.dataCheck.check.pid;
+    this.state.comment = this.props.dataCheck.check.comment;
+    form.validateFields((err, value) => {
+      var checkvalue=this.props.dataCheck.check;
+      checkvalue.operation=operation;
+      checkvalue.comment=value.comment;
+      console.log("checkvalue",checkvalue);
+      dispatch({
+        type: `${namespace}/queryReviewTestPlan`,
+        payload: checkvalue,
+      });
+    })
+  }
+
   render(){
+    const {
+      form: {getFieldDecorator, getFieldValue},
+    } = this.props;
+
     return (
       <div>
         <Breadcrumb>
@@ -64,6 +96,54 @@ export default class List extends React.Component{
           <p>测试环境-人员：<FormattedMessage id={this.props.dataCheck.check.staff || ' '}/></p>
           <p>测试进度表：<FormattedMessage id={this.props.dataCheck.check.progressTable || ' '}/></p>
         </Card>
+        {
+          {
+            "QM": <div class="qmSpace">
+              <FormItem label={<FormattedMessage id="审批意见"/>} >
+                {getFieldDecorator('comment', {
+                  initialValue: this.props.dataCheck.check.comment || '无',
+                }, {
+                  rules: [
+                    {
+                      required: true,
+                      message: formatMessage({id: '需要审批意见'}),
+                    },
+                  ],
+                })(<Input placeholder={formatMessage({id: '输入审批意见'})}
+                          disabled={this.props.dataCheck.check.processState!="Review"}
+                />)}
+              </FormItem>
+
+              {
+                this.props.dataCheck.check.processState=="Review"?
+                  <div>
+                    <Button onClick={() => {
+                      this.review(this.props.form,"ReviewPass")
+                    }} style={{marginLeft: 8 }}
+                            type="primary">
+                      <FormattedMessage id="basic-form.form.agree"/>
+                    </Button>
+                    <Button onClick={() => {
+                      this.review(this.props.form,"ReviewDisprove")
+                    }} style={{marginLeft: 8}}
+                            type="primary"
+                            disabled={this.props.dataCheck.check.processState!="Review"}>
+                      <FormattedMessage id="basic-form.form.disagree"/>
+                    </Button>
+                  </div>
+                  :null
+              }
+            </div>,
+
+            "TS":
+              <Descriptions title="状态及意见">
+                <Descriptions.Item label="状态">{this.props.dataCheck.check.processState || ' '}</Descriptions.Item>
+                <Descriptions.Item label="意见">{this.props.dataCheck.check.comment || ' '}</Descriptions.Item>
+              </Descriptions>
+          }[getRole()[0]]
+
+        }
+
       </div>
 
     )

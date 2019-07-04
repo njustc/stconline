@@ -7,26 +7,26 @@
       </extensionElements>
     </startEvent>
     <endEvent id="end" name="结束"/>
-    <userTask activiti:exclusive="true" id="submitContract" name="ToSubmit">
+    <userTask activiti:exclusive="true" id="submitContract" name="SSSubmit" activiti:candidateGroups="SS">
       <extensionElements>
-        <activiti:formProperty id="user" name="worker" type="string" value="worker"/>
+        <activiti:formProperty id="taskType" name="Submit" type="string" value="Submit"/>
       </extensionElements>
     </userTask>
     <subProcess activiti:exclusive="true" id="subProcess" name="审批子流程" triggeredByEvent="false">
       <parallelGateway gatewayDirection="Unspecified" id="mApproveForkGate" name="Fork"/>
       <parallelGateway gatewayDirection="Unspecified" id="mApproveJoinGate" name="Join"/>
-      <userTask activiti:exclusive="true" id="mmContractReview" name="MMReviewContract">
+      <userTask activiti:exclusive="true" id="mmContractReview" name="MMReviewContract" activiti:candidateGroups="SM">
         <extensionElements>
-          <activiti:formProperty id="reviewContractResult" name="Do you approve this request?" required="true" type="string"/>
-          <activiti:formProperty id="user" name="MM" type="string" value="MarketingManager"/>
-          <activiti:formProperty id="reviewContractComment" name="reason about pass or reject" required="true" type="string"/>
+          <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
+          <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
+          <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
         </extensionElements>
       </userTask>
-      <userTask activiti:exclusive="true" id="qmContractReview" name="QMReviewContract">
+      <userTask activiti:exclusive="true" id="qmContractReview" name="QMReviewContract" activiti:candidateGroups="QM">
         <extensionElements>
-          <activiti:formProperty id="reviewContractResult" name="Do you approve this request?" required="true" type="String"/>
-          <activiti:formProperty id="user" name="QM" type="string" value="QualityManager"/>
-          <activiti:formProperty id="reviewContractComment" name="reason about pass or reject" required="true" type="string"/>
+          <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
+          <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
+          <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
         </extensionElements>
       </userTask>
       <startEvent id="subStart" name="子流程开始"/>
@@ -39,35 +39,35 @@
       <sequenceFlow id="_12" sourceRef="mApproveJoinGate" targetRef="mReviewGate"/>
       <endEvent id="subDisproveEnd" name="SubDisproveEnd"/>
       <sequenceFlow id="_15" name="不通过" sourceRef="mReviewGate" targetRef="subDisproveEnd">
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewContractResult == 'ReviewDisprove'}]]></conditionExpression>
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ReviewResult == 'ReviewDisprove'}]]></conditionExpression>
       </sequenceFlow>
-      <userTask activiti:exclusive="true" id="cusContractReview" name="CusReviewContract">
+      <userTask activiti:assignee="${ClientID}" activiti:exclusive="true" id="cusContractReview" name="CusReviewContract">
         <extensionElements>
-          <activiti:formProperty id="reviewContractResult" name="Do you approve this request?" required="true" type="String"/>
-          <activiti:formProperty id="user" name="client" type="string" value="client"/>
-          <activiti:formProperty id="reviewContractComment" name="reason about pass or reject" required="true" type="string"/>
+          <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
+          <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
+          <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
         </extensionElements>
       </userTask>
       <sequenceFlow id="_2" name="通过" sourceRef="mReviewGate" targetRef="cusContractReview">
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewContractResult == 'ReviewPass'}]]></conditionExpression>
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ReviewResult == 'ReviewPass'}]]></conditionExpression>
       </sequenceFlow>
       <exclusiveGateway gatewayDirection="Unspecified" id="cusReviewGate" name="CusReviewGate"/>
       <sequenceFlow id="_4" sourceRef="cusContractReview" targetRef="cusReviewGate"/>
       <sequenceFlow id="_5" name="不通过" sourceRef="cusReviewGate" targetRef="subDisproveEnd">
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewContractResult == 'ReviewDisprove'}]]></conditionExpression>
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ReviewResult == 'ReviewDisprove'}]]></conditionExpression>
       </sequenceFlow>
       <endEvent id="subPassEnd" name="SubPassEnd"/>
       <sequenceFlow id="_13" name="通过" sourceRef="cusReviewGate" targetRef="subPassEnd">
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewContractResult == 'ReviewPass'}]]></conditionExpression>
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ReviewResult == 'ReviewPass'}]]></conditionExpression>
       </sequenceFlow>
     </subProcess>
     <exclusiveGateway gatewayDirection="Unspecified" id="reviewGate" name="ReviewGate"/>
     <sequenceFlow id="_16" sourceRef="subProcess" targetRef="reviewGate"/>
     <sequenceFlow id="_17" name="不通过" sourceRef="reviewGate" targetRef="submitContract">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewContractResult == 'ReviewDisprove'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ReviewResult == 'ReviewDisprove'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="_18" name="通过" sourceRef="reviewGate" targetRef="end">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewContractResult == 'ReviewPass'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ReviewResult == 'ReviewPass'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="_19" sourceRef="submitContract" targetRef="subProcess"/>
     <sequenceFlow id="_20" sourceRef="start" targetRef="subProcess"/>

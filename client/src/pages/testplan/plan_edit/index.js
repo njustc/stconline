@@ -72,6 +72,7 @@ const mapStateToProps = (state) => {
 // @connect(({ loading }) => ({
 //   submitting: loading.effects['basicForm/submitRegularForm'],
 // }))
+
 @Form.create()
 @connect(mapStateToProps)
 export default class EditPlan extends React.Component{
@@ -105,7 +106,7 @@ export default class EditPlan extends React.Component{
       //新建
       value.pid=this.state.pid;
       // 补充新建属性
-      value.processInstanceID="";
+      value.processInstanceId="";
       value.processState="ToSubmit";
       value.comment="";
       //补充完毕
@@ -119,13 +120,13 @@ export default class EditPlan extends React.Component{
   savePlan=(form)=> {
     const {dispatch} = this.props;
     this.state.pid = this.props.dataEdit.editdata.pid;
-
+    console.log("saveform",this.props.dataEdit.editdata);
     form.validateFields((err, value) => {
       //保存
       value.pid = this.state.pid;
-      value.processInstanceID = this.props.dataEdit.editdata.processInstanceID;
+      value.processInstanceId = this.props.dataEdit.editdata.processInstanceId;
       value.processState = this.props.dataEdit.editdata.processState;
-      console.log(value.pid);
+      console.log("value", value);
       // value.comment = this.props.dataEdit.editdata.comment;
       dispatch({
         type: `${namespace}/queryReplacePlan`,
@@ -137,7 +138,7 @@ export default class EditPlan extends React.Component{
   //保存
   save=(form)=>{
     const { dispatch } = this.props;
-    // console.log(this.props.dataEdit);
+    console.log("save",this.props.dataEdit.editdata);
     this.state.pid=this.props.dataEdit.editdata.pid;
     if (this.state.pid=="") {
       this.addPlan(form)
@@ -151,16 +152,17 @@ export default class EditPlan extends React.Component{
 
 
   //提交
-  submit=(form)=> {
+  submitPlan=(form)=> {
     const { dispatch } = this.props;
     this.state.pid=this.props.dataEdit.editdata.pid;
     form.validateFields((err,value) => {
+      console.log(this.props.dataEdit.editdata);
       //新建
       value.pid=this.state.pid;
-      // 补充新建属性
-      value.processInstanceID=this.props.dataEdit.editdata.processInstanceID;
-      value.processState=this.props.dataEdit.editdata.processState;
+      value.processInstanceId=this.props.dataEdit.editdata.processInstanceId||"";
+      value.processState=this.props.dataEdit.editdata.processState||"";
       // value.comment=this.props.dataEdit.editdata.comment;
+      console.log("submitPlan",value);
       dispatch({
         type: `${namespace}/querySubmitPlan`,
         payload: value,
@@ -169,6 +171,7 @@ export default class EditPlan extends React.Component{
   };
 
   showSubmit(form) {
+    var that = this;
     confirm({
       title: '您是否要提交方案?',
       content: '方案提交后进入审核状态，不可编辑',
@@ -176,7 +179,8 @@ export default class EditPlan extends React.Component{
       okType: 'primary',
       cancelText: '取消',
       onOk() {
-        this.submit(form)
+        console.log("submitPlan");
+        that.submitPlan(form);
       },
       onCancel() {
         console.log('Cancel');

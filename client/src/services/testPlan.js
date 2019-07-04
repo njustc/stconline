@@ -36,10 +36,11 @@ export async function deleteTestPlan({pid}) {
 /**
  * 修改测试方案
  * */
-export async function replaceTestPlan({pid, data}) {
-  return request(`api/project/testplan/${pid}`, {
+export async function replaceTestPlan(params) {
+  console.log(params);
+  return request(`api/project/testplan/${params.pid}`, {
     method: 'PUT',
-    data: data,
+    data: params,
   });
 }
 
@@ -52,4 +53,21 @@ export async function submitTestPlan({pid}) {
     params: {pid}
   });
 }
+
+export async function updateTestPlanProcess(params) {
+  console.log(typeof(params),params)
+  return request(`api/project/process/update?type=TestPlan`, {
+    method: 'POST',
+    data: params
+  });
+}
+
+export async function createTestPlanProcess(params) {
+  // console.log(typeof(params))
+  return request(`api/project/process/create?pid=${params.pid}&type=TestPlan`, {
+    method: 'POST',
+    data: ""
+  });
+}
+
 

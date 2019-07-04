@@ -13,6 +13,11 @@ public interface TestPlanService extends BaseService<TestPlan> {
     List<TestPlan> findAllTestPlans();
 
     /**
+     * 获取全部可见的测试方案
+     */
+    List<TestPlan> findTestPlansByAuthority();
+
+    /**
      * 通过pid获取单个项目的测试方案
      */
     TestPlan findTestPlanByPid(String pid);
@@ -20,7 +25,7 @@ public interface TestPlanService extends BaseService<TestPlan> {
     /**
      * 新建项目测试方案
      */
-    TestPlan newTestPlan(TestPlan testPlan);
+    TestPlan newTestPlan(String pid, String uid);
 
     /**
      * 通过pid修改单个委托记录
@@ -36,5 +41,12 @@ public interface TestPlanService extends BaseService<TestPlan> {
      * 通过pid删除单个项目的测试方案
      */
     void deleteTestPlanByPid(String pid);
+
+    /**
+     * 修改评审意见
+     * @param pid
+     * @param comment
+     */
+    void saveComment(String pid, String comment);
 
 }

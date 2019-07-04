@@ -12,6 +12,11 @@ public interface TestReportService extends BaseService<TestReport> {
     List<TestReport> findAllTestReports();
 
     /**
+     * 获取全部可见的测试报告
+     */
+    List<TestReport> findTestReportsByAuthority();
+
+    /**
      * 通过pid获取单个项目的测试报告
      */
     TestReport findTestReportByPid(String pid);
@@ -19,7 +24,7 @@ public interface TestReportService extends BaseService<TestReport> {
     /**
      * 新建项目测试报告
      */
-    TestReport newTestReport(TestReport testReport);
+    TestReport newTestReport(String pid, String uid);
 
     /**
      * 通过pid修改单个委托记录
@@ -35,5 +40,12 @@ public interface TestReportService extends BaseService<TestReport> {
      * 通过pid删除单个项目的测试报告
      */
     void deleteTestReportByPid(String pid);
+
+    /**
+     * 修改评审意见
+     * @param pid
+     * @param comment
+     */
+    void saveComment(String pid, String comment);
 
 }

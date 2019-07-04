@@ -1,9 +1,15 @@
 package com.example.stc.service.impl;
 
+import com.example.stc.activiti.ProcessState;
 import com.example.stc.domain.TestReport;
+import com.example.stc.domain.User;
 import com.example.stc.framework.exception.TestReportNotFoundException;
+import com.example.stc.framework.util.AuthorityUtils;
+import com.example.stc.framework.util.ProcessUtils;
 import com.example.stc.repository.TestReportRepository;
 import com.example.stc.service.TestReportService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +18,30 @@ import java.util.List;
 @Service
 public class TestReportServiceImpl implements TestReportService {
 
+    Logger logger = LoggerFactory.getLogger(TestReportServiceImpl.class);
+
     @Autowired
     private TestReportRepository testReportRepository;
 
+    @Autowired
+    private AuthorityUtils authorityUtils;
+
+    @Autowired
+    private ProcessUtils processUtils;
+
     @Override
     public List<TestReport> findAllTestReports() {
-        return testReportRepository.findAll();
+        return setState(testReportRepository.findAll());
+    }
+
+    @Override
+    public List<TestReport> findTestReportsByAuthority() {
+        User curUser = authorityUtils.getLoginUser();
+        logger.info("findTestReportsByAuthority: 当前登录者id = " + curUser.getUserID() +
+                ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
+        List<TestReport> allTestReports = this.findAllTestReports();
+        allTestReports.removeIf(testReport -> !processUtils.isVisible(testReport, "TestReport"));
+        return setState(allTestReports);
     }
 
     @Override
@@ -25,14 +49,17 @@ public class TestReportServiceImpl implements TestReportService {
         TestReport testReport = testReportRepository.findByPid(pid);
         if (testReport == null)
             throw new TestReportNotFoundException(pid);
-        return testReport;
+        return setState(testReport);
     }
 
     @Override
-    public TestReport newTestReport(TestReport testReport) {
-        // 要求pid在前端已经设置好
-        // TODO: 流程引擎
-        return testReportRepository.save(testReport);
+    public TestReport newTestReport(String pid, String uid) {
+        logger.info("newTestReportAuto: ");
+        TestReport testReport = new TestReport();
+        testReport.setPid(pid);
+        testReport.setUserId(uid);
+        testReport.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
+        return setState(testReportRepository.save(testReport));
     }
 
     @Override
@@ -42,7 +69,7 @@ public class TestReportServiceImpl implements TestReportService {
         record.setPid(testReport.getPid());
         record.setProcessState(testReport.getProcessState());
         record.setProcessInstanceId(testReport.getProcessInstanceId());
-        return testReportRepository.save(record);
+        return setState(testReportRepository.save(record));
     }
 
     @Override
@@ -56,5 +83,24 @@ public class TestReportServiceImpl implements TestReportService {
         if (testReport == null)
             throw new TestReportNotFoundException(pid);
         testReportRepository.deleteByPid(pid);
+    }
+
+    @Override
+    public void saveComment(String pid, String comment) {
+        TestReport testReport = this.findTestReportByPid(pid);
+        testReport.setComment(comment);
+        this.updateTestReport(testReport.getPid(), testReport);
+    }
+
+    public List<TestReport> setState(List<TestReport> testReports) {
+        for (TestReport testReport: testReports) {
+            testReport.setProcessState(processUtils.getProcessState(testReport.getProcessInstanceId()));
+        }
+        return testReports;
+    }
+
+    public TestReport setState(TestReport testReport) {
+        testReport.setProcessState(processUtils.getProcessState(testReport.getProcessInstanceId()));
+        return testReport;
     }
 }

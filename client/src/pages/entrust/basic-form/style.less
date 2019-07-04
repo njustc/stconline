@@ -1,90 +1,43 @@
-@import '~antd/lib/style/themes/default.less';
+.editBody {
+  padding: 5px;
+  background-color: white;
 
-.card {
-  margin-bottom: 24px;
-}
-
-.heading {
-  font-size: 14px;
-  line-height: 22px;
-  margin: 0 0 16px 0;
-}
-
-.steps:global(.ant-steps) {
-  max-width: 750px;
-  margin: 16px auto;
-}
-
-.errorIcon {
-  cursor: pointer;
-  color: @error-color;
-  margin-right: 24px;
-  i {
-    margin-right: 4px;
+  > div {
+    padding: 0;
   }
-}
 
-.errorPopover {
-  :global {
-    .ant-popover-inner-content {
-      padding: 0;
-      max-height: 290px;
-      overflow: auto;
-      min-width: 256px;
+  & > :nth-child(3),
+  & > :nth-child(2) {
+    margin-top: 1.8%;
+
+    > div {
+      margin: 0;
     }
   }
 }
 
-.errorListItem {
-  list-style: none;
-  border-bottom: 1px solid @border-color-split;
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: all 0.3s;
-  &:hover {
-    background: @primary-1;
-  }
-  &:last-child {
-    border: 0;
-  }
-  .errorIcon {
-    color: @error-color;
-    float: left;
-    margin-top: 4px;
-    margin-right: 12px;
-    padding-bottom: 22px;
-  }
-  .errorField {
-    font-size: 12px;
-    color: @text-color-secondary;
-    margin-top: 2px;
-  }
+.headerTitle {
+  width: 100%;
 }
 
-.editable {
-  td {
-    padding-top: 13px !important;
-    padding-bottom: 12.5px !important;
+.formBody {
+  width: 100%;
+  height: fit-content;
+
+  h2, h3, h4 {
+    padding-left: 1%;
   }
-}
 
-// custom footer for fixed footer toolbar
-.advancedForm + div {
-  padding-bottom: 64px;
-}
-
-.advancedForm {
-  :global {
-    .ant-form .ant-row:last-child .ant-form-item {
-      margin-bottom: 24px;
-    }
-    .ant-table td {
-      transition: none !important;
-    }
+  .submitBtns {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    //padding: 3% 0 0 0;
+    height: 95px;
+    //x偏移量 | y偏移量 | 阴影模糊半径 | 阴影扩散半径 | 阴影颜色
+    box-shadow: -1px -4px 40px 4px rgba(226, 226, 226, 0.86);
+    background-color: white;
   }
-}
-
-.optional {
-  color: @text-color-secondary;
-  font-style: normal;
 }

@@ -5,6 +5,7 @@ import com.example.stc.domain.*;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.ProcessUtils;
 import com.example.stc.service.*;
+import org.activiti.engine.ActivitiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +24,23 @@ public class ProcessServiceImpl implements ProcessService {
     @Autowired
     private EntrustService entrustService;
 
+    @Autowired
+    private ContractService contractService;
+
+    @Autowired
+    private TestPlanService testPlanService;
+
+    @Autowired
+    private TestReportService testReportService;
+
     @Override
     public void createProcessInstance(String pid, String type) {
         switch (type) {
             case "Entrust": createEntrustProcess(pid); break;
             case "Contract": createContractProcess(pid); break;
-            default: break;
+            case "TestPlan": createTestPlanProcess(pid); break;
+            case "TestReport": createTestReportProcess(pid); break;
+            default: throw new ActivitiException("未知流程类型。");
         }
     }
 
@@ -39,20 +51,63 @@ public class ProcessServiceImpl implements ProcessService {
     @Override
     public void createEntrustProcess(String pid) {
         Entrust entrust = entrustService.findEntrustByPid(pid);
-        User user = authorityUtils.getLoginUser();
         Map<String, Object> variable = new HashMap<String, Object>();
         variable.put("EntrustID", pid);
-        variable.put("ClientID", user.getUserID());
+        variable.put("ClientID", entrust.getUserId());
         entrust.setProcessInstanceId(stcProcessEngine.createProcess("Entrust", variable));
         entrustService.updateEntrust(pid, entrust);
         queryProcessState(entrust);
     }
 
+    /**
+     * 创建合同流程
+     * @param pid
+     */
     @Override
     public void createContractProcess(String pid) {
-
+        Contract contract = contractService.findContractByPid(pid);
+        Map<String, Object> variable = new HashMap<String, Object>();
+        variable.put("ContractID", pid);
+        variable.put("ClientID", contract.getUserId());
+        contract.setProcessInstanceId(stcProcessEngine.createProcess("Contract", variable));
+        contractService.updateContract(pid, contract);
+        queryProcessState(contract);
     }
 
+    /**
+     * 创建测试方案流程
+     * @param pid
+     */
+    @Override
+    public void createTestPlanProcess(String pid) {
+        TestPlan testPlan = testPlanService.findTestPlanByPid(pid);
+        Map<String, Object> variable = new HashMap<String, Object>();
+        variable.put("TestPlanID", pid);
+        variable.put("ClientID", testPlan.getUserId());
+        testPlan.setProcessInstanceId(stcProcessEngine.createProcess("TestPlan", variable));
+        testPlanService.updateTestPlan(pid, testPlan);
+        queryProcessState(testPlan);
+    }
+
+    /**
+     * 创建测试报告流程
+     * @param pid
+     */
+    @Override
+    public void createTestReportProcess(String pid) {
+        TestReport testReport = testReportService.findTestReportByPid(pid);
+        Map<String, Object> variable = new HashMap<String, Object>();
+        variable.put("TestReportID", pid);
+        variable.put("ClientID", testReport.getUserId());
+        testReport.setProcessInstanceId(stcProcessEngine.createProcess("TestReport", variable));
+        testReportService.updateTestReport(pid, testReport);
+        queryProcessState(testReport);
+    }
+
+    /**
+     * 删除流程实例
+     * @param entity
+     */
     @Override
     public void deleteProcessInstance(ProcessEntity entity) {
         if (!entity.getProcessInstanceId().equals("")) {
@@ -60,14 +115,38 @@ public class ProcessServiceImpl implements ProcessService {
         }
     }
 
+    /**
+     * 查询流程状态
+     * @param entity
+     */
     @Override
     public void queryProcessState(ProcessEntity entity) {
         entity.setProcessState(stcProcessEngine.getProcessState(entity.getProcessInstanceId()));
     }
 
+    /**
+     * 更新流程实例
+     * @param entity
+     */
     @Override
-    public void updateProcessInstance(ProcessEntity entity) {
+    public void updateProcessInstance(ProcessEntity entity, String type) {
         stcProcessEngine.updateProcess(entity);
+        save(entity, type);
+    }
+
+    /**
+     * 保存comment
+     * @param entity
+     * @param type
+     */
+    private void save(ProcessEntity entity, String type) {
+        switch (type) {
+            case "Entrust": entrustService.saveComment(entity.getPid(), entity.getComment()); break;
+            case "Contract": contractService.saveComment(entity.getPid(), entity.getComment()); break;
+            case "TestPlan": testPlanService.saveComment(entity.getPid(), entity.getComment()); break;
+            case "TestReport": testReportService.saveComment(entity.getPid(), entity.getComment()); break;
+            default: throw new ActivitiException("未知流程类型。");
+        }
     }
 
 }
