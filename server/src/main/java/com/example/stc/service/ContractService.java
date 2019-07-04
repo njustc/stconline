@@ -66,4 +66,11 @@ public interface ContractService extends BaseService<Contract>{
      */
     @Secured({"ROLE_USER", "ROLE_CUS"})
     Contract updateContract(String pid, Contract record);
+
+    /**
+     * 修改评审意见
+     * @param pid
+     * @param comment
+     */
+    void saveComment(String pid, String comment);
 }

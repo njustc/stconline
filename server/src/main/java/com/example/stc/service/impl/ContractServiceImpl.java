@@ -1,6 +1,5 @@
 package com.example.stc.service.impl;
 
-import com.example.stc.activiti.ContractAction;
 import com.example.stc.activiti.ProcessState;
 import com.example.stc.domain.Contract;
 import com.example.stc.domain.Role;
@@ -146,6 +145,13 @@ public class ContractServiceImpl implements ContractService{
         record.setProcessState(contract.getProcessState());
         record.setProcessInstanceId(contract.getProcessInstanceId());
         return setState(contractRepository.save(record));
+    }
+
+    @Override
+    public void saveComment(String pid, String comment) {
+        Contract contract = this.findContractByPid(pid);
+        contract.setComment(comment);
+        this.updateContract(contract.getPid(), contract);
     }
 
     public List<Contract> setState(List<Contract> contracts) {

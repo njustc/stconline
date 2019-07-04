@@ -3,6 +3,7 @@ package com.example.stc.activiti;
 import com.example.stc.controller.ContractController;
 import com.example.stc.controller.UserController;
 import com.example.stc.domain.Contract;
+import org.activiti.engine.ProcessEngine;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,4 +59,5 @@ public class ContractActivitiTest {
         //delete
         contractController.deleteContract(contract.getPid());
     }
+
 }

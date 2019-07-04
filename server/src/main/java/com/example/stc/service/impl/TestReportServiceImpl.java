@@ -85,6 +85,13 @@ public class TestReportServiceImpl implements TestReportService {
         testReportRepository.deleteByPid(pid);
     }
 
+    @Override
+    public void saveComment(String pid, String comment) {
+        TestReport testReport = this.findTestReportByPid(pid);
+        testReport.setComment(comment);
+        this.updateTestReport(testReport.getPid(), testReport);
+    }
+
     public List<TestReport> setState(List<TestReport> testReports) {
         for (TestReport testReport: testReports) {
             testReport.setProcessState(processUtils.getProcessState(testReport.getProcessInstanceId()));

@@ -42,4 +42,11 @@ public interface TestPlanService extends BaseService<TestPlan> {
      */
     void deleteTestPlanByPid(String pid);
 
+    /**
+     * 修改评审意见
+     * @param pid
+     * @param comment
+     */
+    void saveComment(String pid, String comment);
+
 }

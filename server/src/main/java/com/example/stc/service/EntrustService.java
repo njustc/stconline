@@ -65,4 +65,11 @@ public interface EntrustService extends BaseService<Entrust> {
      * 若委托记录不存在，将报异常
      * */
     Entrust updateEntrust(String pid, Entrust record);
+
+    /**
+     * 修改评审意见
+     * @param pid
+     * @param comment
+     */
+    void saveComment(String pid, String comment);
 }

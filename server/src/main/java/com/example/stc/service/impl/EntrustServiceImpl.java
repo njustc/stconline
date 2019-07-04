@@ -159,6 +159,13 @@ public class EntrustServiceImpl implements EntrustService {
         return setState(entrustRepository.save(record));
     }
 
+    @Override
+    public void saveComment(String pid, String comment) {
+        Entrust entrust = this.findEntrustByPid(pid);
+        entrust.setComment(comment);
+        this.updateEntrust(entrust.getPid(), entrust);
+    }
+
     public List<Entrust> setState(List<Entrust> entrusts) {
         for (Entrust entrust: entrusts) {
             entrust.setProcessState(processUtils.getProcessState(entrust.getProcessInstanceId()));

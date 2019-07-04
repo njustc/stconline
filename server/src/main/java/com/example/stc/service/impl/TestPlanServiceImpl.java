@@ -85,6 +85,13 @@ public class TestPlanServiceImpl implements TestPlanService {
         testPlanRepository.deleteByPid(pid);
     }
 
+    @Override
+    public void saveComment(String pid, String comment) {
+        TestPlan testPlan = this.findTestPlanByPid(pid);
+        testPlan.setComment(comment);
+        this.updateTestPlan(testPlan.getPid(), testPlan);
+    }
+
     public List<TestPlan> setState(List<TestPlan> testPlans) {
         for (TestPlan testPlan: testPlans) {
             testPlan.setProcessState(processUtils.getProcessState(testPlan.getProcessInstanceId()));

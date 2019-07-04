@@ -52,8 +52,6 @@ public class ProcessInstanceController extends BaseController {
     public @ResponseBody
     ResponseEntity<?> updateProcessState(@RequestBody ProcessEntity object,
                                          @RequestParam(value = "type")String type) {
-        JSONObject obj = (JSONObject)JSON.toJSON(object);
-        System.out.println(obj);
         processService.updateProcessInstance(object, type);
         return ResponseEntity.noContent().build();
     }
