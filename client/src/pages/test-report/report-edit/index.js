@@ -298,11 +298,11 @@ class newTestReport extends PureComponent {
     console.log(form)
     
     const { dispatch } = this.props;  
-    this.state.pid = this.props.reportEdit.reportdata.pid;
+    this.state.pid = this.props.dataReport.reportdata.pid;
     form.validateFields((err,value) => {
       value.pid=this.state.pid
-      value.processInstanceID = this.props.reportEdit.reportdata.processInstanceID;
-      value.processState = this.props.reportEdit.reportdata.processState;
+      value.processInstanceID = this.props.dataReport.reportdata.processInstanceID;
+      value.processState = this.props.dataReport.reportdata.processState;
       dispatch({
         type: 'report-edit/queryReplaceReport',
         payload: value,
@@ -313,8 +313,8 @@ class newTestReport extends PureComponent {
 
   save=(form)=>{
     const { dispatch } = this.props;
-    console.log("save",this.props.reportEdit.reportdata);
-    this.state.pid=this.props.reportEdit.reportdata.pid;
+    console.log("save",this.props.dataReport.reportdata);
+    this.state.pid=this.props.dataReport.reportdata.pid;
     if (this.state.pid=="") {
       //this.addReport(form)
     }
