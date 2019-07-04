@@ -1,4 +1,6 @@
 .editBody {
+  padding: 5px;
+  background-color: white;
   > div {
     padding: 0;
   }
@@ -16,10 +18,19 @@
 .headerTitle {
   width: 100%;
 }
-
 .formBody {
   width: 100%;
-  .ant-form {
-    background-color: black;
+  height: fit-content;
+  .submitBtns {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    //padding: 3% 0 0 0;
+    height: 95px;
+    //x偏移量 | y偏移量 | 阴影模糊半径 | 阴影扩散半径 | 阴影颜色
+    box-shadow: -1px -4px 40px 4px rgba(226, 226, 226, 0.86);
+    background-color: white;
   }
 }

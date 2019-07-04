@@ -1,4 +1,5 @@
-import { getOneTestPlan} from '@/services/testPlan';
+import { getOneTestPlan,updateTestPlanProcess} from '@/services/testPlan';
+import router from "umi/router";
 
 export default {
   namespace:'testplanCheck',
@@ -14,6 +15,12 @@ export default {
       //console.log("get res");
       //console.log(response);
       yield put({type: 'getPlanData', payload: response})
+    },
+    * queryReviewTestPlan({payload},{call}) {
+      console.log("ReviewEntrust");
+      console.log("review",payload)
+      yield call(updateTestPlanProcess, payload);
+      router.push("/plan_list.html")
     },
 
   },
