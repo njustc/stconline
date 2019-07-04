@@ -36,10 +36,11 @@ export async function deleteTestPlan({pid}) {
 /**
  * 修改测试方案
  * */
-export async function replaceTestPlan({pid, data}) {
-  return request(`api/project/testplan/${pid}`, {
+export async function replaceTestPlan(params) {
+  console.log(params);
+  return request(`api/project/testplan/${params.pid}`, {
     method: 'PUT',
-    data: data,
+    data: params,
   });
 }
 

@@ -119,13 +119,13 @@ export default class EditPlan extends React.Component{
   savePlan=(form)=> {
     const {dispatch} = this.props;
     this.state.pid = this.props.dataEdit.editdata.pid;
-
+    console.log("saveform",this.props.dataEdit.editdata);
     form.validateFields((err, value) => {
       //保存
       value.pid = this.state.pid;
       value.processInstanceID = this.props.dataEdit.editdata.processInstanceID;
       value.processState = this.props.dataEdit.editdata.processState;
-      console.log(value.pid);
+      console.log("value", value);
       // value.comment = this.props.dataEdit.editdata.comment;
       dispatch({
         type: `${namespace}/queryReplacePlan`,
@@ -137,7 +137,7 @@ export default class EditPlan extends React.Component{
   //保存
   save=(form)=>{
     const { dispatch } = this.props;
-    // console.log(this.props.dataEdit);
+    console.log("save",this.props.dataEdit.editdata);
     this.state.pid=this.props.dataEdit.editdata.pid;
     if (this.state.pid=="") {
       this.addPlan(form)
