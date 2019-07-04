@@ -91,9 +91,11 @@ public class ProcessUtils {
         Group gr = identityService.newGroup(group);
         identityService.saveGroup(gr);
         for (User user : users) {
-            org.activiti.engine.identity.User u = identityService.newUser(user.getUserID());
-            u.setPassword(user.getPassword());
-            identityService.saveUser(u);
+            org.activiti.engine.identity.User searchUser = identityService.createUserQuery().userId(user.getUserID()).singleResult();
+            if (searchUser == null) {
+                org.activiti.engine.identity.User u = identityService.newUser(user.getUserID());
+                identityService.saveUser(u);
+            }
             identityService.createMembership(user.getUserID(), gr.getId());
         }
     }
@@ -117,6 +119,8 @@ public class ProcessUtils {
             if (group1.getId().equals(curGroup.getId()))
                 return true;
         }
+
+        System.out.println("用户不在" + group +"组内");
         return false;
     }
 
@@ -160,7 +164,7 @@ public class ProcessUtils {
             /** 尚未提交，此时能见者为：规定能够建立该流程的人 */
             switch (type) {
                 case "Entrust": return user.getUserID().equals(entity.getUserId());
-                case "Contract": return checkUser("STAFF", user.getUserID());
+                case "Contract": return checkUser("SS", user.getUserID());
                 case "TestPlan":
                 case "TestReport": return checkUser("TS", user.getUserID());
                 default: return false;

@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class TestReportServiceImpl implements TestReportService {
 
-    Logger logger = LoggerFactory.getLogger(ContractServiceImpl.class);
+    Logger logger = LoggerFactory.getLogger(TestReportServiceImpl.class);
 
     @Autowired
     private TestReportRepository testReportRepository;
@@ -31,7 +31,7 @@ public class TestReportServiceImpl implements TestReportService {
 
     @Override
     public List<TestReport> findAllTestReports() {
-        return testReportRepository.findAll();
+        return setState(testReportRepository.findAll());
     }
 
     @Override
@@ -41,7 +41,7 @@ public class TestReportServiceImpl implements TestReportService {
                 ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
         List<TestReport> allTestReports = this.findAllTestReports();
         allTestReports.removeIf(testReport -> !processUtils.isVisible(testReport, "TestReport"));
-        return allTestReports;
+        return setState(allTestReports);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class TestReportServiceImpl implements TestReportService {
         TestReport testReport = testReportRepository.findByPid(pid);
         if (testReport == null)
             throw new TestReportNotFoundException(pid);
-        return testReport;
+        return setState(testReport);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class TestReportServiceImpl implements TestReportService {
         testReport.setPid(pid);
         testReport.setUserId(uid);
         testReport.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
-        return testReportRepository.save(testReport);
+        return setState(testReportRepository.save(testReport));
     }
 
     @Override
@@ -69,7 +69,7 @@ public class TestReportServiceImpl implements TestReportService {
         record.setPid(testReport.getPid());
         record.setProcessState(testReport.getProcessState());
         record.setProcessInstanceId(testReport.getProcessInstanceId());
-        return testReportRepository.save(record);
+        return setState(testReportRepository.save(record));
     }
 
     @Override
@@ -83,5 +83,17 @@ public class TestReportServiceImpl implements TestReportService {
         if (testReport == null)
             throw new TestReportNotFoundException(pid);
         testReportRepository.deleteByPid(pid);
+    }
+
+    public List<TestReport> setState(List<TestReport> testReports) {
+        for (TestReport testReport: testReports) {
+            testReport.setProcessState(processUtils.getProcessState(testReport.getProcessInstanceId()));
+        }
+        return testReports;
+    }
+
+    public TestReport setState(TestReport testReport) {
+        testReport.setProcessState(processUtils.getProcessState(testReport.getProcessInstanceId()));
+        return testReport;
     }
 }

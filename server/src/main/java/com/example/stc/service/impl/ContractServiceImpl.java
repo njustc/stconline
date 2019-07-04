@@ -38,7 +38,7 @@ public class ContractServiceImpl implements ContractService{
     @Override
     public List<Contract> findAllContracts() {
         logger.info("findAllContracts: 查看全部合同");
-        return contractRepository.findAll();
+        return setState(contractRepository.findAll());
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ContractServiceImpl implements ContractService{
 //        return findAllContracts();
         List<Contract> allContracts = this.findAllContracts();
         allContracts.removeIf(contract -> !processUtils.isVisible(contract, "Contract"));
-        return allContracts;
+        return setState(allContracts);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class ContractServiceImpl implements ContractService{
         logger.info("findContractsByUser: 查看某用户全部合同");
         List<Contract> allContracts = this.findAllContracts();
         allContracts.removeIf(contract -> !contract.getUserId().equals(uid));
-        return allContracts;
+        return setState(allContracts);
     }
 
     /**
@@ -86,7 +86,7 @@ public class ContractServiceImpl implements ContractService{
 
         this.customerAccessCheck(contract); // 若为客户，只能访问本人的合同
 
-        return contract;
+        return setState(contract);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class ContractServiceImpl implements ContractService{
 
         this.customerAccessCheck(contract); // 若为客户，只能访问本人的合同
 
-        return contract;
+        return setState(contract);
     }
 
     @Override
@@ -120,7 +120,7 @@ public class ContractServiceImpl implements ContractService{
         logger.info("newContract: ");
         contract.setUserId(authorityUtils.getLoginUser().getUserID());
         contract.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
-        return contractRepository.save(contract);
+        return setState(contractRepository.save(contract));
     }
 
     @Override
@@ -130,7 +130,7 @@ public class ContractServiceImpl implements ContractService{
         contract.setPid(pid);
         contract.setUserId(uid);
         contract.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
-        return contractRepository.save(contract);
+        return setState(contractRepository.save(contract));
     }
 
     @Override
@@ -145,6 +145,18 @@ public class ContractServiceImpl implements ContractService{
         record.setUserId(contract.getUserId());
         record.setProcessState(contract.getProcessState());
         record.setProcessInstanceId(contract.getProcessInstanceId());
-        return contractRepository.save(record);
+        return setState(contractRepository.save(record));
+    }
+
+    public List<Contract> setState(List<Contract> contracts) {
+        for (Contract contract: contracts) {
+            contract.setProcessState(processUtils.getProcessState(contract.getProcessInstanceId()));
+        }
+        return contracts;
+    }
+
+    public Contract setState(Contract contract) {
+        contract.setProcessState(processUtils.getProcessState(contract.getProcessInstanceId()));
+        return contract;
     }
 }

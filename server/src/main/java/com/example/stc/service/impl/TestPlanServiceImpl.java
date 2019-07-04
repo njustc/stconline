@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class TestPlanServiceImpl implements TestPlanService {
 
-    Logger logger = LoggerFactory.getLogger(ContractServiceImpl.class);
+    Logger logger = LoggerFactory.getLogger(TestPlanServiceImpl.class);
 
     @Autowired
     private TestPlanRepository testPlanRepository;
@@ -31,7 +31,7 @@ public class TestPlanServiceImpl implements TestPlanService {
 
     @Override
     public List<TestPlan> findAllTestPlans() {
-        return testPlanRepository.findAll();
+        return setState(testPlanRepository.findAll());
     }
 
     @Override
@@ -41,7 +41,7 @@ public class TestPlanServiceImpl implements TestPlanService {
                 ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
         List<TestPlan> allTestPlans = this.findAllTestPlans();
         allTestPlans.removeIf(testPlan -> !processUtils.isVisible(testPlan, "TestPlan"));
-        return allTestPlans;
+        return setState(allTestPlans);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class TestPlanServiceImpl implements TestPlanService {
         TestPlan testPlan = testPlanRepository.findByPid(pid);
         if (testPlan == null)
             throw new TestPlanNotFoundException(pid);
-        return testPlan;
+        return setState(testPlan);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class TestPlanServiceImpl implements TestPlanService {
         testPlan.setPid(pid);
         testPlan.setUserId(uid);
         testPlan.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
-        return testPlanRepository.save(testPlan);
+        return setState(testPlanRepository.save(testPlan));
     }
 
     @Override
@@ -69,7 +69,7 @@ public class TestPlanServiceImpl implements TestPlanService {
         record.setPid(testPlan.getPid());
         record.setProcessState(testPlan.getProcessState());
         record.setProcessInstanceId(testPlan.getProcessInstanceId());
-        return testPlanRepository.save(record);
+        return setState(testPlanRepository.save(record));
     }
 
     @Override
@@ -83,5 +83,17 @@ public class TestPlanServiceImpl implements TestPlanService {
         if (testPlan == null)
             throw new TestPlanNotFoundException(pid);
         testPlanRepository.deleteByPid(pid);
+    }
+
+    public List<TestPlan> setState(List<TestPlan> testPlans) {
+        for (TestPlan testPlan: testPlans) {
+            testPlan.setProcessState(processUtils.getProcessState(testPlan.getProcessInstanceId()));
+        }
+        return testPlans;
+    }
+
+    public TestPlan setState(TestPlan testPlan) {
+        testPlan.setProcessState(processUtils.getProcessState(testPlan.getProcessInstanceId()));
+        return testPlan;
     }
 }

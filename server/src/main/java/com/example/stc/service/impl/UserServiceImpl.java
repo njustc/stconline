@@ -29,7 +29,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final Logger logger = LoggerFactory.getLogger(EntrustServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private PasswordEncoder passwordEncoder; //security提供的加密接口，先写着，等会配置
