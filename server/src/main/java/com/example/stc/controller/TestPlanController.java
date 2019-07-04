@@ -42,7 +42,7 @@ public class TestPlanController extends BaseController {
     public @ResponseBody
     Resources<Resource<TestPlan>> getAllTestPlan() {
         // 依据当前登录的用户的权限查询能见的测试方案
-        List<Resource<TestPlan>> testPlans = testPlanService.findAllTestPlans().stream()
+        List<Resource<TestPlan>> testPlans = testPlanService.findTestPlansByAuthority().stream()
                 .map(TestPlanController::toResource)
                 .collect(Collectors.toList());
         return new Resources<>(testPlans,

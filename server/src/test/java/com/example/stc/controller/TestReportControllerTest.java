@@ -1,6 +1,8 @@
 package com.example.stc.controller;
 
 import com.example.stc.domain.TestReport;
+import com.example.stc.framework.util.AuthorityUtils;
+import com.example.stc.framework.util.ProcessUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -11,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebM
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,7 +36,10 @@ public class TestReportControllerTest {
     private TestReportController testReportController;
 
     @Autowired
-    private UserController userController;
+    private AuthorityUtils authorityUtils;
+
+    @Autowired
+    private ProcessUtils processUtils;
 
     private static final Logger logger = LoggerFactory.getLogger(TestReportControllerTest.class);
 
@@ -53,13 +59,12 @@ public class TestReportControllerTest {
     @Test
     @WithMockUser(username = "TSA", password = "tsa", roles = {"TS", "USER"})
     public void NewRepDelTest() throws Exception {
-        TestReport record = new TestReport();
-        record.setProcessInstanceId("");
-        record.setPid("pid");
-        record.setVersion("1.0");
         // 添加
-        testReportController.addNewTestReport(record);
-        TestReport testReportNew = testReportController.getOneTestReport(record.getPid()).getContent();
+        ResponseEntity<?> entity = testReportController.addNewTestReport("pid", authorityUtils.getLoginUser().getUserID());
+        Resource<TestReport> resource = (Resource<TestReport>) entity.getBody();
+        resource.getContent().setVersion("1.0");
+        testReportController.replaceTestReport(resource.getContent().getPid(), resource.getContent());
+        TestReport testReportNew = testReportController.getOneTestReport(resource.getContent().getPid()).getContent();
         assertThat(testReportNew).isNotNull();
         assertThat(testReportNew.getVersion()).isEqualTo("1.0");
         // 修改

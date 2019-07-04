@@ -32,9 +32,6 @@ public class EntrustServiceImpl implements EntrustService {
     private EntrustRepository entrustRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private DateUtils dateUtils;
 
     @Autowired
@@ -53,15 +50,18 @@ public class EntrustServiceImpl implements EntrustService {
         User curUser = authorityUtils.getLoginUser();
         logger.info("findEntrustsByAuthority: 当前登录者uid = " + curUser.getUserID() +
                 ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
-        // 若为用户，返回该用户全部委托
-        if (authorityUtils.hasAuthority(Role.Customer)) {
-            return findEntrustsByUser(curUser.getUserID());
-        }
-        // 若为工作人员，返回待审核的全部委托
-        if (authorityUtils.hasAuthority(Role.STAFF)) {
-            return findReviewEntrusts();
-        }
-        return findAllEntrusts();
+//        // 若为用户，返回该用户全部委托
+//        if (authorityUtils.hasAuthority(Role.Customer)) {
+//            return findEntrustsByUser(curUser.getUserID());
+//        }
+//        // 若为工作人员，返回待审核的全部委托
+//        if (authorityUtils.hasAuthority(Role.STAFF)) {
+//            return findReviewEntrusts();
+//        }
+//        return findAllEntrusts();
+        List<Entrust> allEntrusts = this.findAllEntrusts();
+        allEntrusts.removeIf(entrust -> !processUtils.isVisible(entrust, "Entrust"));
+        return allEntrusts;
     }
 
     @Override

@@ -298,30 +298,31 @@ class newTestReport extends PureComponent {
     console.log(form)
     
     const { dispatch } = this.props;  
-    this.state.pid = this.props.reportEdit.reportdata.pid;
+    this.state.pid = this.props.dataReport.reportdata.pid;
     form.validateFields((err,value) => {
       value.pid=this.state.pid
-      value.processInstanceID = this.props.reportEdit.reportdata.processInstanceID;
-      value.processState = this.props.reportEdit.reportdata.processState;
+      value.processInstanceID = this.props.dataReport.reportdata.processInstanceID;
+      value.processState = this.props.dataReport.reportdata.processState;
+      //console.log("验证走到这里与否");
       dispatch({
-        type: 'report-edit/queryReplaceReport',
+        type: `${namespace}/queryReplaceReport`,
         payload: value,
       });
-      console.log("finish save")
+      //console.log("finish save")
     })
   }
 
   save=(form)=>{
     const { dispatch } = this.props;
-    console.log("save",this.props.reportEdit.reportdata);
-    this.state.pid=this.props.reportEdit.reportdata.pid;
+    console.log("save",this.props.dataReport.reportdata);
+    this.state.pid=this.props.dataReport.reportdata.pid;
     if (this.state.pid=="") {
       //this.addReport(form)
     }
     else {
       console.log("报告已存在");
       console.log(this.state.pid);
-      this.savePlan(form)
+      this.saveForm(form)
     }
   };
 
@@ -823,13 +824,13 @@ class newTestReport extends PureComponent {
             <br/>
               <Row>
               <Col span={24} style={{ textAlign: 'right' }}>
-                <Button type="primary" htmlType="submit">
+                {/* <Button type="primary" htmlType="submit">
                   返回
-                </Button>
+                </Button> */}
                 <Button type="primary" style={{ marginLeft: 8 }} onClick={this.handleReset}>
                   删除
                 </Button>
-                <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>this.saveForm(this.props.form)}>
+                <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>this.save(this.props.form)}>
                   保存
                 </Button>
                 <Button type="primary" style={{ marginLeft: 8 }} onClick={this.handleReset}>

@@ -5,6 +5,7 @@ import com.example.stc.domain.*;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.ProcessUtils;
 import com.example.stc.service.*;
+import org.activiti.engine.ActivitiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,9 @@ public class ProcessServiceImpl implements ProcessService {
         switch (type) {
             case "Entrust": createEntrustProcess(pid); break;
             case "Contract": createContractProcess(pid); break;
-            default: break;
+            case "TestPlan": createTestPlanProcess(pid); break;
+            case "TestReport": createTestReportProcess(pid); break;
+            default: throw new ActivitiException("未知流程类型。");
         }
     }
 
@@ -126,8 +129,24 @@ public class ProcessServiceImpl implements ProcessService {
      * @param entity
      */
     @Override
-    public void updateProcessInstance(ProcessEntity entity) {
+    public void updateProcessInstance(ProcessEntity entity, String type) {
         stcProcessEngine.updateProcess(entity);
+        save(entity, type);
+    }
+
+    /**
+     * 保存comment
+     * @param entity
+     * @param type
+     */
+    private void save(ProcessEntity entity, String type) {
+        switch (type) {
+            case "Entrust": entrustService.updateEntrust(entity.getPid(), (Entrust)entity); break;
+            case "Contract": contractService.updateContract(entity.getPid(), (Contract)entity); break;
+            case "TestPlan": testPlanService.updateTestPlan(entity.getPid(), (TestPlan)entity); break;
+            case "TestReport": testReportService.updateTestReport(entity.getPid(), (TestReport)entity); break;
+            default: throw new ActivitiException("未知流程类型。");
+        }
     }
 
 }

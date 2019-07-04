@@ -51,7 +51,7 @@ public class ProcessUtils {
      * // @throws Exception 获取流程实例状态失败
      */
     public String getProcessState(String processInstanceId) {
-        if (processInstanceId.equals("")) {
+        if (processInstanceId == null || processInstanceId.equals("")) {
             return "Submit";
         }
 
@@ -160,7 +160,7 @@ public class ProcessUtils {
             /** 尚未提交，此时能见者为：规定能够建立该流程的人 */
             switch (type) {
                 case "Entrust": return user.getUserID().equals(entity.getUserId());
-                case "Contrust": return checkUser("STAFF", user.getUserID());
+                case "Contract": return checkUser("STAFF", user.getUserID());
                 case "TestPlan":
                 case "TestReport": return checkUser("TS", user.getUserID());
                 default: return false;
@@ -177,7 +177,7 @@ public class ProcessUtils {
                     }
                     return result;
                 case "Approve":
-                    return (checkUser("STAFF", user.getUserID()));
+                    return (user.getUserID().equals(entity.getUserId()) || checkUser("STAFF", user.getUserID()));
                 default: return false;
             }
         }

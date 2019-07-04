@@ -13,6 +13,11 @@ public interface TestPlanService extends BaseService<TestPlan> {
     List<TestPlan> findAllTestPlans();
 
     /**
+     * 获取全部可见的测试方案
+     */
+    List<TestPlan> findTestPlansByAuthority();
+
+    /**
      * 通过pid获取单个项目的测试方案
      */
     TestPlan findTestPlanByPid(String pid);
