@@ -35,12 +35,14 @@ export default class report_detail extends React.Component{
 
         <Card>
           <h2>软件委托测试报告</h2>
+          <p>项目编号：<FormattedMessage id={this.props.reportdata.data.codeId || ' '}/></p>
+
           <p>软件名称：<FormattedMessage id={this.props.reportdata.data.softwareName || ' '}/></p>
           <p>版本号：<FormattedMessage id={this.props.reportdata.data.version || ' '}/></p>
           <p>委托单位：<FormattedMessage id={this.props.reportdata.data.clientCompany || ' '}/></p>
           <p>测试类别：<FormattedMessage id={this.props.reportdata.data.testType || ' '}/></p>
           <p>报告日期：<FormattedMessage id={this.props.reportdata.data.reportDate || ' '}/></p>
-          <p>项目编号：<FormattedMessage id={this.props.reportdata.data.codeId || ' '}/></p>
+          
           <p>样品名称：<FormattedMessage id={this.props.reportdata.data.sampleName || ' '}/></p>
           <p>采样日期：<FormattedMessage id={this.props.reportdata.data.sampleDate || ' '}/></p>
           <p>测试日期：<FormattedMessage id={this.props.reportdata.data.testDate || ' '}/></p>
