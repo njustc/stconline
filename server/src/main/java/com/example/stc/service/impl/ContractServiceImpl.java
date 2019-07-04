@@ -125,7 +125,7 @@ public class ContractServiceImpl implements ContractService{
     }
 
     @Override
-    public Contract newContractAuto(String pid, String uid) {
+    public Contract newContract(String pid, String uid) {
         logger.info("newContractAuto: ");
         Contract contract = new Contract();
         contract.setPid(pid);

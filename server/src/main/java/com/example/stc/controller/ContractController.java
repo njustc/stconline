@@ -70,10 +70,10 @@ public class ContractController extends BaseController {
      * 新建合同
      */
     @Secured({"ROLE_SS"}) // 市场部工作人员
-    @PostMapping(path = "/contract")
+    @PostMapping(path = "/contract/{pid}")
     public @ResponseBody
-    ResponseEntity<?> addNewContract(@RequestBody Contract contract) throws URISyntaxException {
-        Resource<Contract> resource = toResource(contractService.newContract(contract));
+    ResponseEntity<?> addNewContract(@PathVariable String pid, @RequestParam String uid) throws URISyntaxException {
+        Resource<Contract> resource = toResource(contractService.newContract(pid, uid));
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 

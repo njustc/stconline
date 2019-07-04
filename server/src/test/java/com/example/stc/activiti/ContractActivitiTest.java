@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.hateoas.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -34,16 +36,15 @@ public class ContractActivitiTest {
      * 合同相关的增删改查测试
      */
     @Test
-    @WithMockUser(username = "TSA", password = "tsa", roles = {"USER", "USER", "SS"})
+    @WithMockUser(username = "SSA", password = "ssa", roles = {"USER", "STAFF", "SS"})
     public void NewRepDelTest() throws Exception {
-        Contract contract = new Contract();     //新建合同
-        contract.setPid("pid");
-        contract.setProcessInstanceID("");
-        contract.setPrice("3");
         //add
-        contractController.addNewContract(contract);
-        contract =
-                contractController.getOneContract(contract.getPid()).getContent();
+        ResponseEntity<?> entity = contractController.addNewContract("pid", "u20190605134833");
+        Resource<Contract> resource = (Resource<Contract>) entity.getBody();
+        Contract contract = resource.getContent();
+        contract.setPrice("3");
+        contractController.replaceContract(contract.getPid(), contract);
+        contract = contractController.getOneContract(contract.getPid()).getContent();
         assertThat(contract).isNotNull();
         assertThat(contract.getPrice()).isEqualTo("3");
         //modify

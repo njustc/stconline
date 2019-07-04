@@ -236,11 +236,6 @@ public class Entrust extends ProcessEntity {
      */
     private String checkSample;
 
-    /**
-     * 用户信息
-     */
-    private String userId;
-
     public String getTestType() {
         return testType;
     }
@@ -605,11 +600,4 @@ public class Entrust extends ProcessEntity {
         this.checkSample = checkSample;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 }

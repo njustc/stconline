@@ -18,6 +18,9 @@ public class ProcessEntity extends BaseEntity{
     @Column
     private String pid;
 
+    @Column
+    private String userId;
+
     @Column(name = "OPERATION")
     private String operation;
 
@@ -59,6 +62,13 @@ public class ProcessEntity extends BaseEntity{
         this.pid = pid;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
     public String getComment() {
         return comment;
     }

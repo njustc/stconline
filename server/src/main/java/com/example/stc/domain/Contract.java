@@ -187,11 +187,6 @@ public class Contract extends ProcessEntity {
     @Column(name = "CONTRACTBODY")
     private String contractBody;
 
-    /**
-     * 用户信息
-     */
-    private String userId;
-
     public String getClient() {
         return client;
     }
@@ -424,11 +419,4 @@ public class Contract extends ProcessEntity {
         this.contractBody = contractBody;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 }
