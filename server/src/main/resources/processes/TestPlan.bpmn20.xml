@@ -1,32 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1561953808560" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
-  <process id="myProcess_1" isClosed="false" isExecutable="true" processType="None">
-    <startEvent id="start" name="Start"/>
-    <userTask activiti:exclusive="true" id="QMTestPlanReview" name="QMReviewTestPlan"/>
-    <userTask activiti:exclusive="true" id="TMTestPlanApprove" name="TMApproveTestPlan"/>
-    <userTask activiti:exclusive="true" id="TSTestPlanSubmit" name="TSSubmitTestPlan"/>
+  <process id="TestPlan" isClosed="false" isExecutable="true" processType="None">
+    <startEvent id="start" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="TestPlanID" name="ID of test plan" required="true" type="string"/>
+      </extensionElements>
+    </startEvent>
+    <userTask activiti:exclusive="true" id="QMTestPlanReview" name="QMReviewTestPlan" activiti:candidateGroups="QM">
+      <extensionElements>
+        <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
+        <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
+        <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
+      </extensionElements>
+    </userTask>
+    <userTask activiti:exclusive="true" id="TMTestPlanApprove" name="TMApproveTestPlan" activiti:candidateGroups="TM">
+      <extensionElements>
+        <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
+        <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
+        <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
+      </extensionElements>
+    </userTask>
+    <userTask activiti:exclusive="true" id="TSTestPlanSubmit" name="TSSubmitTestPlan" activiti:candidateGroups="TS">
+      <extensionElements>
+        <activiti:formProperty id="taskType" name="Submit" type="string" value="Submit"/>
+      </extensionElements>
+    </userTask>
     <exclusiveGateway gatewayDirection="Unspecified" id="QMReviewGate" name="QMReviewGate"/>
     <exclusiveGateway gatewayDirection="Unspecified" id="TMApproveGate" name="TMApproveGate"/>
     <endEvent id="end" name="End"/>
     <sequenceFlow id="_9" sourceRef="start" targetRef="QMTestPlanReview"/>
     <sequenceFlow id="_10" sourceRef="QMTestPlanReview" targetRef="QMReviewGate"/>
     <sequenceFlow id="_11" name="通过" sourceRef="QMReviewGate" targetRef="TMTestPlanApprove">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewTestPlanResult == 'ReviewPass'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ReviewResult == 'ReviewPass'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="_12" sourceRef="TMTestPlanApprove" targetRef="TMApproveGate"/>
     <sequenceFlow id="_13" name="通过" sourceRef="TMApproveGate" targetRef="end">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${approveTestPlanResult == 'ReviewPass'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ReviewResult == 'ReviewPass'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="_14" name="不通过" sourceRef="QMReviewGate" targetRef="TSTestPlanSubmit">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewTestPlanResult == 'ReviewDisprove'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ReviewResult == 'ReviewDisprove'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="_15" name="不通过" sourceRef="TMApproveGate" targetRef="TSTestPlanSubmit">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${approveTestPlanResult == 'ReviewDisprove'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ReviewResult == 'ReviewDisprove'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="_16" sourceRef="TSTestPlanSubmit" targetRef="QMTestPlanReview"/>
   </process>
   <bpmndi:BPMNDiagram documentation="background=#3C3F41;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
-    <bpmndi:BPMNPlane bpmnElement="myProcess_1">
+    <bpmndi:BPMNPlane bpmnElement="TestPlan">
       <bpmndi:BPMNShape bpmnElement="start" id="Shape-start">
         <omgdc:Bounds height="32.0" width="32.0" x="210.0" y="20.0"/>
         <bpmndi:BPMNLabel>
