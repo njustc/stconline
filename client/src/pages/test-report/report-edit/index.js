@@ -390,7 +390,7 @@ class newTestReport extends PureComponent {
                     ],
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
-                <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.sampleName"/>}>
+              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.sampleName"/>}>
                   {getFieldDecorator('sampleName', {
                     initialValue: this.props.dataReport.reportdata.sampleName || '',
                   }, {
@@ -402,7 +402,7 @@ class newTestReport extends PureComponent {
                     ],
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
-                <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.samplingDate"/>}>
+              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.samplingDate"/>}>
                   {getFieldDecorator('samplingDate', {
                     initialValue: this.props.dataReport.reportdata.sampleDate|| '',
                   }, {
@@ -414,7 +414,7 @@ class newTestReport extends PureComponent {
                     ],
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
-                <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.testDate"/>}>
+              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.testDate"/>}>
                   {getFieldDecorator('testDate', {
                     initialValue: this.props.dataReport.reportdata.testDate|| '',
                   }, {
@@ -430,7 +430,7 @@ class newTestReport extends PureComponent {
               <Col span={12} style={{display:"block"}}>
               <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.unitc"/>}>
                   {getFieldDecorator('unitc', {
-                    initialValue: this.props.dataReport.reportdata.sampleSate || '',
+                    initialValue: this.props.dataReport.reportdata.clientCompany || '',
                   }, {
                     rules: [
                       {
@@ -440,7 +440,7 @@ class newTestReport extends PureComponent {
                     ],
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
-                <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.version"/>}>
+              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.version"/>}>
                   {getFieldDecorator('version', {
                     initialValue: this.props.dataReport.reportdata.version || '',
                   }, {
@@ -452,7 +452,7 @@ class newTestReport extends PureComponent {
                     ],
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
-                <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.testType"/>}>
+              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.testType"/>}>
                   {getFieldDecorator('testType', {
                     initialValue: this.props.dataReport.reportdata.testType || '',
                   }, {
@@ -464,7 +464,7 @@ class newTestReport extends PureComponent {
                     ],
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
-                <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.testBasic"/>}>
+              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.testBasic"/>}>
                   {getFieldDecorator('testBasic', {
                     initialValue: this.props.dataReport.reportdata.testBasis || '',
                   }, {
@@ -548,7 +548,7 @@ class newTestReport extends PureComponent {
                 <Col span={12} style={{display:"block"}}>
                     <FormItem {...formItemLayout2} label={<FormattedMessage id="new-test-report.date"/>}>
                       {getFieldDecorator('date-auditor', {
-                        initialValue: this.props.dataReport.reportdata.auditor || '',
+                        initialValue: this.props.dataReport.reportdata.auditorDate || '',
                       }, {
                         rules: [
                           {
@@ -565,7 +565,7 @@ class newTestReport extends PureComponent {
                 <Col span={12} style={{display:"block"}}>
                     <FormItem {...formItemLayout1} label={<FormattedMessage id="new-test-report.approver"/>}>
                       {getFieldDecorator('approver', {
-                        initialValue: this.props.dataReport.reportdata.autosize || '',
+                        initialValue: this.props.dataReport.reportdata.approver || '',
                       }, {
                         rules: [
                           {
@@ -580,7 +580,7 @@ class newTestReport extends PureComponent {
                 <Col span={12} style={{display:"block"}}>
                     <FormItem {...formItemLayout2} label={<FormattedMessage id="new-test-report.date"/>}>
                       {getFieldDecorator('date-approver', {
-                        initialValue: this.props.dataReport.reportdata.auditor || '',
+                        initialValue: this.props.dataReport.reportdata.approverDate || '',
                       }, {
                         rules: [
                           {
@@ -602,7 +602,7 @@ class newTestReport extends PureComponent {
               </FormItem>
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.phone.label"/>}>
                   {getFieldDecorator('unitc-phone', {
-                    initialValue: this.props.dataReport.reportdata.auditor || '',
+                    initialValue: this.props.dataReport.reportdata.clientTel || '',
                   }, {
                     rules: [
                       {
@@ -614,7 +614,7 @@ class newTestReport extends PureComponent {
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.fax.label"/>}>
                   {getFieldDecorator('unitc-fax', {
-                    initialValue: this.props.dataReport.reportdata.auditor || '',
+                    initialValue: this.props.dataReport.reportdata.clientFax || '',
                   }, {
                     rules: [
                       {
@@ -626,7 +626,7 @@ class newTestReport extends PureComponent {
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.address.label"/>}>
                   {getFieldDecorator('unitc-address', {
-                    initialValue: this.props.dataReport.reportdata.auditor || '',
+                    initialValue: this.props.dataReport.reportdata.clientAddr || '',
                   }, {
                     rules: [
                       {
@@ -638,7 +638,7 @@ class newTestReport extends PureComponent {
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.postcode.label"/>}>
                   {getFieldDecorator('unitc-postcode', {
-                    initialValue: this.props.dataReport.reportdata.auditor || '',
+                    initialValue: this.props.dataReport.reportdata.clientPostCode|| '',
                   }, {
                     rules: [
                       {
@@ -650,7 +650,7 @@ class newTestReport extends PureComponent {
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.contactor.label"/>}>
                   {getFieldDecorator('unitc-contactor', {
-                    initialValue: this.props.dataReport.reportdata.auditor || '',
+                    initialValue: this.props.dataReport.reportdata.clientContact || '',
                   }, {
                     rules: [
                       {
@@ -662,7 +662,7 @@ class newTestReport extends PureComponent {
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.email.label"/>}>
                   {getFieldDecorator('unitc-email', {
-                    initialValue: this.props.dataReport.reportdata.auditor || '',
+                    initialValue: this.props.dataReport.reportdata.clientEmail || '',
                   }, {
                     rules: [
                       {

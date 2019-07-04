@@ -4,7 +4,7 @@ export default {
   'new-test-report.basic.description':'一段说明',
   'new-test-report.basic.input':'请输入',
   'new-test-report.itemNumber':'项目编号',
-  'new-test-report.sampleName':'样品名称',
+  'new-test-report.sampleName':'样品名称555',
   'new-test-report.samplingDate':'采样日期',
   'new-test-report.testDate':'测试日期',
   'new-test-report.unitc':'委托单位',

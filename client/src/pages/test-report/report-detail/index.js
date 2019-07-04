@@ -88,6 +88,7 @@ export default class report_detail extends React.Component{
               <Button
               style={{marginLeft: 20}}
               type="danger"
+              
               >拒绝</Button>
             </div>,
 
