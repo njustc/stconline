@@ -20,7 +20,8 @@ import {
   Row,
   Col,
   Divider,
-  BackTop
+  BackTop,
+  Affix
 } from 'antd';
 import Link from 'umi/link'
 import PageHeaderWrapper from './components/PageHeaderWrapper';
@@ -74,6 +75,10 @@ const mapDispatchToProps = (dispatch) => {
 }))
 @Form.create()
 class BasicForm extends PureComponent {
+  state = {
+    bottom: 10,
+  };
+
   constructor(props) {
     super(props)
     this.state = {
@@ -218,7 +223,7 @@ class BasicForm extends PureComponent {
     const {
       form: {getFieldDecorator, getFieldValue},
     } = this.props;
-
+    const state = this.state;
     const formItemLayout = {
       labelCol: {
         xs: {span: 24},
@@ -257,8 +262,6 @@ class BasicForm extends PureComponent {
           <Form onSubmit={this.handleSubmit}
                 className={style.antForm}
           >
-            <Card bordered={false}
-            >
               <div>
                 <h2>基本信息</h2>
                 <Divider/>
@@ -1150,252 +1153,252 @@ class BasicForm extends PureComponent {
                 <div>
                   <h2>委托单位信息</h2>
                   <Divider/>
-                  <Form onSubmit={this.handleSubmit} hideRequiredMark style={{marginTop: 8}}>
-                    <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.phone.label"/>}>
-                      {getFieldDecorator('infoPhone', {
-                        initialValue: this.props.entrustdata.data.infoTE || '',
-                      }, {
-                        rules: [
-                          {
-                            required: true,
-                            message: formatMessage({id: 'basic-form.cusInfo.phone.required'}),
-                          },
-                        ],
-                      })(<Input/>)}
-                    </FormItem>
-                    <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.fax.label"/>}>
-                      {getFieldDecorator('infoFAX', {
-                        initialValue: this.props.entrustdata.data.infoFAX || '',
-                      }, {
-                        rules: [
-                          {
-                            required: true,
-                            message: formatMessage({id: 'basic-form.fax.required'}),
-                          },
-                        ],
-                      })(<Input/>)}
-                    </FormItem>
-                    <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.address.label"/>}>
-                      {getFieldDecorator('infoAddr', {
-                        initialValue: this.props.entrustdata.data.infoAddr || '',
-                      }, {
-                        rules: [
-                          {
-                            required: true,
-                            message: formatMessage({id: 'basic-form.cusInfo.address.required'}),
-                          },
-                        ],
-                      })(<Input/>)}
-                    </FormItem>
-                    <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.postcode.label"/>}>
-                      {getFieldDecorator('infoPostcode', {
-                        initialValue: this.props.entrustdata.data.infoPostcode || '',
-                      }, {
-                        rules: [
-                          {
-                            required: true,
-                            message: formatMessage({id: 'basic-form.cusInfo.postcode.required'}),
-                          },
-                        ],
-                      })(<Input/>)}
-                    </FormItem>
-                    <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.contactor.label"/>}>
-                      {getFieldDecorator('infoName', {
-                        initialValue: this.props.entrustdata.data.infoName || '',
-                      }, {
-                        rules: [
-                          {
-                            required: true,
-                            message: formatMessage({id: 'basic-form.cusInfo.contactor.required'}),
-                          },
-                        ],
-                      })(<Input/>)}
-                    </FormItem>
-                    <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.tel.label"/>}>
-                      {getFieldDecorator('infoTEL', {
-                        initialValue: this.props.entrustdata.data.infoTEL || '',
-                      }, {
-                        rules: [
-                          {
-                            required: true,
-                            message: formatMessage({id: 'basic-form.cusInfo.tel.required'}),
-                          },
-                        ],
-                      })(<Input/>)}
-                    </FormItem>
-                    <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.email.label"/>}>
-                      {getFieldDecorator('infoEmail', {
-                        initialValue: this.props.entrustdata.data.infoEmail || '',
-                      }, {
-                        rules: [
-                          {
-                            required: true,
-                            message: formatMessage({id: 'basic-form.cusInfo.email.required'}),
-                          },
-                        ],
-                      })(<Input/>)}
-                    </FormItem>
-                    <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.url.label"/>}>
-                      {getFieldDecorator('infoURL', {
-                        initialValue: this.props.entrustdata.data.infoURL || '',
-                      }, {
-                        rules: [
-                          {
-                            required: true,
-                            message: formatMessage({id: 'basic-form.cusInfo.url.required'}),
-                          },
-                        ],
-                      })(<Input placeholder={formatMessage({id: 'basic-form.cusInfo.url.placeholder'})}/>)}
-                    </FormItem>
+                  <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.phone.label"/>}>
+                    {getFieldDecorator('infoPhone', {
+                      initialValue: this.props.entrustdata.data.infoTE || '',
+                    }, {
+                      rules: [
+                        {
+                          required: true,
+                          message: formatMessage({id: 'basic-form.cusInfo.phone.required'}),
+                        },
+                      ],
+                    })(<Input/>)}
+                  </FormItem>
+                  <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.fax.label"/>}>
+                    {getFieldDecorator('infoFAX', {
+                      initialValue: this.props.entrustdata.data.infoFAX || '',
+                    }, {
+                      rules: [
+                        {
+                          required: true,
+                          message: formatMessage({id: 'basic-form.fax.required'}),
+                        },
+                      ],
+                    })(<Input/>)}
+                  </FormItem>
+                  <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.address.label"/>}>
+                    {getFieldDecorator('infoAddr', {
+                      initialValue: this.props.entrustdata.data.infoAddr || '',
+                    }, {
+                      rules: [
+                        {
+                          required: true,
+                          message: formatMessage({id: 'basic-form.cusInfo.address.required'}),
+                        },
+                      ],
+                    })(<Input/>)}
+                  </FormItem>
+                  <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.postcode.label"/>}>
+                    {getFieldDecorator('infoPostcode', {
+                      initialValue: this.props.entrustdata.data.infoPostcode || '',
+                    }, {
+                      rules: [
+                        {
+                          required: true,
+                          message: formatMessage({id: 'basic-form.cusInfo.postcode.required'}),
+                        },
+                      ],
+                    })(<Input/>)}
+                  </FormItem>
+                  <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.contactor.label"/>}>
+                    {getFieldDecorator('infoName', {
+                      initialValue: this.props.entrustdata.data.infoName || '',
+                    }, {
+                      rules: [
+                        {
+                          required: true,
+                          message: formatMessage({id: 'basic-form.cusInfo.contactor.required'}),
+                        },
+                      ],
+                    })(<Input/>)}
+                  </FormItem>
+                  <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.tel.label"/>}>
+                    {getFieldDecorator('infoTEL', {
+                      initialValue: this.props.entrustdata.data.infoTEL || '',
+                    }, {
+                      rules: [
+                        {
+                          required: true,
+                          message: formatMessage({id: 'basic-form.cusInfo.tel.required'}),
+                        },
+                      ],
+                    })(<Input/>)}
+                  </FormItem>
+                  <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.email.label"/>}>
+                    {getFieldDecorator('infoEmail', {
+                      initialValue: this.props.entrustdata.data.infoEmail || '',
+                    }, {
+                      rules: [
+                        {
+                          required: true,
+                          message: formatMessage({id: 'basic-form.cusInfo.email.required'}),
+                        },
+                      ],
+                    })(<Input/>)}
+                  </FormItem>
+                  <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.url.label"/>}>
+                    {getFieldDecorator('infoURL', {
+                      initialValue: this.props.entrustdata.data.infoURL || '',
+                    }, {
+                      rules: [
+                        {
+                          required: true,
+                          message: formatMessage({id: 'basic-form.cusInfo.url.required'}),
+                        },
+                      ],
+                    })(<Input placeholder={formatMessage({id: 'basic-form.cusInfo.url.placeholder'})}/>)}
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label={<FormattedMessage id="basic-form.others.SecLev.label"/>}
+                  >
+                    <div>
+                      {getFieldDecorator('encryptionLev', {
+                        initialValue: this.props.entrustdata.data.encryptionLev || 'basic-form.others.SecLev.public',
+                      })(
+                        <Radio.Group>
+                          <Radio value="basic-form.others.SecLev.public">
+                            <FormattedMessage id="basic-form.others.SecLev.public"/>
+                          </Radio>
+                          <Radio value="basic-form.others.SecLev.partially-public">
+                            <FormattedMessage id="basic-form.others.SecLev.partially-public"/>
+                          </Radio>
+                          <Radio value="basic-form.others.SecLev.private">
+                            <FormattedMessage id="basic-form.others.SecLev.private"/>
+                          </Radio>
+                        </Radio.Group>
+                      )}
+                    </div>
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label={<FormattedMessage id="basic-form.others.viruses.label"/>}
+                  >
+                    <div>
+                      {getFieldDecorator('antiVirus', {
+                        initialValue: this.props.entrustdata.data.antiVirus || 'basic-form.others.viruses.complete',
+                      })(
+                        <Radio.Group>
+                          <Radio value="basic-form.others.viruses.complete">
+                            <FormattedMessage id="basic-form.others.viruses.complete"/>
+                          </Radio>
+                          <Radio value="basic-form.others.viruses.cannot">
+                            <FormattedMessage id="basic-form.others.viruses.cannot"/>
+                          </Radio>
+                        </Radio.Group>
+                      )}
+                    </div>
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label={<FormattedMessage id="basic-form.others.tsample.label"/>}
+                  >
+                    {/*<div>*/}
+                    {/*  {getFieldDecorator('checkSample', {*/}
+                    {/*    initialValue: this.props.entrustdata.data.checkSample || 'basic-form.others.tsample.code',*/}
+                    {/*  })(*/}
+                    {/*    <Radio.Group>*/}
+                    {/*      <Radio value="basic-form.others.tsample.code">*/}
+                    {/*        <FormattedMessage id="basic-form.others.tsample.code"/>*/}
+                    {/*      </Radio>*/}
+                    {/*      <Radio value="basic-form.others.tsample.exe">*/}
+                    {/*        <FormattedMessage id="basic-form.others.tsample.exe"/>*/}
+                    {/*      </Radio>*/}
+                    {/*    </Radio.Group>*/}
+                    {/*  )}*/}
+                    {/*</div>*/}
+                    <div>
+                      {getFieldDecorator('checkSample', {
+                          initialValue: this.props.entrustdata.data.checkSample || '',
+                        }
+                      )(
+                        <Checkbox.Group style={{width: '100%'}}>
+                          <Row>
+                            <Col span={8}>
+                              <Checkbox value="basic-form.others.tsample.code">
+                                <FormattedMessage id="basic-form.others.tsample.code"/>
+                              </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                              <Checkbox value="basic-form.others.tsample.exe">
+                                <FormattedMessage id="basic-form.others.tsample.exe"/>
+                              </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                              <Checkbox value="basic-form.others.reqword.plan">
+                                <FormattedMessage id="basic-form.others.reqword.plan"/>
+                              </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                              <Checkbox value="basic-form.others.reqword.report">
+                                <FormattedMessage id="basic-form.others.reqword.report"/>
+                              </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                              <Checkbox value="basic-form.others.reqword.contract">
+                                <FormattedMessage id="basic-form.others.reqword.contract"/>
+                              </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                              <Checkbox value="basic-form.others.userword.book">
+                                <FormattedMessage id="basic-form.others.userword.book"/>
+                              </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                              <Checkbox value="basic-form.others.userword.guide">
+                                <FormattedMessage id="basic-form.others.userword.guide"/>
+                              </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                              <Checkbox value="basic-form.others.opword.book1">
+                                <FormattedMessage id="basic-form.others.opword.book1"/>
+                              </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                              <Checkbox value="basic-form.others.opword.book2">
+                                <FormattedMessage id="basic-form.others.opword.book2"/>
+                              </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                              <Checkbox value="basic-form.others.opword.book3">
+                                <FormattedMessage id="basic-form.others.opword.book3"/>
+                              </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                              <Checkbox value="basic-form.others.opword.book4">
+                                <FormattedMessage id="basic-form.others.opword.book4"/>
+                              </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                              <Checkbox value="basic-form.others.opword.book1">
+                                <FormattedMessage id="basic-form.others.opword.book1"/>
+                              </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                              <Checkbox value="basic-form.checko.label">
+                                <FormattedMessage id="basic-form.checko.label"/>
+                              </Checkbox>
+                            </Col>
+                          </Row>
+                        </Checkbox.Group>,
+                      )}
+                    </div>
 
-                    <FormItem
-                      {...formItemLayout}
-                      label={<FormattedMessage id="basic-form.others.SecLev.label"/>}
-                    >
-                      <div>
-                        {getFieldDecorator('encryptionLev', {
-                          initialValue: this.props.entrustdata.data.encryptionLev || 'basic-form.others.SecLev.public',
-                        })(
-                          <Radio.Group>
-                            <Radio value="basic-form.others.SecLev.public">
-                              <FormattedMessage id="basic-form.others.SecLev.public"/>
-                            </Radio>
-                            <Radio value="basic-form.others.SecLev.partially-public">
-                              <FormattedMessage id="basic-form.others.SecLev.partially-public"/>
-                            </Radio>
-                            <Radio value="basic-form.others.SecLev.private">
-                              <FormattedMessage id="basic-form.others.SecLev.private"/>
-                            </Radio>
-                          </Radio.Group>
-                        )}
-                      </div>
-                    </FormItem>
-                    <FormItem
-                      {...formItemLayout}
-                      label={<FormattedMessage id="basic-form.others.viruses.label"/>}
-                    >
-                      <div>
-                        {getFieldDecorator('antiVirus', {
-                          initialValue: this.props.entrustdata.data.antiVirus || 'basic-form.others.viruses.complete',
-                        })(
-                          <Radio.Group>
-                            <Radio value="basic-form.others.viruses.complete">
-                              <FormattedMessage id="basic-form.others.viruses.complete"/>
-                            </Radio>
-                            <Radio value="basic-form.others.viruses.cannot">
-                              <FormattedMessage id="basic-form.others.viruses.cannot"/>
-                            </Radio>
-                          </Radio.Group>
-                        )}
-                      </div>
-                    </FormItem>
-                    <FormItem
-                      {...formItemLayout}
-                      label={<FormattedMessage id="basic-form.others.tsample.label"/>}
-                    >
-                      {/*<div>*/}
-                      {/*  {getFieldDecorator('checkSample', {*/}
-                      {/*    initialValue: this.props.entrustdata.data.checkSample || 'basic-form.others.tsample.code',*/}
-                      {/*  })(*/}
-                      {/*    <Radio.Group>*/}
-                      {/*      <Radio value="basic-form.others.tsample.code">*/}
-                      {/*        <FormattedMessage id="basic-form.others.tsample.code"/>*/}
-                      {/*      </Radio>*/}
-                      {/*      <Radio value="basic-form.others.tsample.exe">*/}
-                      {/*        <FormattedMessage id="basic-form.others.tsample.exe"/>*/}
-                      {/*      </Radio>*/}
-                      {/*    </Radio.Group>*/}
-                      {/*  )}*/}
-                      {/*</div>*/}
-                      <div>
-                        {getFieldDecorator('checkSample', {
-                            initialValue: this.props.entrustdata.data.checkSample || '',
-                          }
-                        )(
-                          <Checkbox.Group style={{width: '100%'}}>
-                            <Row>
-                              <Col span={8}>
-                                <Checkbox value="basic-form.others.tsample.code">
-                                  <FormattedMessage id="basic-form.others.tsample.code"/>
-                                </Checkbox>
-                              </Col>
-                              <Col span={8}>
-                                <Checkbox value="basic-form.others.tsample.exe">
-                                  <FormattedMessage id="basic-form.others.tsample.exe"/>
-                                </Checkbox>
-                              </Col>
-                              <Col span={8}>
-                                <Checkbox value="basic-form.others.reqword.plan">
-                                  <FormattedMessage id="basic-form.others.reqword.plan"/>
-                                </Checkbox>
-                              </Col>
-                              <Col span={8}>
-                                <Checkbox value="basic-form.others.reqword.report">
-                                  <FormattedMessage id="basic-form.others.reqword.report"/>
-                                </Checkbox>
-                              </Col>
-                              <Col span={8}>
-                                <Checkbox value="basic-form.others.reqword.contract">
-                                  <FormattedMessage id="basic-form.others.reqword.contract"/>
-                                </Checkbox>
-                              </Col>
-                              <Col span={8}>
-                                <Checkbox value="basic-form.others.userword.book">
-                                  <FormattedMessage id="basic-form.others.userword.book"/>
-                                </Checkbox>
-                              </Col>
-                              <Col span={8}>
-                                <Checkbox value="basic-form.others.userword.guide">
-                                  <FormattedMessage id="basic-form.others.userword.guide"/>
-                                </Checkbox>
-                              </Col>
-                              <Col span={8}>
-                                <Checkbox value="basic-form.others.opword.book1">
-                                  <FormattedMessage id="basic-form.others.opword.book1"/>
-                                </Checkbox>
-                              </Col>
-                              <Col span={8}>
-                                <Checkbox value="basic-form.others.opword.book2">
-                                  <FormattedMessage id="basic-form.others.opword.book2"/>
-                                </Checkbox>
-                              </Col>
-                              <Col span={8}>
-                                <Checkbox value="basic-form.others.opword.book3">
-                                  <FormattedMessage id="basic-form.others.opword.book3"/>
-                                </Checkbox>
-                              </Col>
-                              <Col span={8}>
-                                <Checkbox value="basic-form.others.opword.book4">
-                                  <FormattedMessage id="basic-form.others.opword.book4"/>
-                                </Checkbox>
-                              </Col>
-                              <Col span={8}>
-                                <Checkbox value="basic-form.others.opword.book1">
-                                  <FormattedMessage id="basic-form.others.opword.book1"/>
-                                </Checkbox>
-                              </Col>
-                              <Col span={8}>
-                                <Checkbox value="basic-form.checko.label">
-                                  <FormattedMessage id="basic-form.checko.label"/>
-                                </Checkbox>
-                              </Col>
-                            </Row>
-                          </Checkbox.Group>,
-                        )}
-                      </div>
-
-                    </FormItem>
-                    {/*文件上传*/}
-                    <Dragger {...props}>
-                      <p className="提交栏">
-                        <Icon type="inbox"/>
-                      </p>
-                      <p className="ant-upload-text">点击或者拖拽文件到这里进行上传</p>
-                      <p className="ant-upload-hint">
-                        Support for a single or bulk upload. Strictly prohibit from uploading company data or other
-                        band files
-                      </p>
-                    </Dragger>
+                  </FormItem>
+                  {/*文件上传*/}
+                  <Dragger {...props}>
+                    <p className="提交栏">
+                      <Icon type="inbox"/>
+                    </p>
+                    <p className="ant-upload-text">点击或者拖拽文件到这里进行上传</p>
+                    <p className="ant-upload-hint">
+                      Support for a single or bulk upload. Strictly prohibit from uploading company data or other
+                      band files
+                    </p>
+                  </Dragger>
+                  <Affix offsetBottom={0}
+                         onChange={affixed => console.log(affixed)}>
                     <div className={style.submitBtns}>
                       <Button type="primary" onClick={() => {
                         this.showConfirm(this.props.form)
@@ -1414,16 +1417,16 @@ class BasicForm extends PureComponent {
                         <FormattedMessage id="basic-form.form.delete"/>
                       </Button>
                     </div>
-                  </Form>
+                  </Affix>
                 </div>
               </div>
-            </Card>
           </Form>
         </div>
         <div>
-          <BackTop/>
+          <BackTop visibilityHeight={300}/>
           <strong style={{color: 'rgba(64, 64, 64, 0.6)'}}> </strong>
         </div>
+
       </div>
     );
   }
