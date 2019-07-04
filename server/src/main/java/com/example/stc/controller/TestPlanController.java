@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -76,6 +77,7 @@ public class TestPlanController extends BaseController {
      *
      * @throws URISyntaxException
      */
+    @Secured({"ROLE_TS"}) // 测试部工作人员
     @PutMapping(path = "/testplan/{pid}")
     public @ResponseBody
     ResponseEntity<?> replaceTestPlan(@PathVariable String pid, @RequestBody TestPlan testPlan) throws URISyntaxException {

@@ -7,6 +7,8 @@ import com.example.stc.framework.util.CookieUtils;
 import com.example.stc.framework.util.DateUtils;
 import com.example.stc.repository.UserRepository;
 import com.example.stc.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +28,8 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private final Logger logger = LoggerFactory.getLogger(EntrustServiceImpl.class);
 
     @Autowired
     private PasswordEncoder passwordEncoder; //security提供的加密接口，先写着，等会配置
@@ -54,6 +58,9 @@ public class UserServiceImpl implements UserService {
     public List<User> findUserByRoles(String role) {
         List<User> allUsers = userRepository.findAll();
         allUsers.removeIf(user -> !user.getRoles().contains(role));
+        logger.info("findUserByRoles: role = " + role);
+        for (User user: allUsers)
+            logger.info("find " + user.getUserID() + ": " + user.getUsername() + ", role = " + user.getRoles());
         return allUsers;
     }
 

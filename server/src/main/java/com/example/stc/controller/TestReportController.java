@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -42,7 +43,7 @@ public class TestReportController extends BaseController {
     public @ResponseBody
     Resources<Resource<TestReport>> getAllTestReport() {
         // 依据当前登录的用户的权限查询能见的测试报告
-        List<Resource<TestReport>> testReports = testReportService.findAllTestReports().stream()
+        List<Resource<TestReport>> testReports = testReportService.findTestReportsByAuthority().stream()
                 .map(TestReportController::toResource)
                 .collect(Collectors.toList());
         return new Resources<>(testReports,
@@ -74,6 +75,7 @@ public class TestReportController extends BaseController {
      * 修改单个测试报告
      * @throws URISyntaxException
      */
+    @Secured({"ROLE_TS"}) // 测试部工作人员
     @PutMapping(path = "/testReport/{pid}")
     public @ResponseBody
     ResponseEntity<?> replaceTestReport(@PathVariable String pid, @RequestBody TestReport testReport) throws URISyntaxException {
