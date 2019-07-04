@@ -2,7 +2,10 @@ package com.example.stc.service.impl;
 
 import com.example.stc.activiti.ProcessState;
 import com.example.stc.domain.TestPlan;
+import com.example.stc.domain.User;
 import com.example.stc.framework.exception.TestPlanNotFoundException;
+import com.example.stc.framework.util.AuthorityUtils;
+import com.example.stc.framework.util.ProcessUtils;
 import com.example.stc.repository.TestPlanRepository;
 import com.example.stc.service.TestPlanService;
 import org.slf4j.Logger;
@@ -20,9 +23,25 @@ public class TestPlanServiceImpl implements TestPlanService {
     @Autowired
     private TestPlanRepository testPlanRepository;
 
+    @Autowired
+    private AuthorityUtils authorityUtils;
+
+    @Autowired
+    private ProcessUtils processUtils;
+
     @Override
     public List<TestPlan> findAllTestPlans() {
         return testPlanRepository.findAll();
+    }
+
+    @Override
+    public List<TestPlan> findTestPlansByAuthority() {
+        User curUser = authorityUtils.getLoginUser();
+        logger.info("findTestPlansByAuthority: 当前登录者id = " + curUser.getUserID() +
+                ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
+        List<TestPlan> allTestPlans = this.findAllTestPlans();
+        allTestPlans.removeIf(testPlan -> !processUtils.isVisible(testPlan, "TestPlan"));
+        return allTestPlans;
     }
 
     @Override

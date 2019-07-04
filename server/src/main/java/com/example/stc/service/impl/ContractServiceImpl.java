@@ -9,6 +9,7 @@ import com.example.stc.framework.exception.ContractNotFoundException;
 import com.example.stc.framework.exception.UserNotFoundException;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.DateUtils;
+import com.example.stc.framework.util.ProcessUtils;
 import com.example.stc.repository.ContractRepository;
 import com.example.stc.repository.UserRepository;
 import com.example.stc.service.ContractService;
@@ -29,16 +30,10 @@ public class ContractServiceImpl implements ContractService{
     private ContractRepository contractRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private DateUtils dateUtils;
-
-    @Autowired
     private AuthorityUtils authorityUtils;
 
     @Autowired
-    private ContractAction contractAction;
+    private ProcessUtils processUtils;
 
     @Override
     public List<Contract> findAllContracts() {
@@ -51,12 +46,15 @@ public class ContractServiceImpl implements ContractService{
         User curUser = authorityUtils.getLoginUser();
         logger.info("findContractsByAuthority: 当前登录者id = " + curUser.getUserID() +
                 ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
-        // 若为用户，返回该用户全部合同
-        if (authorityUtils.hasAuthority(Role.Customer)) {
-            return findContractByUser(curUser.getUserID());
-        }
-        // 若为工作人员，返回全部合同
-        return findAllContracts();
+//        // 若为用户，返回该用户全部合同
+//        if (authorityUtils.hasAuthority(Role.Customer)) {
+//            return findContractByUser(curUser.getUserID());
+//        }
+//        // 若为工作人员，返回全部合同
+//        return findAllContracts();
+        List<Contract> allContracts = this.findAllContracts();
+        allContracts.removeIf(contract -> !processUtils.isVisible(contract, "Contract"));
+        return allContracts;
     }
 
     @Override
