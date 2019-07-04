@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import router from 'umi/router';
-import { replaceEntrust,getOneEntrust ,deleteEntrust ,updateEntrustProcess,addNewEntrust} from '@/services/user';
+import { replaceEntrust,getOneEntrust ,deleteEntrust ,updateEntrustProcess,addNewEntrust,createEntrustProcess} from '@/services/user';
 import { EnArr2Str,EnStr2Arr} from '@/utils/utils';
 
 export default {
@@ -16,22 +16,22 @@ export default {
       payload=EnArr2Str(payload)
       yield call(replaceEntrust, payload);
       const response=yield call(getOneEntrust, payload);
-      response=EnStr2Arr(response)
-      yield put({type:'initData',payload:response})
+      yield put({type:'initData',payload:EnStr2Arr(response)})
       message.success('保存成功');
     },
 
     *addNewEntrust({ payload }, { call ,put}) {
       payload=EnArr2Str(payload)
       const response=yield call(addNewEntrust, payload);
-      response=EnStr2Arr(response)
-      yield put({type:'initData',payload:response})
+      console.log("new",response)
+      yield put({type:'initData',payload:EnStr2Arr(response)})
       message.success('新建成功');
     },
     
     *submitForm({ payload }, {call}) {
       console.log("submit",payload.pid!="")
       payload=EnArr2Str(payload)
+      console.log("beforesub",payload)
       if(payload.pid==""){//不存在
         const newform=yield call(addNewEntrust, payload);
         payload = newform
@@ -43,7 +43,8 @@ export default {
         payload = res
       }
       console.log(payload)
-      if (payload.processInstanceId==''){
+      console.log(payload.processInstanceId==="")
+      if (payload.processInstanceId===""){
         const response=yield call(createEntrustProcess,payload)
       }
       else{
@@ -56,8 +57,7 @@ export default {
 
     *getOneEntrust({ payload }, { call , put}) {
       const response=yield call(getOneEntrust, payload);
-      response=EnStr2Arr(response)
-      yield put({type:'initData',payload:response}) 
+      yield put({type:'initData',payload:EnStr2Arr(response)}) 
     },
 
     *deleteEntrust({payload},{call,put}){
