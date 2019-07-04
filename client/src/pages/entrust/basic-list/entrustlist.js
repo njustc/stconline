@@ -5,7 +5,7 @@ const Search = Input.Search;
 import {connect} from 'dva';
 import Link from 'umi/link'
 import {getRole} from "../../../utils/cookieUtils";
-import style from './style.scss'
+import style from './style.less'
 import router from 'umi/router'
 
 const confirm = Modal.confirm;
@@ -17,7 +17,6 @@ var userFootMaper = {
 
   "CUS":
     <Button
-      style={{marginLeft: 400}}
       type="primary"
       // onClick={handleJump.bind(this, '/basic-form')}
       href="/basic-form.html"
@@ -26,6 +25,7 @@ var userFootMaper = {
     </Button>
 
 }
+
 /**
  * 处理路由跳转函数
  * */
@@ -98,16 +98,6 @@ export default class EntrustList extends Component {
       key: 'pid',
       render: text => <a href="javascript:">{text}</a>,
     },
-    // {
-    //   title: '用户名',
-    //   dataIndex: 'name',
-    //   key: 'name',
-    // },
-    // {
-    //   title: '委托建立时间',
-    //   dataIndex: 'time',
-    //   key: 'time',
-    // },
     {
       title: '状态',
       key: 'processState',
@@ -131,16 +121,6 @@ export default class EntrustList extends Component {
       title: '操作',
       key: 'action',
       render: this.link()
-      // (key) => (
-      //   <span>
-      //     {key.processState === 'Submit' ? <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link> :
-      //       <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link>}
-      //     <Divider type="vertical"/>
-      //     {<Link to={{pathname: '../../basic-form', query: {pid: key.pid}}}>编辑</Link>}
-      //     <Divider type="vertical"/>
-      //     <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
-      //   </span>
-      // ),
     },
   ]
 
@@ -173,25 +153,26 @@ export default class EntrustList extends Component {
 
   render() {
     return (
-      <div>
-        <Breadcrumb>
-          <Breadcrumb.Item hr="/basic-list.html">委托列表</Breadcrumb.Item>
-        </Breadcrumb>
-        <Select
-          style={{width: 200}}
-          defaultValue="1"
-        >
-          <Option value="1">按委托ID</Option>
-          <Option value="2">按委托状态</Option>
-        </Select>
-        <Search
-          style={{marginLeft: 100, width: 200}}
+      <div className={style.body}>
+        <div className={style.header}>
+          <Breadcrumb className={style.curmbBody}>
+            <Breadcrumb.Item href="/welcome.html"
+                             className={style.curmbItem}
+            >主页
+            </Breadcrumb.Item>
+            <Breadcrumb.Item href="/basic-list.html"
+                             className={style.curmbItem}
+            >委托列表
+            </Breadcrumb.Item>
+          </Breadcrumb>
+          <div>{footer()}</div>
+        </div>
+        <Table columns={this.columns}
+               style={{
+                 paddingTop: 20,
+               }}
+               dataSource={(!this.props.listdata.data.length) ? data : this.props.listdata.data}
         />
-        {/* <div class="" */}
-        <Table style={{marginTop: 50}} columns={this.columns}
-               dataSource={(!this.props.listdata.data.length) ? data : this.props.listdata.data}/>
-
-        {footer()}
       </div>
     );
   }
