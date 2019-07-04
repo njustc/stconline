@@ -147,17 +147,24 @@ public class ProcessUtils {
         return (processState.equals(getProcessState(processInstanceId)));
     }
 
-    public boolean checkMainUser(String processInstanceId, String userId) {
-        return false;
-    }
-
-
+    /**
+     * 判断当前用户是否有权限操作该流程
+     * @param entity
+     * @param type
+     * @return
+     */
     public boolean isVisible(ProcessEntity entity, String type) {
         User user = authorityUtils.getLoginUser();
         String processInstanceId = entity.getProcessInstanceId();
         if (processInstanceId.equals("")) {
             /** 尚未提交，此时能见者为：规定能够建立该流程的人 */
-            return false;
+            switch (type) {
+                case "Entrust": return user.getUserID().equals(entity.getUserId());
+                case "Contrust": return checkUser("STAFF", user.getUserID());
+                case "TestPlan":
+                case "TestReport": return checkUser("TS", user.getUserID());
+                default: return false;
+            }
         }
         else {
             switch (getProcessState(processInstanceId)) {
@@ -171,8 +178,8 @@ public class ProcessUtils {
                     return result;
                 case "Approve":
                     return (checkUser("STAFF", user.getUserID()));
+                default: return false;
             }
-            return false;
         }
     }
 
