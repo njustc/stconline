@@ -303,11 +303,12 @@ class newTestReport extends PureComponent {
       value.pid=this.state.pid
       value.processInstanceID = this.props.dataReport.reportdata.processInstanceID;
       value.processState = this.props.dataReport.reportdata.processState;
+      //console.log("验证走到这里与否");
       dispatch({
-        type: 'report-edit/queryReplaceReport',
+        type: `${namespace}/queryReplaceReport`,
         payload: value,
       });
-      console.log("finish save")
+      //console.log("finish save")
     })
   }
 
