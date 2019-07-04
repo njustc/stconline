@@ -9,7 +9,7 @@ import TopNavHeader from '@/components/TopNavHeader';
 import styles from './Header.less';
 
 const { Header } = Layout;
-
+//全局页面header
 class HeaderView extends PureComponent {
   state = {
     visible: true,

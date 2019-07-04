@@ -158,6 +158,7 @@ class BasicLayout extends React.PureComponent {
     const layout = (
       <Layout>
         {isTop && !isMobile ? null : (
+          //侧边栏
           <SiderMenu
             logo={logo}
             theme={navTheme}
