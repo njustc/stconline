@@ -1127,7 +1127,7 @@ CREATE TABLE `tbl_sys_contract` (
 
 LOCK TABLES `tbl_sys_contract` WRITE;
 /*!40000 ALTER TABLE `tbl_sys_contract` DISABLE KEYS */;
-INSERT INTO `tbl_sys_contract` VALUES (1,'p20190606171309','',0,'A',NULL,NULL,NULL,NULL,'A',NULL,NULL,NULL,NULL,NULL,NULL,'A',NULL,'A',NULL,'A','A',NULL,NULL,'A',NULL,NULL,NULL,'A','85733','A','A','A','u20190605134344','A',NULL),(2,'p20190606171310','',0,'B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','2357','B','B','B','u20190605134344','B',NULL),(3,'p20190606171311','',0,'C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','5225','C','C','C','u20190605134344','C',NULL),(4,'p20190606171312','',0,'D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','36432','D','D','D','u20190605134754','D',NULL),(5,'p20190606171313','',0,'E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','12343','E','E','E','u20190605134759','E',NULL),(6,'p20190606171314','',0,'F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','1123','F','F','F','u20190605134754','F',NULL),(7,'p20190701205847','',0,'G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','1141','G','G','G','u20190605134344','G',NULL);
+INSERT INTO `tbl_sys_contract` VALUES (1,'p20190606171309','',0,'A',NULL,NULL,NULL,NULL,'A',NULL,NULL,NULL,NULL,NULL,NULL,'A',NULL,'A',NULL,'A','A',NULL,NULL,'A',NULL,NULL,NULL,'A','85733','A','A','A','u20190605134344','',NULL),(2,'p20190606171310','',0,'B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','2357','B','B','B','u20190605134344','',NULL),(3,'p20190606171311','',0,'C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','C','5225','C','C','C','u20190605134344','',NULL),(4,'p20190606171312','',0,'D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','D','36432','D','D','D','u20190605134754','',NULL),(5,'p20190606171313','',0,'E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','12343','E','E','E','u20190605134759','',NULL),(6,'p20190606171314','',0,'F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','1123','F','F','F','u20190605134754','',NULL),(7,'p20190701205847','',0,'G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','G','1141','G','G','G','u20190605134344','G',NULL);
 /*!40000 ALTER TABLE `tbl_sys_contract` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1582,4 +1582,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-07-04  5:59:35
+-- Dump completed on 2019-07-04  6:21:48
