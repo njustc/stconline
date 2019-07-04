@@ -824,9 +824,9 @@ class newTestReport extends PureComponent {
             <br/>
               <Row>
               <Col span={24} style={{ textAlign: 'right' }}>
-                <Button type="primary" htmlType="submit">
+                {/* <Button type="primary" htmlType="submit">
                   返回
-                </Button>
+                </Button> */}
                 <Button type="primary" style={{ marginLeft: 8 }} onClick={this.handleReset}>
                   删除
                 </Button>
