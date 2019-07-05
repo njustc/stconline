@@ -5,6 +5,9 @@ import request from '@/utils/request';
  * @param: pid:
  * */
 export async function getOneContract({pid}) {
+  //console.log(params)
+  console.log("执行到了service层的getoneContract");
+  console.log({pid});
   return request(`api/project/contract/${pid}`);
 }
 
@@ -17,9 +20,9 @@ export async function getAllContract() {
 
 /**
  * 根据pid删除合同
- * */
-export async function deleteContract({pid}) {
-  return request(`api/project/contract/${pid}`, {
+ * */ 
+export async function deleteContract(params) {
+  return request(`api/project/contract/${params.pid}`, {
     method: 'DELETE',
   });
 }
@@ -29,10 +32,13 @@ export async function deleteContract({pid}) {
  * @param pid: project id
  * @param data: contract
  * */
-export async function replaceContract({pid, data}) {
-  return request(`api/project/contract/${pid}`, {
+export async function replaceContract(params) {
+  //console.log("=======================")
+  console.log("=====================================")
+  console.log(params)
+  return request(`api/project/contract/${params.pid}`, {
     method: 'PUT',
-    data: data,
+    data: params,
   });
 }
 
@@ -44,4 +50,20 @@ export async function newContract(data) {
   return request('api/project/contract', {
     data: data
   })
+}
+
+export async function updateConProcess(params) {
+  //console.log("++++++++++++++++++++++");
+  return request(`api/project/process/update?type=Contract`, {
+    method: 'POST',
+    data: params
+  });
+}
+
+export async function createConProcess(params) {
+  //console.log("=========================service========================");
+  return request (`api/project/process/create?pid=${params.pid}&type=Contract`, {
+    method: 'POST',
+    data: ""
+  });
 }
