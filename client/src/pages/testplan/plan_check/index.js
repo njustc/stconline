@@ -83,6 +83,7 @@ export default class List extends React.Component{
       <div>
         <Breadcrumb>
           <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
+          <Breadcrumb.Item href="/plan_list.html">测试方案列表</Breadcrumb.Item>
           <Breadcrumb.Item>测试方案详情</Breadcrumb.Item>
         </Breadcrumb>
 

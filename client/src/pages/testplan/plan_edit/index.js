@@ -344,45 +344,21 @@ export default class EditPlan extends React.Component{
         </Card>
         <br/>
 
-        <Affix offsetBottom={0}
-               onChange={affixed => console.log(affixed)}>
-          <div className={style.submitBtns}>
-            <Button onClick={()=>{this.showSubmit(this.props.form)
-            }}style={{marginLeft: 8}}
-                    type="primary"
-                    disabled={this.props.dataEdit.editdata.processState!="Submit"}>
-              <FormattedMessage id="plan_edit.form.submit"/>
-            </Button>
+        <FormItem {...submitFormLayout} style={{marginTop: 32}}>
+          <Button onClick={()=>{this.showSubmit(this.props.form)
+          }}style={{marginLeft: 8}}
+                  type="primary"
+                  disabled={this.props.dataEdit.editdata.processState!="Submit"}>
+            <FormattedMessage id="plan_edit.form.submit"/>
+          </Button>
 
-            <Button onClick={()=>{this.save(this.props.form)
-            }} style={{marginLeft: 8}}
-                    type="primary"
-                    disabled={this.props.dataEdit.editdata.processState!="Submit"}>
-              <FormattedMessage id="plan_edit.form.save"/>
-            </Button>
-
-            {/*<Button onClick={()=>{*/}
-            {/*  this.showDelete(this.props.form)*/}
-            {/*}} style={{marginLeft: 8}}*/}
-            {/*        type="danger"*/}
-            {/*        disabled={this.props.dataEdit.editdata.processState!="Submit"}>*/}
-            {/*  <FormattedMessage id="plan_edit.form.delete"/>*/}
-            {/*</Button>*/}
-
-          </div>
-        </Affix>
-
-        {/*<FormItem {...submitFormLayout} style={{marginTop: 32}}>*/}
-        {/*  <Button type="primary" onClick={()=>{this.showSubmit(this.props.form)}}>*/}
-        {/*    <FormattedMessage id="plan_edit.form.submit"/>*/}
-        {/*  </Button>*/}
-        {/*  <Button style={{marginLeft: 8}} onClick={()=>{this.save(this.props.form)}}>*/}
-        {/*    <FormattedMessage id="plan_edit.form.save"/>*/}
-        {/*  </Button>*/}
-        {/*  <Button style={{marginLeft: 8}} type="danger" onClick={()=>{this.showDelete(this.props.form)}}>*/}
-        {/*    <FormattedMessage id="plan_edit.form.delete"/>*/}
-        {/*  </Button>*/}
-        {/*</FormItem>*/}
+          <Button onClick={()=>{this.save(this.props.form)
+          }} style={{marginLeft: 8}}
+                  type="primary"
+                  disabled={this.props.dataEdit.editdata.processState!="Submit"}>
+            <FormattedMessage id="plan_edit.form.save"/>
+          </Button>
+        </FormItem>
       </div>
     );
   }
