@@ -69,6 +69,7 @@ class LoginPage extends Component {
     const {status} = userInfo.data;
     const {type, autoLogin} = this.state;
     return (
+      
       <div className={styles.main}>
         <Login
           defaultActiveKey={type}
@@ -121,6 +122,7 @@ class LoginPage extends Component {
           </div>
         </Login>
       </div>
+   
     );
   }
 }

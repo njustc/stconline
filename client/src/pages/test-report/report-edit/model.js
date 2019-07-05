@@ -26,6 +26,7 @@ export default {
       const response = yield call(getOneTestReport, payload);
       console.log(response);
       yield put({type: 'updateData', payload: response});
+      //router.push("/report-list.html")
       message.success('保存成功');
     },
     *queryAddReport({payload}, {call, put}) {
@@ -57,22 +58,10 @@ export default {
       else {
         console.log("update");
         yield call(updateTestReportProcess, payload);
-        console.log("000")
       }
       router.push("/report-list.html")
 
     },
-
-
-
-
-
-
-
-
-
-
-
 
 
 
