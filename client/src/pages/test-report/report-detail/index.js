@@ -1,4 +1,4 @@
-import { Card, Table, Divider, Button, Tag ,Breadcrumb} from 'antd';
+import { Card, Table, Divider, Button, Tag ,Breadcrumb, Form} from 'antd';
 import React from "react";
 import {connect} from "dva";
 import { FormattedMessage } from 'umi/locale';
@@ -15,8 +15,17 @@ const mapStateToProps = (state) => {
   };
 };
 
+@Form.create()
 @connect(mapStateToProps)
 export default class report_detail extends React.Component{
+  constructor(props){
+    super(props)
+    this.state={
+      pid:"",
+      comment:""
+    }
+  }
+
   componentDidMount() {
     const {dispatch} = this.props;
     console.log(this.props.location.query)
@@ -99,36 +108,50 @@ export default class report_detail extends React.Component{
               <Button
               style={{marginLeft: 350}}
               type="primary"
+              onClick={() => {
+                this.review(this.props.form,"ReviewPass")
+              }}
               >确认</Button>
               <Button
               style={{marginLeft: 20}}
               type="danger"
-              
+              onClick={() => {
+                this.review(this.props.form,"ReviewDisprove")
+              }}
               >拒绝</Button>
             </div>,
 
-            "SM":
-            <div>
-              <h1>市场部主任</h1>
-              <Button
-              style={{marginLeft: 350}}
-              type="primary"
-              >通过</Button>
-              <Button
-              style={{marginLeft: 20}}
-              type="danger"
-              >不通过</Button>
-            </div>,
+            // "SM":
+            // <div>
+            //   <h1>市场部主任</h1>
+            //   <Button
+            //   style={{marginLeft: 350}}
+            //   type="primary"
+            //   onClick={() => {
+            //     this.review(this.props.form,"ReviewPass")
+            //   }}
+            //   >通过</Button>
+            //   <Button
+            //   style={{marginLeft: 20}}
+            //   type="danger"
+            //   >不通过</Button>
+            // </div>,
             "TM":
             <div>
               <h1>测试部主任</h1>
               <Button
               style={{marginLeft: 350}}
               type="primary"
+              onClick = {() => {
+                this.review(this.props.form,"ReviewPass")
+              }}
               >通过</Button>
               <Button
               style={{marginLeft: 20}}
               type="danger"
+              onClick={() => {
+                this.review(this.props.form,"ReviewDisprove")
+              }}
               >不通过</Button>
             </div>,
             "QM":
@@ -137,10 +160,16 @@ export default class report_detail extends React.Component{
               <Button
               style={{marginLeft: 350}}
               type="primary"
+              onClick={() => {
+                this.review(this.props.form,"ReviewPass")
+              }}
               >通过</Button>
               <Button
               style={{marginLeft: 20}}
               type="danger"
+              onClick={() => {
+                this.review(this.props.form,"ReviewDisprove")
+              }}
               >不通过</Button>
             </div>,
           }[getRole()[0]]

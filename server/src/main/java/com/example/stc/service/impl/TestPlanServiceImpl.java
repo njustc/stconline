@@ -1,6 +1,8 @@
 package com.example.stc.service.impl;
 
+import com.example.stc.activiti.ProcessService;
 import com.example.stc.activiti.ProcessState;
+import com.example.stc.activiti.STCProcessEngine;
 import com.example.stc.domain.TestPlan;
 import com.example.stc.domain.User;
 import com.example.stc.framework.exception.TestPlanNotFoundException;
@@ -28,6 +30,9 @@ public class TestPlanServiceImpl implements TestPlanService {
 
     @Autowired
     private ProcessUtils processUtils;
+    
+    @Autowired
+    private ProcessService processService;
 
     @Override
     public List<TestPlan> findAllTestPlans() {
@@ -59,6 +64,8 @@ public class TestPlanServiceImpl implements TestPlanService {
         testPlan.setPid(pid);
         testPlan.setUserId(uid);
         testPlan.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
+        // DEBUG：若数据库中该项目已存在，则覆盖原项目
+        testPlanRepository.deleteByPid(pid);
         return setState(testPlanRepository.save(testPlan));
     }
 
@@ -67,8 +74,10 @@ public class TestPlanServiceImpl implements TestPlanService {
         TestPlan testPlan = testPlanRepository.findByPid(pid);
         record.setId(testPlan.getId());
         record.setPid(testPlan.getPid());
-        record.setProcessState(testPlan.getProcessState());
-        record.setProcessInstanceId(testPlan.getProcessInstanceId());
+        if (record.getProcessInstanceId().equals("")) {
+            record.setProcessState(testPlan.getProcessState());
+            record.setProcessInstanceId(testPlan.getProcessInstanceId());
+        }
         return setState(testPlanRepository.save(record));
     }
 
@@ -92,15 +101,36 @@ public class TestPlanServiceImpl implements TestPlanService {
         this.updateTestPlan(testPlan.getPid(), testPlan);
     }
 
-    public List<TestPlan> setState(List<TestPlan> testPlans) {
+    private List<TestPlan> setState(List<TestPlan> testPlans) {
         for (TestPlan testPlan: testPlans) {
-            testPlan.setProcessState(processUtils.getProcessState(testPlan.getProcessInstanceId()));
+            String processInstanceId = testPlan.getProcessInstanceId();
+            if (processInstanceId == null) {
+                testPlan.setProcessInstanceId("");
+                testPlan = this.updateTestPlan(testPlan.getPid(), testPlan);
+                processInstanceId = testPlan.getProcessInstanceId();
+            }
+
+            testPlan.setProcessState(processUtils.getProcessState(processInstanceId));
+            if (!processInstanceId.equals("")) {
+                testPlan.setComment(processService.getProcessComment(processInstanceId));
+            }
         }
         return testPlans;
     }
 
-    public TestPlan setState(TestPlan testPlan) {
-        testPlan.setProcessState(processUtils.getProcessState(testPlan.getProcessInstanceId()));
+    private TestPlan setState(TestPlan testPlan) {
+        String processInstanceId = testPlan.getProcessInstanceId();
+        if (processInstanceId == null) {
+            testPlan.setProcessInstanceId("");
+            testPlan = this.updateTestPlan(testPlan.getPid(), testPlan);
+            processInstanceId = testPlan.getProcessInstanceId();
+        }
+
+        testPlan.setProcessState(processUtils.getProcessState(processInstanceId));
+        if (!processInstanceId.equals("")) {
+            testPlan.setComment(processService.getProcessComment(processInstanceId));
+        }
         return testPlan;
     }
+    
 }
