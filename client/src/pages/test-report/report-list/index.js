@@ -67,8 +67,16 @@ export default class ReportList extends Component {
  
   <Divider type="vertical"/>
 </span>
+  ),
+  
+  "TM":(key) => (
+    <span>
+  {<Link to={{pathname: './report-detail', query: {pid: key.pid}}}>查看项目详情</Link> }
+  <Divider type="vertical"/>
+ 
+  <Divider type="vertical"/>
+</span>
   )
-
 
 
 }
