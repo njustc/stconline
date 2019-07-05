@@ -182,7 +182,7 @@ public class EntrustServiceImpl implements EntrustService {
         String processInstanceId = entrust.getProcessInstanceId();
         if (processInstanceId == null) {
             entrust.setProcessInstanceId("");
-            entrust = this.updateEntrust(entrust.getPid(), entrust);
+            entrust = entrustRepository.save(entrust);
             processInstanceId = entrust.getProcessInstanceId();
         }
 

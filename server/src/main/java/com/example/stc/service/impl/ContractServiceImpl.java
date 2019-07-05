@@ -190,7 +190,7 @@ public class ContractServiceImpl implements ContractService{
         String processInstanceId = contract.getProcessInstanceId();
         if (processInstanceId == null) {
             contract.setProcessInstanceId("");
-            contract = this.updateContract(contract.getPid(), contract);
+            contract = contractRepository.save(contract);
             processInstanceId = contract.getProcessInstanceId();
         }
 

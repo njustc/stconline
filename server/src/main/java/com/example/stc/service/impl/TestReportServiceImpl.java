@@ -112,7 +112,7 @@ public class TestReportServiceImpl implements TestReportService {
         String processInstanceId = testReport.getProcessInstanceId();
         if (processInstanceId == null) {
             testReport.setProcessInstanceId("");
-            testReport = this.updateTestReport(testReport.getPid(), testReport);
+            testReport = testReportRepository.save(testReport);
             processInstanceId = testReport.getProcessInstanceId();
         }
 

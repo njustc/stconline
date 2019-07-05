@@ -112,7 +112,7 @@ public class TestPlanServiceImpl implements TestPlanService {
         String processInstanceId = testPlan.getProcessInstanceId();
         if (processInstanceId == null) {
             testPlan.setProcessInstanceId("");
-            testPlan = this.updateTestPlan(testPlan.getPid(), testPlan);
+            testPlan = testPlanRepository.save(testPlan);
             processInstanceId = testPlan.getProcessInstanceId();
         }
 
