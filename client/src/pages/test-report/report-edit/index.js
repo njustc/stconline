@@ -271,65 +271,7 @@ class newTestReport extends PureComponent {
     });
   }
 
-  // handleSubmit = e => {
-  //   const { dispatch, form } = this.props;
-  //   e.preventDefault();
-  //   form.validateFieldsAndScroll((err, values) => {
-  //     if (!err) {
-  //       dispatch({
-  //         type: 'basicForm/submitRegularForm',//TODO
-  //         payload: values,
-  //       });
-  //     }
-  //   });
-  // };
-
-  // submit = () => {
-  //   this.setState({
-  //     visible: true,
-  //     current: undefined,
-  //   });
-  //   dispatch({
-  //     type: 'basicForm/saveForm',//TODO:save
-  //     payload: values,
-  //   });
-  // };
-  //提交
-  submitReport=(form)=> {
-    const { dispatch } = this.props;
-    this.state.pid=this.props.dataReport.reportdata.pid;
-    form.validateFields((err,value) => {
-      console.log(this.props.dataReport.reportdata);
-      //新建
-      value.pid=this.state.pid;
-      value.processInstanceId=this.props.dataReport.reportdata.processInstanceId||"";
-      value.processState=this.props.dataReport.reportdata.processState||"";
-      // value.comment=this.props.dataReport.reportdata.comment;
-      console.log("submitPlan",value);
-      dispatch({
-        type: `${namespace}/querySubmitReport`,
-        payload: value,
-      });
-    })
-  };
-
-  showSubmit(form) {
-    var that = this;
-    confirm({
-      title: '您是否要提交方案?',
-      content: '方案提交后进入审核状态，不可编辑',
-      okText: '确认提交',
-      okType: 'primary',
-      cancelText: '取消',
-      onOk() {
-        console.log("submitReport");
-        that.submitReport(form);
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
-    });
-  }
+ 
 
 //123456
   showSubmit(form) {
@@ -408,14 +350,6 @@ class newTestReport extends PureComponent {
       });
     })
   };
-
-
-
-
-
-
-
-
 
 
 
@@ -459,44 +393,6 @@ class newTestReport extends PureComponent {
 
 
 
-//  //提交
-//  submitReport=(form)=> {
-//   const { dispatch } = this.props;
-//   this.state.pid=this.props.dataReport.reportdata.pid;
-//   form.validateFields((err,value) => {
-//     console.log("???");
-//     //新建
-//     value.pid=this.state.pid;
-//     value.processInstanceId=this.props.dataReport.reportdata.processInstanceId||"";
-//     value.processState=this.props.dataReport.reportdata.processState||"";
-//     // value.comment=this.props.dataEdit.editdata.comment;
-//     console.log("submitPlan",value);
-//     dispatch({
-//       type: `${namespace}/querySubmitReport`,
-//       payload: value,
-//     });
-//   })
-// };
-
-
-// //提交
-//   showSubmit(form) {
-//     var that = this;
-//     confirm({
-//       title: '您是否要提交测试报告5555555?',
-//       content: '测试报告提交后进入审核状态，不可编辑',
-//       okText: '确认提交',
-//       okType: 'primary',
-//       cancelText: '取消',
-//       onOk() {
-//         console.log("submitReport");
-//         that.submitReport(form);
-//       },
-//       onCancel() {
-//         console.log('Cancel');
-//       },
-//     });
-//   };
 
   //删除
   delete=(value)=>{
