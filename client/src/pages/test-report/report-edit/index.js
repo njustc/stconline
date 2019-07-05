@@ -370,6 +370,45 @@ class newTestReport extends PureComponent {
     })
   };
 
+//123456
+  showSubmit(form) {
+    var that = this;
+    confirm({
+      title: '您是否要提交测试报告?',
+      content: '测试报告提交后进入审核状态，不可编辑',
+      okText: '确认提交',
+      okType: 'primary',
+      cancelText: '取消',
+      onOk() {
+        console.log("submitPlan");
+        that.submitReport(form);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
+
+  submitReport=(form)=> {
+    const { dispatch } = this.props;
+    //console.log("123")
+    this.state.pid=this.props.dataReport.reportdata.pid;
+    form.validateFields((err,value) => {
+      //console.log(this.props.dataEdit.editdata);
+      //新建
+      value.pid=this.state.pid;
+      value.processInstanceId=this.props.dataReport.reportdata.processInstanceId||"";
+      value.processState=this.props.dataReport.reportdata.processState||"";
+      // value.comment=this.props.dataEdit.editdata.comment;
+      //console.log("submitPlan",value);
+      console.log("777")
+      dispatch({
+        type: `${namespace}/querySubmitReport`,
+        payload: value,
+      });
+    })
+  };
+
 
 
 
