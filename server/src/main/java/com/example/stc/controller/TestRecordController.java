@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -38,6 +39,7 @@ public class TestRecordController extends BaseController {
     /**
      * 查看全部测试记录
      */
+    @Secured({"ROLE_TS", "ROLE_TM"})
     @GetMapping(path = "/testRecord/all")
     public @ResponseBody
     Resources<Resource<TestRecord>> getAllTestRecords() {
@@ -51,6 +53,7 @@ public class TestRecordController extends BaseController {
     /**
      * 查看某一项目全部测试记录
      */
+    @Secured({"ROLE_TS", "ROLE_TM"})
     @GetMapping(path = "/testRecord")
     public @ResponseBody
     Resources<Resource<TestRecord>> getProjectTestRecords(@RequestParam String pid) {
@@ -76,6 +79,7 @@ public class TestRecordController extends BaseController {
     /**
      * 查看单个测试记录
      */
+    @Secured({"ROLE_TS", "ROLE_TM"})
     @GetMapping(path = "/testRecord/{testId}")
     public @ResponseBody
     Resource<TestRecord> getOneTestRecord(@PathVariable String testId) {
@@ -87,6 +91,7 @@ public class TestRecordController extends BaseController {
      * 修改单个测试记录
      * @throws URISyntaxException
      */
+    @Secured({"ROLE_TS"})
     @PutMapping(path = "/testRecord/{testId}")
     public @ResponseBody
     ResponseEntity<?> replaceTestRecord(@PathVariable String testId, @RequestBody TestRecord testRecord) throws URISyntaxException {
@@ -98,6 +103,7 @@ public class TestRecordController extends BaseController {
     /**
      * 删除单个测试记录
      */
+    @Secured({"ROLE_TS"})
     @DeleteMapping(path = "/testRecord/{testId}")
     public @ResponseBody
     ResponseEntity<?> deleteTestRecord(@PathVariable String testId) {
