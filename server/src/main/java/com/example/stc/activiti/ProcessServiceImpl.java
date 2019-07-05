@@ -145,22 +145,15 @@ public class ProcessServiceImpl implements ProcessService {
     @Override
     public void updateProcessInstance(ProcessEntity entity, String type) {
         stcProcessEngine.updateProcess(entity);
-        save(entity, type);
     }
 
     /**
-     * 保存comment
-     * @param entity
-     * @param type
+     * 获取评审意见
+     * @param processInstanceId
+     * @return
      */
-    private void save(ProcessEntity entity, String type) {
-        switch (type) {
-            case "Entrust": entrustService.saveComment(entity.getPid(), entity.getComment()); break;
-            case "Contract": contractService.saveComment(entity.getPid(), entity.getComment()); break;
-            case "TestPlan": testPlanService.saveComment(entity.getPid(), entity.getComment()); break;
-            case "TestReport": testReportService.saveComment(entity.getPid(), entity.getComment()); break;
-            default: throw new ActivitiException("未知流程类型。");
-        }
+    @Override
+    public String getProcessComment(String processInstanceId) {
+        return stcProcessEngine.getComment(processInstanceId);
     }
-
 }

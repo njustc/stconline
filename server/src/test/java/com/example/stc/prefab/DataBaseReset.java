@@ -40,9 +40,6 @@ public class DataBaseReset {
     private TestReportRepository testReportRepository;
 
     @Autowired
-    private TestCaseRepository testCaseRepository;
-
-    @Autowired
     private TestRecordRepository testRecordRepository;
 
     private JSONObject getJson(String filename) {
@@ -142,7 +139,6 @@ public class DataBaseReset {
         contractRepository.deleteAll();
         testPlanRepository.deleteAll();
         testReportRepository.deleteAll();
-        testCaseRepository.deleteAll();
         testRecordRepository.deleteAll();
         System.out.println("\nData Base Reset Complete");
         System.out.println("----------------------------------");

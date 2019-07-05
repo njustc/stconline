@@ -1,6 +1,5 @@
 package com.example.stc.service.impl;
 
-import com.example.stc.domain.TestCase;
 import com.example.stc.domain.TestRecord;
 import com.example.stc.framework.exception.TestRecordNotFoundException;
 import com.example.stc.framework.util.DateUtils;
@@ -54,7 +53,9 @@ public class TestRecordServiceImpl implements TestRecordService {
 
     @Override
     public TestRecord newTestRecord(TestRecord testRecord) {
-        // 该测试记录的pid和testId应该是已经填好的
+        // 该测试用例的pid是已经填好的
+        // 根据某一个算法设置testId
+        testRecord.setTestId(testRecord.getPid() + "-" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         // TODO: 流程引擎
         return testRecordRepository.save(testRecord);
     }
