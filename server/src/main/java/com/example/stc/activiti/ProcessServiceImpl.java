@@ -33,6 +33,9 @@ public class ProcessServiceImpl implements ProcessService {
     @Autowired
     private TestReportService testReportService;
 
+    @Autowired
+    private TestRecordService testRecordService;
+
     @Override
     public void createProcessInstance(String pid, String type) {
         switch (type) {
@@ -40,6 +43,7 @@ public class ProcessServiceImpl implements ProcessService {
             case "Contract": createContractProcess(pid); break;
             case "TestPlan": createTestPlanProcess(pid); break;
             case "TestReport": createTestReportProcess(pid); break;
+            case "TestRecord": createTestRecordProcess(pid); break;
             default: throw new ActivitiException("未知流程类型。");
         }
     }
@@ -102,6 +106,16 @@ public class ProcessServiceImpl implements ProcessService {
         testReport.setProcessInstanceId(stcProcessEngine.createProcess("TestReport", variable));
         testReportService.updateTestReport(pid, testReport);
         queryProcessState(testReport);
+    }
+
+    @Override
+    public void createTestRecordProcess(String testId) {
+        TestRecord testRecord = testRecordService.findTestRecordByTestId(testId);
+        Map<String, Object> variable = new HashMap<String, Object>();
+        variable.put("TestReportID", testId);
+        testRecord.setProcessInstanceId(stcProcessEngine.createProcess("TestRecord", variable));
+        testRecordService.updateTestRecord(testId, testRecord);
+        queryProcessState(testRecord);
     }
 
     /**
