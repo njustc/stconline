@@ -18,4 +18,8 @@ public interface TestRecordRepository extends BaseRepository<TestRecord> {
     @Transactional
     int deleteByTestId(String testId);
 
+    @Modifying(flushAutomatically = true)
+    @Transactional
+    int deleteAllByPid(String pid);
+
 }

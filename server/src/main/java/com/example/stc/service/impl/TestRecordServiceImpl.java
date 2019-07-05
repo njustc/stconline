@@ -8,6 +8,7 @@ import com.example.stc.service.TestRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -52,7 +53,9 @@ public class TestRecordServiceImpl implements TestRecordService {
 
     @Override
     public TestRecord newTestRecord(TestRecord testRecord) {
-        // 该测试记录的pid和testId应该是已经填好的
+        // 该测试用例的pid是已经填好的
+        // 根据某一个算法设置testId
+        testRecord.setTestId(testRecord.getPid() + "-" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         // TODO: 流程引擎
         return testRecordRepository.save(testRecord);
     }

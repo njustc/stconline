@@ -50,6 +50,7 @@ public class EntrustController extends BaseController {
     /**
      * 查看全部委托
      */
+    @Secured({"ROLE_CUS", "ROLE_SS"})
     @GetMapping(path = "/entrust")
     public @ResponseBody
     Resources<Resource<Entrust>> getAllEntrust() {
@@ -67,7 +68,7 @@ public class EntrustController extends BaseController {
      * 查看某一用户全部委托
      * 专门用于 STAFF 角色查询某一个用户的委托列表
      */
-    @Secured({"ROLE_STAFF"})
+    @Secured({"ROLE_SS"})
     @GetMapping(path = "/entrust/user/{uid}")
     public @ResponseBody
     Resources<Resource<Entrust>> getUserEntrust(@PathVariable String uid) {
@@ -97,6 +98,7 @@ public class EntrustController extends BaseController {
     /**
      * 查看单个委托
      */
+    @Secured({"ROLE_CUS", "ROLE_SS"})
     @GetMapping(path = "/entrust/{pid}")
     public @ResponseBody
     Resource<Entrust> getOneEntrust(@PathVariable String pid) {

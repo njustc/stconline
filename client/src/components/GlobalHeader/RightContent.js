@@ -8,6 +8,8 @@ import HeaderSearch from '../HeaderSearch';
 import HeaderDropdown from '../HeaderDropdown';
 import SelectLang from '../SelectLang';
 import styles from './index.less';
+import {getRole} from "../../utils/cookieUtils";
+
 
 export default class GlobalHeaderRight extends PureComponent {
   getNoticeData() {
@@ -119,7 +121,7 @@ export default class GlobalHeaderRight extends PureComponent {
         <Tooltip title={formatMessage({ id: 'component.globalHeader.help' })}>
           <a
             target="_blank"
-            href="https://pro.ant.design/docs/getting-started"
+            href="https://github.com/njustc/stconline/wiki/%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C"
             rel="noopener noreferrer"
             className={styles.action}
           >
@@ -128,7 +130,7 @@ export default class GlobalHeaderRight extends PureComponent {
         </Tooltip>
         <NoticeIcon
           className={styles.action}
-          count={currentUser.unreadCount}
+          count="0"
           onItemClick={(item, tabProps) => {
             console.log(item, tabProps); // eslint-disable-line
             this.changeReadState(item, tabProps);
@@ -176,7 +178,7 @@ export default class GlobalHeaderRight extends PureComponent {
                 src={currentUser.avatar}
                 alt="avatar"
               />
-              <span className={styles.name}>{currentUser.name}</span>
+              <span className={styles.name}>{getRole()[0]}</span>
             </span>
           </HeaderDropdown>
         ) : (

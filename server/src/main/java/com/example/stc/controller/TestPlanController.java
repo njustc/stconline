@@ -39,6 +39,7 @@ public class TestPlanController extends BaseController {
     /**
      * 查看全部测试方案
      */
+    @Secured({"ROLE_CUS", "ROLE_TS", "ROLE_TM", "ROLE_QM"})
     @GetMapping(path = "/testplan")
     public @ResponseBody
     Resources<Resource<TestPlan>> getAllTestPlan() {
@@ -53,6 +54,7 @@ public class TestPlanController extends BaseController {
     /**
      * 查看单个测试方案
      */
+    @Secured({"ROLE_CUS", "ROLE_TS", "ROLE_TM", "ROLE_QM"})
     @GetMapping(path = "/testplan/{pid}")
     public @ResponseBody
     Resource<TestPlan> getOneTestPlan(@PathVariable String pid) {
@@ -61,7 +63,7 @@ public class TestPlanController extends BaseController {
     }
 
     /**
-     * 新建测试方案
+     * 自动新建测试方案
      *
      * @throws URISyntaxException
      */
@@ -89,6 +91,7 @@ public class TestPlanController extends BaseController {
     /**
      * 删除单个测试方案
      */
+    @Secured({"ROLE_TS"}) // 测试部工作人员
     @DeleteMapping(path = "/testplan/{pid}")
     public @ResponseBody
     ResponseEntity<?> deleteTestPlan(@PathVariable String pid) {

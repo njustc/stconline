@@ -33,6 +33,9 @@ public class ProcessServiceImpl implements ProcessService {
     @Autowired
     private TestReportService testReportService;
 
+    @Autowired
+    private TestRecordService testRecordService;
+
     @Override
     public void createProcessInstance(String pid, String type) {
         switch (type) {
@@ -40,6 +43,7 @@ public class ProcessServiceImpl implements ProcessService {
             case "Contract": createContractProcess(pid); break;
             case "TestPlan": createTestPlanProcess(pid); break;
             case "TestReport": createTestReportProcess(pid); break;
+            case "TestRecord": createTestRecordProcess(pid); break;
             default: throw new ActivitiException("未知流程类型。");
         }
     }
@@ -104,6 +108,16 @@ public class ProcessServiceImpl implements ProcessService {
         queryProcessState(testReport);
     }
 
+    @Override
+    public void createTestRecordProcess(String testId) {
+        TestRecord testRecord = testRecordService.findTestRecordByTestId(testId);
+        Map<String, Object> variable = new HashMap<String, Object>();
+        variable.put("TestReportID", testId);
+        testRecord.setProcessInstanceId(stcProcessEngine.createProcess("TestRecord", variable));
+        testRecordService.updateTestRecord(testId, testRecord);
+        queryProcessState(testRecord);
+    }
+
     /**
      * 删除流程实例
      * @param entity
@@ -118,10 +132,13 @@ public class ProcessServiceImpl implements ProcessService {
     /**
      * 查询流程状态
      * @param entity
+     * @return
      */
     @Override
-    public void queryProcessState(ProcessEntity entity) {
-        entity.setProcessState(stcProcessEngine.getProcessState(entity.getProcessInstanceId()));
+    public String queryProcessState(ProcessEntity entity) {
+        String processState = stcProcessEngine.getProcessState(entity.getProcessInstanceId());
+        entity.setProcessState(processState);
+        return processState;
     }
 
     /**
@@ -131,12 +148,24 @@ public class ProcessServiceImpl implements ProcessService {
     @Override
     public void updateProcessInstance(ProcessEntity entity, String type) {
         stcProcessEngine.updateProcess(entity);
+
+        if (queryProcessState(entity).equals("Approve")) {
+            /**
+             * 根据type创建流水线的下一个实体
+             */
+            switch (type) {
+                case "Entrust": contractService.newContract(entity.getPid(), entity.getUserId()); break;
+                case "Contract": testPlanService.newTestPlan(entity.getPid(), entity.getUserId()); break;
+                case "TestPlan": testReportService.newTestReport(entity.getPid(), entity.getUserId()); break;
+                default: break;
+            }
+        }
     }
 
     /**
      * 获取评审意见
      * @param processInstanceId
-     * @return
+     * @return 评审意见
      */
     @Override
     public String getProcessComment(String processInstanceId) {

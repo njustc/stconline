@@ -64,6 +64,8 @@ public class TestPlanServiceImpl implements TestPlanService {
         testPlan.setPid(pid);
         testPlan.setUserId(uid);
         testPlan.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
+        // DEBUG：若数据库中该项目已存在，则覆盖原项目
+        testPlanRepository.deleteByPid(pid);
         return setState(testPlanRepository.save(testPlan));
     }
 
@@ -72,8 +74,10 @@ public class TestPlanServiceImpl implements TestPlanService {
         TestPlan testPlan = testPlanRepository.findByPid(pid);
         record.setId(testPlan.getId());
         record.setPid(testPlan.getPid());
-        record.setProcessState(testPlan.getProcessState());
-        record.setProcessInstanceId(testPlan.getProcessInstanceId());
+        if (record.getProcessInstanceId() == null || record.getProcessInstanceId().equals("")) {
+            record.setProcessState(testPlan.getProcessState());
+            record.setProcessInstanceId(testPlan.getProcessInstanceId());
+        }
         return setState(testPlanRepository.save(record));
     }
 
@@ -99,17 +103,19 @@ public class TestPlanServiceImpl implements TestPlanService {
 
     private List<TestPlan> setState(List<TestPlan> testPlans) {
         for (TestPlan testPlan: testPlans) {
-            String processInstanceId = testPlan.getProcessInstanceId();
-            testPlan.setProcessState(processUtils.getProcessState(processInstanceId));
-            if (!processInstanceId.equals("")) {
-                testPlan.setComment(processService.getProcessComment(processInstanceId));
-            }
+            testPlan = setState(testPlan);
         }
         return testPlans;
     }
 
     private TestPlan setState(TestPlan testPlan) {
         String processInstanceId = testPlan.getProcessInstanceId();
+        if (processInstanceId == null) {
+            testPlan.setProcessInstanceId("");
+            testPlan = this.updateTestPlan(testPlan.getPid(), testPlan);
+            processInstanceId = testPlan.getProcessInstanceId();
+        }
+
         testPlan.setProcessState(processUtils.getProcessState(processInstanceId));
         if (!processInstanceId.equals("")) {
             testPlan.setComment(processService.getProcessComment(processInstanceId));

@@ -18,9 +18,11 @@ public interface ProcessService extends BaseService<ProcessEntity> {
 
     void createTestReportProcess(String pid);
 
+    void createTestRecordProcess(String testId);
+
     void deleteProcessInstance(ProcessEntity entity);
 
-    void queryProcessState(ProcessEntity entity);
+    String queryProcessState(ProcessEntity entity);
 
     void updateProcessInstance(ProcessEntity entity, String type);
 

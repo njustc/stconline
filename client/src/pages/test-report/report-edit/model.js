@@ -37,7 +37,7 @@ export default {
 
 
     * querySubmitReport({payload}, {call, put}) {
-      //console.log("submit555")
+      console.log("submit555")
       //console.log(payload.processInstanceId)
       if (payload.pid !== "") {
         //添加属性

@@ -1,7 +1,22 @@
 import React from 'react';
 import { connect } from 'dva';
 import { formatMessage, FormattedMessage } from 'umi/locale';
-import {Form, Input, DatePicker, Select, Button, Card, InputNumber, Radio, Icon, Tooltip, Modal, Breadcrumb} from 'antd';
+import {
+  Form,
+  Input,
+  DatePicker,
+  Select,
+  Button,
+  Card,
+  InputNumber,
+  Radio,
+  Icon,
+  Tooltip,
+  Modal,
+  Breadcrumb,
+  Affix
+} from 'antd';
+import style from "../../entrust/basic-form/style.less";
 
 const FormItem = Form.Item;
 const confirm=Modal.confirm;
@@ -330,14 +345,18 @@ export default class EditPlan extends React.Component{
         <br/>
 
         <FormItem {...submitFormLayout} style={{marginTop: 32}}>
-          <Button type="primary" onClick={()=>{this.showSubmit(this.props.form)}}>
+          <Button onClick={()=>{this.showSubmit(this.props.form)
+          }}style={{marginLeft: 8}}
+                  type="primary"
+                  disabled={this.props.dataEdit.editdata.processState!="Submit"}>
             <FormattedMessage id="plan_edit.form.submit"/>
           </Button>
-          <Button style={{marginLeft: 8}} onClick={()=>{this.save(this.props.form)}}>
+
+          <Button onClick={()=>{this.save(this.props.form)
+          }} style={{marginLeft: 8}}
+                  type="primary"
+                  disabled={this.props.dataEdit.editdata.processState!="Submit"}>
             <FormattedMessage id="plan_edit.form.save"/>
-          </Button>
-          <Button style={{marginLeft: 8}} type="danger" onClick={()=>{this.showDelete(this.props.form)}}>
-            <FormattedMessage id="plan_edit.form.delete"/>
           </Button>
         </FormItem>
       </div>
