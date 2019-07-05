@@ -1,4 +1,4 @@
-import { getOneEntrust, reviewEntrust,replaceEntrust} from '@/services/user'
+import { getOneEntrust, reviewEntrust,replaceEntrust,queryEntrustState,addNewContract} from '@/services/user'
 import router from "umi/router";
 import {message} from "antd";
 export default {
@@ -63,9 +63,22 @@ export default {
       yield put({type: 'initData', payload: response})
     },
     * ReviewEntrust({payload},{call}) {
-      console.log("ReviewEntrust");
-      console.log("res",payload)
-      const res = yield call(reviewEntrust, payload);
+      // console.log("ReviewEntrust");
+      // console.log("res",payload)
+      yield call(reviewEntrust, payload);
+      if(payload.operation=="ReviewPass"){
+        // console.log("Pass")
+        const res = yield call(queryEntrustState,payload)
+        // console.log("getREsult")
+        // console.log(res)
+        if(res.state=="Approve"){
+        console.log("get")
+          const contract=yield call(addNewContract,payload)
+          console.log(contract)
+          alert("已创建对应的合同")
+        }
+      }
+      
       router.push("/basic-list.html")
     },
 

@@ -34,7 +34,7 @@ public class ProcessInstanceController extends BaseController {
      * @param object
      * @return
      */
-    @GetMapping(path = "/process/query")
+    @PostMapping(path = "/process/query")
     public @ResponseBody
     JSONObject queryProcessState(@RequestBody ProcessEntity object) {
         processService.queryProcessState(object);
