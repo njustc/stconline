@@ -13,7 +13,7 @@ export default {
     * queryGetOnePlan({payload}, {call, put}) {
       const response = yield call(getOneTestPlan, payload);
       //console.log("get res");
-      //console.log(response);
+      console.log(response);
       yield put({type: 'getPlanData', payload: response})
     },
     * queryReviewTestPlan({payload},{call}) {
