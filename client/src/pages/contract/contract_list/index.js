@@ -8,6 +8,7 @@ const data=[];
 const namespace='contractList';
 const mapStateToProps = (state) => {
   const dataList = state[namespace].data;
+  //console.log("=============");
   //console.log(dataList);
   return {
     dataList,
@@ -46,7 +47,7 @@ class List extends React.Component{
           {/*<a href="/plan_edit.html">编辑</a>*/}
           <Link to={{pathname: '../../contract_edit', query: {pid: key.pid}}}>编辑</Link>
           <Divider type="vertical"/>
-          <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this,key)}>删除</span>
+          <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this,key)}>废止</span>
         </span>
     ),
     "CUS":(key) => (
@@ -91,6 +92,7 @@ class List extends React.Component{
           color = 'blue';
         }
         return (
+          //console.log(processState);
           <Tag color={color} key={processState}>
             {processState}
           </Tag>
