@@ -174,6 +174,12 @@ public class EntrustServiceImpl implements EntrustService {
     private List<Entrust> setState(List<Entrust> entrusts) {
         for (Entrust entrust: entrusts) {
             String processInstanceId = entrust.getProcessInstanceId();
+            if (processInstanceId == null) {
+                entrust.setProcessInstanceId("");
+                entrust = this.updateEntrust(entrust.getPid(), entrust);
+                processInstanceId = entrust.getProcessInstanceId();
+            }
+
             entrust.setProcessState(processUtils.getProcessState(processInstanceId));
             if (!processInstanceId.equals("")) {
                 entrust.setComment(processService.getProcessComment(processInstanceId));
@@ -184,6 +190,12 @@ public class EntrustServiceImpl implements EntrustService {
 
     private Entrust setState(Entrust entrust) {
         String processInstanceId = entrust.getProcessInstanceId();
+        if (processInstanceId == null) {
+            entrust.setProcessInstanceId("");
+            entrust = this.updateEntrust(entrust.getPid(), entrust);
+            processInstanceId = entrust.getProcessInstanceId();
+        }
+
         entrust.setProcessState(processUtils.getProcessState(processInstanceId));
         if (!processInstanceId.equals("")) {
             entrust.setComment(processService.getProcessComment(processInstanceId));

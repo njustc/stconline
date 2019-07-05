@@ -165,8 +165,10 @@ public class ContractServiceImpl implements ContractService{
         record.setId(contract.getId());
         record.setPid(pid);
         record.setUserId(contract.getUserId());
-        record.setProcessState(contract.getProcessState());
-        record.setProcessInstanceId(contract.getProcessInstanceId());
+        if (record.getProcessInstanceId().equals("")) {
+            record.setProcessState(contract.getProcessState());
+            record.setProcessInstanceId(contract.getProcessInstanceId());
+        }
         return setState(contractRepository.save(record));
     }
 
@@ -180,6 +182,12 @@ public class ContractServiceImpl implements ContractService{
     private List<Contract> setState(List<Contract> contracts) {
         for (Contract contract: contracts) {
             String processInstanceId = contract.getProcessInstanceId();
+            if (processInstanceId == null) {
+                contract.setProcessInstanceId("");
+                contract = this.updateContract(contract.getPid(), contract);
+                processInstanceId = contract.getProcessInstanceId();
+            }
+
             contract.setProcessState(processUtils.getProcessState(processInstanceId));
             if (!processInstanceId.equals("")) {
                 contract.setComment(processService.getProcessComment(processInstanceId));
@@ -190,6 +198,12 @@ public class ContractServiceImpl implements ContractService{
 
     private Contract setState(Contract contract) {
         String processInstanceId = contract.getProcessInstanceId();
+        if (processInstanceId == null) {
+            contract.setProcessInstanceId("");
+            contract = this.updateContract(contract.getPid(), contract);
+            processInstanceId = contract.getProcessInstanceId();
+        }
+
         contract.setProcessState(processUtils.getProcessState(processInstanceId));
         if (!processInstanceId.equals("")) {
             contract.setComment(processService.getProcessComment(processInstanceId));

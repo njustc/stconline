@@ -74,8 +74,10 @@ public class TestReportServiceImpl implements TestReportService {
         TestReport testReport = testReportRepository.findByPid(pid);
         record.setId(testReport.getId());
         record.setPid(testReport.getPid());
-        record.setProcessState(testReport.getProcessState());
-        record.setProcessInstanceId(testReport.getProcessInstanceId());
+        if (record.getProcessInstanceId().equals("")) {
+            record.setProcessState(testReport.getProcessState());
+            record.setProcessInstanceId(testReport.getProcessInstanceId());
+        }
         return setState(testReportRepository.save(record));
     }
 
@@ -102,6 +104,12 @@ public class TestReportServiceImpl implements TestReportService {
     private List<TestReport> setState(List<TestReport> testReports) {
         for (TestReport testReport: testReports) {
             String processInstanceId = testReport.getProcessInstanceId();
+            if (processInstanceId == null) {
+                testReport.setProcessInstanceId("");
+                testReport = this.updateTestReport(testReport.getPid(), testReport);
+                processInstanceId = testReport.getProcessInstanceId();
+            }
+
             testReport.setProcessState(processUtils.getProcessState(processInstanceId));
             if (!processInstanceId.equals("")) {
                 testReport.setComment(processService.getProcessComment(processInstanceId));
@@ -112,6 +120,12 @@ public class TestReportServiceImpl implements TestReportService {
 
     private TestReport setState(TestReport testReport) {
         String processInstanceId = testReport.getProcessInstanceId();
+        if (processInstanceId == null) {
+            testReport.setProcessInstanceId("");
+            testReport = this.updateTestReport(testReport.getPid(), testReport);
+            processInstanceId = testReport.getProcessInstanceId();
+        }
+
         testReport.setProcessState(processUtils.getProcessState(processInstanceId));
         if (!processInstanceId.equals("")) {
             testReport.setComment(processService.getProcessComment(processInstanceId));
