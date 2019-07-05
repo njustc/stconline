@@ -51,7 +51,7 @@ export default class List extends React.Component{
   }
   componentDidMount() {
     const {dispatch} = this.props;
-
+    //console.log(this.props.location);
     dispatch({
       type: `${namespace}/queryGetOnePlan`,
       payload: this.props.location.query,
@@ -99,6 +99,43 @@ export default class List extends React.Component{
         {
           {
             "QM": <div class="qmSpace">
+              <FormItem label={<FormattedMessage id="审批意见"/>} >
+                {getFieldDecorator('comment', {
+                  initialValue: this.props.dataCheck.check.comment || '无',
+                }, {
+                  rules: [
+                    {
+                      required: true,
+                      message: formatMessage({id: '需要审批意见'}),
+                    },
+                  ],
+                })(<Input placeholder={formatMessage({id: '输入审批意见'})}
+                          disabled={this.props.dataCheck.check.processState!="Review"}
+                />)}
+              </FormItem>
+
+              {
+                this.props.dataCheck.check.processState=="Review"?
+                  <div>
+                    <Button onClick={() => {
+                      this.review(this.props.form,"ReviewPass")
+                    }} style={{marginLeft: 8 }}
+                            type="primary">
+                      <FormattedMessage id="basic-form.form.agree"/>
+                    </Button>
+                    <Button onClick={() => {
+                      this.review(this.props.form,"ReviewDisprove")
+                    }} style={{marginLeft: 8}}
+                            type="primary"
+                            disabled={this.props.dataCheck.check.processState!="Review"}>
+                      <FormattedMessage id="basic-form.form.disagree"/>
+                    </Button>
+                  </div>
+                  :null
+              }
+            </div>,
+
+            "TM": <div class="tmSpace">
               <FormItem label={<FormattedMessage id="审批意见"/>} >
                 {getFieldDecorator('comment', {
                   initialValue: this.props.dataCheck.check.comment || '无',

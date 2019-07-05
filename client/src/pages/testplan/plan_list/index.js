@@ -126,6 +126,16 @@ export default class List extends React.Component{
   </span>
     ),
 
+    "TM": (key) => (
+      <span>
+  {/*{key.processState === 'ToReview' ? <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>审核</Link> :*/}
+        {/*  <span></span>}*/}
+        <Divider type="vertical"/>
+        {<Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
+  </span>
+    ),
+
+
     "TS": (key) => (
 
       <span>
