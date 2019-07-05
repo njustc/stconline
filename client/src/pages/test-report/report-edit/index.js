@@ -354,21 +354,37 @@ class newTestReport extends PureComponent {
 
 
 
-
+  // addReport=(form)=>{
+  //   const { dispatch } = this.props;
+  //   this.state.pid=this.props.dataReport.reportdata.pid;
+  //   form.validateFields((err,value) => {
+  //     //新建
+  //     value.pid=this.state.pid;
+  //     // 补充新建属性
+  //     value.processInstanceId="";
+  //     value.processState="ToSubmit";
+  //     value.comment="";
+  //     //补充完毕
+  //     dispatch({
+  //       type: `${namespace}/queryAddPlan`,
+  //       payload: value,
+  //     });
+  //   })
+  // };
 
 
 
 
   saveForm=(form)=>{
-    console.log(form)
+    console.log(666)
     
     const { dispatch } = this.props;  
     this.state.pid = this.props.dataReport.reportdata.pid;
     form.validateFields((err,value) => {
       value.pid=this.state.pid
-      value.processInstanceID = this.props.dataReport.reportdata.processInstanceID;
+      value.processInstanceID = this.props.dataReport.reportdata.processInstanceId;
       value.processState = this.props.dataReport.reportdata.processState;
-      //console.log("验证走到这里与否");
+      console.log("验证走到这里与否");
       dispatch({
         type: `${namespace}/queryReplaceReport`,
         payload: value,
