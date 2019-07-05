@@ -74,7 +74,7 @@ public class TestReportServiceImpl implements TestReportService {
         TestReport testReport = testReportRepository.findByPid(pid);
         record.setId(testReport.getId());
         record.setPid(testReport.getPid());
-        if (record.getProcessInstanceId().equals("")) {
+        if (record.getProcessInstanceId() == null || record.getProcessInstanceId().equals("")) {
             record.setProcessState(testReport.getProcessState());
             record.setProcessInstanceId(testReport.getProcessInstanceId());
         }
@@ -103,17 +103,7 @@ public class TestReportServiceImpl implements TestReportService {
 
     private List<TestReport> setState(List<TestReport> testReports) {
         for (TestReport testReport: testReports) {
-            String processInstanceId = testReport.getProcessInstanceId();
-            if (processInstanceId == null) {
-                testReport.setProcessInstanceId("");
-                testReport = this.updateTestReport(testReport.getPid(), testReport);
-                processInstanceId = testReport.getProcessInstanceId();
-            }
-
-            testReport.setProcessState(processUtils.getProcessState(processInstanceId));
-            if (!processInstanceId.equals("")) {
-                testReport.setComment(processService.getProcessComment(processInstanceId));
-            }
+            testReport = setState(testReport);
         }
         return testReports;
     }

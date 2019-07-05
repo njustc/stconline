@@ -132,10 +132,13 @@ public class ProcessServiceImpl implements ProcessService {
     /**
      * 查询流程状态
      * @param entity
+     * @return
      */
     @Override
-    public void queryProcessState(ProcessEntity entity) {
-        entity.setProcessState(stcProcessEngine.getProcessState(entity.getProcessInstanceId()));
+    public String queryProcessState(ProcessEntity entity) {
+        String processState = stcProcessEngine.getProcessState(entity.getProcessInstanceId());
+        entity.setProcessState(processState);
+        return processState;
     }
 
     /**
@@ -145,12 +148,24 @@ public class ProcessServiceImpl implements ProcessService {
     @Override
     public void updateProcessInstance(ProcessEntity entity, String type) {
         stcProcessEngine.updateProcess(entity);
+
+        if (queryProcessState(entity).equals("Approve")) {
+            /**
+             * 根据type创建流水线的下一个实体
+             */
+            switch (type) {
+                case "Entrust": contractService.newContract(entity.getPid(), entity.getUserId()); break;
+                case "Contract": testPlanService.newTestPlan(entity.getPid(), entity.getUserId()); break;
+                case "TestPlan": testReportService.newTestReport(entity.getPid(), entity.getUserId()); break;
+                default: break;
+            }
+        }
     }
 
     /**
      * 获取评审意见
      * @param processInstanceId
-     * @return
+     * @return 评审意见
      */
     @Override
     public String getProcessComment(String processInstanceId) {

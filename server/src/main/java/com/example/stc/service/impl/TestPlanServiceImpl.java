@@ -74,7 +74,7 @@ public class TestPlanServiceImpl implements TestPlanService {
         TestPlan testPlan = testPlanRepository.findByPid(pid);
         record.setId(testPlan.getId());
         record.setPid(testPlan.getPid());
-        if (record.getProcessInstanceId().equals("")) {
+        if (record.getProcessInstanceId() == null || record.getProcessInstanceId().equals("")) {
             record.setProcessState(testPlan.getProcessState());
             record.setProcessInstanceId(testPlan.getProcessInstanceId());
         }
@@ -103,17 +103,7 @@ public class TestPlanServiceImpl implements TestPlanService {
 
     private List<TestPlan> setState(List<TestPlan> testPlans) {
         for (TestPlan testPlan: testPlans) {
-            String processInstanceId = testPlan.getProcessInstanceId();
-            if (processInstanceId == null) {
-                testPlan.setProcessInstanceId("");
-                testPlan = this.updateTestPlan(testPlan.getPid(), testPlan);
-                processInstanceId = testPlan.getProcessInstanceId();
-            }
-
-            testPlan.setProcessState(processUtils.getProcessState(processInstanceId));
-            if (!processInstanceId.equals("")) {
-                testPlan.setComment(processService.getProcessComment(processInstanceId));
-            }
+            testPlan = setState(testPlan);
         }
         return testPlans;
     }

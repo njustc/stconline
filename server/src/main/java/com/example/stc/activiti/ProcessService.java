@@ -22,7 +22,7 @@ public interface ProcessService extends BaseService<ProcessEntity> {
 
     void deleteProcessInstance(ProcessEntity entity);
 
-    void queryProcessState(ProcessEntity entity);
+    String queryProcessState(ProcessEntity entity);
 
     void updateProcessInstance(ProcessEntity entity, String type);
 
