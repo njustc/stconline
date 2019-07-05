@@ -1,6 +1,8 @@
 package com.example.stc.service.impl;
 
+import com.example.stc.activiti.ProcessService;
 import com.example.stc.activiti.ProcessState;
+import com.example.stc.activiti.STCProcessEngine;
 import com.example.stc.domain.Contract;
 import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
@@ -44,6 +46,9 @@ public class ContractServiceImpl implements ContractService{
 
     @Autowired
     private ProcessUtils processUtils;
+    
+    @Autowired
+    private ProcessService processService;
 
     @Override
     public List<Contract> findAllContracts() {
@@ -172,15 +177,23 @@ public class ContractServiceImpl implements ContractService{
         this.updateContract(contract.getPid(), contract);
     }
 
-    public List<Contract> setState(List<Contract> contracts) {
+    private List<Contract> setState(List<Contract> contracts) {
         for (Contract contract: contracts) {
-            contract.setProcessState(processUtils.getProcessState(contract.getProcessInstanceId()));
+            String processInstanceId = contract.getProcessInstanceId();
+            contract.setProcessState(processUtils.getProcessState(processInstanceId));
+            if (!processInstanceId.equals("")) {
+                contract.setComment(processService.getProcessComment(processInstanceId));
+            }
         }
         return contracts;
     }
 
-    public Contract setState(Contract contract) {
-        contract.setProcessState(processUtils.getProcessState(contract.getProcessInstanceId()));
+    private Contract setState(Contract contract) {
+        String processInstanceId = contract.getProcessInstanceId();
+        contract.setProcessState(processUtils.getProcessState(processInstanceId));
+        if (!processInstanceId.equals("")) {
+            contract.setComment(processService.getProcessComment(processInstanceId));
+        }
         return contract;
     }
 }

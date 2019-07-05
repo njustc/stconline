@@ -1,6 +1,8 @@
 package com.example.stc.service.impl;
 
+import com.example.stc.activiti.ProcessService;
 import com.example.stc.activiti.ProcessState;
+import com.example.stc.activiti.STCProcessEngine;
 import com.example.stc.domain.TestReport;
 import com.example.stc.domain.User;
 import com.example.stc.framework.exception.TestReportNotFoundException;
@@ -28,6 +30,9 @@ public class TestReportServiceImpl implements TestReportService {
 
     @Autowired
     private ProcessUtils processUtils;
+    
+    @Autowired
+    private ProcessService processService;
 
     @Override
     public List<TestReport> findAllTestReports() {
@@ -94,15 +99,23 @@ public class TestReportServiceImpl implements TestReportService {
         this.updateTestReport(testReport.getPid(), testReport);
     }
 
-    public List<TestReport> setState(List<TestReport> testReports) {
+    private List<TestReport> setState(List<TestReport> testReports) {
         for (TestReport testReport: testReports) {
-            testReport.setProcessState(processUtils.getProcessState(testReport.getProcessInstanceId()));
+            String processInstanceId = testReport.getProcessInstanceId();
+            testReport.setProcessState(processUtils.getProcessState(processInstanceId));
+            if (!processInstanceId.equals("")) {
+                testReport.setComment(processService.getProcessComment(processInstanceId));
+            }
         }
         return testReports;
     }
 
-    public TestReport setState(TestReport testReport) {
-        testReport.setProcessState(processUtils.getProcessState(testReport.getProcessInstanceId()));
+    private TestReport setState(TestReport testReport) {
+        String processInstanceId = testReport.getProcessInstanceId();
+        testReport.setProcessState(processUtils.getProcessState(processInstanceId));
+        if (!processInstanceId.equals("")) {
+            testReport.setComment(processService.getProcessComment(processInstanceId));
+        }
         return testReport;
     }
 }

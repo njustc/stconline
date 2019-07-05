@@ -14,6 +14,8 @@ import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ import java.util.Map;
 
 @Service
 public class STCProcessEngine {
+
+    private final Logger logger = LoggerFactory.getLogger(STCProcessEngine.class);
 
     private static final String REVIEW = "ReviewResult";
     private static final String COMMENT = "ReviewComment";
@@ -129,6 +133,24 @@ public class STCProcessEngine {
      */
     public void deleteProcessInstance(String processInstanceId) {
         runtimeService.deleteProcessInstance(processInstanceId, "用户已取消");
+    }
+
+    /**
+     * 获取评论意见
+     * @param processInstanceId
+     * @return
+     */
+    public String getComment(String processInstanceId) {
+        String comment = "";
+        List<HistoricVariableInstance> historicVariableInstances = historyService.createHistoricVariableInstanceQuery()
+                .processInstanceId(processInstanceId).orderByVariableName().desc().list();
+        for (HistoricVariableInstance historicVariableInstance: historicVariableInstances) {
+            logger.info("HistoryVariable: " + historicVariableInstance.getVariableName() + " " + historicVariableInstance.getValue());
+            if (historicVariableInstance.getVariableName().contains("Comment")) {
+                comment = (String)historicVariableInstance.getValue();
+            }
+        }
+        return comment;
     }
 
 }

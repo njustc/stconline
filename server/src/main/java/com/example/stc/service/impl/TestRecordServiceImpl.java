@@ -1,6 +1,5 @@
 package com.example.stc.service.impl;
 
-import com.example.stc.domain.TestCase;
 import com.example.stc.domain.TestRecord;
 import com.example.stc.framework.exception.TestRecordNotFoundException;
 import com.example.stc.framework.util.DateUtils;
@@ -9,7 +8,6 @@ import com.example.stc.service.TestRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service

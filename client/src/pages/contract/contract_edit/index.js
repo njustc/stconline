@@ -27,8 +27,8 @@ const dateFormat = 'YYYY/MM/DD';
 
 const mapStateToProps = (state) => {
   const dataEdit = state[namespace];
-  console.log ("DATEEDIT_____________________");
-  console.log (dataEdit);
+  //console.log ("DATEEDIT_____________________");
+  //console.log (dataEdit);
   return {
     dataEdit,
   };
@@ -116,6 +116,7 @@ class BasicForm extends PureComponent {
         payload: value,
       })
     })
+    //console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
   }
 
   save=(form)=>{
@@ -125,9 +126,42 @@ class BasicForm extends PureComponent {
       //
     }
     else{
-      console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+      //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
       this.saveCon(form)
     }
+  }
+
+  submit=(form)=>{
+    const{ dispatch} = this.props;
+    this.state.pid = this.props.dataEdit.editdata.pid
+    form.validateFields((err,value) => {
+      value.pid = this.state.pid
+      value.processInstanceId = this.props.dataEdit.editdata.processInstanceId||""
+      value.comment = this.props.dataEdit.editdata.comment||""
+      dispatch({
+        type: 'contractEdit/submitCon',
+        payload: value,
+      });
+    })
+    //console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+  };
+
+  showConfirm(con) {
+    var that=this
+    confirm({
+      title: '您是否要提交合同？',
+      content: '提交之后不能再修改',
+      okText: '确认',
+      //okType: 'primarysubmit',
+      cancelText: '取消',
+      onOk() {
+        that.saveCon(con);
+        that.submit(con);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
   }
 
   render() {
@@ -321,7 +355,7 @@ class BasicForm extends PureComponent {
 		</Card>
 		
 		<FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
-        <Button type="primary" /*onClick={showConfirm}*/>
+        <Button type="primary" onClick={()=> this.showConfirm(this.props.form)}>
 				    <FormattedMessage id="basic-form.form.submit" />
         </Button>
         <Button style={{ marginLeft: 8 }} onClick={() =>this.save(this.props.form)}>
