@@ -57,22 +57,10 @@ export default {
       else {
         console.log("update");
         yield call(updateTestReportProcess, payload);
-        console.log("000")
       }
       router.push("/report-list.html")
 
     },
-
-
-
-
-
-
-
-
-
-
-
 
 
 
