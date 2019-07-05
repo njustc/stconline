@@ -26,6 +26,21 @@ export default class report_detail extends React.Component{
     });
   }
 
+  review = (form,operation) => {
+    const {dispatch} = this.props;
+    this.state.pid = this.props.reportdata.data.pid;
+    this.state.comment = this.props.reportdata.data.comment;
+    form.validateFields((err, value) => {
+      var checkvalue = this.props.reportdata.data;
+      checkvalue.operation = operation;
+      checkvalue.comment = value.comment;
+      dispatch({
+        type: `${namespace}/queryReviewTestReport`,
+        payload: checkvalue,
+      });
+    })
+  }
+
   render(){
     return (
       <div>
@@ -104,7 +119,18 @@ export default class report_detail extends React.Component{
               type="danger"
               >不通过</Button>
             </div>,
-
+            "TM":
+            <div>
+              <h1>测试部主任</h1>
+              <Button
+              style={{marginLeft: 350}}
+              type="primary"
+              >通过</Button>
+              <Button
+              style={{marginLeft: 20}}
+              type="danger"
+              >不通过</Button>
+            </div>,
             "QM":
             <div>
               <h1>质量部主任</h1>
