@@ -63,14 +63,9 @@ export default {
       yield put({type: 'initData', payload: response})
     },
     * ReviewEntrust({payload},{call}) {
-      // console.log("ReviewEntrust");
-      // console.log("res",payload)
       yield call(reviewEntrust, payload);
       if(payload.operation=="ReviewPass"){
-        // console.log("Pass")
         const res = yield call(queryEntrustState,payload)
-        // console.log("getREsult")
-        // console.log(res)
         if(res.state=="Approve"){
         console.log("get")
           const contract=yield call(addNewContract,payload)
@@ -86,7 +81,6 @@ export default {
   },
   reducers: {
     initData(state, action) {
-      // console.log(action.payload)
       return {
         ...state,
         entrust: action.payload,
