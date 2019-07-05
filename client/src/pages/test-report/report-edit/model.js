@@ -2,7 +2,7 @@ import { routerRedux } from 'dva/router';
 import { getPageQuery } from './utils/utils';
 import { setAuthority } from './utils/authority';
 import { reloadAuthorized } from './utils/Authorized';
-import { getOneTestReport, replaceTestReport, addNewTestReport, deleteTestReport, createTestReportProcess, updateTestReportProcess } from '@/services/testReport';
+import { getOneTestReport, replaceTestReport, addNewTestReport, deleteTestReport , updateTestReportProcess, createTestReportProcess} from '@/services/testReport';
 import router from "umi/router";
 
 export default {
@@ -35,21 +35,24 @@ export default {
     },
 
 
-
     * querySubmitReport({payload}, {call, put}) {
-      console.log("submit", payload);
+      //console.log("submit555")
+      //console.log(payload.processInstanceId)
       if (payload.pid !== "") {
         //添加属性
-        console.log("555");
+        //console.log("replaceTestPlan");
         const response = yield call(replaceTestReport, payload);
+        //console.log(payload.processInstanceId)
         payload = response;
       } else {
         const newform = yield call(addNewTestReport, payload);
         payload = newform;
       }
+      console.log(payload)
       if (payload.processInstanceId === "") {
         console.log("create");
         yield call(createTestReportProcess, payload);
+        console.log(payload)
       }
       else {
         console.log("update");

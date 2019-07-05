@@ -26,6 +26,21 @@ export default class report_detail extends React.Component{
     });
   }
 
+  review = (form,operation) => {
+    const {dispatch} = this.props;
+    this.state.pid = this.props.reportdata.data.pid;
+    this.state.comment = this.props.reportdata.data.comment;
+    form.validateFields((err, value) => {
+      var checkvalue = this.props.reportdata.data;
+      checkvalue.operation = operation;
+      checkvalue.comment = value.comment;
+      dispatch({
+        type: `${namespace}/queryReviewTestReport`,
+        payload: checkvalue,
+      });
+    })
+  }
+
   render(){
     return (
       <div>
