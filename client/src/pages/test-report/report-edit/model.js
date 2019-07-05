@@ -2,7 +2,7 @@ import { routerRedux } from 'dva/router';
 import { getPageQuery } from './utils/utils';
 import { setAuthority } from './utils/authority';
 import { reloadAuthorized } from './utils/Authorized';
-import { getOneTestReport, replaceTestReport, addNewTestReport, deleteTestReport } from '@/services/testReport';
+import { getOneTestReport, replaceTestReport, addNewTestReport, deleteTestReport, createTestReportProcess, updateTestReportProcess } from '@/services/testReport';
 import router from "umi/router";
 
 export default {
@@ -33,6 +33,34 @@ export default {
       yield put({type: 'updateData', payload: response});
       message.success('新建成功');
     },
+
+
+
+    * querySubmitReport({payload}, {call, put}) {
+      console.log("submit", payload);
+      if (payload.pid !== "") {
+        //添加属性
+        console.log("555");
+        const response = yield call(replaceTestReport, payload);
+        payload = response;
+      } else {
+        const newform = yield call(addNewTestReport, payload);
+        payload = newform;
+      }
+      if (payload.processInstanceId === "") {
+        console.log("create");
+        yield call(createTestReportProcess, payload);
+      }
+      else {
+        console.log("update");
+        yield call(updateTestReportProcess, payload);
+      }
+      router.push("/report-list.html")
+
+    },
+
+
+
     *queryDeleteReport({payload},{call}){
       console.log("play123",payload)
       if (payload.pid!="") {

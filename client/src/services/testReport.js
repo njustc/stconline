@@ -43,6 +43,22 @@ export async function getOneTestReport(params) {
     return request(`api/project/testReport/${params.pid}`);
 }
 
+
+export async function createTestReportProcess(params) {
+  // console.log(typeof(params))
+  return request(`api/project/process/create?pid=${params.pid}&type=TestReport`, {
+    method: 'POST',
+    data: ""
+  });
+}
+
+export async function updateTestReportProcess(params) {
+  console.log(typeof(params),params)
+  return request(`api/project/process/update?type=TestReport`, {
+    method: 'POST',
+    data: params
+  });
+}
 // export async function updateEntrustProcess(params) {
 //   // console.log(typeof(params))
 //   return request(`api/project/entrust/submit?pid=${params}`, {

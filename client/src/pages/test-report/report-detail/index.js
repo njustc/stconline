@@ -104,7 +104,18 @@ export default class report_detail extends React.Component{
               type="danger"
               >不通过</Button>
             </div>,
-
+            "TM":
+            <div>
+              <h1>测试部主任</h1>
+              <Button
+              style={{marginLeft: 350}}
+              type="primary"
+              >通过</Button>
+              <Button
+              style={{marginLeft: 20}}
+              type="danger"
+              >不通过</Button>
+            </div>,
             "QM":
             <div>
               <h1>质量部主任</h1>
