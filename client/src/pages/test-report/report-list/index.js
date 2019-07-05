@@ -87,6 +87,26 @@ export default class ReportList extends Component {
       key: 'pid',
       render: text => <a href="javascript:;">{text}</a>,
     },
+
+
+    {
+      title: '状态',
+      key: 'processState',
+      dataIndex: 'processState',
+      render: processState => {
+        var color = processState === 'Review' ? 'geekblue' : 'green'
+        if (processState === 'Submit') {
+          color = 'grey'
+        }
+        return (
+          <Tag color={color} key={processState}>
+            {processState}
+          </Tag>
+        );
+      }
+
+    
+    },
     {
       title: '操作',
       key: 'action',

@@ -39,6 +39,25 @@ export async function addNewTestReport(params) {
   });
 }
 
+export async function updateTestReportProcess(params) {
+  console.log(typeof(params),params)
+  console.log("000")
+  return request(`api/project/process/update?type=TestReport`, {
+    method: 'POST',
+    data: params
+  });
+}
+
+
+
+export async function createTestReportProcess(params) {
+   console.log("6",params)
+  return request(`api/project/process/create?pid=${params.pid}&type=TestReport`, {
+    method: 'POST',
+    data: ""
+  });
+}
+
 export async function getOneTestReport(params) {
     return request(`api/project/testReport/${params.pid}`);
 }
