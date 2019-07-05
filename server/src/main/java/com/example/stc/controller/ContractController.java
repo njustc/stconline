@@ -23,6 +23,7 @@ import com.example.stc.domain.Contract;
  */
 @RestController
 public class ContractController extends BaseController {
+
     @Autowired
     private ContractService contractService;
 
@@ -96,7 +97,7 @@ public class ContractController extends BaseController {
     }
 
     /**
-     * 删除单个合同
+     * 合同废止。删除合同的同时应删除对应的委托，测试方案等
      */
     @Secured({"ROLE_SS"}) // 市场部工作人员
     @DeleteMapping(path = "/contract/{pid}")
