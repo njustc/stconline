@@ -59,6 +59,8 @@ public class TestReportServiceImpl implements TestReportService {
         testReport.setPid(pid);
         testReport.setUserId(uid);
         testReport.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
+        // DEBUG：若数据库中该项目已存在，则覆盖原项目
+        testReportRepository.deleteByPid(pid);
         return setState(testReportRepository.save(testReport));
     }
 

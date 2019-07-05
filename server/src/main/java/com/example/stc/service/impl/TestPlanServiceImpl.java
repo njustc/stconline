@@ -59,6 +59,8 @@ public class TestPlanServiceImpl implements TestPlanService {
         testPlan.setPid(pid);
         testPlan.setUserId(uid);
         testPlan.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
+        // DEBUG：若数据库中该项目已存在，则覆盖原项目
+        testPlanRepository.deleteByPid(pid);
         return setState(testPlanRepository.save(testPlan));
     }
 

@@ -9,8 +9,7 @@ import com.example.stc.framework.exception.UserNotFoundException;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.DateUtils;
 import com.example.stc.framework.util.ProcessUtils;
-import com.example.stc.repository.ContractRepository;
-import com.example.stc.repository.UserRepository;
+import com.example.stc.repository.*;
 import com.example.stc.service.ContractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +26,18 @@ public class ContractServiceImpl implements ContractService{
 
     @Autowired
     private ContractRepository contractRepository;
+
+    @Autowired
+    private EntrustRepository entrustRepository;
+
+    @Autowired
+    private TestPlanRepository testPlanRepository;
+
+    @Autowired
+    private TestRecordRepository testRecordRepository;
+
+    @Autowired
+    private TestReportRepository testReportRepository;
 
     @Autowired
     private AuthorityUtils authorityUtils;
@@ -112,6 +123,11 @@ public class ContractServiceImpl implements ContractService{
         logger.info("deleteContractByPid: ");
         Contract contract = this.findContractByPid(pid);
         contractRepository.deleteByPid(pid);
+        // 同时删除对应的委托，测试方案，测试记录，测试报告
+        entrustRepository.deleteByPid(pid);
+        testPlanRepository.deleteByPid(pid);
+        testReportRepository.deleteByPid(pid);
+        testRecordRepository.deleteAllByPid(pid);
     }
 
     @Override
@@ -129,6 +145,8 @@ public class ContractServiceImpl implements ContractService{
         contract.setPid(pid);
         contract.setUserId(uid);
         contract.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
+        // DEBUG：若数据库中该项目已存在，则覆盖原项目
+        contractRepository.deleteByPid(pid);
         return setState(contractRepository.save(contract));
     }
 
