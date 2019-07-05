@@ -1,5 +1,6 @@
 import { message } from 'antd';
-import { getOneContract ,replaceContract} from '@/services/contract';
+import { getOneContract ,replaceContract, updateConProcess, createConProcess} from '@/services/contract';
+import router from 'umi/router';
 
 export default {
     namespace : 'contractEdit',
@@ -19,11 +20,31 @@ export default {
         //     yield put({type:'initData',payload:response})
         //     message.success('保存成功');
         // },
-        *querySaveCon({payload}, {call,put}) {
+        *querySaveCon({payload}, {call}) {
+            console.log("================这里是payload================")
+            console.log(payload);
+            console.log("==================这是payload===================")
             yield call(replaceContract, payload);
             const response = yield call(getOneContract, payload);
-            yield put({type: 'updataDate', payload: response});
+            console.log("让我们康康res是什么");
+            console.log(response);
+            console.log("=================");
+            //yield put({type: 'updataDate', payload: response});
+            console.log("保存成功")
+            message.success("保存成功，请刷新")
         },
+        *submitCon({payload}, {call}){
+            // console.log("============")
+            // console.log(payload)
+            // console.log("===============!!")
+            if(payload.processInstanceId===""){
+                const res = yield call(createConProcess,payload)
+            }else{
+                const res = yield call(updateConProcess,payload)
+            }
+            console.log("执行跳转")
+            router.push("/contract_list.html")
+        }
     },
     reducers: {
         updataData(state, action) {

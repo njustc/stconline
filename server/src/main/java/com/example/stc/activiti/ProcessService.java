@@ -24,4 +24,6 @@ public interface ProcessService extends BaseService<ProcessEntity> {
 
     void updateProcessInstance(ProcessEntity entity, String type);
 
+    String getProcessComment(String processInstanceId);
+
 }
