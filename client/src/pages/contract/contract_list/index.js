@@ -3,6 +3,7 @@ import Link from 'umi/link'
 import React from "react";
 import {connect} from "dva";
 import {getRole} from "../../../utils/cookieUtils";
+//import {getRole} from "src/utils/cookieUtils"
 
 const data=[];
 const namespace='contractList';
