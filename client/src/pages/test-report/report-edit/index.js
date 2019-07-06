@@ -573,9 +573,9 @@ class newTestReport extends PureComponent {
                 </FormItem>
               </Col>
               <Col span={12} style={{display:"block"}}>
-              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.pid"/>}>
-                  {getFieldDecorator('pid', {
-                    initialValue: this.props.dataReport.reportdata.pid || '',
+              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.clientCompany"/>}>
+                  {getFieldDecorator('clientCompany', {
+                    initialValue: this.props.dataReport.reportdata.clientCompany || '',
                   }, {
                     rules: [
                       {
