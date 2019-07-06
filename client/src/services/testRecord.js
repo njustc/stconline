@@ -13,8 +13,9 @@ export async function addNewTestRecord(data) {
 /**
  * 查看某一项目全部测试记录
  * */
-export async function getProjectTestRecords({pid}) {
-    return request(`api/project/testRecord?pid=${pid}`);
+export async function getProjectTestRecords(param) {
+  console.log(param.pid);
+  return request(`api/project/testRecord?pid=${param.pid}`);
 }
 
 /**
@@ -60,4 +61,10 @@ export async function createTestReportProcess(params) {
     });
 }
 
-
+export async function updateTestRecordProcess(params) {
+  console.log(typeof(params),params)
+  return request(`api/project/process/update?type=TestRecord`, {
+    method: 'POST',
+    data: params
+  });
+}

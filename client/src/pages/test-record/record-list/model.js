@@ -5,19 +5,18 @@ export default {
 
     state: {
         data: [],
-        counter = 0,
     },
 
     effects:{
-        *queryInitRecords(_, {call, put}) {
-            //获取服务器端数据
-            const response = yield call(getProjectTestRecords);
-            if (!('_embedded' in response)) {
-                yield put({type: 'getRecordData', payload: response});
-            } 
-            else {
-                yield put({type: 'getRecordData', payload: response._embedded.testRecords});
-            }
+        *queryInitRecords({payload}, {call, put}) {
+          //获取服务器端数据
+          console.log(payload);
+          const response = yield call(getProjectTestRecords, payload);
+          if (!('_embedded' in response)) {
+            yield put({type: 'getRecordData', payload: response});
+          } else {
+            yield put({type: 'getRecordData', payload: response._embedded.testRecords});
+          }
         },
         *queryAddRecord({payload},{call,put}) {
             const response = yield call(addNewTestRecord, payload);
@@ -37,15 +36,6 @@ export default {
 
     //响应action并修改state
     reducers:{
-        addNewRecord(state, { payload: newRecord }) {
-            const nextCounter = state.counter + 1;
-            const newRecordWithId = {...newPlan, id: nextCounter};
-            const nextData = state.data.concat(newRecordWithId);
-            return {
-                data: nextData,
-                counter: nextCounter,
-            };
-        },
         getRecordData(state, action) {
             return{
                 ...state,

@@ -219,7 +219,7 @@ export default class EditPlan extends React.Component {
         <Breadcrumb>
           <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
           <Breadcrumb.Item href="/plan_list.html">测试方案列表</Breadcrumb.Item>
-          <Breadcrumb.Item href="/plan_edit.html">测试方案编辑</Breadcrumb.Item>
+          <Breadcrumb.Item>测试方案编辑</Breadcrumb.Item>
         </Breadcrumb>
 
         {/*/!*<div className={style.headerTitle}>*!/*/}
