@@ -555,9 +555,9 @@ class newTestReport extends PureComponent {
                 </FormItem>
               </Col>
               <Col span={12} style={{display:"block"}}>
-              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.unitc"/>}>
-                  {getFieldDecorator('unitc', {
-                    initialValue: this.props.dataReport.reportdata.clientCompany || '',
+              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.pid"/>}>
+                  {getFieldDecorator('pid', {
+                    initialValue: this.props.dataReport.reportdata.pid || '',
                   }, {
                     rules: [
                       {
@@ -591,9 +591,9 @@ class newTestReport extends PureComponent {
                     ],
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
-              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.testBasic"/>}>
-                  {getFieldDecorator('testBasic', {
-                    initialValue: this.props.dataReport.reportdata.testBasis || '',
+              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.softwareName"/>}>
+                  {getFieldDecorator('softwareName', {
+                    initialValue: this.props.dataReport.reportdata.softwareName || '',
                   }, {
                     rules: [
                       {
@@ -609,13 +609,13 @@ class newTestReport extends PureComponent {
               <Col span={12} style={{display:"block"}}>
               <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.sampleList"/>}>
                 <Row>
-                  <Col span={8} style={{display:"block"}}>
+                  {/* <Col span={8} style={{display:"block"}}>
                     <Upload {...softwaresampleuploadprops}>
                       <Button>
                         <FormattedMessage id="new-test-report.softwareSample"/>
                       </Button>
                     </Upload>
-                  </Col>
+                  </Col> */}
                   <Col span={8} style={{display:"block"}}>
                       <Upload {...softwaredocumentsuploadprops}>
                         <Button>
@@ -627,8 +627,8 @@ class newTestReport extends PureComponent {
               </FormItem>
               <Row>
                 <Col span={12} style={{display:"block"}}>
-                    <FormItem {...formItemLayout1} label={<FormattedMessage id="new-test-report.testDominator"/>}>
-                      {getFieldDecorator('testDominator', {
+                    <FormItem {...formItemLayout1} label={<FormattedMessage id="new-test-report.tester"/>}>
+                      {getFieldDecorator('tester', {
                         initialValue: this.props.dataReport.reportdata.tester || '',
                       }, {
                         rules: [
@@ -642,8 +642,8 @@ class newTestReport extends PureComponent {
                     
                 </Col>
                 <Col span={12} style={{display:"block"}}>
-                    <FormItem {...formItemLayout2} label={<FormattedMessage id="new-test-report.date"/>}>
-                      {getFieldDecorator('date', {
+                    <FormItem {...formItemLayout2} label={<FormattedMessage id="new-test-report.testerDate"/>}>
+                      {getFieldDecorator('testerDate', {
                         initialValue: this.props.dataReport.reportdata.testDate || '',
                       }, {
                         rules: [
@@ -673,8 +673,8 @@ class newTestReport extends PureComponent {
                     
                 </Col>
                 <Col span={12} style={{display:"block"}}>
-                    <FormItem {...formItemLayout2} label={<FormattedMessage id="new-test-report.date"/>}>
-                      {getFieldDecorator('date', {
+                    <FormItem {...formItemLayout2} label={<FormattedMessage id="new-test-report.auditorDate"/>}>
+                      {getFieldDecorator('auditorDate', {
                         initialValue: this.props.dataReport.reportdata.auditorDate || '',
                       }, {
                         rules: [
@@ -705,8 +705,8 @@ class newTestReport extends PureComponent {
                     
                 </Col>
                 <Col span={12} style={{display:"block"}}>
-                    <FormItem {...formItemLayout2} label={<FormattedMessage id="new-test-report.date"/>}>
-                      {getFieldDecorator('date-approver', {
+                    <FormItem {...formItemLayout2} label={<FormattedMessage id="new-test-report.approverDate"/>}>
+                      {getFieldDecorator('approverDate', {
                         initialValue: this.props.dataReport.reportdata.approverDate || '',
                       }, {
                         rules: [
