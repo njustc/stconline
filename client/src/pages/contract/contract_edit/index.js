@@ -13,8 +13,11 @@ import {
   Icon,
   Tooltip,
   Modal,
-  Breadcrumb
+  Breadcrumb,
+  Affix,
+  Spin
 } from 'antd';
+import style from './style.less';
 import moment from 'moment';
 
 const FormItem = Form.Item;
@@ -91,7 +94,8 @@ class BasicForm extends PureComponent {
   constructor(props){
     super(props)
     this.state={
-      pid:""
+      pid:"",
+      Bottom: 0
     }
   }
 
@@ -155,7 +159,8 @@ class BasicForm extends PureComponent {
       //okType: 'primarysubmit',
       cancelText: '取消',
       onOk() {
-        that.saveCon(con);
+        //that.saveCon(con);
+        //console.log("执行了saveCon，即将执行submit",con);
         that.submit(con);
       },
       onCancel() {
@@ -353,18 +358,21 @@ class BasicForm extends PureComponent {
               })(<Input placeholder={formatMessage({ id: '这里写一写' })} />)}
             </FormItem>
 		</Card>
-		
-		<FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
-        <Button type="primary" onClick={()=> this.showConfirm(this.props.form)}>
-				    <FormattedMessage id="basic-form.form.submit" />
-        </Button>
-        <Button style={{ marginLeft: 8 }} onClick={() =>this.save(this.props.form)}>
-            <FormattedMessage id="basic-form.form.save" />
-        </Button>
-			  <Button style={{ marginLeft: 8}} type="danger" /*onClick={showDeleteConfirm}*/>
-			      <FormattedMessage id="basic-form.form.delete" />
-			  </Button>
-    </FormItem>
+		<Affix offsetBottom={this.state.Bottom}>
+      <div className={style.submitBtns}>
+		    {/* <FormItem {...submitFormLayout} style={{ marginTop: 32 }}> */}
+            <Button type="primary" onClick={()=> this.showConfirm(this.props.form)}>
+				        <FormattedMessage id="basic-form.form.submit" />
+            </Button>
+            <Button style={{ marginLeft: 8 }} onClick={() =>this.save(this.props.form)}>
+                <FormattedMessage id="basic-form.form.save" />
+            </Button>
+			      <Button style={{ marginLeft: 8 }} type="danger" /*onClick={showDeleteConfirm}*/>
+			          <FormattedMessage id="basic-form.form.delete" />
+			      </Button>
+        {/* </FormItem> */}
+      </div>
+    </Affix>
 	</div>
     );
   }

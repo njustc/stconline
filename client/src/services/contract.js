@@ -6,8 +6,8 @@ import request from '@/utils/request';
  * */
 export async function getOneContract({pid}) {
   //console.log(params)
-  console.log("执行到了service层的getoneContract");
-  console.log({pid});
+  console.log("执行到了service层的getoneContract，参数：",{pid});
+  //console.log({pid});
   return request(`api/project/contract/${pid}`);
 }
 
@@ -34,8 +34,8 @@ export async function deleteContract(params) {
  * */
 export async function replaceContract(params) {
   //console.log("=======================")
-  console.log("=====================================")
-  console.log(params)
+  console.log("执行到了service层的replaceCon，参数：",params)
+  //console.log(params)
   return request(`api/project/contract/${params.pid}`, {
     method: 'PUT',
     data: params,
@@ -67,3 +67,23 @@ export async function createConProcess(params) {
     data: ""
   });
 }
+//get当前进程的状态
+export async function queryConState(param){
+  return request('api/project/process/query',{
+    method:'POST',
+    data:param
+  })
+}
+
+export async function addNewTestPlan(params){
+  return request(`/api/project/testplan/${param.pid}?uid=${param.userId}`,{
+    method: 'POST',
+    data: ''
+  })
+}
+// export async function addNewContract(param){
+//   return request(`api/project/contract/${param.pid}?uid=${param.userId}`,{
+//     method:'POST',
+//     data:''
+//   })
+// }

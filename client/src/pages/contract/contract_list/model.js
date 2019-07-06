@@ -5,6 +5,7 @@ export default {
   state: {
     data: [],
     counter: 0,
+    loading: true,
   },
   effects:{
     //派发一个queryInitPlans的action

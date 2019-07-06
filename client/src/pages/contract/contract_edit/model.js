@@ -21,28 +21,27 @@ export default {
         //     message.success('保存成功');
         // },
         *querySaveCon({payload}, {call}) {
-            console.log("================这里是payload================")
-            console.log(payload);
-            console.log("==================这是payload===================")
+            //console.log("SaveCon的参数payload",payload);
             yield call(replaceContract, payload);
             const response = yield call(getOneContract, payload);
-            console.log("让我们康康res是什么");
-            console.log(response);
-            console.log("=================");
+            //console.log("SaveCon的返回结果：",response);
             //yield put({type: 'updataDate', payload: response});
-            console.log("保存成功")
+            //console.log("保存成功")
             message.success("保存成功，请刷新")
         },
         *submitCon({payload}, {call}){
-            // console.log("============")
-            // console.log(payload)
-            // console.log("===============!!")
+            yield call(replaceContract, payload);
+            //console.log("SubmitCon的参数:",payload);
             if(payload.processInstanceId===""){
-                const res = yield call(createConProcess,payload)
+                //console.log("执行到了createConProcess，参数：",payload);
+                const res = yield call(createConProcess,payload);
+                //console.log("createConProcess的返回结果",res);
             }else{
-                const res = yield call(updateConProcess,payload)
+                //console.log("执行到了updateConProcess，参数：",payload);
+                const res = yield call(updateConProcess,payload);
+                //console.log("updateConProcess的返回结果,参数: ",res);
             }
-            console.log("执行跳转")
+            //console.log("执行跳转")
             router.push("/contract_list.html")
         }
     },

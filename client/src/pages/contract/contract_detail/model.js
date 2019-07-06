@@ -1,6 +1,5 @@
-import { getOneContract, updateConProcess} from '@/services/contract';
+import { getOneContract, updateConProcess, queryConState, addNewTestPlan} from '@/services/contract';
 import router from 'umi/router';
-
 export default {
   namespace:'contractDetail',
   state: {
@@ -17,11 +16,10 @@ export default {
       yield put({type: 'updateData', payload: response})
     },
     * UpdateProcess({payload}, {call}) {
-      //console.log("=====================");
-      //console.log(payload);
-      //console.log("==================!");
+      //console.log("看看payload")
+      //console.log(payload)
       const res = yield call(updateConProcess, payload);
-      //console.log("!!!!!!!!!!!!!!!!!!!");
+      //console.log(payload.operation)
       router.push("/contract_list.html")
     }
   },
