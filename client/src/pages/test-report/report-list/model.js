@@ -1,4 +1,5 @@
 import { getAlltestReport, deleteTestReport} from '@/services/testReport';
+import router from "umi/router";
 
 export default {
   namespace:'test-report',
@@ -11,13 +12,20 @@ export default {
     *GetAlltestReport(_, {call,put}) {
       const response = yield call(getAlltestReport)
       // console.log(response)
-      // console.log('_embedded' in response)
-      if(!('_embedded' in response)){
-        // console.log("put []")
-        yield put({type:'addListData', payload: response})
+
+      // 处理未登录情况：重定向到登陆界面
+      console.log(response.status)
+      if (response.status === 401) {
+        router.push("/user-login.html");
       }
-      else{
-        yield put({type:'addListData', payload: response._embedded.testReports})
+      else {
+        // console.log('_embedded' in response)
+        if (!('_embedded' in response)) {
+          // console.log("put []")
+          yield put({type: 'addListData', payload: response})
+        } else {
+          yield put({type: 'addListData', payload: response._embedded.testReports})
+        }
       }
     },
     *DeleteTestReport({payload},{call,put}){

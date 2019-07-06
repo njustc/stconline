@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import {connect} from 'dva';
 import {formatMessage, FormattedMessage} from 'umi/locale';
 import Link from 'umi/link';
-import {Checkbox, Alert, Icon} from 'antd';
+import {Checkbox, Alert, Icon, Skeleton, Upload, message} from 'antd';
 import {Login} from 'ant-design-pro';
 import styles from './style.less';
 import {readCookie, getRole} from "../../utils/cookieUtils";
 import router from 'umi/router';
+import Button from "antd/es/button";
 
 
 const {Tab, UserName, Password, Mobile, Captcha, Submit} = Login;
@@ -40,18 +41,29 @@ class LoginPage extends Component {
         },
       }).then(res => {
         //TODO: 登录成功与失败处理逻辑
-        console.log(res)
+        console.log(res.status);
         //401
-        if(res.status==401){
-          
-        }
-        else{
+        if (res.status === 401) {
+
+        } else {
           router.push("/welcome")
         }
-        
+
         //cookie内容
       });
     }
+  };
+
+  /**
+   * 登出操作
+   * */
+  handleLogout = () => {
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'userInfo/logout',
+    }).then(res => {
+      console.log(res)
+    })
   };
 
   changeAutoLogin = e => {
@@ -68,8 +80,9 @@ class LoginPage extends Component {
     const {userInfo, submitting} = this.props;
     const {status} = userInfo.data;
     const {type, autoLogin} = this.state;
+
     return (
-      
+
       <div className={styles.main}>
         <Login
           defaultActiveKey={type}
@@ -111,6 +124,8 @@ class LoginPage extends Component {
           <Submit loading={submitting}>
             <FormattedMessage id="user-login.login.login"/>
           </Submit>
+          <Button style={{width: '100%'}}
+                  onClick={this.handleLogout}>登出</Button>
           <div className={styles.other}>
             <FormattedMessage id="user-login.login.sign-in-with"/>
             <Icon type="alipay-circle" className={styles.icon} theme="outlined"/>
@@ -122,7 +137,7 @@ class LoginPage extends Component {
           </div>
         </Login>
       </div>
-   
+
     );
   }
 }

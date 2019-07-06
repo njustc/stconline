@@ -46,8 +46,7 @@ export default class ReportList extends Component {
   {<Link to={{pathname: './report-detail', query: {pid: key.pid}}}>查看项目详情</Link>}
   <Divider type="vertical"/>
   {<Link to={{pathname: '../../report-edit', query: {pid: key.pid}}}>编辑</Link>}
-  <Divider type="vertical"/>
-  <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
+  
 </span>
   ),
 
@@ -55,8 +54,7 @@ export default class ReportList extends Component {
     <span>
   {<Link to={{pathname: './report-detail', query: {pid: key.pid}}}>查看项目详情</Link> }
   <Divider type="vertical"/>
-  <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
-  <Divider type="vertical"/>
+  
 </span>
   ),
 
@@ -96,6 +94,20 @@ export default class ReportList extends Component {
       render: text => <a href="javascript:;">{text}</a>,
     },
 
+    //softwareName
+    {
+      title: '软件名称',
+      dataIndex: 'softwareName',
+      key: 'softwareName',
+      render: text => <a href="javascript:;">{text}</a>,
+    },
+    //clientCompany
+    {
+      title: '委托单位',
+      dataIndex: 'clientCompany',
+      key: 'clientCompany',
+      render: text => <a href="javascript:;">{text}</a>,
+    },
 
     {
       title: '状态',
@@ -162,12 +174,7 @@ export default class ReportList extends Component {
         </Breadcrumb>
         {/* <div class="" */}
         <Table style={{marginTop: 50}} columns={this.columns} dataSource={(!this.props.listdata.data.length)?data:this.props.listdata.data}/>
-        <Button
-          style={{marginLeft: 400}}
-          type="primary"
-          href="/report-edit.html">
-          新建测试报告
-        </Button>
+      
       </div>
     );
   }

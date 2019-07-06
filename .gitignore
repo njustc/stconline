@@ -5,7 +5,7 @@ server/jenkins
 client/node
 client/target
 !.mvn/wrapper/maven-wrapper.jar
-
+files
 ### STS ###
 .apt_generated
 .classpath

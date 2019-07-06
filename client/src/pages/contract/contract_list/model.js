@@ -1,4 +1,5 @@
 import { getAllContract,deleteContract} from '@/services/contract';
+import router from "umi/router";
 
 export default {
   namespace:'contractList',
@@ -13,15 +14,23 @@ export default {
       //获取服务器端数据
       const response = yield call(getAllContract);
       // console.log('GetAllContract')
-      console.log(response);
-      //_embedded复制粘贴的委托
-      console.log('_embedded' in response);
-      if (!('_embedded' in response)) {
-        // console.log("put []");
-        //执行getPlanData
-        yield put({type: 'getData', payload: response});
-      } else {
-        yield put({type: 'getData', payload: response._embedded.contracts});
+      // console.log(response);
+
+      // 处理未登录情况：重定向到登陆界面
+      console.log(response.status)
+      if (response.status === 401) {
+        router.push("/user-login.html");
+      }
+      else {
+        //_embedded复制粘贴的委托
+        // console.log('_embedded' in response);
+        if (!('_embedded' in response)) {
+          // console.log("put []");
+          //执行getPlanData
+          yield put({type: 'getData', payload: response});
+        } else {
+          yield put({type: 'getData', payload: response._embedded.contracts});
+        }
       }
     },
 

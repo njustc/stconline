@@ -22,9 +22,11 @@ public interface ProcessService extends BaseService<ProcessEntity> {
 
     void deleteProcessInstance(ProcessEntity entity);
 
+    String queryProcessState(JSONObject entity);
+
     String queryProcessState(ProcessEntity entity);
 
-    void updateProcessInstance(ProcessEntity entity, String type);
+    void updateProcessInstance(JSONObject object, String type);
 
     String getProcessComment(String processInstanceId);
 

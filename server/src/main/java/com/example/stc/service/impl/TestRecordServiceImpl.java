@@ -69,4 +69,12 @@ public class TestRecordServiceImpl implements TestRecordService {
         record.setProcessInstanceId(testRecord.getProcessInstanceId());
         return testRecordRepository.save(record);
     }
+
+    @Override
+    public TestRecord updateProcessState(String testId, String processState, String comment) {
+        TestRecord testRecord = this.findTestRecordByTestId(testId);
+        testRecord.setProcessState(processState);
+        testRecord.setComment(comment);
+        return this.updateTestRecord(testId, testRecord);
+    }
 }
