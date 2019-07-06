@@ -44,36 +44,20 @@ export async function deleteTestRecord({testId}) {
 }
 
 /**
- * 查看全部测试记录
+ * 更改流程状态
  * */
-export async function getAllTestRecords() {
-    return request('api/project/testRecord/all');
+export async function updateTestReportProcess(params) {
+    return request(`api/project/process/update?type=TestReport`, {
+        method: 'POST',
+        data: params
+    });
 }
 
-/**
- * 提交测试方案
- * */
-// export async function submitTestPlan({pid}) {
-//   return request(`api/project/testplan/submit`, {
-//     method: 'POST',
-//     params: {pid}
-//   });
-// }
-
-// export async function updateTestPlanProcess(params) {
-//   console.log(typeof(params),params)
-//   return request(`api/project/process/update?type=TestPlan`, {
-//     method: 'POST',
-//     data: params
-//   });
-// }
-
-// export async function createTestPlanProcess(params) {
-//   // console.log(typeof(params))
-//   return request(`api/project/process/create?pid=${params.pid}&type=TestPlan`, {
-//     method: 'POST',
-//     data: ""
-//   });
-// }
+export async function createTestReportProcess(params) {
+    return request(`api/project/process/create?testId=${params.testId}&type=TestReport`, {
+        method: 'POST',
+        data: ""
+    });
+}
 
 

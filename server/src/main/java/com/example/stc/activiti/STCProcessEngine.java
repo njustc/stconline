@@ -145,7 +145,7 @@ public class STCProcessEngine {
         List<HistoricVariableInstance> historicVariableInstances = historyService.createHistoricVariableInstanceQuery()
                 .processInstanceId(processInstanceId).orderByVariableName().desc().list();
         for (HistoricVariableInstance historicVariableInstance: historicVariableInstances) {
-            logger.info("HistoryVariable: " + historicVariableInstance.getVariableName() + " " + historicVariableInstance.getValue());
+            // logger.info("HistoryVariable: " + historicVariableInstance.getVariableName() + " " + historicVariableInstance.getValue());
             if (historicVariableInstance.getVariableName().contains("Comment")) {
                 comment = (String)historicVariableInstance.getValue();
             }

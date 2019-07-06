@@ -42,10 +42,12 @@ public interface TestReportService extends BaseService<TestReport> {
     void deleteTestReportByPid(String pid);
 
     /**
-     * 修改评审意见
+     * 修改流程状态, 添加评审意见
      * @param pid
+     * @param processState
      * @param comment
+     * @return
      */
-    void saveComment(String pid, String comment);
+    TestReport updateProcessState(String pid, String processState, String comment);
 
 }

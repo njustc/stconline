@@ -1,5 +1,6 @@
 package com.example.stc.service;
 
+import com.example.stc.domain.Entrust;
 import com.example.stc.domain.TestRecord;
 
 import java.util.List;
@@ -44,5 +45,14 @@ public interface TestRecordService extends BaseService<TestRecord> {
      * 通过用例ID修改单个测试记录
      * */
     TestRecord updateTestRecord(String testId, TestRecord record);
+
+    /**
+     * 修改流程状态, 添加评审意见
+     * @param testId
+     * @param processState
+     * @param comment
+     * @return
+     */
+    TestRecord updateProcessState(String testId, String processState, String comment);
 
 }

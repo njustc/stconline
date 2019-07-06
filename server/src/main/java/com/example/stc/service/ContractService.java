@@ -68,9 +68,11 @@ public interface ContractService extends BaseService<Contract>{
     Contract updateContract(String pid, Contract record);
 
     /**
-     * 修改评审意见
+     * 修改流程状态, 添加评审意见
      * @param pid
+     * @param processState
      * @param comment
+     * @return
      */
-    void saveComment(String pid, String comment);
+    Contract updateProcessState(String pid, String processState, String comment);
 }

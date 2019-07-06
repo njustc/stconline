@@ -1,4 +1,4 @@
-import { Card, Table, Divider, Button, Tag ,Breadcrumb, Form} from 'antd';
+import { Card, Table, Divider, Button, Tag ,Breadcrumb, Form, Descriptions} from 'antd';
 import React from "react";
 import {connect} from "dva";
 import { FormattedMessage } from 'umi/locale';
@@ -58,8 +58,12 @@ export default class report_detail extends React.Component{
           <Breadcrumb.Item>测试方案详情</Breadcrumb.Item>
         </Breadcrumb>
 
+        <Divider/>
+        {/*<div><h2>NST-04-JS002-2011-软件项目测试方案(只读)</h2></div>*/}
+
         <Card>
           <h2>软件委托测试报告</h2>
+          <Divider/>
           <p>项目编号：<FormattedMessage id={this.props.reportdata.data.codeId || ' '}/></p>
 
           <p>软件名称：<FormattedMessage id={this.props.reportdata.data.softwareName || ' '}/></p>
@@ -98,13 +102,24 @@ export default class report_detail extends React.Component{
         {
           {
          
+            "TS":
+            <div>
+                <Card>
+                <Descriptions title="状态及意见">
+                  <Descriptions.Item label="状态">{this.props.reportdata.data.processState || ' '}</Descriptions.Item>
+                  <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
+                </Descriptions>
+              </Card>
+            </div>,
             "CUS":
             <div>
-              {/* <Descriptions title="客户">
-                <Descriptions.Item label="委托状态">审核未通过</Descriptions.Item>
-                <Descriptions.Item label="委托意见">重写</Descriptions.Item>
-                <Descriptions.Item label="已提交样品">a.zip</Descriptions.Item>
-              </Descriptions> */}
+              <Card>
+                <Descriptions title="状态及意见">
+                  <Descriptions.Item label="状态">{this.props.reportdata.data.processState || ' '}</Descriptions.Item>
+                  <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
+                </Descriptions>
+              </Card>
+              
               <Button
               style={{marginLeft: 350}}
               type="primary"
@@ -139,6 +154,12 @@ export default class report_detail extends React.Component{
             "TM":
             <div>
               <h1>测试部主任</h1>
+              <Card>
+                <Descriptions title="状态及意见">
+                  <Descriptions.Item label="状态">{this.props.reportdata.data.processState || ' '}</Descriptions.Item>
+                  <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
+                </Descriptions>
+              </Card>
               <Button
               style={{marginLeft: 350}}
               type="primary"
@@ -157,6 +178,12 @@ export default class report_detail extends React.Component{
             "QM":
             <div>
               <h1>质量部主任</h1>
+              <Card>
+                <Descriptions title="状态及意见">
+                  <Descriptions.Item label="状态">{this.props.reportdata.data.processState || ' '}</Descriptions.Item>
+                  <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
+                </Descriptions>
+              </Card>
               <Button
               style={{marginLeft: 350}}
               type="primary"
@@ -172,6 +199,8 @@ export default class report_detail extends React.Component{
               }}
               >不通过</Button>
             </div>,
+          
+
           }[getRole()[0]]
         }
 
