@@ -119,23 +119,27 @@ export default class List extends React.Component{
   userLinkMapper= {
     "QM": (key) => (
       <span>
-  {/*{key.processState === 'ToReview' ? <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>审核</Link> :*/}
-  {/*  <span></span>}*/}
         <Divider type="vertical"/>
         {<Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
   </span>
     ),
 
+    "TM": (key) => (
+      <span>
+        <Divider type="vertical"/>
+        {<Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
+  </span>
+    ),
+
+
     "TS": (key) => (
 
       <span>
-        {key.processState === 'Submit' ? <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link> :
-        <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
+        {<Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
         <Divider type="vertical"/>
-        {/*<a href="/plan_edit.html">编辑</a>*/}
-        {<Link to={{pathname: '../../plan_edit', query: {pid: key.pid}}}>编辑</Link>}
-        <Divider type="vertical"/>
-        <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
+        {key.processState === 'Submit' ? <Link to={{pathname: '../../plan_edit', query: {pid: key.pid}}}>编辑</Link>:null}
+        {/*<Divider type="vertical"/>*/}
+        {/*<span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>*/}
     </span>
     ),
   };

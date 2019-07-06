@@ -1,30 +1,76 @@
-import {Card ,Breadcrumb ,Button ,Descriptions} from 'antd';
-import React from "react";
+import {Card ,Breadcrumb ,Button ,Descriptions,Form, Input} from 'antd';
+import React , {Component} from 'react';
 import {connect} from "dva";
-import { FormattedMessage } from 'umi/locale';
+import { FormattedMessage,formatMessage } from 'umi/locale';
 import {getRole} from "../../../utils/cookieUtils";
 
 const namespace='contractDetail';
+const FormItem = Form.Item;
 
 const mapStateToProps = (state) => {
   const dataCheck = state[namespace];
-  console.log(dataCheck);
+  //console.log("============datacheck===========")
+  //console.log(dataCheck);
+  //console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!")
   return {
     dataCheck,
   };
 };
 
+@Form.create()
 @connect(mapStateToProps)
-export default class Detail extends React.Component{
+export default class Detail extends Component{
+  constructor(props){
+    super(props)
+    this.state={
+      pid:"",
+      comment:""
+    }
+  }
+
   componentDidMount() {
     const {dispatch} = this.props;
-    //console.log('aaa');
+    if(this.props.location.query.comment){
+      this.state.comment=this.props.location.query.comment
+    }else{
+      this.state.comment=this.props.dataCheck.check.comment
+    }
     dispatch({
-      type: `${namespace}/queryGetOneContract`,
+      type: 'contractDetail/queryGetOneContract',
       payload: this.props.location.query,
     });
   }
+  
+  review=(form,operation)=> {
+    const {dispatch} = this.props;
+    this.state.pid = this.props.dataCheck.check.pid;
+    // console.log("----------------------------");
+    // console.log(this.state.pid);
+    // console.log("----------------------------");
+    //this.state.comment = this.props.dataCheck.check.comment;
+    this.state.comment = this.props.dataCheck.check.comment;
+    // console.log("----------------------------");
+    // console.log(this.props.dataCheck.check.comment);
+    // console.log("----------------------------");
+    form.validateFields((err, value)=> {
+      var concheck=this.props.dataCheck.check
+      concheck.operation=operation
+      concheck.comment=value.comment
+      // console.log("==========================")
+      console.log(concheck.comment)
+      // console.log("====================")
+      dispatch({
+        type: `${namespace}/UpdateProcess`,
+        payload: concheck
+      });
+    })
+  }
+
   render() {
+    const {
+      form: {getFieldDecorator, getFielValue},
+    } = this.props;
+
     return (
       <div>
         <Breadcrumb>
@@ -74,53 +120,117 @@ export default class Detail extends React.Component{
         <br />
         {
           {
-            "SS":
+            "SM":
             <div>
-              <h1>市场部工作人员</h1>
-              <h1>要提交去编辑页面提交</h1>
+              <h1>市场部主任</h1>
+              <FormItem label={<FormattedMessage id="审批意见"/>}>
+                {getFieldDecorator('comment', {
+                  initialValue: this.props.dataCheck.check.comment || "",
+                },{
+                  rules: [
+                  {
+                    required: true,
+                    message: formatMessage({id: "需要审批意见"}),
+                  },
+                ],
+                })(<Input placeholder={formatMessage({id: "输入审批意见"})} 
+                //当processState是review的时候是可编辑的
+                // disabled={this.props.dataCheck.check.processState!="Review"}
+                />)}
+              </FormItem>
+
+              {
+                //当状态是Review的时候出现按钮，否则隐藏
+                //this.props.dataCheck.check.processState=="Submit"?
+                <div>
+                  <Button onClick={() => {
+                    this.review(this.props.form,"ReviewPass")
+                  }}
+                  style={{marginLeft: 8}}
+                  type="primary">
+                    <FormattedMessage id="同意" />
+                  </Button>
+                  <Button onClick={() => {
+                    this.review(this.props.form,"ReviewDisprove")
+                  }}>
+                    <FormattedMessage id="不同意" />
+                  </Button>
+                </div>
+                //:null
+              }
             </div>,
 
             "CUS":
             <div>
               <Descriptions title="客户">
-                <Descriptions.Item label="委托状态">审核未通过</Descriptions.Item>
-                <Descriptions.Item label="委托意见">重写</Descriptions.Item>
-                <Descriptions.Item label="已提交样品">a.zip</Descriptions.Item>
+                <Descriptions.Item label="委托状态">{this.props.dataCheck.check.processState || ' '}</Descriptions.Item>
+                <Descriptions.Item label="委托意见">{this.props.dataCheck.check.comment || ''}</Descriptions.Item>
+                <Descriptions.Item label="已提交样品">这里好像还没做好</Descriptions.Item>
               </Descriptions>
-              <Button
-              style={{marginLeft: 350}}
-              type="primary"
-              >确认</Button>
-              <Button
-              style={{marginLeft: 20}}
-              type="danger"
-              >否决</Button>
+              {
+                //当状态是Review的时候出现按钮，否则隐藏
+                //this.props.dataCheck.check.processState=="Submit"?
+                <div>
+                  <Button onClick={() => {
+                    this.review(this.props.form,"ReviewPass")
+                  }}
+                  style={{marginLeft: 8}}
+                  type="primary">
+                    <FormattedMessage id="同意" />
+                  </Button>
+                  <Button onClick={() => {
+                    this.review(this.props.form,"ReviewDisprove")
+                  }}>
+                    <FormattedMessage id="废止" />
+                  </Button>
+                </div>
+                //:null
+              }
             </div>,
 
-            "SM":
+            "SS":
             <div>
-              <h1>市场部主任</h1>
-              <Button
-              style={{marginLeft: 350}}
-              type="primary"
-              >通过</Button>
-              <Button
-              style={{marginLeft: 20}}
-              type="danger"
-              >不通过</Button>
+              <h1>市场部员工：好像员工也不应该在详情页面看到啥</h1>
             </div>,
 
             "QM":
             <div>
               <h1>质量部主任</h1>
-              <Button
-              style={{marginLeft: 350}}
-              type="primary"
-              >通过</Button>
-              <Button
-              style={{marginLeft: 20}}
-              type="danger"
-              >不通过</Button>
+              <FormItem label={<FormattedMessage id="审批意见"/>}>
+                {getFieldDecorator('comment', {
+                  initialValue: this.props.dataCheck.check.comment || "",
+                },{
+                  rules: [
+                  {
+                    required: true,
+                    message: formatMessage({id: "需要审批意见"}),
+                  },
+                ],
+                })(<Input placeholder={formatMessage({id: "输入审批意见"})} 
+                //当processState是review的时候是可编辑的
+                // disabled={this.props.dataCheck.check.processState!="Review"}
+                />)}
+              </FormItem>
+
+              {
+                //当状态是Review的时候出现按钮，否则隐藏
+                //this.props.dataCheck.check.processState=="Submit"?
+                <div>
+                  <Button onClick={() => {
+                    this.review(this.props.form,"ReviewPass")
+                  }}
+                  style={{marginLeft: 8}}
+                  type="primary">
+                    <FormattedMessage id="同意" />
+                  </Button>
+                  <Button onClick={() => {
+                    this.review(this.props.form,"ReviewDisprove")
+                  }}>
+                    <FormattedMessage id="不同意" />
+                  </Button>
+                </div>
+                //:null
+              }
             </div>,
           }[getRole()[0]]
         }

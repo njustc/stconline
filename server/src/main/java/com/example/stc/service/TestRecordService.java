@@ -1,6 +1,5 @@
 package com.example.stc.service;
 
-import com.example.stc.domain.TestCase;
 import com.example.stc.domain.TestRecord;
 
 import java.util.List;

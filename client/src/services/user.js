@@ -1,5 +1,6 @@
 import request from '@/utils/request';
 import { stringify } from 'querystring';
+import { async } from 'q';
 export async function query() {
   return request('/api/users');
 }
@@ -62,13 +63,27 @@ export async function getOneEntrust(params) {
 
 export async function reviewEntrust(param) {
   {
-    console.log('reviewEntrust');
-    console.log(param);
-    return request(`api/project/process/update`, {
+    // console.log('reviewEntrust');
+    // console.log(param);
+    return request(`api/project/process/update?type=Entrust`, {
       method: 'POST',
       data: param
     });
   }
 
+}
+
+export async function addNewContract(param){
+  return request(`api/project/contract/${param.pid}?uid=${param.userId}`,{
+    method:'POST',
+    data:''
+  })
+}
+
+export async function queryEntrustState(param){
+  return request('api/project/process/query',{
+    method:'POST',
+    data:param
+  })
 }
 

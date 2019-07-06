@@ -1,6 +1,8 @@
 package com.example.stc.service.impl;
 
+import com.example.stc.activiti.ProcessService;
 import com.example.stc.activiti.ProcessState;
+import com.example.stc.activiti.STCProcessEngine;
 import com.example.stc.domain.Entrust;
 import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
@@ -39,6 +41,9 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Autowired
     private ProcessUtils processUtils;
+
+    @Autowired
+    private ProcessService processService;
 
     @Override
     public List<Entrust> findAllEntrusts() {
@@ -150,7 +155,7 @@ public class EntrustServiceImpl implements EntrustService {
         record.setPid(pid);
         record.setUserId(entrust.getUserId());
         logger.info("getProcessState: old = " + entrust.getProcessState());
-        if (record.getProcessInstanceId().equals("")) {
+        if (record.getProcessInstanceId() == null || record.getProcessInstanceId().equals("")) {
             // record.setProcessState(entrust.getProcessState());
             record.setProcessInstanceId(entrust.getProcessInstanceId());
             record.setProcessState(processUtils.getProcessState(entrust.getProcessInstanceId()));
@@ -166,15 +171,25 @@ public class EntrustServiceImpl implements EntrustService {
         this.updateEntrust(entrust.getPid(), entrust);
     }
 
-    public List<Entrust> setState(List<Entrust> entrusts) {
+    private List<Entrust> setState(List<Entrust> entrusts) {
         for (Entrust entrust: entrusts) {
-            entrust.setProcessState(processUtils.getProcessState(entrust.getProcessInstanceId()));
+            entrust = setState(entrust);
         }
         return entrusts;
     }
 
-    public Entrust setState(Entrust entrust) {
-        entrust.setProcessState(processUtils.getProcessState(entrust.getProcessInstanceId()));
+    private Entrust setState(Entrust entrust) {
+        String processInstanceId = entrust.getProcessInstanceId();
+        if (processInstanceId == null) {
+            entrust.setProcessInstanceId("");
+            entrust = entrustRepository.save(entrust);
+            processInstanceId = entrust.getProcessInstanceId();
+        }
+
+        entrust.setProcessState(processUtils.getProcessState(processInstanceId));
+        if (!processInstanceId.equals("")) {
+            entrust.setComment(processService.getProcessComment(processInstanceId));
+        }
         return entrust;
     }
 }

@@ -37,10 +37,10 @@ public class ContractActivitiTest {
      * 合同相关的增删改查测试
      */
     @Test
-    @WithMockUser(username = "SSA", password = "ssa", roles = {"USER", "STAFF", "SS"})
+    @WithMockUser(username = "SSA", password = "ssa", roles = {"USER", "STAFF", "SS", "CUS"})
     public void NewRepDelTest() throws Exception {
         //add
-        ResponseEntity<?> entity = contractController.addNewContract("pid", "u20190605134833");
+        ResponseEntity<?> entity = contractController.addNewContract("pid", "u20190609235911");
         Resource<Contract> resource = (Resource<Contract>) entity.getBody();
         Contract contract = resource.getContent();
         contract.setPrice("3");

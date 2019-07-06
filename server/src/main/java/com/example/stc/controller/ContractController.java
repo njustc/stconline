@@ -23,6 +23,7 @@ import com.example.stc.domain.Contract;
  */
 @RestController
 public class ContractController extends BaseController {
+
     @Autowired
     private ContractService contractService;
 
@@ -37,6 +38,7 @@ public class ContractController extends BaseController {
     /**
      * 查看全部合同
      */
+    @Secured({"ROLE_CUS", "ROLE_SS", "ROLE_SM", "ROLE_QM"})
     @GetMapping(path = "/contract")
     public @ResponseBody
     Resources<Resource<Contract>> getAllContract() {
@@ -51,7 +53,7 @@ public class ContractController extends BaseController {
      * 查看某一用户全部合同
      * 专门用于 STAFF 角色查询某一个用户的合同列表
      */
-    @Secured({"ROLE_STAFF"})
+    @Secured({"ROLE_SS", "ROLE_SM", "ROLE_QM"})
     @GetMapping(path = "/contract/user/{uid}")
     public @ResponseBody
     Resources<Resource<Contract>> getUserContract(@PathVariable String uid) {
@@ -76,6 +78,7 @@ public class ContractController extends BaseController {
     /**
      * 查看单个合同
      */
+    @Secured({"ROLE_CUS", "ROLE_SS", "ROLE_SM", "ROLE_QM"})
     @GetMapping(path = "/contract/{pid}")
     public @ResponseBody
     Resource<Contract> getOneContract(@PathVariable String pid) {
@@ -96,9 +99,9 @@ public class ContractController extends BaseController {
     }
 
     /**
-     * 删除单个合同
+     * 合同废止。删除合同的同时应删除对应的委托，测试方案等
      */
-    @Secured({"ROLE_SS"}) // 市场部工作人员
+    @Secured({"ROLE_CUS", "ROLE_SM", "ROLE_QM"})
     @DeleteMapping(path = "/contract/{pid}")
     public @ResponseBody
     ResponseEntity<?> deleteContract(@PathVariable String pid) {

@@ -1,6 +1,8 @@
 package com.example.stc.service.impl;
 
+import com.example.stc.activiti.ProcessService;
 import com.example.stc.activiti.ProcessState;
+import com.example.stc.activiti.STCProcessEngine;
 import com.example.stc.domain.TestReport;
 import com.example.stc.domain.User;
 import com.example.stc.framework.exception.TestReportNotFoundException;
@@ -28,6 +30,9 @@ public class TestReportServiceImpl implements TestReportService {
 
     @Autowired
     private ProcessUtils processUtils;
+    
+    @Autowired
+    private ProcessService processService;
 
     @Override
     public List<TestReport> findAllTestReports() {
@@ -59,6 +64,8 @@ public class TestReportServiceImpl implements TestReportService {
         testReport.setPid(pid);
         testReport.setUserId(uid);
         testReport.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
+        // DEBUG：若数据库中该项目已存在，则覆盖原项目
+        testReportRepository.deleteByPid(pid);
         return setState(testReportRepository.save(testReport));
     }
 
@@ -67,8 +74,10 @@ public class TestReportServiceImpl implements TestReportService {
         TestReport testReport = testReportRepository.findByPid(pid);
         record.setId(testReport.getId());
         record.setPid(testReport.getPid());
-        record.setProcessState(testReport.getProcessState());
-        record.setProcessInstanceId(testReport.getProcessInstanceId());
+        if (record.getProcessInstanceId() == null || record.getProcessInstanceId().equals("")) {
+            record.setProcessState(testReport.getProcessState());
+            record.setProcessInstanceId(testReport.getProcessInstanceId());
+        }
         return setState(testReportRepository.save(record));
     }
 
@@ -92,15 +101,25 @@ public class TestReportServiceImpl implements TestReportService {
         this.updateTestReport(testReport.getPid(), testReport);
     }
 
-    public List<TestReport> setState(List<TestReport> testReports) {
+    private List<TestReport> setState(List<TestReport> testReports) {
         for (TestReport testReport: testReports) {
-            testReport.setProcessState(processUtils.getProcessState(testReport.getProcessInstanceId()));
+            testReport = setState(testReport);
         }
         return testReports;
     }
 
-    public TestReport setState(TestReport testReport) {
-        testReport.setProcessState(processUtils.getProcessState(testReport.getProcessInstanceId()));
+    private TestReport setState(TestReport testReport) {
+        String processInstanceId = testReport.getProcessInstanceId();
+        if (processInstanceId == null) {
+            testReport.setProcessInstanceId("");
+            testReport = testReportRepository.save(testReport);
+            processInstanceId = testReport.getProcessInstanceId();
+        }
+
+        testReport.setProcessState(processUtils.getProcessState(processInstanceId));
+        if (!processInstanceId.equals("")) {
+            testReport.setComment(processService.getProcessComment(processInstanceId));
+        }
         return testReport;
     }
 }

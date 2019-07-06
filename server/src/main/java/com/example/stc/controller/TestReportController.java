@@ -39,6 +39,7 @@ public class TestReportController extends BaseController {
     /**
      * 查看全部测试报告
      */
+    @Secured({"ROLE_CUS", "ROLE_TS", "ROLE_TM", "ROLE_QM"})
     @GetMapping(path = "/testReport")
     public @ResponseBody
     Resources<Resource<TestReport>> getAllTestReport() {
@@ -53,6 +54,7 @@ public class TestReportController extends BaseController {
     /**
      * 查看单个测试报告
      */
+    @Secured({"ROLE_CUS", "ROLE_TS", "ROLE_TM", "ROLE_QM"})
     @GetMapping(path = "/testReport/{pid}")
     public @ResponseBody
     Resource<TestReport> getOneTestReport(@PathVariable String pid) {

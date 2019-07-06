@@ -2,7 +2,7 @@ import { routerRedux } from 'dva/router';
 import { getPageQuery } from './utils/utils';
 import { setAuthority } from './utils/authority';
 import { reloadAuthorized } from './utils/Authorized';
-import { getOneTestReport, replaceTestReport, addNewTestReport, deleteTestReport } from '@/services/testReport';
+import { getOneTestReport, replaceTestReport, addNewTestReport, deleteTestReport , updateTestReportProcess, createTestReportProcess} from '@/services/testReport';
 import router from "umi/router";
 
 export default {
@@ -26,6 +26,7 @@ export default {
       const response = yield call(getOneTestReport, payload);
       console.log(response);
       yield put({type: 'updateData', payload: response});
+      //router.push("/report-list.html")
       message.success('保存成功');
     },
     *queryAddReport({payload}, {call, put}) {
@@ -33,6 +34,37 @@ export default {
       yield put({type: 'updateData', payload: response});
       message.success('新建成功');
     },
+
+
+    * querySubmitReport({payload}, {call, put}) {
+      console.log("submit555")
+      //console.log(payload.processInstanceId)
+      if (payload.pid !== "") {
+        //添加属性
+        //console.log("replaceTestPlan");
+        const response = yield call(replaceTestReport, payload);
+        //console.log(payload.processInstanceId)
+        payload = response;
+      } else {
+        const newform = yield call(addNewTestReport, payload);
+        payload = newform;
+      }
+      console.log(payload)
+      if (payload.processInstanceId === "") {
+        console.log("create");
+        yield call(createTestReportProcess, payload);
+        console.log(payload)
+      }
+      else {
+        console.log("update");
+        yield call(updateTestReportProcess, payload);
+      }
+      router.push("/report-list.html")
+
+    },
+
+
+
     *queryDeleteReport({payload},{call}){
       console.log("play123",payload)
       if (payload.pid!="") {

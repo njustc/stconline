@@ -1,6 +1,8 @@
 package com.example.stc.service.impl;
 
+import com.example.stc.activiti.ProcessService;
 import com.example.stc.activiti.ProcessState;
+import com.example.stc.activiti.STCProcessEngine;
 import com.example.stc.domain.Contract;
 import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
@@ -9,8 +11,7 @@ import com.example.stc.framework.exception.UserNotFoundException;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.DateUtils;
 import com.example.stc.framework.util.ProcessUtils;
-import com.example.stc.repository.ContractRepository;
-import com.example.stc.repository.UserRepository;
+import com.example.stc.repository.*;
 import com.example.stc.service.ContractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,10 +30,25 @@ public class ContractServiceImpl implements ContractService{
     private ContractRepository contractRepository;
 
     @Autowired
+    private EntrustRepository entrustRepository;
+
+    @Autowired
+    private TestPlanRepository testPlanRepository;
+
+    @Autowired
+    private TestRecordRepository testRecordRepository;
+
+    @Autowired
+    private TestReportRepository testReportRepository;
+
+    @Autowired
     private AuthorityUtils authorityUtils;
 
     @Autowired
     private ProcessUtils processUtils;
+    
+    @Autowired
+    private ProcessService processService;
 
     @Override
     public List<Contract> findAllContracts() {
@@ -112,6 +128,11 @@ public class ContractServiceImpl implements ContractService{
         logger.info("deleteContractByPid: ");
         Contract contract = this.findContractByPid(pid);
         contractRepository.deleteByPid(pid);
+        // 同时删除对应的委托，测试方案，测试记录，测试报告
+        entrustRepository.deleteByPid(pid);
+        testPlanRepository.deleteByPid(pid);
+        testReportRepository.deleteByPid(pid);
+        testRecordRepository.deleteAllByPid(pid);
     }
 
     @Override
@@ -129,6 +150,8 @@ public class ContractServiceImpl implements ContractService{
         contract.setPid(pid);
         contract.setUserId(uid);
         contract.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
+        // DEBUG：若数据库中该项目已存在，则覆盖原项目
+        contractRepository.deleteByPid(pid);
         return setState(contractRepository.save(contract));
     }
 
@@ -142,8 +165,10 @@ public class ContractServiceImpl implements ContractService{
         record.setId(contract.getId());
         record.setPid(pid);
         record.setUserId(contract.getUserId());
-        record.setProcessState(contract.getProcessState());
-        record.setProcessInstanceId(contract.getProcessInstanceId());
+        if (record.getProcessInstanceId() == null || record.getProcessInstanceId().equals("")) {
+            record.setProcessState(contract.getProcessState());
+            record.setProcessInstanceId(contract.getProcessInstanceId());
+        }
         return setState(contractRepository.save(record));
     }
 
@@ -154,15 +179,25 @@ public class ContractServiceImpl implements ContractService{
         this.updateContract(contract.getPid(), contract);
     }
 
-    public List<Contract> setState(List<Contract> contracts) {
+    private List<Contract> setState(List<Contract> contracts) {
         for (Contract contract: contracts) {
-            contract.setProcessState(processUtils.getProcessState(contract.getProcessInstanceId()));
+            contract = setState(contract);
         }
         return contracts;
     }
 
-    public Contract setState(Contract contract) {
-        contract.setProcessState(processUtils.getProcessState(contract.getProcessInstanceId()));
+    private Contract setState(Contract contract) {
+        String processInstanceId = contract.getProcessInstanceId();
+        if (processInstanceId == null) {
+            contract.setProcessInstanceId("");
+            contract = contractRepository.save(contract);
+            processInstanceId = contract.getProcessInstanceId();
+        }
+
+        contract.setProcessState(processUtils.getProcessState(processInstanceId));
+        if (!processInstanceId.equals("")) {
+            contract.setComment(processService.getProcessComment(processInstanceId));
+        }
         return contract;
     }
 }
