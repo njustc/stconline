@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'dva';
 import {formatMessage, FormattedMessage} from 'umi/locale';
 import Link from 'umi/link';
-import {Checkbox, Alert, Icon} from 'antd';
+import {Checkbox, Alert, Icon, Skeleton} from 'antd';
 import {Login} from 'ant-design-pro';
 import styles from './style.less';
 import {readCookie, getRole} from "../../utils/cookieUtils";

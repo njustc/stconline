@@ -44,13 +44,6 @@ export async function deleteTestRecord({testId}) {
 }
 
 /**
- * 查看全部测试记录
- * */
-export async function getAllTestRecords() {
-    return request('api/project/testRecord/all');
-}
-
-/**
  * 更改流程状态
  * */
 export async function updateTestReportProcess(params) {

@@ -15,12 +15,5 @@ import java.util.List;
  */
 
 @Repository
-public interface EntrustRepository extends BaseRepository<Entrust> {
-
-    Entrust findByPid(String pid);
-
-    @Modifying(flushAutomatically = true)
-    @Transactional
-    int deleteByPid(String pid);
-
+public interface EntrustRepository extends ProcessEntityRepository<Entrust> {
 }
