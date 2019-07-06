@@ -21,14 +21,16 @@ export default {
       yield put({type: 'updateData', payload: response});
     },
     *queryReplaceReport({payload}, {call, put}) {
+      console.log("456",payload)
       yield call(replaceTestReport, payload);
-      console.log(payload)
+      console.log("123",payload)
       const response = yield call(getOneTestReport, payload);
-      console.log(response);
+      //console.log(response);
       yield put({type: 'updateData', payload: response});
       //router.push("/report-list.html")
       message.success('保存成功');
     },
+
     *queryAddReport({payload}, {call, put}) {
       const response = yield call(addNewTestReport, payload);
       yield put({type: 'updateData', payload: response});

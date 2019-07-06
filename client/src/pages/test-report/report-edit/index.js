@@ -505,8 +505,8 @@ class newTestReport extends PureComponent {
           <Card bordered={false}>
             <Row>
               <Col span={12} style={{display:"block"}}>
-              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.itemNumber"/>}>
-                  {getFieldDecorator('itemNumber', {
+              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.codeId"/>}>
+                  {getFieldDecorator('codeId', {
                     initialValue: this.props.dataReport.reportdata.codeId || '',
                   }, {
                     rules: [
@@ -529,8 +529,8 @@ class newTestReport extends PureComponent {
                     ],
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
-              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.samplingDate"/>}>
-                  {getFieldDecorator('samplingDate', {
+              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.sampleDate"/>}>
+                  {getFieldDecorator('sampleDate', {
                     initialValue: this.props.dataReport.reportdata.sampleDate|| '',
                   }, {
                     rules: [
@@ -674,7 +674,7 @@ class newTestReport extends PureComponent {
                 </Col>
                 <Col span={12} style={{display:"block"}}>
                     <FormItem {...formItemLayout2} label={<FormattedMessage id="new-test-report.date"/>}>
-                      {getFieldDecorator('date-auditor', {
+                      {getFieldDecorator('date', {
                         initialValue: this.props.dataReport.reportdata.auditorDate || '',
                       }, {
                         rules: [
@@ -937,15 +937,15 @@ class newTestReport extends PureComponent {
             <Table columns={columnsForEfficiencyTest} dataSource={dataForEfficiencyTest} pagination={ false } size="default " />
             <h2>可靠性环境</h2>
             <Table columns={columnsForEfficiencyTest} dataSource={dataForEfficiencyTest} pagination={ false } size="default " />
-            {/* <h2>可维护性测试</h2>
-            <Table columns={columnsForEfficiencyTest} dataSource={dataForEfficiencyTest} pagination={ false } size="default " /> */}
+            <h2>可维护性测试</h2>
+            <Table columns={columnsForEfficiencyTest} dataSource={dataForEfficiencyTest} pagination={ false } size="default " />
             {/* now */}
             <br/>
               <Row>
               <Col span={24} style={{ textAlign: 'right' }}>
-                <Button type="primary" htmlType="submit">
+                {/* <Button type="primary" htmlType="submit">
                   返回
-                </Button>
+                </Button> */}
                 <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>{this.showDelete(this.props.form)}}>
                   删除
                 </Button>
