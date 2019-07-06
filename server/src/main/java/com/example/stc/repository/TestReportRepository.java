@@ -6,12 +6,5 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface TestReportRepository extends BaseRepository<TestReport> {
-
-    TestReport findByPid(String pid);
-
-    @Modifying(flushAutomatically = true)
-    @Transactional
-    int deleteByPid(String pid);
-
+public interface TestReportRepository extends ProcessEntityRepository<TestReport> {
 }

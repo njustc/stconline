@@ -129,7 +129,7 @@ public class ContractServiceImpl implements ContractService{
         contractRepository.deleteByPid(pid);
         testPlanRepository.deleteByPid(pid);
         testReportRepository.deleteByPid(pid);
-        testRecordRepository.deleteAllByPid(pid);
+        testRecordRepository.deleteByPid(pid);
     }
 
     @Override

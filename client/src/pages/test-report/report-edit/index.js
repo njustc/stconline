@@ -22,6 +22,9 @@ import {
   Affix,
   Divider
 } from 'antd';
+
+// const { Carousel } = antd;
+
 import style from "../../entrust/basic-form/style.less";
 import PageHeaderWrapper from './components/PageHeaderWrapper';
 import styles from './style.less';
@@ -502,8 +505,8 @@ class newTestReport extends PureComponent {
       <div className={style.editBody}>
       <Breadcrumb>
       <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
-          <Breadcrumb.Item href="/plan_list.html">测试方案列表</Breadcrumb.Item>
-          <Breadcrumb.Item href="/plan_edit.html">测试方案编辑</Breadcrumb.Item>
+          <Breadcrumb.Item href="/report-list.html">测试报告列表</Breadcrumb.Item>
+          <Breadcrumb.Item>测试报告编辑</Breadcrumb.Item>
       </Breadcrumb>
       <Divider/>
         {/* <PageHeaderWrapper
@@ -953,22 +956,7 @@ class newTestReport extends PureComponent {
             <Table columns={columnsForEfficiencyTest} dataSource={dataForEfficiencyTest} pagination={ false } size="default " />
             {/* now */}
             <br/>
-              <Row>
-              {/* <Col span={24} style={{ textAlign: 'right' }}>
-                {/* <Button type="primary" htmlType="submit">
-                  返回
-                </Button> */} */}
-                <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>{this.showDelete(this.props.form)}}>
-                  删除
-                </Button>
-                <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>this.save(this.props.form)}>
-                  保存
-                </Button>
-                <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>{this.showSubmit(this.props.form)}}>
-                  提交
-                </Button>
-              {/* </Col> */}
-            </Row>
+           
           </Card>
           <div>
             <Affix offsetBottom={0}>
@@ -990,9 +978,28 @@ class newTestReport extends PureComponent {
 export default newTestReport;
 
 
+// function onChange(a, b, c) {
+//   console.log(a, b, c);
+// }
 
-
-// <div>
+// ReactDOM.render(
+//   <Carousel afterChange={onChange}>
+//     <div>
+//       <h3>1</h3>
+//     </div>
+//     <div>
+//       <h3>2</h3>
+//     </div>
+//     <div>
+//       <h3>3</h3>
+//     </div>
+//     <div>
+//       <h3>4</h3>
+//     </div>
+//   </Carousel>,
+//   mountNode,
+// );
+// // <div>
 // <Affix offsetBottom={0}>
 //   <div className={style.submitBtns}>
 //   <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>{this.showDelete(this.props.form)}}>
