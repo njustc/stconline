@@ -20,6 +20,9 @@ import {
   Col,
   Table,
   Affix,
+
+
+  BackTop,
   Divider
 } from 'antd';
 
@@ -965,12 +968,22 @@ class newTestReport extends PureComponent {
             <Button style={{ marginLeft: 8 }} onClick={()=>this.save(this.props.form)}>保存</Button>
             <Button type="danger" style={{ marginLeft: 8 }} onClick={()=>{this.showDelete(this.props.form)}}>删除</Button>
             </div>
+
+
+            <div>
+          <BackTop visibilityHeight={300}/>
+          <strong style={{color: 'rgba(64, 64, 64, 0.6)'}}> </strong>
+        </div>
+
+
+        
             </Affix>
         </div>
 
           </Form>
         </div>
       </div>
+      
     );
   }
 }
