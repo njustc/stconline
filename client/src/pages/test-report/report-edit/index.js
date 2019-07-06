@@ -728,7 +728,7 @@ class newTestReport extends PureComponent {
               <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.unitc-contact"/>}>
               </FormItem>
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.phone.label"/>}>
-                  {getFieldDecorator('unitc-phone', {
+                  {getFieldDecorator('clientTel', {
                     initialValue: this.props.dataReport.reportdata.clientTel || '',
                   }, {
                     rules: [
@@ -740,7 +740,7 @@ class newTestReport extends PureComponent {
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.fax.label"/>}>
-                  {getFieldDecorator('unitc-fax', {
+                  {getFieldDecorator('clientFax', {
                     initialValue: this.props.dataReport.reportdata.clientFax || '',
                   }, {
                     rules: [
@@ -752,7 +752,7 @@ class newTestReport extends PureComponent {
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.address.label"/>}>
-                  {getFieldDecorator('unitc-address', {
+                  {getFieldDecorator('clientAddr', {
                     initialValue: this.props.dataReport.reportdata.clientAddr || '',
                   }, {
                     rules: [
@@ -764,7 +764,7 @@ class newTestReport extends PureComponent {
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.postcode.label"/>}>
-                  {getFieldDecorator('unitc-postcode', {
+                  {getFieldDecorator('clientPostCode', {
                     initialValue: this.props.dataReport.reportdata.clientPostCode|| '',
                   }, {
                     rules: [
@@ -776,7 +776,7 @@ class newTestReport extends PureComponent {
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.contactor.label"/>}>
-                  {getFieldDecorator('unitc-contactor', {
+                  {getFieldDecorator('clientContact', {
                     initialValue: this.props.dataReport.reportdata.clientContact || '',
                   }, {
                     rules: [
@@ -788,7 +788,7 @@ class newTestReport extends PureComponent {
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.email.label"/>}>
-                  {getFieldDecorator('unitc-email', {
+                  {getFieldDecorator('clientEmail', {
                     initialValue: this.props.dataReport.reportdata.clientEmail || '',
                   }, {
                     rules: [
@@ -806,7 +806,7 @@ class newTestReport extends PureComponent {
               </FormItem>
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.phone.label"/>}>
                   {getFieldDecorator('unitt-phone', {
-                    initialValue: this.props.dataReport.reportdata.auditor || '',
+                     initialValue: '86-25-89683186',
                   }, {
                     rules: [
                       {
@@ -818,7 +818,7 @@ class newTestReport extends PureComponent {
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.fax.label"/>}>
                   {getFieldDecorator('unitt-fax', {
-                    initialValue: this.props.dataReport.reportdata.auditor || '',
+                    initialValue:  '86-25-89683186',
                   }, {
                     rules: [
                       {
@@ -830,7 +830,7 @@ class newTestReport extends PureComponent {
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.address.label"/>}>
                   {getFieldDecorator('unitt-address', {
-                    initialValue: this.props.dataReport.reportdata.auditor || '',
+                    initialValue: '江苏省南京市栖霞区仙林大道163号',
                   }, {
                     rules: [
                       {
@@ -842,7 +842,7 @@ class newTestReport extends PureComponent {
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.postcode.label"/>}>
                   {getFieldDecorator('unitt-postcode', {
-                    initialValue: this.props.dataReport.reportdata.auditor || '',
+                    initialValue:  '210023',
                   }, {
                     rules: [
                       {
@@ -854,7 +854,7 @@ class newTestReport extends PureComponent {
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.contactor.label"/>}>
                   {getFieldDecorator('unitt-contactor', {
-                    initialValue: this.props.dataReport.reportdata.auditor || '',
+                    initialValue: '',
                   }, {
                     rules: [
                       {
@@ -866,7 +866,7 @@ class newTestReport extends PureComponent {
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.email.label"/>}>
                   {getFieldDecorator('unitt-email', {
-                    initialValue: this.props.dataReport.reportdata.auditor || '',
+                    initialValue:  '@nju.edu.cn',
                   }, {
                     rules: [
                       {
