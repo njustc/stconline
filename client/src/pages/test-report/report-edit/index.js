@@ -18,8 +18,11 @@ import {
   message,
   Row,
   Col,
-  Table
+  Table,
+  Affix,
+  Divider
 } from 'antd';
+import style from "../../entrust/basic-form/style.less";
 import PageHeaderWrapper from './components/PageHeaderWrapper';
 import styles from './style.less';
 import moment from 'moment';
@@ -496,13 +499,22 @@ class newTestReport extends PureComponent {
     };
 
     return (
+      <div className={style.editBody}>
       <Breadcrumb>
-        <PageHeaderWrapper
+      <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
+          <Breadcrumb.Item href="/plan_list.html">测试方案列表</Breadcrumb.Item>
+          <Breadcrumb.Item href="/plan_edit.html">测试方案编辑</Breadcrumb.Item>
+      </Breadcrumb>
+      <Divider/>
+        {/* <PageHeaderWrapper
           title={<FormattedMessage id="new-test-report.basic.title2"/>}
           content={<FormattedMessage id="new-test-report.basic.description"/>}
         >
-          <Form onSubmit={this.handleSubmit}>
-          <Card bordered={false}>
+          </PageHeaderWrapper> */}
+        <div className={style.formBody}>
+          <Form className={style.antForm}>
+          {/* <Form onSubmit={this.handleSubmit}> */}
+            <Card bordered={false}>
             <Row>
               <Col span={12} style={{display:"block"}}>
               <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.codeId"/>}>
@@ -942,10 +954,10 @@ class newTestReport extends PureComponent {
             {/* now */}
             <br/>
               <Row>
-              <Col span={24} style={{ textAlign: 'right' }}>
+              {/* <Col span={24} style={{ textAlign: 'right' }}>
                 {/* <Button type="primary" htmlType="submit">
                   返回
-                </Button> */}
+                </Button> */} */}
                 <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>{this.showDelete(this.props.form)}}>
                   删除
                 </Button>
@@ -955,15 +967,43 @@ class newTestReport extends PureComponent {
                 <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>{this.showSubmit(this.props.form)}}>
                   提交
                 </Button>
-              </Col>
+              {/* </Col> */}
             </Row>
           </Card>
-         </Form>
-        
-        </PageHeaderWrapper>
-      </Breadcrumb>
+          <div>
+            <Affix offsetBottom={0}>
+            <div className={style.submitBtns}>
+            <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>{this.showSubmit(this.props.form)}}>提交</Button>
+            <Button style={{ marginLeft: 8 }} onClick={()=>this.save(this.props.form)}>保存</Button>
+            <Button type="danger" style={{ marginLeft: 8 }} onClick={()=>{this.showDelete(this.props.form)}}>删除</Button>
+            </div>
+            </Affix>
+        </div>
+
+          </Form>
+        </div>
+      </div>
     );
   }
 }
 
 export default newTestReport;
+
+
+
+
+// <div>
+// <Affix offsetBottom={0}>
+//   <div className={style.submitBtns}>
+//   <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>{this.showDelete(this.props.form)}}>
+//     删除
+//   </Button>
+//   <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>this.save(this.props.form)}>
+//     保存
+//   </Button>
+//   <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>{this.showSubmit(this.props.form)}}>
+//     提交
+//   </Button>
+//   </div>
+// </Affix>
+// </div>
