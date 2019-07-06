@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'dva';
 import {formatMessage, FormattedMessage} from 'umi/locale';
 import Link from 'umi/link';
-import {Checkbox, Alert, Icon, Skeleton} from 'antd';
+import {Checkbox, Alert, Icon, Skeleton, Upload, message} from 'antd';
 import {Login} from 'ant-design-pro';
 import styles from './style.less';
 import {readCookie, getRole} from "../../utils/cookieUtils";
@@ -80,6 +80,27 @@ class LoginPage extends Component {
     const {userInfo, submitting} = this.props;
     const {status} = userInfo.data;
     const {type, autoLogin} = this.state;
+    const uploadProps = {
+      name: 'file',
+      action: '/api/project/files?pid=pid',
+      multiple: true,
+      headers: {
+        authorization: 'authorization-text',
+      },
+      enctype: "multipart/form-data",
+      onChange(info) {
+        if (info.file.status !== 'uploading') {
+          console.log(info.file, info.fileList);
+        }
+        if (info.file.status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
+
+
     return (
 
       <div className={styles.main}>
@@ -135,6 +156,11 @@ class LoginPage extends Component {
             </Link>
           </div>
         </Login>
+        <Upload {...uploadProps}>
+          <Button>
+            <Icon type="upload"/> Click to Upload
+          </Button>
+        </Upload>
       </div>
 
     );
