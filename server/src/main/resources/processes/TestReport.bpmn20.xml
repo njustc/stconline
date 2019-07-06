@@ -7,7 +7,7 @@
       </extensionElements>
     </startEvent>
     <endEvent id="end" name="End"/>
-    <userTask activiti:exclusive="true" id="tmReviewReport" name="TMReviewReport" activiti:candidateGroups="TM">
+    <userTask activiti:exclusive="true" id="tmReviewReport" name="TM_ReviewReport" activiti:candidateGroups="TM">
       <extensionElements>
         <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
         <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
@@ -15,7 +15,7 @@
       </extensionElements>
     </userTask>
     <exclusiveGateway gatewayDirection="Unspecified" id="tmReviewGate" name="TMReviewGate"/>
-    <userTask activiti:exclusive="true" id="qmReviewReport" name="QMReviewReport" activiti:candidateGroups="QM">
+    <userTask activiti:exclusive="true" id="qmReviewReport" name="QM_ReviewReport" activiti:candidateGroups="QM">
       <extensionElements>
         <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
         <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
@@ -23,7 +23,7 @@
       </extensionElements>
     </userTask>
     <exclusiveGateway gatewayDirection="Unspecified" id="qmReviewGate" name="QMReviewGate"/>
-    <userTask activiti:assignee="${ClientID}" activiti:exclusive="true" id="cusReviewReport" name="CUSReviewReport">
+    <userTask activiti:assignee="${ClientID}" activiti:exclusive="true" id="cusReviewReport" name="CUS_ReviewReport">
       <extensionElements>
         <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
         <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
