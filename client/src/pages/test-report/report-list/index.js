@@ -46,8 +46,7 @@ export default class ReportList extends Component {
   {<Link to={{pathname: './report-detail', query: {pid: key.pid}}}>查看项目详情</Link>}
   <Divider type="vertical"/>
   {<Link to={{pathname: '../../report-edit', query: {pid: key.pid}}}>编辑</Link>}
-  <Divider type="vertical"/>
-  <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
+  
 </span>
   ),
 
@@ -55,8 +54,7 @@ export default class ReportList extends Component {
     <span>
   {<Link to={{pathname: './report-detail', query: {pid: key.pid}}}>查看项目详情</Link> }
   <Divider type="vertical"/>
-  <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
-  <Divider type="vertical"/>
+  
 </span>
   ),
 
@@ -96,6 +94,20 @@ export default class ReportList extends Component {
       render: text => <a href="javascript:;">{text}</a>,
     },
 
+    //softwareName
+    {
+      title: '软件名称',
+      dataIndex: 'softwareName',
+      key: 'softwareName',
+      render: text => <a href="javascript:;">{text}</a>,
+    },
+    //clientCompany
+    {
+      title: '委托单位',
+      dataIndex: 'clientCompany',
+      key: 'clientCompany',
+      render: text => <a href="javascript:;">{text}</a>,
+    },
 
     {
       title: '状态',

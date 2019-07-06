@@ -20,6 +20,9 @@ import {
   Col,
   Table,
   Affix,
+
+
+  BackTop,
   Divider
 } from 'antd';
 
@@ -570,9 +573,9 @@ class newTestReport extends PureComponent {
                 </FormItem>
               </Col>
               <Col span={12} style={{display:"block"}}>
-              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.pid"/>}>
-                  {getFieldDecorator('pid', {
-                    initialValue: this.props.dataReport.reportdata.pid || '',
+              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.clientCompany"/>}>
+                  {getFieldDecorator('clientCompany', {
+                    initialValue: this.props.dataReport.reportdata.clientCompany || '',
                   }, {
                     rules: [
                       {
@@ -965,12 +968,22 @@ class newTestReport extends PureComponent {
             <Button style={{ marginLeft: 8 }} onClick={()=>this.save(this.props.form)}>保存</Button>
             <Button type="danger" style={{ marginLeft: 8 }} onClick={()=>{this.showDelete(this.props.form)}}>删除</Button>
             </div>
+
+
+            <div>
+          <BackTop visibilityHeight={300}/>
+          <strong style={{color: 'rgba(64, 64, 64, 0.6)'}}> </strong>
+        </div>
+
+
+        
             </Affix>
         </div>
 
           </Form>
         </div>
       </div>
+      
     );
   }
 }
