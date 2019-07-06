@@ -59,7 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.loginPage("/login") // 自己的登录界面
                 .defaultSuccessUrl("/api/project/entrust")
 
-                // 使用Spring默认登出URL: http://localhost:8080/logout(http://localhost:8080/login?logout)
+                .and()
+                .logout().logoutUrl("/api/logout")
 
                 .and()
                 .authorizeRequests() // 定义需要保护和不需要保护的URL
