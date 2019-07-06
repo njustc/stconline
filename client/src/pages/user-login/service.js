@@ -13,6 +13,15 @@ export async function userLogin(payload) {
   });
 }
 
+/**
+ * 用户登出
+ * */
+export async function userLogout() {
+  return request('/api/logout',{
+    method: 'POST'
+  })
+}
+
 export async function getFakeCaptcha(mobile) {
   return request(`/api/user-login/captcha?mobile=${mobile}`);
 }

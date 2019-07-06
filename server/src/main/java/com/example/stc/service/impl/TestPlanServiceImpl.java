@@ -36,7 +36,7 @@ public class TestPlanServiceImpl implements TestPlanService {
 
     @Override
     public List<TestPlan> findAllTestPlans() {
-        return setState(testPlanRepository.findAll());
+        return testPlanRepository.findAll();
     }
 
     @Override
@@ -46,7 +46,7 @@ public class TestPlanServiceImpl implements TestPlanService {
                 ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
         List<TestPlan> allTestPlans = this.findAllTestPlans();
         allTestPlans.removeIf(testPlan -> !processUtils.isVisible(testPlan, "TestPlan"));
-        return setState(allTestPlans);
+        return allTestPlans;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class TestPlanServiceImpl implements TestPlanService {
         TestPlan testPlan = testPlanRepository.findByPid(pid);
         if (testPlan == null)
             throw new TestPlanNotFoundException(pid);
-        return setState(testPlan);
+        return testPlan;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class TestPlanServiceImpl implements TestPlanService {
         testPlan.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
         // DEBUG：若数据库中该项目已存在，则覆盖原项目
         testPlanRepository.deleteByPid(pid);
-        return setState(testPlanRepository.save(testPlan));
+        return testPlanRepository.save(testPlan);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class TestPlanServiceImpl implements TestPlanService {
             record.setProcessState(testPlan.getProcessState());
             record.setProcessInstanceId(testPlan.getProcessInstanceId());
         }
-        return setState(testPlanRepository.save(record));
+        return testPlanRepository.save(record);
     }
 
     @Override
@@ -95,32 +95,11 @@ public class TestPlanServiceImpl implements TestPlanService {
     }
 
     @Override
-    public void saveComment(String pid, String comment) {
+    public TestPlan updateProcessState(String pid, String processState, String comment) {
         TestPlan testPlan = this.findTestPlanByPid(pid);
+        testPlan.setProcessState(processState);
         testPlan.setComment(comment);
-        this.updateTestPlan(testPlan.getPid(), testPlan);
-    }
-
-    private List<TestPlan> setState(List<TestPlan> testPlans) {
-        for (TestPlan testPlan: testPlans) {
-            testPlan = setState(testPlan);
-        }
-        return testPlans;
-    }
-
-    private TestPlan setState(TestPlan testPlan) {
-        String processInstanceId = testPlan.getProcessInstanceId();
-        if (processInstanceId == null) {
-            testPlan.setProcessInstanceId("");
-            testPlan = this.updateTestPlan(testPlan.getPid(), testPlan);
-            processInstanceId = testPlan.getProcessInstanceId();
-        }
-
-        testPlan.setProcessState(processUtils.getProcessState(processInstanceId));
-        if (!processInstanceId.equals("")) {
-            testPlan.setComment(processService.getProcessComment(processInstanceId));
-        }
-        return testPlan;
+        return this.updateTestPlan(pid, testPlan);
     }
     
 }
