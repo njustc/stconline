@@ -1,10 +1,10 @@
 package com.example.stc.service;
 
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import com.example.stc.domain.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -70,4 +70,6 @@ public interface UserService extends BaseService<User> {
     String userLogin(User user, HttpServletResponse response);
 
     List<User> findAllUsers();
+
+    String userLogout(HttpServletResponse response, HttpServletRequest request);
 }

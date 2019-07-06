@@ -62,10 +62,9 @@ public class CookieUtils {
      * 根据cookie的名字删除cookie
      *
      * @param name     :要删除的cookie的名字
-     * @param request  :请求对象
      * @param response :响应对象
      */
-    public static void deleteCookie(String name, HttpServletRequest request, HttpServletResponse response) {
+    public void deleteCookie(String name, HttpServletResponse response) {
         Cookie c1 = new Cookie(name, "");
         c1.setMaxAge(0);        //设置寿命为0 , cookie瞬间消失
         c1.setPath(path);
