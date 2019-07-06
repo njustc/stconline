@@ -80,16 +80,16 @@ export default {
   'basic-form.radio.opsystem3': '其他',
 
   // 硬件架构
-  'basic-form.radio.architecture': '架构',
-  'basic-form.radio.architecture1': 'PC服务器',
-  'basic-form.radio.architecture2': 'UNIX/Linux服务器',
-  'basic-form.radio.architecture3': '其他',
+  'basic-form.checkbox.architecture': '架构',
+  'basic-form.checkbox.architecture1': 'PC服务器',
+  'basic-form.checkbox.architecture2': 'UNIX/Linux服务器',
+  'basic-form.checkbox.architecture3': '其他',
 
   // 软件-构架
-  'basic-form.radio.softarch': '构架',
-  'basic-form.radio.softarch1': 'C/S',
-  'basic-form.radio.softarch2': 'B/S',
-  'basic-form.radio.softarch3': '其他',
+  'basic-form.checkbox.softarch': '构架',
+  'basic-form.checkbox.softarch1': 'C/S',
+  'basic-form.checkbox.softarch2': 'B/S',
+  'basic-form.checkbox.softarch3': '其他',
 
 
   // 软件名称，版本号，委托单位（中文），委托单位（英文），开发单位
@@ -129,6 +129,13 @@ export default {
   'basic-form.harddisk.required': '请输入硬盘要求',
   'basic-form.harddisk.placeholder': '请输入硬盘要求',
 
+  'basic-form.hardframe.label':"架构",
+  
+
+  'basic-form.hardInStorage.label':'内存要求' ,
+  'basic-form.hardInStorage.required': '请输入内存要求',
+  'basic-form.hardInStorage.placeholder': '请输入内存要求',
+
   'basic-form.hardother.label': '其他要求',
   'basic-form.hardother.required': '请输入其他要求',
   'basic-form.hardother.placeholder': '请输入其他要求',
@@ -167,7 +174,7 @@ export default {
 
   // 软件用户对象描述，主要功能及用途简介（限200字）
   'basic-form.userobject.required': '请输入用户对象描述',
-  'basic-form.userobject.label': '软件用户对象描述',
+  'basic-form.userobject.label': '软件用户对象',
   'basic-form.userobject.placeholder': '请输入你的用户对象描述',
 
   'basic-form.intro.required': '请输入主要功能及用途简介',
@@ -192,6 +199,9 @@ export default {
   'form.softscale_code_number.label': '代码行数',
   'form.softscale_code_number.placeholder': ' ',
   'validation.softscale_code_number.required': '请输入代码行数',
+
+  'form.sampleType.label': '软件介质',
+  'form.sampleType.label.tooltip': "U盘，光盘，或其他",
 
   'form.sample_document.label': '文档资料',
   'form.sample_document.label.tooltip': "1.需求文档（例如：项目计划任务书、需求分析报告、合同等）（验收、鉴定测试必须）2.用户文档（例如：用户手册、用户指南等）（必须）3.操作文档（例如：操作员手册、安装手册、诊断手册、支持手册等）（验收项目必须）",
@@ -243,11 +253,11 @@ export default {
   'basic-form.others.viruses.complete':"已完成",
   'basic-form.others.viruses.cannot':"无法完成",
 
-  'basic-form.others.tsample.label':"测试样品",
+  'basic-form.others.tsample.label':"材料检查(多选)",
   'basic-form.others.tsample.code':"源代码",
   'basic-form.others.tsample.exe':"可执行文件",
 
-  'basic-form.others.reqword.label':"重述",
+  'basic-form.others.reqword.label':"需求文档",
   'basic-form.others.reqword.plan':"项目计划任务书",
   'basic-form.others.reqword.report':"需求分析报告",
   'basic-form.others.reqword.contract':"合同",
@@ -269,8 +279,8 @@ export default {
   'basic-form.form.submit': '提交',
   'basic-form.form.save': '保存',
   'basic-form.form.delete': '删除',
-  'basic-form.form.agree': '通过',
-  'basic-form.form.disagree': '不通过',
+  'basic-form.form.agree': '同意',
+  'basic-form.form.disagree': '不同意',
 
   'basic-form.date.required': '请选择日期',
   'basic-form.date.label': '希望测试完成时间',
@@ -316,59 +326,9 @@ export default {
   'form.client_signature_time.placeholder': ' ',
   'validation.client_signature_time.required': '请填写日期',
 
+  'basic-form.radio.softarch':'构架',
 
-  // 'basic-form.email.required': '请输入邮箱地址！',
-  // 'basic-form.email.wrong-format': '邮箱地址格式错误！',
-
-
-  // 'basic-form.userName.required': '请输入用户名!',
-  // 'basic-form.password.required': '请输入密码！',
-  // 'basic-form.password.twice': '两次输入的密码不匹配!',
-  // 'basic-form.strength.msg': '请至少输入 6 个字符。请不要使用容易被猜到的密码。',
-  // 'basic-form.strength.strong': '强度：强',
-  // 'basic-form.strength.medium': '强度：中',
-  // 'basic-form.strength.short': '强度：太短',
-  // 'basic-form.confirm-password.required': '请确认密码！',
-  // 'basic-form.phone-number.required': '请输入手机号！',
-  // 'basic-form.phone-number.wrong-format': '手机号格式错误！',
-  // 'basic-form.verification-code.required': '请输入验证码！',
-  // 'basic-form.title.required': '请输入标题',
-  // 'basic-form.date.required': '请选择起止日期',
-  // 'basic-form.goal.required': '请输入目标描述',
-  // 'basic-form.standard.required': '请输入衡量标准',
-
-  // 'basic-form.form.get-captcha': '获取验证码',
-  // 'basic-form.captcha.second': '秒',
-  // 'basic-form.form.optional': '（选填）',
-
-  // 'basic-form.email.placeholder': '邮箱',
-  // 'basic-form.password.placeholder': '至少6位密码，区分大小写',
-  // 'basic-form.confirm-password.placeholder': '确认密码',
-  // 'basic-form.phone-number.placeholder': '手机号',
-  // 'basic-form.verification-code.placeholder': '验证码',
-  // 'basic-form.title.label': '标题',
-  // 'basic-form.title.placeholder': '给目标起个名字',
-  // 'basic-form.date.label': '起止日期',
-  // 'basic-form.placeholder.start': '开始日期',
-  // 'basic-form.placeholder.end': '结束日期',
-  // 'basic-form.goal.label': '目标描述',
-  // 'basic-form.goal.placeholder': '请输入你的阶段性工作目标',
-  // 'basic-form.standard.label': '衡量标准',
-  // 'basic-form.standard.placeholder': '请输入衡量标准',
-  // 'basic-form.client.label': '客户',
-  // 'basic-form.label.tooltip': '目标的服务对象',
-  // 'basic-form.client.placeholder': '请描述你服务的客户，内部客户直接 @姓名／工号',
-  // 'basic-form.invites.label': '邀评人',
-  // 'basic-form.invites.placeholder': '请直接 @姓名／工号，最多可邀请 5 人',
-  // 'basic-form.weight.label': '权重',
-  // 'basic-form.weight.placeholder': '请输入',
-  // 'basic-form.public.label': '目标公开',
-  // 'basic-form.label.help': '客户、邀评人默认被分享',
-  // 'basic-form.radio.public': '公开',
-  // 'basic-form.radio.partially-public': '部分公开',
-  // 'basic-form.radio.private': '不公开',
-  // 'basic-form.publicUsers.placeholder': '公开给',
-  // 'basic-form.option.A': '同事甲',
-  // 'basic-form.option.B': '同事乙',
-  // 'basic-form.option.C': '同事丙',
+  'basic-form.usermemEx.label':'硬盘要求',
+  'basic-form.usermemEx.placeholder': ' ',
+  'basic-form.usermemEx.required': '请填写硬盘要求',
 };
