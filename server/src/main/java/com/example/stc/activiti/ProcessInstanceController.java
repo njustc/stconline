@@ -36,10 +36,9 @@ public class ProcessInstanceController extends BaseController {
      */
     @PostMapping(path = "/process/query")
     public @ResponseBody
-    JSONObject queryProcessState(@RequestBody ProcessEntity object) {
-        processService.queryProcessState(object);
+    JSONObject queryProcessState(@RequestBody JSONObject object) {
         JSONObject obj = new JSONObject();
-        obj.put("state", object.getProcessState());
+        obj.put("state", processService.queryProcessState(object));
         return obj;
     }
 
@@ -50,7 +49,7 @@ public class ProcessInstanceController extends BaseController {
      */
     @PostMapping(path = "/process/update")
     public @ResponseBody
-    ResponseEntity<?> updateProcessState(@RequestBody ProcessEntity object,
+    ResponseEntity<?> updateProcessState(@RequestBody JSONObject object,
                                          @RequestParam(value = "type")String type) {
         processService.updateProcessInstance(object, type);
         return ResponseEntity.noContent().build();

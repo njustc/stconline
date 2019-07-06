@@ -47,7 +47,7 @@ public class EntrustServiceImpl implements EntrustService {
 
     @Override
     public List<Entrust> findAllEntrusts() {
-        return setState(entrustRepository.findAll());
+        return entrustRepository.findAll();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class EntrustServiceImpl implements EntrustService {
         List<Entrust> allEntrusts = this.findAllEntrusts();
         allEntrusts.removeIf(entrust -> (entrust.getProcessState() != ProcessState.Review &&
                 entrust.getProcessState() != ProcessState.Approve));
-        return setState(allEntrusts);
+        return allEntrusts;
     }
 
     @Override
@@ -119,7 +119,7 @@ public class EntrustServiceImpl implements EntrustService {
 
         this.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
 
-        return setState(entrust);
+        return entrust;
     }
 
     @Override
@@ -143,7 +143,7 @@ public class EntrustServiceImpl implements EntrustService {
         //根据某一个算法增加新的id
         entrust.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         entrust.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
-        return setState(entrustRepository.save(entrust));
+        return entrustRepository.save(entrust);
     }
 
     @Override
@@ -161,35 +161,14 @@ public class EntrustServiceImpl implements EntrustService {
             record.setProcessState(processUtils.getProcessState(entrust.getProcessInstanceId()));
         }
         logger.info("getProcessState: new = " + record.getProcessState());
-        return setState(entrustRepository.save(record));
+        return entrustRepository.save(record);
     }
-
+    
     @Override
-    public void saveComment(String pid, String comment) {
+    public Entrust updateProcessState(String pid, String processState, String comment) {
         Entrust entrust = this.findEntrustByPid(pid);
+        entrust.setProcessState(processState);
         entrust.setComment(comment);
-        this.updateEntrust(entrust.getPid(), entrust);
-    }
-
-    private List<Entrust> setState(List<Entrust> entrusts) {
-        for (Entrust entrust: entrusts) {
-            entrust = setState(entrust);
-        }
-        return entrusts;
-    }
-
-    private Entrust setState(Entrust entrust) {
-        String processInstanceId = entrust.getProcessInstanceId();
-        if (processInstanceId == null) {
-            entrust.setProcessInstanceId("");
-            entrust = entrustRepository.save(entrust);
-            processInstanceId = entrust.getProcessInstanceId();
-        }
-
-        entrust.setProcessState(processUtils.getProcessState(processInstanceId));
-        if (!processInstanceId.equals("")) {
-            entrust.setComment(processService.getProcessComment(processInstanceId));
-        }
-        return entrust;
+        return this.updateEntrust(pid, entrust);
     }
 }

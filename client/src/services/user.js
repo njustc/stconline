@@ -42,7 +42,7 @@ export async function addNewEntrust(params) {
 
 export async function updateEntrustProcess(params) {
   // console.log(typeof(params),params)
-  return request(`api/project/process/update`, {
+  return request(`api/project/process/update?type=Entrust`, {
     method: 'POST',
     data: params
   });

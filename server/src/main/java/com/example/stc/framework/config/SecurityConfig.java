@@ -60,9 +60,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/api/project/entrust")
 
                 .and()
-                .logout().logoutUrl("/api/logout")
-
-                .and()
                 .authorizeRequests() // 定义需要保护和不需要保护的URL
                 .antMatchers("/*", "*", "/").permitAll()
                 .antMatchers("/api/register/**", "/api/login").permitAll()

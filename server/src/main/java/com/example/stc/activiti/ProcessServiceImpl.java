@@ -59,6 +59,7 @@ public class ProcessServiceImpl implements ProcessService {
         variable.put("EntrustID", pid);
         variable.put("ClientID", entrust.getUserId());
         entrust.setProcessInstanceId(stcProcessEngine.createProcess("Entrust", variable));
+        entrust.setProcessState(ProcessState.Review);
         entrustService.updateEntrust(pid, entrust);
         queryProcessState(entrust);
     }
@@ -74,6 +75,7 @@ public class ProcessServiceImpl implements ProcessService {
         variable.put("ContractID", pid);
         variable.put("ClientID", contract.getUserId());
         contract.setProcessInstanceId(stcProcessEngine.createProcess("Contract", variable));
+        contract.setProcessState(ProcessState.Review);
         contractService.updateContract(pid, contract);
         queryProcessState(contract);
     }
@@ -89,6 +91,7 @@ public class ProcessServiceImpl implements ProcessService {
         variable.put("TestPlanID", pid);
         variable.put("ClientID", testPlan.getUserId());
         testPlan.setProcessInstanceId(stcProcessEngine.createProcess("TestPlan", variable));
+        testPlan.setProcessState(ProcessState.Review);
         testPlanService.updateTestPlan(pid, testPlan);
         queryProcessState(testPlan);
     }
@@ -104,6 +107,7 @@ public class ProcessServiceImpl implements ProcessService {
         variable.put("TestReportID", pid);
         variable.put("ClientID", testReport.getUserId());
         testReport.setProcessInstanceId(stcProcessEngine.createProcess("TestReport", variable));
+        testReport.setProcessState(ProcessState.Review);
         testReportService.updateTestReport(pid, testReport);
         queryProcessState(testReport);
     }
@@ -114,6 +118,7 @@ public class ProcessServiceImpl implements ProcessService {
         Map<String, Object> variable = new HashMap<String, Object>();
         variable.put("TestReportID", testId);
         testRecord.setProcessInstanceId(stcProcessEngine.createProcess("TestRecord", variable));
+        testRecord.setProcessState(ProcessState.Review);
         testRecordService.updateTestRecord(testId, testRecord);
         queryProcessState(testRecord);
     }
@@ -135,28 +140,50 @@ public class ProcessServiceImpl implements ProcessService {
      * @return
      */
     @Override
+    public String queryProcessState(JSONObject entity) {
+        return queryProcessState(entity.toJavaObject(ProcessEntity.class));
+    }
+
+    @Override
     public String queryProcessState(ProcessEntity entity) {
         String processState = stcProcessEngine.getProcessState(entity.getProcessInstanceId());
-        entity.setProcessState(processState);
         return processState;
     }
 
     /**
      * 更新流程实例
-     * @param entity
+     * @param object
      */
     @Override
-    public void updateProcessInstance(ProcessEntity entity, String type) {
+    public void updateProcessInstance(JSONObject object, String type) {
+        ProcessEntity entity = object.toJavaObject(ProcessEntity.class);
         stcProcessEngine.updateProcess(entity);
+
+        /**
+         * 保存process状态
+         */
+        String pid = entity.getPid();
+        String userId = entity.getUserId();
+        String comment = entity.getComment();
+        String processState = queryProcessState(entity);
+        String testId = object.getString("testId");
+        switch (type) {
+            case "Entrust": entrustService.updateProcessState(pid, processState, comment); break;
+            case "Contract": contractService.updateProcessState(pid, processState, comment); break;
+            case "TestPlan": testPlanService.updateProcessState(pid, processState, comment); break;
+            case "TestReport": testReportService.updateProcessState(pid, processState, comment); break;
+            case "TestRecord": testRecordService.updateProcessState(testId, processState, comment); break;
+            default: break;
+        }
 
         if (queryProcessState(entity).equals("Approve")) {
             /**
              * 根据type创建流水线的下一个实体
              */
             switch (type) {
-                case "Entrust": contractService.newContract(entity.getPid(), entity.getUserId()); break;
-                case "Contract": testPlanService.newTestPlan(entity.getPid(), entity.getUserId()); break;
-                case "TestPlan": testReportService.newTestReport(entity.getPid(), entity.getUserId()); break;
+                case "Entrust": contractService.newContract(pid, userId); break;
+                case "Contract": testPlanService.newTestPlan(pid, userId); break;
+                case "TestPlan": testReportService.newTestReport(pid, userId); break;
                 default: break;
             }
         }

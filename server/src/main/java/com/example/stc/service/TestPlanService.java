@@ -43,10 +43,11 @@ public interface TestPlanService extends BaseService<TestPlan> {
     void deleteTestPlanByPid(String pid);
 
     /**
-     * 修改评审意见
+     * 修改流程状态, 添加评审意见
      * @param pid
+     * @param processState
      * @param comment
+     * @return
      */
-    void saveComment(String pid, String comment);
-
+    TestPlan updateProcessState(String pid, String processState, String comment);
 }
