@@ -1,6 +1,7 @@
 import { routerRedux } from 'dva/router';
 import { getPageQuery } from './utils/utils';
 import { setAuthority } from './utils/authority';
+import { message } from 'antd';
 import { reloadAuthorized } from './utils/Authorized';
 import { getOneTestReport, replaceTestReport, addNewTestReport, deleteTestReport , updateTestReportProcess, createTestReportProcess} from '@/services/testReport';
 import router from "umi/router";
@@ -26,7 +27,7 @@ export default {
       console.log("123",payload)
       const response = yield call(getOneTestReport, payload);
       //console.log(response);
-      yield put({type: 'updateData', payload: response});
+      //yield put({type: 'updateData', payload: response});
       //router.push("/report-list.html")
       message.success('保存成功');
     },

@@ -20,7 +20,7 @@ export default {
 
   'new-test-report.sampleList':'样品清单',
  // 'new-test-report.softwareSample':'上传软件样本',
-  //'new-test-report.softwareDocuments':'上传软件文档',
+  'new-test-report.softwareDocuments':'上传软件文档',
   'new-test-report.tester':'主测人',
   'new-test-report.testerDate':'日期',
 
