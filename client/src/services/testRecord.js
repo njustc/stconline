@@ -51,29 +51,20 @@ export async function getAllTestRecords() {
 }
 
 /**
- * 提交测试方案
+ * 更改流程状态
  * */
-// export async function submitTestPlan({pid}) {
-//   return request(`api/project/testplan/submit`, {
-//     method: 'POST',
-//     params: {pid}
-//   });
-// }
+export async function updateTestReportProcess(params) {
+    return request(`api/project/process/update?type=TestReport`, {
+        method: 'POST',
+        data: params
+    });
+}
 
-// export async function updateTestPlanProcess(params) {
-//   console.log(typeof(params),params)
-//   return request(`api/project/process/update?type=TestPlan`, {
-//     method: 'POST',
-//     data: params
-//   });
-// }
-
-// export async function createTestPlanProcess(params) {
-//   // console.log(typeof(params))
-//   return request(`api/project/process/create?pid=${params.pid}&type=TestPlan`, {
-//     method: 'POST',
-//     data: ""
-//   });
-// }
+export async function createTestReportProcess(params) {
+    return request(`api/project/process/create?testId=${params.testId}&type=TestReport`, {
+        method: 'POST',
+        data: ""
+    });
+}
 
 
