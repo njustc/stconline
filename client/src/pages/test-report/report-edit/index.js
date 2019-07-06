@@ -937,15 +937,15 @@ class newTestReport extends PureComponent {
             <Table columns={columnsForEfficiencyTest} dataSource={dataForEfficiencyTest} pagination={ false } size="default " />
             <h2>可靠性环境</h2>
             <Table columns={columnsForEfficiencyTest} dataSource={dataForEfficiencyTest} pagination={ false } size="default " />
-            <h2>可维护性测试</h2>
-            <Table columns={columnsForEfficiencyTest} dataSource={dataForEfficiencyTest} pagination={ false } size="default " />
+            {/* <h2>可维护性测试</h2>
+            <Table columns={columnsForEfficiencyTest} dataSource={dataForEfficiencyTest} pagination={ false } size="default " /> */}
             {/* now */}
             <br/>
               <Row>
               <Col span={24} style={{ textAlign: 'right' }}>
-                {/* <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit">
                   返回
-                </Button> */}
+                </Button>
                 <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>{this.showDelete(this.props.form)}}>
                   删除
                 </Button>
