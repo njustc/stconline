@@ -54,8 +54,9 @@ export default class report_detail extends React.Component{
     return (
       <div>
         <Breadcrumb>
-          <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
-          <Breadcrumb.Item>测试方案详情</Breadcrumb.Item>
+        <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
+          <Breadcrumb.Item href="/report-list.html">测试报告列表</Breadcrumb.Item>
+          <Breadcrumb.Item>测试报告详情</Breadcrumb.Item>
         </Breadcrumb>
 
         <Divider/>
