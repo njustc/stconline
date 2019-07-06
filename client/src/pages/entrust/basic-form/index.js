@@ -243,6 +243,27 @@ class BasicForm extends PureComponent {
       },
     };
 
+    // 文件上传
+    const uploadProps = {
+      name: 'file',
+      action: '/api/project/files?pid=pid',
+      multiple: true,
+      headers: {
+        authorization: 'authorization-text',
+      },
+      enctype: "multipart/form-data",
+      onChange(info) {
+        if (info.file.status !== 'uploading') {
+          console.log(info.file, info.fileList);
+        }
+        if (info.file.status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
+
     return (
       <div className={style.editBody}>
         <Breadcrumb>
@@ -1387,7 +1408,7 @@ class BasicForm extends PureComponent {
 
                 </FormItem>
                 {/*文件上传*/}
-                <Dragger {...props}>
+                <Dragger {...uploadProps}>
                   <p className="提交栏">
                     <Icon type="inbox"/>
                   </p>

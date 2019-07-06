@@ -9,7 +9,7 @@ export default {
   'new-test-report.sampleDate': '采样日期',
   'new-test-report.testDate': '测试日期',
 
-  'new-test-report.pid':'项目Id',
+  'new-test-report.clientCompany': '委托单位',
   'new-test-report.version':'版本号',
   'new-test-report.testType':'测试类别',
   'new-test-report.softwareName': '软件名称',
