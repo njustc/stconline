@@ -70,9 +70,6 @@ const mapDispatchToProps = (dispatch) => {
 
 @connect(mapStateToProps, mapDispatchToProps)
 
-@connect(({loading}) => ({
-  submitting: loading.effects['basicForm/submitRegularForm'],
-}))
 @Form.create()
 class BasicForm extends PureComponent {
   state = {
@@ -85,15 +82,6 @@ class BasicForm extends PureComponent {
       pid: ""
     }
   }
-
-  // handleSubmit = e => {
-  //   e.preventDefault();
-  //   this.props.form.validateFieldsAndScroll((err, values) => {
-  //     if (!err) {
-  //       console.log('Received values of form: ', values);
-  //     }
-  //   });
-  // };
   
   componentDidMount() {
     const {dispatch} = this.props;
