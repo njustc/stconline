@@ -5,7 +5,6 @@ import com.example.stc.domain.User;
 import com.example.stc.framework.exception.UserNotFoundException;
 import com.example.stc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,9 +33,16 @@ public class UserController {
      */
     @GetMapping("/api/register")
     public String showRegister() {
-
-
         return "DEBUG: 用户注册，请Post";
+    }
+
+    /**
+     * 用户登出
+     */
+    @PostMapping("/api/logout")
+    public String userLogout(HttpServletResponse response,
+                             HttpServletRequest request) {
+        return userService.userLogout(response, request);
     }
 
     /**

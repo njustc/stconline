@@ -75,5 +75,12 @@
     "username": "admin",
     "password": "$2a$10$N1UDFDHAAIaZa/GkSPInLO/WPTY9mY.5BiKEZreAmU7sccBkKfMs2",
     "roles": "ADMIN"
+  },
+  "boss": {
+    "id": 99,
+    "userid": "u20190609235999",
+    "username": "BOSS",
+    "password": "$2a$10$swEZoj6b1JAogCMQhLvus.4pOGCLM8.ykawX1e7v8b12tDQ2idzzK",
+    "roles": "USER,ADMIN,CUS,STAFF,SS,SM,TS,TM,QM"
   }
 }

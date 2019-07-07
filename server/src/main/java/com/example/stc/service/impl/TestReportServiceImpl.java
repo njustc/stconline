@@ -30,13 +30,10 @@ public class TestReportServiceImpl implements TestReportService {
 
     @Autowired
     private ProcessUtils processUtils;
-    
-    @Autowired
-    private ProcessService processService;
 
     @Override
     public List<TestReport> findAllTestReports() {
-        return setState(testReportRepository.findAll());
+        return testReportRepository.findAll();
     }
 
     @Override
@@ -46,7 +43,7 @@ public class TestReportServiceImpl implements TestReportService {
                 ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
         List<TestReport> allTestReports = this.findAllTestReports();
         allTestReports.removeIf(testReport -> !processUtils.isVisible(testReport, "TestReport"));
-        return setState(allTestReports);
+        return allTestReports;
     }
 
     @Override
@@ -54,7 +51,7 @@ public class TestReportServiceImpl implements TestReportService {
         TestReport testReport = testReportRepository.findByPid(pid);
         if (testReport == null)
             throw new TestReportNotFoundException(pid);
-        return setState(testReport);
+        return testReport;
     }
 
     @Override
@@ -66,7 +63,7 @@ public class TestReportServiceImpl implements TestReportService {
         testReport.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
         // DEBUG：若数据库中该项目已存在，则覆盖原项目
         testReportRepository.deleteByPid(pid);
-        return setState(testReportRepository.save(testReport));
+        return testReportRepository.save(testReport);
     }
 
     @Override
@@ -78,12 +75,7 @@ public class TestReportServiceImpl implements TestReportService {
             record.setProcessState(testReport.getProcessState());
             record.setProcessInstanceId(testReport.getProcessInstanceId());
         }
-        return setState(testReportRepository.save(record));
-    }
-
-    @Override
-    public void deleteTestReportById(Long id) {
-        testReportRepository.deleteById(id);
+        return testReportRepository.save(record);
     }
 
     @Override
@@ -95,31 +87,10 @@ public class TestReportServiceImpl implements TestReportService {
     }
 
     @Override
-    public void saveComment(String pid, String comment) {
+    public TestReport updateProcessState(String pid, String processState, String comment) {
         TestReport testReport = this.findTestReportByPid(pid);
+        testReport.setProcessState(processState);
         testReport.setComment(comment);
-        this.updateTestReport(testReport.getPid(), testReport);
-    }
-
-    private List<TestReport> setState(List<TestReport> testReports) {
-        for (TestReport testReport: testReports) {
-            testReport = setState(testReport);
-        }
-        return testReports;
-    }
-
-    private TestReport setState(TestReport testReport) {
-        String processInstanceId = testReport.getProcessInstanceId();
-        if (processInstanceId == null) {
-            testReport.setProcessInstanceId("");
-            testReport = testReportRepository.save(testReport);
-            processInstanceId = testReport.getProcessInstanceId();
-        }
-
-        testReport.setProcessState(processUtils.getProcessState(processInstanceId));
-        if (!processInstanceId.equals("")) {
-            testReport.setComment(processService.getProcessComment(processInstanceId));
-        }
-        return testReport;
+        return this.updateTestReport(pid, testReport);
     }
 }

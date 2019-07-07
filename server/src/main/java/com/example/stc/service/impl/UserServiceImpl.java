@@ -16,11 +16,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -59,7 +61,7 @@ public class UserServiceImpl implements UserService {
         List<User> allUsers = userRepository.findAll();
         allUsers.removeIf(user -> !user.getRoles().contains(role));
         logger.info("findUserByRoles: role = " + role);
-        for (User user: allUsers)
+        for (User user : allUsers)
             logger.info("find " + user.getUserID() + ": " + user.getUsername() + ", role = " + user.getRoles());
         return allUsers;
     }
@@ -134,6 +136,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public String userLogout(HttpServletResponse response, HttpServletRequest request) {
+        logoutHelper(request, response);
+        return "user logout successfully";
+    }
+
+    private void logoutHelper(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+            cookieUtils.deleteCookie("roles", response);
+        }
     }
 }
 

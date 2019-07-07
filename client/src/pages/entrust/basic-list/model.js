@@ -1,5 +1,6 @@
 
 // import { Divider, Tag,Menu} from 'antd';
+import router from 'umi/router';
 import { getAllEntrust,deleteEntrust} from '@/services/user';
 
 export default {
@@ -11,14 +12,14 @@ export default {
       *GetAllEntrust(_,{call,put}){
         const response=yield call(getAllEntrust)
         // console.log('GetAllEntrust')
-        console.log(response)
-        console.log('_embedded' in response)
-        if(!('_embedded' in response)){
+        // console.log(response)
+
+        // console.log('_embedded' in response)
+        if (!('_embedded' in response)) {
           console.log("put []")
-          yield put({type:'addListData',payload: response})
-        }
-        else{
-          yield put({type:'addListData',payload: response._embedded.entrusts})
+          yield put({type: 'addListData', payload: response})
+        } else {
+          yield put({type: 'addListData', payload: response._embedded.entrusts})
         }
 
       },

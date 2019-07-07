@@ -1,10 +1,12 @@
 import { getAllContract,deleteContract} from '@/services/contract';
+import router from "umi/router";
 
 export default {
   namespace:'contractList',
   state: {
     data: [],
     counter: 0,
+    loading: true,
   },
   effects:{
     //派发一个queryInitPlans的action
@@ -12,9 +14,10 @@ export default {
       //获取服务器端数据
       const response = yield call(getAllContract);
       // console.log('GetAllContract')
-      console.log(response);
+      // console.log(response);
+
       //_embedded复制粘贴的委托
-      console.log('_embedded' in response);
+      // console.log('_embedded' in response);
       if (!('_embedded' in response)) {
         // console.log("put []");
         //执行getPlanData
@@ -22,6 +25,7 @@ export default {
       } else {
         yield put({type: 'getData', payload: response._embedded.contracts});
       }
+
     },
 
     *queryDeleteCon({payload},{call,put}){

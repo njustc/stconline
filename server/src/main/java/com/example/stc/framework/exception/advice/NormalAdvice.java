@@ -1,6 +1,5 @@
 package com.example.stc.framework.exception.advice;
 
-import com.example.stc.framework.exception.FunctionNotFoundException;
 import com.example.stc.framework.exception.ParamMissingException;
 import org.activiti.engine.ActivitiException;
 import org.springframework.http.HttpStatus;

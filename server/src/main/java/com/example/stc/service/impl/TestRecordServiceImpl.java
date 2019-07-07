@@ -1,10 +1,15 @@
 package com.example.stc.service.impl;
 
 import com.example.stc.domain.TestRecord;
+import com.example.stc.domain.User;
 import com.example.stc.framework.exception.TestRecordNotFoundException;
+import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.DateUtils;
+import com.example.stc.framework.util.ProcessUtils;
 import com.example.stc.repository.TestRecordRepository;
 import com.example.stc.service.TestRecordService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +19,19 @@ import java.util.List;
 @Service
 public class TestRecordServiceImpl implements TestRecordService {
 
+    Logger logger = LoggerFactory.getLogger(TestPlanServiceImpl.class);
+
     @Autowired
     private TestRecordRepository testRecordRepository;
 
     @Autowired
     private DateUtils dateUtils;
+
+    @Autowired
+    private AuthorityUtils authorityUtils;
+
+    @Autowired
+    private ProcessUtils processUtils;
 
     @Override
     public List<TestRecord> findAllTestRecords() {
@@ -31,16 +44,21 @@ public class TestRecordServiceImpl implements TestRecordService {
     }
 
     @Override
+    public List<TestRecord> findAllTestRecordsByPidByAuthority(String pid) {
+        User curUser = authorityUtils.getLoginUser();
+        logger.info("findAllTestRecordsByPidByAuthority: 当前登录者id = " + curUser.getUserID() +
+                ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
+        List<TestRecord> allTestRecords = this.findAllTestRecordsByPid(pid);
+        allTestRecords.removeIf(testRecord -> !processUtils.isVisible(testRecord, "TestRecord"));
+        return allTestRecords;
+    }
+
+    @Override
     public TestRecord findTestRecordByTestId(String testId) {
         TestRecord testRecord = testRecordRepository.findByTestId(testId);
         if (testRecord == null)
             throw new TestRecordNotFoundException(testId);
         return testRecord;
-    }
-
-    @Override
-    public void deleteTestRecordById(Long id) {
-        testRecordRepository.deleteById(id);
     }
 
     @Override
@@ -68,5 +86,13 @@ public class TestRecordServiceImpl implements TestRecordService {
         record.setProcessState(testRecord.getProcessState());
         record.setProcessInstanceId(testRecord.getProcessInstanceId());
         return testRecordRepository.save(record);
+    }
+
+    @Override
+    public TestRecord updateProcessState(String testId, String processState, String comment) {
+        TestRecord testRecord = this.findTestRecordByTestId(testId);
+        testRecord.setProcessState(processState);
+        testRecord.setComment(comment);
+        return this.updateTestRecord(testId, testRecord);
     }
 }

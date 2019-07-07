@@ -6,10 +6,5 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface ContractRepository extends BaseRepository<Contract> {
-    Contract findByPid(String pid);
-
-    @Modifying(flushAutomatically = true)
-    @Transactional
-    int deleteByPid(String pid);
+public interface ContractRepository extends ProcessEntityRepository<Contract> {
 }

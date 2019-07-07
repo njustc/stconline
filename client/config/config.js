@@ -3,7 +3,7 @@ import {primaryColor} from '../src/defaultSettings';
 
 export default {
   base: '/',                           //-----------------------------
-  publicPath: 'http://localhost:8080', //这几行千万别再改了,求求各位了orz.|
+  publicPath: 'http://localhost:8080/', //这几行千万别再改了,求求各位了orz.|
   exportStatic: {htmlSuffix: true},    //这几行千万别再改了,求求各位了orz.|
   treeShaking: true,                   //-----------------------------
   plugins: [
@@ -127,12 +127,37 @@ export default {
           component: './test-report/report-edit',
         },
 
+        //test-record
+        {
+          //测试记录列表
+          // name: '测试记录列表',
+          // icon: 'pie-chart',
+          path: '/record-list',
+          component: './test-record/record-list',
+        },
+        {
+          //测试报告详情
+          path: '/record-detail',
+          component: './test-record/record-detail',
+        },
+        {
+          //测试报告编辑
+          path: '/record-edit',
+          component: './test-record/record-edit',
+        },
+
         //user-login
         {
           name: '登陆',
           icon: 'smile',
           path: '/user-login',
           component: './user-login',
+        },
+        {
+          name:'新用户第一眼',
+          icon: 'smile',
+          path: '/user_first',
+          component: './user_first'
         },
       ],
     },

@@ -1,4 +1,5 @@
 import { getAllTestPlan,addNewTestPlan,deleteTestPlan} from '@/services/testPlan';
+import router from "umi/router";
 
 export default {
   namespace:'testplanList',
@@ -34,8 +35,9 @@ export default {
       const response = yield call(getAllTestPlan);
       // console.log('GetAllTestPlan')
       // console.log(response);
+
       //_embedded复制粘贴的委托
-      console.log('_embedded' in response);
+      // console.log('_embedded' in response);
       if (!('_embedded' in response)) {
         // console.log("put []");
         //执行getPlanData

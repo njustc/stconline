@@ -23,30 +23,14 @@ public interface EntrustService extends BaseService<Entrust> {
     List<Entrust> findEntrustsByAuthority();
 
     /**
-     * 获取已提交的全部委托
-     */
-    List<Entrust> findReviewEntrusts();
-
-    /**
      * 获取某用户全部委托
      */
     List<Entrust> findEntrustsByUser(String uid);
 
     /**
-     * 通过主键ID查询单个委托记录
-     */
-    Entrust findEntrustById(Long id);
-
-    /**
      * 通过委托ID查询单个委托记录
      */
     Entrust findEntrustByPid(String pid);
-
-    /**
-     * 通过主键ID删除单个委托记录
-     * 如果不存在,就报错
-     */
-    void deleteEntrustById(Long id);
 
     /**
      * 通过委托ID删除单个委托记录
@@ -67,9 +51,11 @@ public interface EntrustService extends BaseService<Entrust> {
     Entrust updateEntrust(String pid, Entrust record);
 
     /**
-     * 修改评审意见
+     * 修改流程状态, 添加评审意见
      * @param pid
+     * @param processState
      * @param comment
+     * @return
      */
-    void saveComment(String pid, String comment);
+    Entrust updateProcessState(String pid, String processState, String comment);
 }
