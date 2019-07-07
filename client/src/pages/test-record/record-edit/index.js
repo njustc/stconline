@@ -446,6 +446,10 @@ export default class EditRecord extends React.Component {
               </div>
             </div>
           </Form>
+          <div>
+            <BackTop visibilityHeight={300}/>
+            <strong style={{color: 'rgba(64, 64, 64, 0.6)'}}> </strong>
+          </div>
         </div>
 
       </div>
