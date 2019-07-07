@@ -128,7 +128,6 @@ export default class List extends React.Component {
   userLinkMapper = {
     "TM": (key) => (
       <span>
-            <Divider type="vertical"/>
         {<Link to={{pathname: './record-detail', query: {testId: key.testId}}}>查看详情</Link>}
         </span>
     ),

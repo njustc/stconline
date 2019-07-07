@@ -131,7 +131,7 @@ export default class EditRecord extends React.Component {
   //提交
   submitRecord = (form) => {
     const {dispatch} = this.props;
-    this.state.pid = this.props.dataEdit.editdata.pid || "";
+//    this.state.pid = this.props.dataEdit.editdata.pid || "";
     this.state.testId = this.props.dataEdit.editdata.testId || "";
     form.validateFields((err, value) => {
       console.log(this.props.dataEdit.editdata);
@@ -243,191 +243,178 @@ export default class EditRecord extends React.Component {
                 <Divider/>
                 {/*testId*/}
                 {/*测试分类*/}
-                <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.check.label"/>}>
+                <FormItem {...formItemLayout} label={<FormattedMessage id="testrecord.testclass.label"/>}>
                   {getFieldDecorator('testClass', {
                     initialValue: this.props.dataEdit.editdata.testClass || '',
                   }, {
                     rules: [
                       {
                         required: true,
-                        message: formatMessage({id: 'validation.check.required'}),
+                        message: formatMessage({id: 'validation.testclass.required'}),
                       },
                     ],
-                  })(<Input placeholder={formatMessage({id: 'testplan.check.placeholder'})}/>)}
+                  })(<Input placeholder={formatMessage({id: 'testrecord.testclass.placeholder'})}/>)}
                 </FormItem>
                 {/*测试用例设计说明*/}
-                <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.approve.label"/>}>
+                <FormItem {...formItemLayout} label={<FormattedMessage id="testrecord.designnotes.label"/>}>
                   {getFieldDecorator('designNotes', {
                     initialValue: this.props.dataEdit.editdata.designNotes || '',
                   }, {
                     rules: [
                       {
                         required: true,
-                        message: formatMessage({id: 'validation.approve.required'}),
+                        message: formatMessage({id: 'validation.designnotes.required'}),
                       },
                     ],
-                  })(<Input placeholder={formatMessage({id: 'testplan.approve.placeholder'})}/>)}
+                  })(<Input placeholder={formatMessage({id: 'testrecord.designnotes.placeholder'})}/>)}
                 </FormItem>
               </div>
               <div>
                 {/*<h2>测试环境</h2>*/}
-                <Divider/>
+                {/*<Divider/>*/}
                 {/*相关规约说明*/}
-                <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.hardware.label"/>}>
+                <FormItem {...formItemLayout} label={<FormattedMessage id="testrecord.regunotes.label"/>}>
                   {getFieldDecorator('reguNotes', {
                     initialValue: this.props.dataEdit.editdata.reguNotes || '',
                   }, {
                     rules: [
                       {
                         required: true,
-                        message: formatMessage({id: 'validation.hardware.required'}),
+                        message: formatMessage({id: 'validation.regunotes.required'}),
                       },
                     ],
-                  })(<Input placeholder={formatMessage({id: 'testplan.hardware.placeholder'})}/>)}
+                  })(<Input placeholder={formatMessage({id: 'testrecord.regunotes.placeholder'})}/>)}
                 </FormItem>
                 {/*预期结果*/}
-                <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.software.label"/>}>
+                <FormItem {...formItemLayout} label={<FormattedMessage id="testrecord.expectedresult.label"/>}>
                   {getFieldDecorator('expectedResult', {
                     initialValue: this.props.dataEdit.editdata.expectedResult || '',
                   }, {
                     rules: [
                       {
                         required: true,
-                        message: formatMessage({id: 'validation.software.required'}),
+                        message: formatMessage({id: 'validation.expectedresult.required'}),
                       },
                     ],
-                  })(<Input placeholder={formatMessage({id: 'testplan.software.placeholder'})}/>)}
+                  })(<Input placeholder={formatMessage({id: 'testrecord.expectedresult.placeholder'})}/>)}
                 </FormItem>
                 {/*设计人员*/}
-                <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.staff.label"/>}>
+                <FormItem {...formItemLayout} label={<FormattedMessage id="testrecord.designer.label"/>}>
                   {getFieldDecorator('designer', {
                     initialValue: this.props.dataEdit.editdata.designer || '',
                   }, {
                     rules: [
                       {
                         required: true,
-                        message: formatMessage({id: 'validation.staff.required'}),
+                        message: formatMessage({id: 'validation.designer.required'}),
                       },
                     ],
-                  })(<Input placeholder={formatMessage({id: 'testplan.staff.placeholder'})}/>)}
+                  })(<Input placeholder={formatMessage({id: 'testrecord.designer.placeholder'})}/>)}
                 </FormItem>
-                {/*设计人员*/}
-                {/*<FormItem {...formItemLayout} label={<FormattedMessage id="testplan.staff.label"/>}>*/}
-                {/*  {getFieldDecorator('staff', {*/}
-                {/*    initialValue: this.props.dataEdit.editdata.designer || '',*/}
-                {/*  }, {*/}
-                {/*    rules: [*/}
-                {/*      {*/}
-                {/*        required: true,*/}
-                {/*        message: formatMessage({id: 'validation.staff.required'}),*/}
-                {/*      },*/}
-                {/*    ],*/}
-                {/*  })(<Input placeholder={formatMessage({id: 'testplan.staff.placeholder'})}/>)}*/}
-                {/*</FormItem>*/}
-                {/*/!*测试时间*!/*/}
-                {/*<FormItem {...formItemLayout} label={<FormattedMessage id="testplan.staff.label"/>}>*/}
-                {/*  {getFieldDecorator('staff', {*/}
-                {/*    initialValue: this.props.dataEdit.editdata.testTime || '',*/}
-                {/*  }, {*/}
-                {/*    rules: [*/}
-                {/*      {*/}
-                {/*        required: true,*/}
-                {/*        message: formatMessage({id: 'validation.staff.required'}),*/}
-                {/*      },*/}
-                {/*    ],*/}
-                {/*  })(<Input placeholder={formatMessage({id: 'testplan.staff.placeholder'})}/>)}*/}
-                {/*</FormItem>*/}
-                {/*/!*前提条件*!/*/}
-                {/*<FormItem {...formItemLayout} label={<FormattedMessage id="testplan.staff.label"/>}>*/}
-                {/*  {getFieldDecorator('staff', {*/}
-                {/*    initialValue: this.props.dataEdit.editdata.preCondition || '',*/}
-                {/*  }, {*/}
-                {/*    rules: [*/}
-                {/*      {*/}
-                {/*        required: true,*/}
-                {/*        message: formatMessage({id: 'validation.staff.required'}),*/}
-                {/*      },*/}
-                {/*    ],*/}
-                {/*  })(<Input placeholder={formatMessage({id: 'testplan.staff.placeholder'})}/>)}*/}
-                {/*</FormItem>*/}
-                {/*/!*测试用例执行过程*!/*/}
-                {/*<FormItem {...formItemLayout} label={<FormattedMessage id="testplan.staff.label"/>}>*/}
-                {/*  {getFieldDecorator('staff', {*/}
-                {/*    initialValue: this.props.dataEdit.editdata.exeProcess || '',*/}
-                {/*  }, {*/}
-                {/*    rules: [*/}
-                {/*      {*/}
-                {/*        required: true,*/}
-                {/*        message: formatMessage({id: 'validation.staff.required'}),*/}
-                {/*      },*/}
-                {/*    ],*/}
-                {/*  })(<Input placeholder={formatMessage({id: 'testplan.staff.placeholder'})}/>)}*/}
-                {/*</FormItem>*/}
-                {/*/!*实际结果*!/*/}
-                {/*<FormItem {...formItemLayout} label={<FormattedMessage id="testplan.staff.label"/>}>*/}
-                {/*  {getFieldDecorator('staff', {*/}
-                {/*    initialValue: this.props.dataEdit.editdata.realResult || '',*/}
-                {/*  }, {*/}
-                {/*    rules: [*/}
-                {/*      {*/}
-                {/*        required: true,*/}
-                {/*        message: formatMessage({id: 'validation.staff.required'}),*/}
-                {/*      },*/}
-                {/*    ],*/}
-                {/*  })(<Input placeholder={formatMessage({id: 'testplan.staff.placeholder'})}/>)}*/}
-                {/*</FormItem>*/}
-                {/*/!*是否与预期结果一致*!/*/}
-                {/*<FormItem {...formItemLayout} label={<FormattedMessage id="testplan.staff.label"/>}>*/}
-                {/*  {getFieldDecorator('staff', {*/}
-                {/*    initialValue: this.props.dataEdit.editdata.isConsistent || '',*/}
-                {/*  }, {*/}
-                {/*    rules: [*/}
-                {/*      {*/}
-                {/*        required: true,*/}
-                {/*        message: formatMessage({id: 'validation.staff.required'}),*/}
-                {/*      },*/}
-                {/*    ],*/}
-                {/*  })(<Input placeholder={formatMessage({id: 'testplan.staff.placeholder'})}/>)}*/}
-                {/*</FormItem>*/}
-                {/*/!*相关bug编号*!/*/}
-                {/*<FormItem {...formItemLayout} label={<FormattedMessage id="testplan.staff.label"/>}>*/}
-                {/*  {getFieldDecorator('staff', {*/}
-                {/*    initialValue: this.props.dataEdit.editdata.bugId || '',*/}
-                {/*  }, {*/}
-                {/*    rules: [*/}
-                {/*      {*/}
-                {/*        required: true,*/}
-                {/*        message: formatMessage({id: 'validation.staff.required'}),*/}
-                {/*      },*/}
-                {/*    ],*/}
-                {/*  })(<Input placeholder={formatMessage({id: 'testplan.staff.placeholder'})}/>)}*/}
-                {/*</FormItem>*/}
-                {/*/!*用例执行者*!/*/}
-                {/*<FormItem {...formItemLayout} label={<FormattedMessage id="testplan.staff.label"/>}>*/}
-                {/*  {getFieldDecorator('staff', {*/}
-                {/*    initialValue: this.props.dataEdit.editdata.executor || '',*/}
-                {/*  }, {*/}
-                {/*    rules: [*/}
-                {/*      {*/}
-                {/*        required: true,*/}
-                {/*        message: formatMessage({id: 'validation.staff.required'}),*/}
-                {/*      },*/}
-                {/*    ],*/}
-                {/*  })(<Input placeholder={formatMessage({id: 'testplan.staff.placeholder'})}/>)}*/}
-                {/*</FormItem>*/}
-                {/*/!*确认人员*!/*/}
-                {/*<FormItem {...formItemLayout} label={<FormattedMessage id="testplan.staff.label"/>}>*/}
-                {/*  {getFieldDecorator('staff', {*/}
-                {/*    initialValue: this.props.dataEdit.editdata.approver || '',*/}
-                {/*  }, {*/}
-                {/*    rules: [*/}
-                {/*      {*/}
-                {/*        required: true,*/}
-                {/*        message: formatMessage({id: 'validation.staff.required'}),*/}
-                {/*      },*/}
-                {/*    ],*/}
-                {/*  })(<Input placeholder={formatMessage({id: 'testplan.staff.placeholder'})}/>)}*/}
-                {/*</FormItem>*/}
+                {/*测试时间*/}
+                <FormItem {...formItemLayout} label={<FormattedMessage id="testrecord.testtime.label"/>}>
+                  {getFieldDecorator('testTime', {
+                    initialValue: this.props.dataEdit.editdata.testTime || '',
+                  }, {
+                    rules: [
+                      {
+                        required: true,
+                        message: formatMessage({id: 'validation.testtime.required'}),
+                      },
+                    ],
+                  })(<Input placeholder={formatMessage({id: 'testrecord.testtime.placeholder'})}/>)}
+                </FormItem>
+                {/*前提条件*/}
+                <FormItem {...formItemLayout} label={<FormattedMessage id="testrecord.precondition.label"/>}>
+                  {getFieldDecorator('preCondition', {
+                    initialValue: this.props.dataEdit.editdata.preCondition || '',
+                  }, {
+                    rules: [
+                      {
+                        required: true,
+                        message: formatMessage({id: 'validation.precondition.required'}),
+                      },
+                    ],
+                  })(<Input placeholder={formatMessage({id: 'testrecord.precondition.placeholder'})}/>)}
+                </FormItem>
+                {/*测试用例执行过程*/}
+                <FormItem {...formItemLayout} label={<FormattedMessage id="testrecord.exeprocess.label"/>}>
+                  {getFieldDecorator('exeProcess', {
+                    initialValue: this.props.dataEdit.editdata.exeProcess || '',
+                  }, {
+                    rules: [
+                      {
+                        required: true,
+                        message: formatMessage({id: 'validation.exeprocess.required'}),
+                      },
+                    ],
+                  })(<Input placeholder={formatMessage({id: 'testrecord.exeprocess.placeholder'})}/>)}
+                </FormItem>
+                {/*实际结果*/}
+                <FormItem {...formItemLayout} label={<FormattedMessage id="testrecord.realresult.label"/>}>
+                  {getFieldDecorator('realResult', {
+                    initialValue: this.props.dataEdit.editdata.realResult || '',
+                  }, {
+                    rules: [
+                      {
+                        required: true,
+                        message: formatMessage({id: 'validation.realresult.required'}),
+                      },
+                    ],
+                  })(<Input placeholder={formatMessage({id: 'testrecord.realresult.placeholder'})}/>)}
+                </FormItem>
+                {/*是否与预期结果一致*/}
+                <FormItem {...formItemLayout} label={<FormattedMessage id="testrecord.isconsistent.label"/>}>
+                  {getFieldDecorator('isConsistent', {
+                    initialValue: this.props.dataEdit.editdata.isConsistent || '',
+                  }, {
+                    rules: [
+                      {
+                        required: true,
+                        message: formatMessage({id: 'validation.isconsistent.required'}),
+                      },
+                    ],
+                  })(<Input placeholder={formatMessage({id: 'testrecord.isconsistent.placeholder'})}/>)}
+                </FormItem>
+                {/*相关bug编号*/}
+                <FormItem {...formItemLayout} label={<FormattedMessage id="testrecord.bugid.label"/>}>
+                  {getFieldDecorator('bugId', {
+                    initialValue: this.props.dataEdit.editdata.bugId || '',
+                  }, {
+                    rules: [
+                      {
+                        required: true,
+                        message: formatMessage({id: 'validation.bugid.required'}),
+                      },
+                    ],
+                  })(<Input placeholder={formatMessage({id: 'testrecord.bugid.placeholder'})}/>)}
+                </FormItem>
+                {/*用例执行者*/}
+                <FormItem {...formItemLayout} label={<FormattedMessage id="testrecord.executor.label"/>}>
+                  {getFieldDecorator('executor', {
+                    initialValue: this.props.dataEdit.editdata.executor || '',
+                  }, {
+                    rules: [
+                      {
+                        required: true,
+                        message: formatMessage({id: 'validation.executor.required'}),
+                      },
+                    ],
+                  })(<Input placeholder={formatMessage({id: 'testrecord.executor.placeholder'})}/>)}
+                </FormItem>
+                {/*确认人员*/}
+                <FormItem {...formItemLayout} label={<FormattedMessage id="testrecord.approver.label"/>}>
+                  {getFieldDecorator('approver', {
+                    initialValue: this.props.dataEdit.editdata.approver || '',
+                  }, {
+                    rules: [
+                      {
+                        required: true,
+                        message: formatMessage({id: 'validation.approver.required'}),
+                      },
+                    ],
+                  })(<Input placeholder={formatMessage({id: 'testrecord.approver.placeholder'})}/>)}
+                </FormItem>
               </div>
               <div>
                 <Affix offsetBottom={0}>

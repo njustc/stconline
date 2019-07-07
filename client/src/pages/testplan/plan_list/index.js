@@ -129,7 +129,7 @@ export default class List extends React.Component{
         <Divider type="vertical"/>
         {<Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
         <Divider type="vertical"/>
-        {<Link to={{pathname: './record-list', query: {pid: key.pid}}}>查看测试记录</Link>}
+        {key.processState === 'Approve' ?<Link to={{pathname: './record-list', query: {pid: key.pid}}}>查看测试记录</Link>:null}
 
   </span>
     ),
@@ -139,7 +139,7 @@ export default class List extends React.Component{
       <span>
         {<Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
         <Divider type="vertical"/>
-        {<Link to={{pathname: './record-list', query: {pid: key.pid}}}>查看测试记录</Link>}
+        {key.processState === 'Approve' ? <Link to={{pathname: './record-list', query: {pid: key.pid}}}>查看测试记录</Link>:null}
         <Divider type="vertical"/>
         {key.processState === 'Submit' ? <Link to={{pathname: '../../plan_edit', query: {pid: key.pid}}}>编辑</Link>:null}
     </span>
