@@ -95,7 +95,7 @@ public class AuthorityUtils {
             String[] stateStrs = states.split(",");
             boolean isState = false;
             for (String state: stateStrs) {
-                if (state == entity.getProcessState().getName())
+                if (state.equals(entity.getProcessState().getName()))
                     isState = true;
             }
             if (isState)
