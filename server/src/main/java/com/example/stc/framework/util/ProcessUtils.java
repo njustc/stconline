@@ -179,16 +179,9 @@ public class ProcessUtils {
         return result;
     }
 
-    /**
-     * 判断当前实例是否对当前用户可见
-     * @param entity
-     * @param type
-     * @return
-     */
-    public boolean isVisible(ProcessEntity entity, String type) {
+    public boolean isCreator(ProcessEntity entity, String type) {
         User user = authorityUtils.getLoginUser();
         String userId = user.getUserID();
-        String processInstanceId = entity.getProcessInstanceId();
 
         /** 创建者判断，对于创建实例的用户，在流程全程都能看到 */
         switch (type) {
@@ -201,8 +194,23 @@ public class ProcessUtils {
             case "TestReport":
                 return checkUser("TS", userId);
             default:
-                break;
+                return false;
         }
+    }
+
+    /**
+     * 判断当前实例是否对当前用户可见
+     * @param entity
+     * @param type
+     * @return
+     */
+    public boolean isVisible(ProcessEntity entity, String type) {
+        User user = authorityUtils.getLoginUser();
+        String userId = user.getUserID();
+        String processInstanceId = entity.getProcessInstanceId();
+
+        if (isCreator(entity, type))
+            return true;
 
         String processState = getProcessState(processInstanceId);
         switch (processState) {
