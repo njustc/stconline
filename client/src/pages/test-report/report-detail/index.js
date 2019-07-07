@@ -112,6 +112,9 @@ export default class report_detail extends React.Component{
                 </Descriptions>
               </Card>
             </div>,
+
+
+
             "CUS":
             <div>
               <Card>
@@ -121,21 +124,44 @@ export default class report_detail extends React.Component{
                 </Descriptions>
               </Card>
               
-              <Button
-              style={{marginLeft: 350}}
-              type="primary"
-              onClick={() => {
-                this.review(this.props.form,"ReviewPass")
-              }}
-              >确认</Button>
-              <Button
-              style={{marginLeft: 20}}
-              type="danger"
-              onClick={() => {
-                this.review(this.props.form,"ReviewDisprove")
-              }}
-              >拒绝</Button>
+              <div>
+<Affix offsetBottom={0}>
+<div className={style.submitBtns}>
+<Button
+style={{marginLeft: 350}}
+type="primary"
+onClick={() => {
+  this.review(this.props.form,"ReviewPass")
+}}
+>确认</Button>
+<Button
+style={{marginLeft: 20}}
+type="danger"
+onClick={() => {
+  this.review(this.props.form,"ReviewDisprove")
+}}
+>拒绝</Button>
+</div>
+
+<div>
+          <BackTop visibilityHeight={300}/>
+          <strong style={{color: 'rgba(64, 64, 64, 0.6)'}}> </strong>
+        </div>
+</Affix>
+</div>
             </div>,
+
+
+
+
+
+
+
+
+
+
+
+
 
          
             "TM":
@@ -172,20 +198,7 @@ onClick={() => {
         </div>
 </Affix>
 </div>
-              {/* <Button
-              style={{marginLeft: 350}}
-              type="primary"
-              onClick = {() => {
-                this.review(this.props.form,"ReviewPass")
-              }}
-              >通过</Button>
-              <Button
-              style={{marginLeft: 20}}
-              type="danger"
-              onClick={() => {
-                this.review(this.props.form,"ReviewDisprove")
-              }}
-              >不通过</Button> */}
+           
             </div>,
 
 
@@ -205,6 +218,13 @@ onClick={() => {
                   <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
                 </Descriptions>
               </Card>
+
+
+
+              <div>
+<Affix offsetBottom={0}>
+<div className={style.submitBtns}>
+
               <Button
               style={{marginLeft: 350}}
               type="primary"
@@ -219,6 +239,17 @@ onClick={() => {
                 this.review(this.props.form,"ReviewDisprove")
               }}
               >不通过</Button>
+
+
+</div>
+
+<div>
+          <BackTop visibilityHeight={300}/>
+          <strong style={{color: 'rgba(64, 64, 64, 0.6)'}}> </strong>
+        </div>
+</Affix>
+</div>
+
             </div>,
           
 
