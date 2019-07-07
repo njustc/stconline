@@ -64,6 +64,7 @@ const data = [];
 export default class EntrustList extends Component {
   componentDidMount() {
     this.props.onDidMount();
+    console.log("这里是不是没输出啊",this.props);
   }
 
   userLinkMaper = {

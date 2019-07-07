@@ -12,7 +12,7 @@ export default {
       *GetAllEntrust(_,{call,put}){
         const response=yield call(getAllEntrust)
         // console.log('GetAllEntrust')
-        // console.log(response)
+        console.log("???",response)
 
         // console.log('_embedded' in response)
         if (!('_embedded' in response)) {
