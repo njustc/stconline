@@ -32,7 +32,7 @@ import com.example.stc.domain.Contract;
 @RestController
 public class ContractController extends BaseController {
 
-    Logger logger = LoggerFactory.getLogger(EntrustController.class);
+    Logger logger = LoggerFactory.getLogger(ContractController.class);
 
     @Autowired
     private ContractService contractService;

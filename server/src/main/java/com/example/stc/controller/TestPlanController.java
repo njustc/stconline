@@ -31,7 +31,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @RestController
 public class TestPlanController extends BaseController {
 
-    Logger logger = LoggerFactory.getLogger(EntrustController.class);
+    Logger logger = LoggerFactory.getLogger(TestPlanController.class);
 
     @Autowired
     private TestPlanService testPlanService;
