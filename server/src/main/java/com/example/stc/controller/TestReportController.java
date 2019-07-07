@@ -88,9 +88,9 @@ public class TestReportController extends BaseController {
     @PutMapping(path = "/testReport/{pid}")
     public @ResponseBody
     ResponseEntity<?> replaceTestReport(@PathVariable String pid, @RequestBody TestReport testReport) throws URISyntaxException {
+        TestReport updatedTestReport = testReportService.updateTestReport(pid, testReport);
         authorityUtils.stateAccessCheck(testReport, "TS", "Submit", "修改");
         logger.info("replaceTestReport");
-        TestReport updatedTestReport = testReportService.updateTestReport(pid, testReport);
         Resource<TestReport> resource = toResource(updatedTestReport
                 , methodOn(TestReportController.class).replaceTestReport(pid, testReport), null);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);

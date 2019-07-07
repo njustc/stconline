@@ -105,9 +105,9 @@ public class TestRecordController extends BaseController {
     @PutMapping(path = "/testRecord/{testId}")
     public @ResponseBody
     ResponseEntity<?> replaceTestRecord(@PathVariable String testId, @RequestBody TestRecord testRecord) throws URISyntaxException {
+        TestRecord updatedTestRecord = testRecordService.updateTestRecord(testId, testRecord);
         authorityUtils.stateAccessCheck(testRecord, "TS", "Submit", "修改");
         logger.info("replaceTestRecord");
-        TestRecord updatedTestRecord = testRecordService.updateTestRecord(testId, testRecord);
         Resource<TestRecord> resource = toResource(updatedTestRecord
                 , methodOn(TestRecordController.class).getProjectTestRecords(testRecord.getPid()), null);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);

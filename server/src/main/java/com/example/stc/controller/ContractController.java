@@ -112,9 +112,9 @@ public class ContractController extends BaseController {
     @PutMapping(path = "/contract/{pid}")
     public @ResponseBody
     ResponseEntity<?> replaceContract(@PathVariable String pid, @RequestBody Contract contract) throws URISyntaxException {
+        Contract updatedContract = contractService.updateContract(pid, contract);
         authorityUtils.stateAccessCheck(contract, "SS", "Submit", "修改"); // 工作人员仅提交前可修改
         logger.info("replaceContract");
-        Contract updatedContract = contractService.updateContract(pid, contract);
         Resource<Contract> resource = toResource(updatedContract
                 , methodOn(ContractController.class).replaceContract(pid, contract), null);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
