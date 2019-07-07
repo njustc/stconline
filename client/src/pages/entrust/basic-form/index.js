@@ -46,13 +46,12 @@ const mapStateToProps = (state) => {
     entrustdata,
   };
 }
-const mapDispatchToProps = (dispatch) => {
-  return {}
-}
 
-@connect(mapStateToProps, mapDispatchToProps)
+
+
 
 @Form.create()
+@connect(mapStateToProps)
 class BasicForm extends PureComponent {
   state = {
     bottom: 10,
