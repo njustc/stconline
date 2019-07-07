@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.stc.activiti.ProcessService;
+import com.example.stc.activiti.ProcessState;
 import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
 import com.example.stc.framework.util.AuthorityUtils;
@@ -111,7 +112,7 @@ public class EntrustController extends BaseController {
     public @ResponseBody
     Resource<Entrust> getOneEntrust(@PathVariable String pid) {
         Entrust entrust = entrustService.findEntrustByPid(pid);
-        this.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
+        authorityUtils.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
         logger.info("getOneEntrust: userId = " + entrust.getUserId());
         return toResource(entrust);
     }
@@ -126,7 +127,8 @@ public class EntrustController extends BaseController {
     public @ResponseBody
     ResponseEntity<?> replaceEntrust(@PathVariable String pid, @RequestBody Entrust entrust) throws URISyntaxException {
         Entrust updatedEntrust = entrustService.updateEntrust(pid, entrust);
-        this.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
+        authorityUtils.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
+        authorityUtils.stateAccessCheck(entrust, "CUS", "Submit", "修改"); // 仅Submit阶段可修改
         logger.info("replaceEntrust: userId = " + entrust.getUserId());
         Resource<Entrust> resource = toResource(updatedEntrust);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
@@ -141,24 +143,12 @@ public class EntrustController extends BaseController {
     public @ResponseBody
     ResponseEntity<?> deleteEntrust(@PathVariable String pid) {
         Entrust entrust = entrustService.findEntrustByPid(pid);
-        this.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
+        authorityUtils.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
+        authorityUtils.stateAccessCheck(entrust, "CUS", "Submit", "删除"); // 仅Submit阶段可删除
         logger.info("deleteEntrust: userId = " + entrust.getUserId());
         processService.deleteProcessInstance(entrust);
         entrustService.deleteEntrustByPid(pid);
         return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * 对于客户，检查访问的是否是本人的委托；若不是则权限异常
-     */
-    private void customerAccessCheck(Entrust entrust) {
-        if (authorityUtils.hasAuthority(Role.Customer)) {
-            User curUser = authorityUtils.getLoginUser();
-            if (!entrust.getUserId().equals(curUser.getUserID())) {
-                logger.info("customerAccessCheck: 没有查看权限，客户只能访问自己的委托");
-                throw new AccessDeniedException("没有查看权限，客户只能访问自己的委托");
-            }
-        }
     }
 
 }
