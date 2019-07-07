@@ -10,7 +10,7 @@ const FormItem = Form.Item;
 const mapStateToProps = (state) => {
   const dataCheck = state[namespace];
   //console.log("============datacheck===========")
-  //console.log(dataCheck);
+  console.log("输出合同详情的dataCheck",dataCheck);
   //console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!")
   return {
     dataCheck,
