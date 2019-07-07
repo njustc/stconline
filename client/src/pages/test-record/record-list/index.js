@@ -9,40 +9,48 @@ const data = [];
 const namespace = 'testRecordList';
 const mapStateToProps = (state) => {
     const dataList = state[namespace].data;
+    console.log(dataList);
     return {
         dataList,
     };
 };
-const mapDispatchToProps = (dispatch) => {
-    return {
-        //页面在mount完后发送一个queryInitRecords的action，被effects处理
-        onDidMount: () => {
-            dispatch({
-                type: `${namespace}/queryInitRecords`,
-            });
-        },
-        queryAddRecord:(newRecord)=>{
-            dispatch({
-                type:`${namespace}/queryAddRecord`,
-                payload:newRecord,
-            });
-        },
-        queryDeleteRecord:(params)=>{
-            dispatch({
-                type:`${namespace}/queryDeleteRecord`,
-                payload:params
-            })
-        },
-    };
-};
 
-@connect(mapStateToProps, mapDispatchToProps)
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         //页面在mount完后发送一个queryInitRecords的action，被effects处理
+//         onDidMount: () => {
+//             dispatch({
+//                 type: `${namespace}/queryInitRecords`,
+//                 payload:params,
+//             });
+//         },
+//         queryAddRecord:(newRecord)=>{
+//             dispatch({
+//                 type:`${namespace}/queryAddRecord`,
+//                 payload:newRecord,
+//             });
+//         },
+//         queryDeleteRecord:(params)=>{
+//             dispatch({
+//                 type:`${namespace}/queryDeleteRecord`,
+//                 payload:params
+//             })
+//         },
+//     };
+// };
+
+@connect(mapStateToProps)
 export default class List extends React.Component {
-    componentDidMount() {
-        this.props.onDidMount();
-    }
-    
-    showDeleteConfirm(key) {
+  componentDidMount() {
+    const {dispatch} = this.props;
+    console.log(this.props.location.query);
+    dispatch({
+      type: `${namespace}/queryInitRecords`,
+      payload: this.props.location.query,
+    });
+  }
+
+  showDeleteConfirm(key) {
         var that = this;
         confirm({
             title: '您是否要删除本记录?',
@@ -63,7 +71,7 @@ export default class List extends React.Component {
         "TM": (key) => (
         <span>
             <Divider type="vertical"/>
-            {<Link to = {{pathname: './record-detailrecord-detail', query: {testId: key.testId}}}>查看详情</Link>}
+            {<Link to = {{pathname: './record-detail', query: {testId: key.testId}}}>查看详情</Link>}
         </span>
         ),
         

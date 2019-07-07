@@ -40,24 +40,6 @@ const namespace = 'entrustForm';
 const Dragger = Upload.Dragger;
 
 
-const props = {
-  name: 'file',
-  multiple: true,
-  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-  onChange(info) {
-    const status = info.file.status;
-    if (status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
-    if (status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-};
-
-
 const mapStateToProps = (state) => {
   const entrustdata = state[namespace];
   return {
@@ -70,9 +52,6 @@ const mapDispatchToProps = (dispatch) => {
 
 @connect(mapStateToProps, mapDispatchToProps)
 
-@connect(({loading}) => ({
-  submitting: loading.effects['basicForm/submitRegularForm'],
-}))
 @Form.create()
 class BasicForm extends PureComponent {
   state = {
@@ -85,7 +64,7 @@ class BasicForm extends PureComponent {
       pid: ""
     }
   }
-
+  
   componentDidMount() {
     const {dispatch} = this.props;
     if (this.props.location.query.pid) {
@@ -153,6 +132,7 @@ class BasicForm extends PureComponent {
     this.state.pid = this.props.entrustdata.pid
     form.validateFields((err, value) => {
       //新建
+      // console.log("err",err)
       value.pid = this.state.pid
       // 补充新建属性
       value.processInstanceId = this.props.entrustdata.data.processInstanceId || ""
@@ -176,7 +156,15 @@ class BasicForm extends PureComponent {
 
 
   showConfirm(form) {
+    // console.log("f",form)
+    // console.log("this",t)
     var that = this
+    // form.validateFields((err,value)=>{
+    //   console.log(err)
+    //   if(!err){
+
+    //   }
+    // })
     confirm({
       title: '您是否要提交委托?',
       content: '委托提交后进入审核状态，不可编辑',
@@ -246,22 +234,24 @@ class BasicForm extends PureComponent {
     // 文件上传
     const uploadProps = {
       name: 'file',
-      action: '/api/project/files?pid=pid',
+      action: '/api/project/files?pid=' + this.state.pid,
       multiple: true,
       headers: {
         authorization: 'authorization-text',
       },
       enctype: "multipart/form-data",
-      onChange(info) {
-        if (info.file.status !== 'uploading') {
-          console.log(info.file, info.fileList);
+      onChange({ file, fileList }) {
+        if (file.status !== 'uploading') {
+          console.log(file);
+          console.log(fileList);
         }
-        if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
+        if (file.status === 'done') {
+          message.success(`${file.name} file uploaded successfully`);
+        } else if (file.status === 'error') {
+          message.error(`${file.name} file upload failed.`);
         }
       },
+      defaultFileList: [],
     };
 
     return (
@@ -293,7 +283,7 @@ class BasicForm extends PureComponent {
               >
                 <div>
                   {getFieldDecorator('testType', {
-                    initialValue: this.props.entrustdata.data.testType || 'basic-form.radio.confirm',
+                    initialValue: this.props.entrustdata.data.testType || ['basic-form.radio.confirm'],
                   })(
                     <Checkbox.Group style={{width: '100%'}}>
                       <Row>
@@ -314,17 +304,6 @@ class BasicForm extends PureComponent {
                         </Col>
                       </Row>
                     </Checkbox.Group>
-                    // <Radio.Group>
-                    //   <Radio value="basic-form.radio.confirm">
-                    //     <FormattedMessage id="basic-form.radio.confirm"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.test">
-                    //     <FormattedMessage id="basic-form.radio.test"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.tothers">
-                    //     <FormattedMessage id="basic-form.radio.tothers"/>
-                    //   </Radio>
-                    // </Radio.Group>
                   )}
                 </div>
               </FormItem>
@@ -469,7 +448,7 @@ class BasicForm extends PureComponent {
               >
                 <div>
                   {getFieldDecorator('testBasis', {
-                    initialValue: this.props.entrustdata.data.testBasis || 'basic-form.radio.basis1',
+                    initialValue: this.props.entrustdata.data.testBasis ||[ 'basic-form.radio.basis1'],
                   })(
                     <Checkbox.Group style={{width: '100%'}}>
                       <Row>
@@ -494,30 +473,12 @@ class BasicForm extends PureComponent {
                           </Checkbox>
                         </Col>
                         <Col span={8}>
-                          <Checkbox value="basic-form.radio.basis4">
-                            <FormattedMessage id="basic-form.radio.basis4"/>
+                          <Checkbox value="basic-form.radio.basis5">
+                            <FormattedMessage id="basic-form.radio.basis5"/>
                           </Checkbox>
                         </Col>
                       </Row>
                     </Checkbox.Group>,
-
-                    // <Radio.Group>
-                    //   <Radio value="basic-form.radio.basis1">
-                    //     <FormattedMessage id="basic-form.radio.basis1"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.basis2">
-                    //     <FormattedMessage id="basic-form.radio.basis2"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.basis3">
-                    //     <FormattedMessage id="basic-form.radio.basis3"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.basis4">
-                    //     <FormattedMessage id="basic-form.radio.basis4"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.basis5">
-                    //     <FormattedMessage id="basic-form.radio.basis5"/>
-                    //   </Radio>
-                    // </Radio.Group>
                   )}
                 </div>
               </FormItem>
@@ -527,7 +488,7 @@ class BasicForm extends PureComponent {
               >
                 <div>
                   {getFieldDecorator('testSpecification', {
-                    initialValue: this.props.entrustdata.data.testSpecification || 'basic-form.radio.target1',
+                    initialValue: this.props.entrustdata.data.testSpecification || ['basic-form.radio.target1'],
                   })(
                     <Checkbox.Group style={{width: '100%'}}>
                       <Row>
@@ -598,47 +559,6 @@ class BasicForm extends PureComponent {
                         </Col>
                       </Row>
                     </Checkbox.Group>
-                    // <Radio.Group>
-                    //   <Radio value="basic-form.radio.target1">
-                    //     <FormattedMessage id="basic-form.radio.target1"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.target2">
-                    //     <FormattedMessage id="basic-form.radio.target2"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.target3">
-                    //     <FormattedMessage id="basic-form.radio.target3"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.target4">
-                    //     <FormattedMessage id="basic-form.radio.target4"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.target5">
-                    //     <FormattedMessage id="basic-form.radio.target5"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.target6">
-                    //     <FormattedMessage id="basic-form.radio.target6"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.target7">
-                    //     <FormattedMessage id="basic-form.radio.target7"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.target8">
-                    //     <FormattedMessage id="basic-form.radio.target8"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.target9">
-                    //     <FormattedMessage id="basic-form.radio.target9"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.target10">
-                    //     <FormattedMessage id="basic-form.radio.target10"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.target11">
-                    //     <FormattedMessage id="basic-form.radio.target11"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.target12">
-                    //     <FormattedMessage id="basic-form.radio.target12"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.target13">
-                    //     <FormattedMessage id="basic-form.radio.target13"/>
-                    //   </Radio>
-                    // </Radio.Group>
                   )}
                 </div>
               </FormItem>
@@ -683,12 +603,13 @@ class BasicForm extends PureComponent {
                   ],
                 })(<Input placeholder={formatMessage({id: 'form.softscale_code_number.placeholder'})}/>)}
               </FormItem>
-
+ <h3>软件类型</h3>
               <FormItem
                 {...formItemLayout}
                 label={<FormattedMessage id="basic-form.radio.system"/>}
               >
                 <div>
+                 
                   {getFieldDecorator('softwareType', {
                     initialValue: this.props.entrustdata.data.softwareType || 'basic-form.radio.system1',
                   })(
@@ -712,17 +633,13 @@ class BasicForm extends PureComponent {
                   )}
                 </div>
               </FormItem>
-
-
-              {/* 运行环境-客户端操作系统 */}
-
               <FormItem
                 {...formItemLayout}
                 label={<FormattedMessage id="basic-form.radio.application"/>}
               >
                 <div>
-                  {getFieldDecorator('internetApplications', {
-                    initialValue: this.props.entrustdata.data.internetApplications || 'basic-form.radio.application1',
+                  {getFieldDecorator('softwareType', {
+                    initialValue: this.props.entrustdata.data.internetApplications || '',
                   })(
                     <Radio.Group>
                       <Radio value="basic-form.radio.application1">
@@ -773,8 +690,8 @@ class BasicForm extends PureComponent {
                 label={<FormattedMessage id="basic-form.radio.othersoft"/>}
               >
                 <div>
-                  {getFieldDecorator('othersoft1', {
-                    initialValue: this.props.entrustdata.data.othersoft1 || 'basic-form.radio.othersoft1',
+                  {getFieldDecorator('softwareType', {
+                    initialValue: this.props.entrustdata.data.othersoft1 || '',
                   })(
                     <Radio.Group>
                       <Radio value="basic-form.radio.othersoft1">
@@ -795,7 +712,7 @@ class BasicForm extends PureComponent {
               >
                 <div>
                   {getFieldDecorator('clientSystem', {
-                    initialValue: this.props.entrustdata.data.clientSystem || ['basic-form.radio.opsystem1', 'basic-form.radio.opsystem3'],
+                    initialValue: this.props.entrustdata.data.clientSystem || ['basic-form.radio.opsystem1'],
                   })(
                     <Checkbox.Group style={{width: '100%'}}>
                       <Row>
@@ -816,18 +733,6 @@ class BasicForm extends PureComponent {
                         </Col>
                       </Row>
                     </Checkbox.Group>
-
-                    // <Radio.Group>
-                    //   <Radio value="basic-form.radio.opsystem1">
-                    //     <FormattedMessage id="basic-form.radio.opsystem1"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.opsystem2">
-                    //     <FormattedMessage id="basic-form.radio.opsystem2"/>
-                    //   </Radio>
-                    //   <Radio value="basic-form.radio.opsystem3">
-                    //     <FormattedMessage id="basic-form.radio.opsystem3"/>
-                    //   </Radio>
-                    // </Radio.Group>
                   )}
                 </div>
               </FormItem>
@@ -844,17 +749,17 @@ class BasicForm extends PureComponent {
                 })(<Input placeholder={formatMessage({id: 'basic-form.usermem.placeholder'})}/>)}
               </FormItem>
 
-              <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.usermem.label"/>}>
+              <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.usermemEx.label"/>}>
                 {getFieldDecorator('clientExStorage', {
                   initialValue: this.props.entrustdata.data.clientExStorage || '',
                 }, {
                   rules: [
                     {
                       required: true,
-                      message: formatMessage({id: 'basic-form.usermem.required'}),
+                      message: formatMessage({id: 'basic-form.usermemEx.required'}),
                     },
                   ],
-                })(<Input placeholder={formatMessage({id: 'basic-form.usermem.placeholder'})}/>)}
+                })(<Input placeholder={formatMessage({id: 'basic-form.usermemEx.placeholder'})}/>)}
               </FormItem>
 
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.userother.label"/>}>
@@ -887,10 +792,10 @@ class BasicForm extends PureComponent {
                 })(<Input placeholder={formatMessage({id: 'basic-form.hardmem.placeholder'})}/>)}
               </FormItem>
 
-              <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.harddisk.label"/>}>
+              <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.hardframe.label"/>}>
                 <div>
                   {getFieldDecorator('serverHardFrame', {
-                      initialValue: this.props.entrustdata.data.serverHardFrame || '',
+                      initialValue: this.props.entrustdata.data.serverHardFrame || ["basic-form.checkbox.architecture1"],
                     }
                   )(
                     <Checkbox.Group style={{width: '100%'}}>
@@ -917,17 +822,17 @@ class BasicForm extends PureComponent {
 
               </FormItem>
 
-              <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.harddisk.label"/>}>
+              <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.hardInStorage.label"/>}>
                 {getFieldDecorator('serverInStorage', {
                   initialValue: this.props.entrustdata.data.serverInStorage || '',
                 }, {
                   rules: [
                     {
                       required: true,
-                      message: formatMessage({id: 'basic-form.harddisk.required'}),
+                      message: formatMessage({id: 'basic-form.hardInStorage.required'}),
                     },
                   ],
-                })(<Input placeholder={formatMessage({id: 'basic-form.harddisk.placeholder'})}/>)}
+                })(<Input placeholder={formatMessage({id: 'basic-form.hardInStorage.placeholder'})}/>)}
               </FormItem>
 
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.harddisk.label"/>}>
@@ -969,17 +874,17 @@ class BasicForm extends PureComponent {
                 })(<Input placeholder={formatMessage({id: 'basic-form.softsystem.placeholder'})}/>)}
               </FormItem>
 
-              <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.hardother.label"/>}>
+              <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.softversion.label"/>}>
                 {getFieldDecorator('serverSoftVersion', {
                   initialValue: this.props.entrustdata.data.serverSoftVersion || '',
                 }, {
                   rules: [
                     {
                       required: true,
-                      message: formatMessage({id: 'basic-form.hardother.required'}),
+                      message: formatMessage({id: 'basic-form.softversion.required'}),
                     },
                   ],
-                })(<Input placeholder={formatMessage({id: 'basic-form.hardother.placeholder'})}/>)}
+                })(<Input placeholder={formatMessage({id: 'basic-form.softversion.placeholder'})}/>)}
               </FormItem>
 
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.softprolan.label"/>}>
@@ -1024,7 +929,7 @@ class BasicForm extends PureComponent {
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.radio.softarch"/>}>
                 <div>
                   {getFieldDecorator('serverSoftFrame', {
-                      initialValue: this.props.entrustdata.data.serverSoftFrame || '',
+                      initialValue: this.props.entrustdata.data.serverSoftFrame ||['basic-form.checkbox.softarch1'],
                     }
                   )(
                     <Checkbox.Group style={{width: '100%'}}>
@@ -1073,13 +978,7 @@ class BasicForm extends PureComponent {
                       message: formatMessage({id: 'basic-form.netenvironment.required'}),
                     },
                   ],
-                })(
-                  <TextArea
-                    style={{minHeight: 32}}
-                    placeholder={formatMessage({id: 'basic-form.netenvironment.placeholder'})}
-                    rows={9}
-                  />
-                )}
+                })(<Input placeholder={formatMessage({id: 'basic-form.netenvironment.placeholder'})}/>)}
               </FormItem>
             </div>
 
@@ -1160,16 +1059,10 @@ class BasicForm extends PureComponent {
                     rules: [
                       {
                         required: true,
-                        message: formatMessage({id: 'basic-form.netenvironment.required'}),
+                        message: formatMessage({id: 'basic-form.date.required'}),
                       },
                     ],
-                  })(
-                    <TextArea
-                      style={{minHeight: 32}}
-                      placeholder={formatMessage({id: 'basic-form.netenvironment.placeholder'})}
-                      rows={9}
-                    />
-                  )}
+                  })(<Input placeholder={formatMessage({id: 'basic-form.date.placeholder'})}/>)}
               </FormItem>
               <div>
                 <h2>委托单位信息</h2>
@@ -1331,7 +1224,7 @@ class BasicForm extends PureComponent {
                   {/*</div>*/}
                   <div>
                     {getFieldDecorator('checkSample', {
-                        initialValue: this.props.entrustdata.data.checkSample || '',
+                        initialValue: this.props.entrustdata.data.checkSample || ["basic-form.others.tsample.code"],
                       }
                     )(
                       <Checkbox.Group style={{width: '100%'}}>

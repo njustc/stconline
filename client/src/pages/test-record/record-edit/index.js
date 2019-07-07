@@ -20,10 +20,9 @@ import style from "../../entrust/basic-form/style.less";
 import PageHeaderWrapper from "../../entrust/basic-form/components/PageHeaderWrapper";
 
 const FormItem = Form.Item;
-const confirm=Modal.confirm;
-const namespace='testplanEdit';
+const confirm = Modal.confirm;
+const namespace = 'testRecordEdit';
 
-// const dateFormat = 'YYYY/MM/DD';
 
 const mapStateToProps = (state) => {
   const dataEdit = state[namespace];
@@ -33,45 +32,26 @@ const mapStateToProps = (state) => {
   };
 };
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//
-//     queryAddPlan:(newPlan)=>{
-//       dispatch({
-//         type:`${namespace}/queryAddPlan`,
-//         payload:newPlan,
-//       });
-//     },
-//     queryDeletePlan:(params)=>{
-//       dispatch({
-//         type:`${namespace}/queryDeletePlan`,
-//         payload:params
-//       })
-//     },
-//
-//   };
-// };
-
 @Form.create()
 @connect(mapStateToProps)
-export default class EditPlan extends React.Component {
+export default class EditRecord extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pid: ""
+      testId: ""
     }
   }
 
   componentDidMount() {
     const {dispatch} = this.props;
     if (this.props.location.query.pid) {
-      this.state.pid = this.props.location.query.pid
+      this.state.testId = this.props.location.query.testId
     } else {
-      this.state.pid = this.props.dataEdit.editdata.pid
+      this.state.testId = this.props.dataEdit.editdata.testId
     }
-    if (this.state.pid != "") {
+    if (this.state.testId != "") {
       dispatch({
-        type: `${namespace}/queryGetOnePlan`,
+        type: `${namespace}/queryGetOneRecord`,
         payload: this.props.location.query,
       });
     }
@@ -79,17 +59,17 @@ export default class EditPlan extends React.Component {
 
   addPlan = (form) => {
     const {dispatch} = this.props;
-    this.state.pid = this.props.dataEdit.editdata.pid;
+    this.state.testId = this.props.dataEdit.editdata.testId;
     form.validateFields((err, value) => {
       //新建
-      value.pid = this.state.pid;
+      value.testId = this.state.testId;
       // 补充新建属性
       value.processInstanceId = "";
       value.processState = "ToSubmit";
       value.comment = "";
       //补充完毕
       dispatch({
-        type: `${namespace}/queryAddPlan`,
+        type: `${namespace}/queryAddRecord`,
         payload: value,
       });
     })
@@ -97,17 +77,17 @@ export default class EditPlan extends React.Component {
 
   savePlan = (form) => {
     const {dispatch} = this.props;
-    this.state.pid = this.props.dataEdit.editdata.pid;
+    this.state.testId = this.props.dataEdit.editdata.testId;
     console.log("saveform", this.props.dataEdit.editdata);
     form.validateFields((err, value) => {
       //保存
-      value.pid = this.state.pid;
+      value.testId = this.state.testId;
       value.processInstanceId = this.props.dataEdit.editdata.processInstanceId;
       value.processState = this.props.dataEdit.editdata.processState;
       console.log("value", value);
       // value.comment = this.props.dataEdit.editdata.comment;
       dispatch({
-        type: `${namespace}/queryReplacePlan`,
+        type: `${namespace}/queryReplaceRecord`,
         payload: value,
       });
     })
@@ -117,12 +97,12 @@ export default class EditPlan extends React.Component {
   save = (form) => {
     const {dispatch} = this.props;
     console.log("save", this.props.dataEdit.editdata);
-    this.state.pid = this.props.dataEdit.editdata.pid;
-    if (this.state.pid == "") {
+    this.state.testId = this.props.dataEdit.editdata.testId;
+    if (this.state.testId == "") {
       this.addPlan(form)
     } else {
       console.log("报告已存在");
-      console.log(this.state.pid);
+      console.log(this.state.testId);
       this.savePlan(form)
     }
   };
@@ -131,17 +111,17 @@ export default class EditPlan extends React.Component {
   //提交
   submitPlan = (form) => {
     const {dispatch} = this.props;
-    this.state.pid = this.props.dataEdit.editdata.pid;
+    this.state.testId = this.props.dataEdit.editdata.testId;
     form.validateFields((err, value) => {
       console.log(this.props.dataEdit.editdata);
       //新建
-      value.pid = this.state.pid;
+      value.testId = this.state.testId;
       value.processInstanceId = this.props.dataEdit.editdata.processInstanceId || "";
       value.processState = this.props.dataEdit.editdata.processState || "";
       // value.comment=this.props.dataEdit.editdata.comment;
-      console.log("submitPlan", value);
+      console.log("submitRecord", value);
       dispatch({
-        type: `${namespace}/querySubmitPlan`,
+        type: `${namespace}/querySubmitRecord`,
         payload: value,
       });
     })
@@ -150,13 +130,13 @@ export default class EditPlan extends React.Component {
   showSubmit(form) {
     var that = this;
     confirm({
-      title: '您是否要提交方案?',
+      title: '您是否要提交测试记录?',
       content: '方案提交后进入审核状态，不可编辑',
       okText: '确认提交',
       okType: 'primary',
       cancelText: '取消',
       onOk() {
-        console.log("submitPlan");
+        console.log("submitRecord");
         that.submitPlan(form);
       },
       onCancel() {
@@ -169,7 +149,7 @@ export default class EditPlan extends React.Component {
   delete = (value) => {
     const {dispatch} = this.props;
     dispatch({
-      type: `${namespace}/queryDeletePlan`,
+      type: `${namespace}/queryDeleteRecord`,
       payload: value,
     })
   };
@@ -177,16 +157,16 @@ export default class EditPlan extends React.Component {
   showDelete(form) {
     var that = this;
     confirm({
-      title: '您是否要删除本方案?',
+      title: '您是否要删除本测试记录?',
       content: '删除后无法恢复',
       okText: '确认删除',
       okType: 'danger',
       cancelText: '取消',
       onOk() {
-        that.state.pid = that.props.dataEdit.editdata.pid;
+        that.state.testId = that.props.dataEdit.editdata.testId;
         form.validateFields((err, value) => {
           //新建
-          value.pid = that.state.pid;
+          value.testId = that.state.testId;
           that.delete(value)
 
         })
@@ -218,8 +198,8 @@ export default class EditPlan extends React.Component {
       <div className={style.editBody}>
         <Breadcrumb>
           <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
-          <Breadcrumb.Item href="/plan_list.html">测试方案列表</Breadcrumb.Item>
-          <Breadcrumb.Item>测试方案编辑</Breadcrumb.Item>
+          <Breadcrumb.Item href="/record-list.html">测试记录列表</Breadcrumb.Item>
+          <Breadcrumb.Item>测试记录编辑</Breadcrumb.Item>
         </Breadcrumb>
 
         {/*/!*<div className={style.headerTitle}>*!/*/}

@@ -6,21 +6,21 @@
         <activiti:formProperty id="TestPlanID" name="ID of test plan" required="true" type="string"/>
       </extensionElements>
     </startEvent>
-    <userTask activiti:exclusive="true" id="QMTestPlanReview" name="QMReviewTestPlan" activiti:candidateGroups="QM">
+    <userTask activiti:exclusive="true" id="QMTestPlanReview" name="QM_ReviewTestPlan" activiti:candidateGroups="QM">
       <extensionElements>
         <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
         <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
         <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
       </extensionElements>
     </userTask>
-    <userTask activiti:exclusive="true" id="TMTestPlanApprove" name="TMApproveTestPlan" activiti:candidateGroups="TM">
+    <userTask activiti:exclusive="true" id="TMTestPlanApprove" name="TM_ApproveTestPlan" activiti:candidateGroups="TM">
       <extensionElements>
         <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
         <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
         <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
       </extensionElements>
     </userTask>
-    <userTask activiti:exclusive="true" id="TSTestPlanSubmit" name="TSSubmitTestPlan" activiti:candidateGroups="TS">
+    <userTask activiti:exclusive="true" id="TSTestPlanSubmit" name="TS_SubmitTestPlan" activiti:candidateGroups="TS">
       <extensionElements>
         <activiti:formProperty id="taskType" name="Submit" type="string" value="Submit"/>
       </extensionElements>
