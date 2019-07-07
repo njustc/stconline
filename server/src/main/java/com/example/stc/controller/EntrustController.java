@@ -37,9 +37,6 @@ public class EntrustController extends BaseController {
     @Autowired
     private ProcessService processService;
 
-    @Autowired
-    private AuthorityUtils authorityUtils;
-
     /**
      * 查看全部委托
      * CUS, SS可随时查看

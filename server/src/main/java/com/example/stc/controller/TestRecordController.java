@@ -31,9 +31,6 @@ public class TestRecordController extends BaseController {
     @Autowired
     private TestRecordService testRecordService;
 
-    @Autowired
-    private AuthorityUtils authorityUtils;
-
     /**
      * 查看全部测试记录
      * TS, TM可查看

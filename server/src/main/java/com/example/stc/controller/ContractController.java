@@ -37,9 +37,6 @@ public class ContractController extends BaseController {
     @Autowired
     private ContractService contractService;
 
-    @Autowired
-    private AuthorityUtils authorityUtils;
-
     /**
      * 查看全部合同
      * CUS, SS, SM, QM可随时查看

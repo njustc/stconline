@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 public class TestRecordServiceImpl implements TestRecordService {
 
-    Logger logger = LoggerFactory.getLogger(TestPlanServiceImpl.class);
+    Logger logger = LoggerFactory.getLogger(TestRecordServiceImpl.class);
 
     @Autowired
     private TestRecordRepository testRecordRepository;

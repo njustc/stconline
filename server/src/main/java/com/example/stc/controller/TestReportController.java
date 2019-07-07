@@ -31,9 +31,6 @@ public class TestReportController extends BaseController {
     @Autowired
     private TestReportService testReportService;
 
-    @Autowired
-    private AuthorityUtils authorityUtils;
-
     /**
      * 查看全部测试报告
      * CUS, SS, TS, TM, QM可查看

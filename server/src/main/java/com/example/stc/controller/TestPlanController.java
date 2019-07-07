@@ -36,9 +36,6 @@ public class TestPlanController extends BaseController {
     @Autowired
     private TestPlanService testPlanService;
 
-    @Autowired
-    private AuthorityUtils authorityUtils;
-
     /**
      * 查看全部测试方案
      * CUS, TS, TM, QM可查看
