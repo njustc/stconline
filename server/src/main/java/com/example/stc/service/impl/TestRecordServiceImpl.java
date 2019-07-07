@@ -39,11 +39,6 @@ public class TestRecordServiceImpl implements TestRecordService {
     }
 
     @Override
-    public void deleteTestRecordById(Long id) {
-        testRecordRepository.deleteById(id);
-    }
-
-    @Override
     public void deleteTestRecordByTestId(String testId) {
         TestRecord testRecord = testRecordRepository.findByTestId(testId);
         if (testRecord == null)

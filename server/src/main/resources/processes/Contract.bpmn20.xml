@@ -7,7 +7,7 @@
       </extensionElements>
     </startEvent>
     <endEvent id="end" name="结束"/>
-    <userTask activiti:exclusive="true" id="submitContract" name="SSSubmit" activiti:candidateGroups="SS">
+    <userTask activiti:exclusive="true" id="submitContract" name="SS_Submit" activiti:candidateGroups="SS">
       <extensionElements>
         <activiti:formProperty id="taskType" name="Submit" type="string" value="Submit"/>
       </extensionElements>
@@ -15,14 +15,14 @@
     <subProcess activiti:exclusive="true" id="subProcess" name="审批子流程" triggeredByEvent="false">
       <parallelGateway gatewayDirection="Unspecified" id="mApproveForkGate" name="Fork"/>
       <parallelGateway gatewayDirection="Unspecified" id="mApproveJoinGate" name="Join"/>
-      <userTask activiti:exclusive="true" id="mmContractReview" name="MMReviewContract" activiti:candidateGroups="SM">
+      <userTask activiti:exclusive="true" id="mmContractReview" name="MM_ReviewContract" activiti:candidateGroups="SM">
         <extensionElements>
           <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
           <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
           <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
         </extensionElements>
       </userTask>
-      <userTask activiti:exclusive="true" id="qmContractReview" name="QMReviewContract" activiti:candidateGroups="QM">
+      <userTask activiti:exclusive="true" id="qmContractReview" name="QM_ReviewContract" activiti:candidateGroups="QM">
         <extensionElements>
           <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
           <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
@@ -41,7 +41,7 @@
       <sequenceFlow id="_15" name="不通过" sourceRef="mReviewGate" targetRef="subDisproveEnd">
         <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ReviewResult == 'ReviewDisprove'}]]></conditionExpression>
       </sequenceFlow>
-      <userTask activiti:assignee="${ClientID}" activiti:exclusive="true" id="cusContractReview" name="CusReviewContract">
+      <userTask activiti:assignee="${ClientID}" activiti:exclusive="true" id="cusContractReview" name="CUS_ReviewContract">
         <extensionElements>
           <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
           <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>

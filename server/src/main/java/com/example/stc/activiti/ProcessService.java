@@ -30,4 +30,6 @@ public interface ProcessService extends BaseService<ProcessEntity> {
 
     String getProcessComment(String processInstanceId);
 
+    int queryProjectState(String pid);
+
 }

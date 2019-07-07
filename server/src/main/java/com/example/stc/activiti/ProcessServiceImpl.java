@@ -19,9 +19,6 @@ public class ProcessServiceImpl implements ProcessService {
     private STCProcessEngine stcProcessEngine;
 
     @Autowired
-    private AuthorityUtils authorityUtils;
-
-    @Autowired
     private EntrustService entrustService;
 
     @Autowired
@@ -197,5 +194,31 @@ public class ProcessServiceImpl implements ProcessService {
     @Override
     public String getProcessComment(String processInstanceId) {
         return stcProcessEngine.getComment(processInstanceId);
+    }
+
+    /**
+     * 获取项目状态
+     * @param pid
+     * @return 项目状态
+     */
+    @Override
+    public int queryProjectState(String pid) {
+        Entrust entrust = entrustService.findEntrustByPid(pid);
+        if (!queryProcessState(entrust).equals("Approve"))
+            return 1;
+
+        Contract contract = contractService.findContractByPid(pid);
+        if (!queryProcessState(contract).equals("Approve"))
+            return 2;
+
+        TestPlan testPlan = testPlanService.findTestPlanByPid(pid);
+        if (!queryProcessState(testPlan).equals("Approve"))
+            return 3;
+
+        TestReport testReport = testReportService.findTestReportByPid(pid);
+        if (!queryProcessState(testReport).equals("Approve"))
+            return 4;
+
+        return 5;
     }
 }

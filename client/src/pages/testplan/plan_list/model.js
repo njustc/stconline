@@ -36,22 +36,16 @@ export default {
       // console.log('GetAllTestPlan')
       // console.log(response);
 
-      // 处理未登录情况：重定向到登陆界面
-      console.log(response.status)
-      if (response.status === 401) {
-        router.push("/user-login.html");
+      //_embedded复制粘贴的委托
+      // console.log('_embedded' in response);
+      if (!('_embedded' in response)) {
+        // console.log("put []");
+        //执行getPlanData
+        yield put({type: 'getPlanData', payload: response});
+      } else {
+        yield put({type: 'getPlanData', payload: response._embedded.testPlans});
       }
-      else {
-        //_embedded复制粘贴的委托
-        // console.log('_embedded' in response);
-        if (!('_embedded' in response)) {
-          // console.log("put []");
-          //执行getPlanData
-          yield put({type: 'getPlanData', payload: response});
-        } else {
-          yield put({type: 'getPlanData', payload: response._embedded.testPlans});
-        }
-      }
+
     },
     *queryAddPlan({payload},{call,put}) {
       const response = yield call(addNewTestPlan, payload);

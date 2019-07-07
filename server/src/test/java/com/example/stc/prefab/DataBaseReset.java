@@ -122,7 +122,8 @@ public class DataBaseReset {
         userRepository.deleteAll();
         System.out.println("\nReset All Users:");
         JSONObject usersJson = getJson("users.json");
-        String[] keyNames = {"cusa", "cusb", "cusc", "ssa", "ssb", "tsa", "tsb", "sma", "tma", "qma", "admin"};
+        String[] keyNames = {"boss", "cusa", "cusb", "cusc", "ssa", "ssb", "tsa", "tsb"
+                , "sma", "tma", "qma", "admin"};
         List<User> users = new ArrayList<>();
         for (String keyName: keyNames)
             saveUser(usersJson, keyName, users);
