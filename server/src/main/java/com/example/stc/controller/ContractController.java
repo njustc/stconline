@@ -49,7 +49,7 @@ public class ContractController extends BaseController {
     public @ResponseBody
     Resources<Resource<Contract>> getAllContract() {
         List<Resource<Contract>> contracts = contractService.findContractsByAuthority().stream()
-                .map(contract -> new Resource<>(contract))
+                .map(contract -> toResource(contract, methodOn(ContractController.class).getAllContract(), null))
                 .collect(Collectors.toList());
         logger.info("getAllContract: 最终查询合同数：" + contracts.size());
         return new Resources<>(contracts,
@@ -66,7 +66,7 @@ public class ContractController extends BaseController {
     public @ResponseBody
     Resources<Resource<Contract>> getUserContract(@PathVariable String uid) {
         List<Resource<Contract>> contracts = contractService.findContractByUser(uid).stream()
-                .map(contract -> new Resource<>(contract))
+                .map(contract -> toResource(contract, methodOn(ContractController.class).getUserContract(uid), null))
                 .collect(Collectors.toList());
         return new Resources<>(contracts,
                 linkTo(methodOn(ContractController.class).getUserContract(uid)).withSelfRel());
@@ -79,7 +79,8 @@ public class ContractController extends BaseController {
     public @ResponseBody
     ResponseEntity<?> addNewContract(@PathVariable String pid, @RequestParam String uid) throws URISyntaxException {
         logger.info("addNewContract");
-        Resource<Contract> resource = new Resource<>(contractService.newContract(pid, uid));
+        Resource<Contract> resource = toResource(contractService.newContract(pid, uid)
+                , methodOn(ContractController.class).addNewContract(pid, uid), null);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
@@ -99,7 +100,8 @@ public class ContractController extends BaseController {
         authorityUtils.stateAccessCheck(contract, "CUS", "Review,Approve", "查看"); // 若为客户，只能在客户确认阶段查看
         authorityUtils.stateAccessCheck(contract, "SM,QM", "Review,Approve", "查看"); // 若为SM, QM，Review和Approve阶段
         logger.info("getOneContract");
-        return this.toResource(contract, methodOn(ContractController.class).getOneContract(pid));
+        return this.toResource(contract, methodOn(ContractController.class).getOneContract(pid)
+                , methodOn(ContractController.class).getAllContract());
     }
 
     /**
@@ -113,7 +115,8 @@ public class ContractController extends BaseController {
         authorityUtils.stateAccessCheck(contract, "SS", "Submit", "修改"); // 工作人员仅提交前可修改
         logger.info("replaceContract");
         Contract updatedContract = contractService.updateContract(pid, contract);
-        Resource<Contract> resource = new Resource<>(updatedContract);
+        Resource<Contract> resource = toResource(updatedContract
+                , methodOn(ContractController.class).replaceContract(pid, contract), null);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 

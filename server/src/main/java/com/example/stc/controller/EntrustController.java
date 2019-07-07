@@ -50,7 +50,7 @@ public class EntrustController extends BaseController {
     Resources<Resource<Entrust>> getAllEntrust() {
         // 依据当前登录的用户的权限查询能见的委托
         List<Resource<Entrust>> entrusts = entrustService.findEntrustsByAuthority().stream()
-                .map(entrust -> new Resource<>(entrust))
+                .map(entrust -> toResource(entrust, methodOn(EntrustController.class).getAllEntrust(), null))
                 .collect(Collectors.toList());
         logger.info("getAllEntrust: 最终查询委托数：" + entrusts.size());
         return new Resources<>(entrusts,
@@ -67,7 +67,7 @@ public class EntrustController extends BaseController {
     Resources<Resource<Entrust>> getUserEntrust(@PathVariable String uid) {
         // 查询某一用户全部委托
         List<Resource<Entrust>> entrusts = entrustService.findEntrustsByUser(uid).stream()
-                .map(entrust -> new Resource<>(entrust))
+                .map(entrust -> toResource(entrust, methodOn(EntrustController.class).getUserEntrust(uid), null))
                 .collect(Collectors.toList());
         logger.info("getUserEntrust: 最终查询委托数：" + entrusts.size());
         return new Resources<>(entrusts,
@@ -83,7 +83,8 @@ public class EntrustController extends BaseController {
     @PostMapping(path = "/entrust")
     public @ResponseBody
     ResponseEntity<?> addNewEntrust(@RequestBody Entrust entrust) throws URISyntaxException {
-        Resource<Entrust> resource = new Resource<>(entrustService.newEntrust(entrust));
+        Resource<Entrust> resource = toResource(entrustService.newEntrust(entrust)
+                , methodOn(EntrustController.class).addNewEntrust(entrust), null);
         logger.info("addNewEntrust: userId = " + entrust.getUserId());
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
@@ -99,7 +100,8 @@ public class EntrustController extends BaseController {
         Entrust entrust = entrustService.findEntrustByPid(pid);
         authorityUtils.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
         logger.info("getOneEntrust: userId = " + entrust.getUserId());
-        return this.toResource(entrust, methodOn(EntrustController.class).getOneEntrust(pid));
+        return this.toResource(entrust, methodOn(EntrustController.class).getOneEntrust(pid)
+                , methodOn(EntrustController.class).getAllEntrust());
     }
 
     /**
@@ -115,7 +117,8 @@ public class EntrustController extends BaseController {
         authorityUtils.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
         authorityUtils.stateAccessCheck(entrust, "CUS", "Submit", "修改"); // 仅Submit阶段可修改
         logger.info("replaceEntrust: userId = " + entrust.getUserId());
-        Resource<Entrust> resource = new Resource<>(updatedEntrust);
+        Resource<Entrust> resource = toResource(updatedEntrust
+                , methodOn(EntrustController.class).replaceEntrust(pid, entrust), null);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 

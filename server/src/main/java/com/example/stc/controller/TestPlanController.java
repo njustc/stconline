@@ -49,7 +49,7 @@ public class TestPlanController extends BaseController {
     Resources<Resource<TestPlan>> getAllTestPlan() {
         // 依据当前登录的用户的权限查询能见的测试方案
         List<Resource<TestPlan>> testPlans = testPlanService.findTestPlansByAuthority().stream()
-                .map(testPlan -> new Resource<>(testPlan))
+                .map(testPlan -> toResource(testPlan, methodOn(TestPlanController.class).getAllTestPlan(), null))
                 .collect(Collectors.toList());
         logger.info("getAllTestPlan: 最终查询测试方案数：" + testPlans.size());
         return new Resources<>(testPlans,
@@ -71,7 +71,8 @@ public class TestPlanController extends BaseController {
         authorityUtils.stateAccessCheck(testPlan, "CUS", "Approve", "查看");
         authorityUtils.stateAccessCheck(testPlan, "TM,QM", "Review,Approve", "查看");
         logger.info("getOneTestPlan");
-        return toResource(testPlan, methodOn(TestPlanController.class).getOneTestPlan(pid));
+        return toResource(testPlan, methodOn(TestPlanController.class).getOneTestPlan(pid)
+                , methodOn(TestPlanController.class).getAllTestPlan());
     }
 
     /**
@@ -82,7 +83,8 @@ public class TestPlanController extends BaseController {
     public @ResponseBody
     ResponseEntity<?> addNewTestPlan(@PathVariable String pid, @RequestParam String uid) throws URISyntaxException {
         logger.info("addNewTestPlan");
-        Resource<TestPlan> resource = new Resource<>(testPlanService.newTestPlan(pid, uid));
+        Resource<TestPlan> resource = toResource(testPlanService.newTestPlan(pid, uid)
+                , methodOn(TestPlanController.class).addNewTestPlan(pid, uid), null);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
@@ -98,7 +100,8 @@ public class TestPlanController extends BaseController {
         authorityUtils.stateAccessCheck(testPlan, "TS", "Submit", "修改");
         logger.info("replaceTestPlan");
         TestPlan updatedTestPlan = testPlanService.updateTestPlan(pid, testPlan);
-        Resource<TestPlan> resource = new Resource<>(updatedTestPlan);
+        Resource<TestPlan> resource = toResource(updatedTestPlan
+                , methodOn(TestPlanController.class).replaceTestPlan(pid, testPlan), null);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 

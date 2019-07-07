@@ -16,12 +16,16 @@ public class BaseController {
     @Autowired
     private ProcessUtils processUtils;
 
-    protected <T extends ProcessEntity> Resource<T> toResource(T processEntity, Object method) {
+    protected <T extends ProcessEntity> Resource<T> toResource(T processEntity, Object method1, Object method2) {
         Resource<T> resource;
-        if (processUtils.isReviewable(processEntity.getProcessInstanceId(), processEntity.getUserId()))
-            resource = new Resource<>(processEntity, linkTo(method).withSelfRel());
+        if (processUtils.isReviewable(processEntity.getProcessInstanceId(), processEntity.getUserId())) {
+            if (method2 == null)
+                resource = new Resource<>(processEntity, linkTo(method1).withSelfRel());
+            else
+                resource = new Resource<>(processEntity, linkTo(method1).withSelfRel(), linkTo(method2).withSelfRel());
+        }
         else
-            resource = new Resource<>(processEntity);
+            resource = new Resource<>(processEntity, linkTo(method1).withSelfRel());
         return resource;
     }
 

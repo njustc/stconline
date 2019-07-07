@@ -58,6 +58,7 @@ public class FileUploadController extends BaseController {
     @GetMapping("/files")
     public @ResponseBody
     List<String> getUploadFiles(@RequestParam(value = "pid") String pid) {
+        logger.info("getUploadFiles: ");
         if (pid == "")
             return new ArrayList<>();
         String filepath = UPLOADED_FOLDER + pid + "/";
@@ -70,6 +71,7 @@ public class FileUploadController extends BaseController {
                 if (!file.isDirectory()) {
                     String filename = file.getName();
                     fileList.add(filename);
+                    logger.info("get File " + filename);
                 }
             }
         }
