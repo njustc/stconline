@@ -1,5 +1,6 @@
 package com.example.stc.service.impl;
 
+import com.example.stc.activiti.ProcessState;
 import com.example.stc.domain.TestRecord;
 import com.example.stc.domain.User;
 import com.example.stc.framework.exception.TestRecordNotFoundException;
@@ -73,9 +74,9 @@ public class TestRecordServiceImpl implements TestRecordService {
     public TestRecord newTestRecord(TestRecord testRecord) {
         // 该测试用例的pid是已经填好的
         // 根据某一个算法设置testId
-        testRecord.setProcessInstanceId("");
         testRecord.setTestId(testRecord.getPid() + "-" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
-        // TODO: 流程引擎
+        testRecord.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
+        testRecord.setProcessInstanceId("");
         return testRecordRepository.save(testRecord);
     }
 
