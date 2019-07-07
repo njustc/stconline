@@ -179,7 +179,7 @@ public class ProcessUtils {
         return result;
     }
 
-    public boolean isCreator(ProcessEntity entity, String type) {
+    private boolean isCreator(ProcessEntity entity, String type) {
         User user = authorityUtils.getLoginUser();
         String userId = user.getUserID();
 
