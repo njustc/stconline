@@ -38,7 +38,7 @@ export default class EditRecord extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pid:"",
+      pid: "",
       testId: ""
     }
   }
@@ -48,16 +48,25 @@ export default class EditRecord extends React.Component {
     // console.log(this.props.dataEdit.editdata.testId);
     // console.log(this.props.dataEdit);
     console.log(this.props.location.query);
-    if (this.props.location.query.testId) {
-      this.state.testId = this.props.location.query.testId||"";
+    if (this.props.location.query.pid) {
+      this.state.pid = this.props.location.query.pid || "";
     } else {
-      this.state.testId = this.props.dataEdit.editdata.testId || "";
+      this.state.pid = this.props.dataEdit.editdata.pid || "";
+    }
+    console.log(this.state.pid);
+    if (this.props.location.query.testId) {
+      this.state.testId = this.props.location.query.testId || "";
     }
     console.log(this.state.testId);
-    if (this.state.testId != "") {
+    if (this.state.testId !== "") {
       dispatch({
         type: `${namespace}/queryGetOneRecord`,
         payload: this.props.location.query,
+      });
+    } else {
+      console.log("???");
+      dispatch({
+        type: `${namespace}/queryUpdateData`,
       });
     }
   }
@@ -67,11 +76,12 @@ export default class EditRecord extends React.Component {
     this.state.testId = this.props.dataEdit.editdata.testId;
     form.validateFields((err, value) => {
       //新建
-      value.testId = this.state.testId;
+      value.pid = this.state.pid;
+      value.testId = this.state.testId || "";
       // 补充新建属性
       value.processInstanceId = "";
-      value.processState = "ToSubmit";
-      value.comment = "";
+      value.processState = "Submit";
+      console.log("value", value);
       //补充完毕
       dispatch({
         type: `${namespace}/queryAddRecord`,
@@ -86,7 +96,8 @@ export default class EditRecord extends React.Component {
     console.log("saveform", this.props.dataEdit.editdata);
     form.validateFields((err, value) => {
       //保存
-      value.testId = this.state.testId;
+      value.pid = this.state.pid;
+      value.testId = this.state.testId || "";
       value.processInstanceId = this.props.dataEdit.editdata.processInstanceId;
       value.processState = this.props.dataEdit.editdata.processState;
       console.log("value", value);
@@ -102,8 +113,10 @@ export default class EditRecord extends React.Component {
   save = (form) => {
     const {dispatch} = this.props;
     console.log("save", this.props.dataEdit.editdata);
-    this.state.testId = this.props.dataEdit.editdata.testId;
+    this.state.pid = this.props.dataEdit.editdata.pid || "";
+    this.state.testId = this.props.dataEdit.editdata.testId || "";
     if (this.state.testId === "") {
+      console.log("新建");
       this.addRecord(form);
     } else {
       console.log("已存在");
@@ -114,12 +127,14 @@ export default class EditRecord extends React.Component {
 
 
   //提交
-  submitPlan = (form) => {
+  submitRecord = (form) => {
     const {dispatch} = this.props;
-    this.state.testId = this.props.dataEdit.editdata.testId;
+    this.state.pid = this.props.dataEdit.editdata.pid || "";
+    this.state.testId = this.props.dataEdit.editdata.testId || "";
     form.validateFields((err, value) => {
       console.log(this.props.dataEdit.editdata);
       //新建
+      value.pid = this.state.pid;
       value.testId = this.state.testId;
       value.processInstanceId = this.props.dataEdit.editdata.processInstanceId || "";
       value.processState = this.props.dataEdit.editdata.processState || "";
@@ -142,7 +157,7 @@ export default class EditRecord extends React.Component {
       cancelText: '取消',
       onOk() {
         console.log("submitRecord");
-        that.submitPlan(form);
+        that.submitRecord(form);
       },
       onCancel() {
         console.log('Cancel');
@@ -168,10 +183,12 @@ export default class EditRecord extends React.Component {
       okType: 'danger',
       cancelText: '取消',
       onOk() {
-        that.state.testId = that.props.dataEdit.editdata.testId;
+        that.state.pid = that.props.dataEdit.editdata.pid || "";
+        that.state.testId = that.props.dataEdit.editdata.testId || "";
         form.validateFields((err, value) => {
           //新建
-          value.testId = that.state.testId;
+          value.pid = that.state.pid;
+          value.testId = that.state.testId || "";
           that.delete(value)
 
         })
@@ -203,7 +220,6 @@ export default class EditRecord extends React.Component {
       <div className={style.editBody}>
         <Breadcrumb>
           <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
-          <Breadcrumb.Item href="/record-list.html">测试记录列表</Breadcrumb.Item>
           <Breadcrumb.Item>测试记录编辑</Breadcrumb.Item>
         </Breadcrumb>
 
@@ -223,19 +239,7 @@ export default class EditRecord extends React.Component {
               <div>
                 <h2>基本信息</h2>
                 <Divider/>
-                {/*ID*/}
-                <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.edit.label"/>}>
-                  {getFieldDecorator('testId', {
-                    initialValue: this.props.dataEdit.editdata.testId || '',
-                  }, {
-                    rules: [
-                      {
-                        required: true,
-                        message: formatMessage({id: 'validation.edit.required'}),
-                      },
-                    ],
-                  })(<Input placeholder={formatMessage({id: 'testplan.edit.placeholder'})}/>)}
-                </FormItem>
+                {/*testId*/}
                 {/*测试分类*/}
                 <FormItem {...formItemLayout} label={<FormattedMessage id="testplan.check.label"/>}>
                   {getFieldDecorator('testClass', {
@@ -432,7 +436,7 @@ export default class EditRecord extends React.Component {
                             type="primary"
                       // disabled={this.props.dataEdit.editdata.processState != "Submit"}
                     >
-                      <FormattedMessage id="plan_edit.form.submit"/>
+                      <FormattedMessage id="record-edit.form.submit"/>
                     </Button>
 
                     <Button onClick={() => {
@@ -440,7 +444,13 @@ export default class EditRecord extends React.Component {
                     }} style={{marginLeft: 8}}
                       // disabled={this.props.dataEdit.editdata.processState != "Submit"}
                     >
-                      <FormattedMessage id="plan_edit.form.save"/>
+                      <FormattedMessage id="record-edit.form.save"/>
+                    </Button>
+                    <Button onClick={() => {
+                      this.showDelete(this.props.form)
+                    }} style={{marginLeft: 8}}
+                            type="danger">
+                      <FormattedMessage id="record-edit.form.delete"/>
                     </Button>
                   </div>
                 </Affix>

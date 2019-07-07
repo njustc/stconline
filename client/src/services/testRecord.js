@@ -4,10 +4,11 @@ import request from '@/utils/request';
  * 新增测试记录
  * */
 export async function addNewTestRecord(data) {
-    return request(`dev/api/project/testRecord`, {
-        method: 'POST',
-        data: data,
-    });
+  //console.log(data);
+  return request(`api/project/testRecord`, {
+    method: 'POST',
+    data: data,
+  });
 }
 
 /**
@@ -50,7 +51,7 @@ export async function deleteTestRecord({testId}) {
  * */
 
 export async function createTestRecordProcess(params) {
-    return request(`api/project/process/create?testId=${params.testId}&type=TestReport`, {
+    return request(`api/project/process/create?pid=${params.testId}&type=TestRecord`, {
         method: 'POST',
         data: ""
     });
