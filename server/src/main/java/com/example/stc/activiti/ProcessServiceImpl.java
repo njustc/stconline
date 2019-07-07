@@ -203,17 +203,22 @@ public class ProcessServiceImpl implements ProcessService {
      */
     @Override
     public int queryProjectState(String pid) {
-        Contract contract = contractService.findContractByPid(pid);
-        if (contract == null)
+        Entrust entrust = entrustService.findEntrustByPid(pid);
+        if (!queryProcessState(entrust).equals("Approve"))
             return 1;
-        TestPlan testPlan = testPlanService.findTestPlanByPid(pid);
-        if (testPlan == null)
+
+        Contract contract = contractService.findContractByPid(pid);
+        if (!queryProcessState(contract).equals("Approve"))
             return 2;
-        TestReport testReport = testReportService.findTestReportByPid(pid);
-        if (testReport == null)
+
+        TestPlan testPlan = testPlanService.findTestPlanByPid(pid);
+        if (!queryProcessState(testPlan).equals("Approve"))
             return 3;
-        if (queryProcessState(testReport).equals("Approve"))
-            return 5;
-        return 4;
+
+        TestReport testReport = testReportService.findTestReportByPid(pid);
+        if (!queryProcessState(testReport).equals("Approve"))
+            return 4;
+
+        return 5;
     }
 }
