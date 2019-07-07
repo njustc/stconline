@@ -57,7 +57,7 @@ public class TestRecordController extends BaseController {
     @GetMapping(path = "/testRecord")
     public @ResponseBody
     Resources<Resource<TestRecord>> getProjectTestRecords(@RequestParam String pid) {
-        List<Resource<TestRecord>> testRecords = testRecordService.findAllTestRecordsByPid(pid).stream()
+        List<Resource<TestRecord>> testRecords = testRecordService.findAllTestRecordsByPidByAuthority(pid).stream()
                 .map(TestRecordController::toResource)
                 .collect(Collectors.toList());
         return new Resources<>(testRecords,
