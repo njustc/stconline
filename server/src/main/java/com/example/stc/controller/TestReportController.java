@@ -35,16 +35,6 @@ public class TestReportController extends BaseController {
     private AuthorityUtils authorityUtils;
 
     /**
-     * 添加Link，使 TestReport -> Resource<TestReport>
-     */
-    private static Resource<TestReport> toResource(TestReport testReport) {
-        return new Resource<>(testReport
-                , linkTo(methodOn(TestReportController.class).getOneTestReport(testReport.getPid())).withSelfRel()
-                , linkTo(methodOn(TestReportController.class).getAllTestReport()).withSelfRel()
-        );
-    }
-
-    /**
      * 查看全部测试报告
      * CUS, SS, TS, TM, QM可查看
      */
@@ -54,7 +44,7 @@ public class TestReportController extends BaseController {
     Resources<Resource<TestReport>> getAllTestReport() {
         // 依据当前登录的用户的权限查询能见的测试报告
         List<Resource<TestReport>> testReports = testReportService.findTestReportsByAuthority().stream()
-                .map(TestReportController::toResource)
+                .map(testReport -> new Resource<>(testReport))
                 .collect(Collectors.toList());
         logger.info("getAllTestReport: 最终查询测试报告数：" + testReports.size());
         return new Resources<>(testReports,
@@ -73,7 +63,7 @@ public class TestReportController extends BaseController {
         TestReport testReport = testReportService.findTestReportByPid(pid);
         authorityUtils.stateAccessCheck(testReport, "CUS,SS,TM,QM", "Review,Approve", "查看");
         logger.info("getOneTestReport");
-        return toResource(testReport);
+        return toResource(testReport, methodOn(TestReportController.class).getOneTestReport(pid));
     }
 
     /**
@@ -83,7 +73,7 @@ public class TestReportController extends BaseController {
     @PostMapping(path = "/testReport/{pid}")
     public @ResponseBody
     ResponseEntity<?> addNewTestReport(@PathVariable String pid, @RequestParam String uid) throws URISyntaxException {
-        Resource<TestReport> resource = toResource(testReportService.newTestReport(pid, uid));
+        Resource<TestReport> resource = new Resource<>(testReportService.newTestReport(pid, uid));
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
@@ -99,7 +89,7 @@ public class TestReportController extends BaseController {
         authorityUtils.stateAccessCheck(testReport, "TS", "Submit", "修改");
         logger.info("replaceTestReport");
         TestReport updatedTestReport = testReportService.updateTestReport(pid, testReport);
-        Resource<TestReport> resource = toResource(updatedTestReport);
+        Resource<TestReport> resource = new Resource<>(updatedTestReport);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 

@@ -8,12 +8,9 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.alibaba.fastjson.JSONObject;
 import com.example.stc.activiti.ProcessService;
-import com.example.stc.activiti.ProcessState;
-import com.example.stc.domain.Role;
-import com.example.stc.domain.User;
 import com.example.stc.framework.util.AuthorityUtils;
+import com.example.stc.framework.util.ProcessUtils;
 import com.example.stc.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,17 +41,6 @@ public class EntrustController extends BaseController {
     private AuthorityUtils authorityUtils;
 
     /**
-     * 添加Link，使 Entrust -> Resource<Entrust>
-     */
-    private static Resource<Entrust> toResource(Entrust entrust) {
-        return new Resource<>(entrust
-                , linkTo(methodOn(EntrustController.class).getOneEntrust(entrust.getPid())).withSelfRel()
-                , linkTo(methodOn(EntrustController.class).getAllEntrust()).withSelfRel()
-                , linkTo(methodOn(UserController.class).getUserDetail(entrust.getUserId())).withSelfRel()
-        );
-    }
-
-    /**
      * 查看全部委托
      * CUS, SS可随时查看
      */
@@ -65,7 +50,7 @@ public class EntrustController extends BaseController {
     Resources<Resource<Entrust>> getAllEntrust() {
         // 依据当前登录的用户的权限查询能见的委托
         List<Resource<Entrust>> entrusts = entrustService.findEntrustsByAuthority().stream()
-                .map(EntrustController::toResource)
+                .map(entrust -> new Resource<>(entrust))
                 .collect(Collectors.toList());
         logger.info("getAllEntrust: 最终查询委托数：" + entrusts.size());
         return new Resources<>(entrusts,
@@ -82,7 +67,7 @@ public class EntrustController extends BaseController {
     Resources<Resource<Entrust>> getUserEntrust(@PathVariable String uid) {
         // 查询某一用户全部委托
         List<Resource<Entrust>> entrusts = entrustService.findEntrustsByUser(uid).stream()
-                .map(EntrustController::toResource)
+                .map(entrust -> new Resource<>(entrust))
                 .collect(Collectors.toList());
         logger.info("getUserEntrust: 最终查询委托数：" + entrusts.size());
         return new Resources<>(entrusts,
@@ -98,7 +83,7 @@ public class EntrustController extends BaseController {
     @PostMapping(path = "/entrust")
     public @ResponseBody
     ResponseEntity<?> addNewEntrust(@RequestBody Entrust entrust) throws URISyntaxException {
-        Resource<Entrust> resource = toResource(entrustService.newEntrust(entrust));
+        Resource<Entrust> resource = new Resource<>(entrustService.newEntrust(entrust));
         logger.info("addNewEntrust: userId = " + entrust.getUserId());
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
@@ -114,7 +99,7 @@ public class EntrustController extends BaseController {
         Entrust entrust = entrustService.findEntrustByPid(pid);
         authorityUtils.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
         logger.info("getOneEntrust: userId = " + entrust.getUserId());
-        return toResource(entrust);
+        return this.toResource(entrust, methodOn(EntrustController.class).getOneEntrust(pid));
     }
 
     /**
@@ -130,7 +115,7 @@ public class EntrustController extends BaseController {
         authorityUtils.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
         authorityUtils.stateAccessCheck(entrust, "CUS", "Submit", "修改"); // 仅Submit阶段可修改
         logger.info("replaceEntrust: userId = " + entrust.getUserId());
-        Resource<Entrust> resource = toResource(updatedEntrust);
+        Resource<Entrust> resource = new Resource<>(updatedEntrust);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
