@@ -55,5 +55,12 @@ public class ProcessInstanceController extends BaseController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping(path = "/process")
+    public JSONObject queryProjectState(@RequestParam(value = "pid")String pid) {
+        JSONObject object = new JSONObject();
+        object.put("state", queryProjectState(pid));
+        return object;
+    }
+
 
 }
