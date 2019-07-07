@@ -8,9 +8,11 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.stc.activiti.ProcessState;
 import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
 import com.example.stc.framework.util.AuthorityUtils;
+import com.example.stc.framework.util.ProcessUtils;
 import com.example.stc.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,10 +81,8 @@ public class ContractController extends BaseController {
     }
 
     /**
-     * 新建合同
-     * 自动新建
+     * 自动新建合同
      */
-    @Secured({"ROLE_SS"}) // 市场部工作人员
     @PostMapping(path = "/contract/{pid}")
     public @ResponseBody
     ResponseEntity<?> addNewContract(@PathVariable String pid, @RequestParam String uid) throws URISyntaxException {
@@ -94,16 +94,18 @@ public class ContractController extends BaseController {
     /**
      * 查看单个合同
      * CUS, SS, SM, QM可查看；
-     * CUS仅Review的客户确认阶段；
+     * CUS仅Review的客户确认阶段之后；
      * SS可随时查看；
-     * SM, QM仅Review阶段查看
+     * SM, QM仅Review和Approve阶段查看
      */
     @Secured({"ROLE_CUS", "ROLE_SS", "ROLE_SM", "ROLE_QM"})
     @GetMapping(path = "/contract/{pid}")
     public @ResponseBody
     Resource<Contract> getOneContract(@PathVariable String pid) {
         Contract contract = contractService.findContractByPid(pid);
-        this.customerAccessCheck(contract); // 若为客户，只能访问本人的合同
+        authorityUtils.customerAccessCheck(contract); // 若为客户，只能访问本人的合同
+        authorityUtils.stateAccessCheck(contract, "CUS", "Review,Approve", "查看"); // 若为客户，只能在客户确认阶段查看
+        authorityUtils.stateAccessCheck(contract, "SM,QM", "Review,Approve", "查看"); // 若为SM, QM，Review和Approve阶段
         logger.info("getOneContract");
         return toResource(contract);
     }
@@ -116,6 +118,7 @@ public class ContractController extends BaseController {
     @PutMapping(path = "/contract/{pid}")
     public @ResponseBody
     ResponseEntity<?> replaceContract(@PathVariable String pid, @RequestBody Contract contract) throws URISyntaxException {
+        authorityUtils.stateAccessCheck(contract, "SS", "Submit", "修改"); // 工作人员仅提交前可修改
         logger.info("replaceContract");
         Contract updatedContract = contractService.updateContract(pid, contract);
         Resource<Contract> resource = toResource(updatedContract);
@@ -131,23 +134,16 @@ public class ContractController extends BaseController {
     public @ResponseBody
     ResponseEntity<?> deleteContract(@PathVariable String pid) {
         Contract contract = contractService.findContractByPid(pid);
-        this.customerAccessCheck(contract); // 若为客户，只能访问本人的合同
+        if (contract.getProcessState() == ProcessState.Approve) {
+            logger.info("deleteContract: 废止失败，合同已生效");
+            throw new AccessDeniedException("废止失败，合同已生效");
+        }
+        authorityUtils.customerAccessCheck(contract); // 若为客户，只能访问本人的合同
+        authorityUtils.stateAccessCheck(contract, "CUS", "Review", "废止"); // 若为客户，只能在客户确认阶段废止
+        authorityUtils.stateAccessCheck(contract, "SM,QM", "Review", "废止"); // 若为SM, QM，仅Review阶段
         contractService.deleteContractByPid(pid);
         logger.info("deleteContract");
         return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * 对于客户，检查访问的是否是本人的合同；若不是，权限异常
-     */
-    private void customerAccessCheck(Contract contract) {
-        if (authorityUtils.hasAuthority(Role.Customer)) {
-            User curUser = authorityUtils.getLoginUser();
-            if (!contract.getUserId().equals(curUser.getUserID())) {
-                logger.info("customerAccessCheck: 没有查看权限，客户只能访问自己的合同");
-                throw new AccessDeniedException("没有查看权限，客户只能访问自己的合同");
-            }
-        }
     }
 
 }

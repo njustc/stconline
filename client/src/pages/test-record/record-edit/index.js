@@ -64,7 +64,7 @@ export default class EditRecord extends React.Component {
         payload: this.props.location.query,
       });
     } else {
-      console.log("???");
+      // console.log("???");
       dispatch({
         type: `${namespace}/queryUpdateData`,
       });
@@ -73,6 +73,8 @@ export default class EditRecord extends React.Component {
 
   addRecord = (form) => {
     const {dispatch} = this.props;
+    console.log(this.props.dataEdit.editdata)
+//    this.state.pid = this.props.dataEdit.editdata.pid;
     this.state.testId = this.props.dataEdit.editdata.testId;
     form.validateFields((err, value) => {
       //新建
@@ -113,10 +115,10 @@ export default class EditRecord extends React.Component {
   save = (form) => {
     const {dispatch} = this.props;
     console.log("save", this.props.dataEdit.editdata);
-    this.state.pid = this.props.dataEdit.editdata.pid || "";
     this.state.testId = this.props.dataEdit.editdata.testId || "";
     if (this.state.testId === "") {
       console.log("新建");
+      console.log(this.state.pid);
       this.addRecord(form);
     } else {
       console.log("已存在");

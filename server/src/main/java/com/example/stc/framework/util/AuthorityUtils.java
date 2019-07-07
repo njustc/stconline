@@ -1,5 +1,7 @@
 package com.example.stc.framework.util;
 
+import com.example.stc.activiti.ProcessState;
+import com.example.stc.domain.ProcessEntity;
 import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
 import com.example.stc.repository.UserRepository;
@@ -79,4 +81,40 @@ public class AuthorityUtils {
         if (!hasAuthority(role))
             throw new AccessDeniedException("不是" + role.str() + "，没有访问权限");
     }
+
+    /** 对于Role，若ProcessEntity在state（Submit/Review/Approve）阶段应当具有访问（查看，修改，删除）权限，返回当前是否具有权限 */
+    public void stateAccessCheck(ProcessEntity entity, String roles, String states, String msg) {
+        String[] roleStrs = roles.split(",");
+        boolean isRole = false;
+        User curUser = this.getLoginUser();
+        for (String role: roleStrs) {
+            if (curUser.getRoles().contains(role))
+                isRole = true;
+        }
+        if (isRole) {
+            String[] stateStrs = states.split(",");
+            boolean isState = false;
+            for (String state: stateStrs) {
+                if (state == entity.getProcessState().getName())
+                    isState = true;
+            }
+            if (isState)
+                logger.info("stateAccessCheck: 当前用户（" + curUser.getRoles() + "）具有" + msg + "权限");
+            else {
+                logger.info("stateAccessCheck: 当前用户（" + curUser.getRoles() + "）没有" + msg + "权限");
+                throw new AccessDeniedException("stateAccessCheck: 当前用户（" + curUser.getRoles() + "）没有" + msg + "权限");
+            }
+        }
+    }
+
+    /** 对于客户，只能访问自己的委托、合同等，若不是则权限异常 */
+    public void customerAccessCheck(ProcessEntity entity) {
+        if (this.hasAuthority(Role.Customer)) {
+            if (!entity.getUserId().equals(this.getLoginUser().getUserID())) {
+                logger.info("customerAccessCheck: 没有权限，客户只能访问自己的项目");
+                throw new AccessDeniedException("没有权限，客户只能访问自己的项目");
+            }
+        }
+    }
+
 }
