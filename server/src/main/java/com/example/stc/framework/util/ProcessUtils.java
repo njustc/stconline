@@ -197,6 +197,7 @@ public class ProcessUtils {
             case "Contract":
                 return checkUser("SS", userId);
             case "TestPlan":
+            case "TestRecord":
             case "TestReport":
                 return checkUser("TS", userId);
             default:
