@@ -6,11 +6,13 @@ import {getRole} from "../../../utils/cookieUtils";
 //import {getRole} from "src/utils/cookieUtils"
 
 const data=[];
+var loading=true;
 const namespace='contractList';
 const mapStateToProps = (state) => {
   const dataList = state[namespace].data;
   //console.log("=============");
   //console.log(dataList);
+  loading=false;
   return {
     dataList,
   };
@@ -85,12 +87,12 @@ class List extends React.Component{
       key: 'processState',
       dataIndex: 'processState',
       render: processState => {
-        var color = processState === 'Approve' ? 'purple' : 'green';
-        if (processState === 'ToReview') {
-          color = 'orange';
+        var color = processState === 'Approve' ? 'green' : 'geekblue';
+        if (processState === 'Review') {
+          color = 'geekblue';
         }
-        if (processState === 'ToSubmit') {
-          color = 'blue';
+        if (processState === 'Submit') {
+          color = 'grey';
         }
         return (
           //console.log(processState);
@@ -151,7 +153,7 @@ class List extends React.Component{
 			<Breadcrumb.Item>合同列表</Breadcrumb.Item>
 		</Breadcrumb>
 		<br />
-		<Table columns={this.columns} dataSource={(!this.props.dataList.length)?data:this.props.dataList} />
+		<Table columns={this.columns} dataSource={(!this.props.dataList.length)?data:this.props.dataList} loading={loading} />
 		{/*<Button href="/contract_new.html">新建</Button>*/}
 		</div>
 		);

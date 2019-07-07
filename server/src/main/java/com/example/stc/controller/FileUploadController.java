@@ -15,6 +15,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,10 +53,35 @@ public class FileUploadController extends BaseController {
     }
 
     /**
+     * 已上传文件查询
+     */
+    @GetMapping("/files")
+    public @ResponseBody
+    List<String> getUploadFiles(@RequestParam(value = "pid") String pid) {
+        if (pid == "")
+            return new ArrayList<>();
+        String filepath = UPLOADED_FOLDER + pid + "/";
+        File fileDirs = new File(filepath);
+        File[] files = fileDirs.listFiles();
+        List<String> fileList = new ArrayList<>();
+        // 若files == null，说明该路径不存在，即从未上传文件
+        if (files != null) {
+            for (File file : files) {
+                if (!file.isDirectory()) {
+                    String filename = file.getName();
+                    fileList.add(filename);
+                }
+            }
+        }
+        return fileList;
+    }
+
+    /**
      * 文件上传
      */
     @PostMapping("/files")
-    public ResponseEntity<?> uploadFileMulti(@RequestParam(value = "pid") String pid,
+    public @ResponseBody
+    ResponseEntity<?> uploadFileMulti(@RequestParam(value = "pid") String pid,
                                              HttpServletRequest request) {
         List<MultipartFile> files = ((MultipartHttpServletRequest) request)
                 .getFiles("file");
@@ -81,10 +107,28 @@ public class FileUploadController extends BaseController {
     }
 
     /**
+     * 文件删除
+     */
+    @DeleteMapping("/files/{pid}/{filename}")
+    public @ResponseBody
+    String deleteFile(@PathVariable String pid, @PathVariable String filename) {
+        // 删除的文件所在位置
+        String filepath = UPLOADED_FOLDER + pid + "/";
+        File file = new File(filepath + filename);
+
+        logger.info("File Delete From" + filepath + filename);
+
+        if (file.delete())
+            return "Delete Success";
+        else return "Delete Failed - File Not Found";
+    }
+
+    /**
      * 文件下载
      */
     @GetMapping("/files/{pid}/{filename}")
-    public String downloadFile(@PathVariable String pid, @PathVariable String filename,
+    public @ResponseBody
+    String downloadFile(@PathVariable String pid, @PathVariable String filename,
                                HttpServletRequest request, HttpServletResponse response) {
         // 下载所在源文件
         String filepath = UPLOADED_FOLDER + pid + "/";

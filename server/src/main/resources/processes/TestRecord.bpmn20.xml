@@ -6,14 +6,14 @@
         <activiti:formProperty id="TestRecordID" name="ID of test record" required="true" type="string"/>
       </extensionElements>
     </startEvent>
-    <userTask activiti:exclusive="true" id="tmReviewTestRecord" name="TMReviewTestRecord" activiti:candidateGroups="TM">
+    <userTask activiti:exclusive="true" id="tmReviewTestRecord" name="TM_ReviewTestRecord" activiti:candidateGroups="TM">
       <extensionElements>
         <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
         <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
         <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
       </extensionElements>
     </userTask>
-    <userTask activiti:exclusive="true" id="tsSubmitTestRecord" name="TSSubmitTestRecord" activiti:candidateGroups="TS">
+    <userTask activiti:exclusive="true" id="tsSubmitTestRecord" name="TS_SubmitTestRecord" activiti:candidateGroups="TS">
       <extensionElements>
         <activiti:formProperty id="taskType" name="Submit" type="string" value="Submit"/>
       </extensionElements>

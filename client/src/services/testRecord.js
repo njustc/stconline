@@ -4,10 +4,11 @@ import request from '@/utils/request';
  * 新增测试记录
  * */
 export async function addNewTestRecord(data) {
-    return request(`dev/api/project/testRecord`, {
-        method: 'POST',
-        data: data,
-    });
+  //console.log(data);
+  return request(`api/project/testRecord`, {
+    method: 'POST',
+    data: data,
+  });
 }
 
 /**
@@ -28,11 +29,12 @@ export async function getOneTestRecord({testId}) {
 /**
  * 修改单个测试记录
  * */
-export async function replaceTesRecord(params) {
-    return request(`api/project/testRecord/${params.testId}`, {
-        method: 'PUT',
-        data: params,
-    });
+export async function replaceTestRecord(params) {
+  console.log(params);
+  return request(`api/project/testRecord/${params.testId}`, {
+    method: 'PUT',
+    data: params,
+  });
 }
 
 /**
@@ -47,15 +49,9 @@ export async function deleteTestRecord({testId}) {
 /**
  * 更改流程状态
  * */
-export async function updateTestReportProcess(params) {
-    return request(`api/project/process/update?type=TestReport`, {
-        method: 'POST',
-        data: params
-    });
-}
 
-export async function createTestReportProcess(params) {
-    return request(`api/project/process/create?testId=${params.testId}&type=TestReport`, {
+export async function createTestRecordProcess(params) {
+    return request(`api/project/process/create?pid=${params.testId}&type=TestRecord`, {
         method: 'POST',
         data: ""
     });

@@ -18,7 +18,7 @@ export async function getOneTestPlan({pid}) {
  * 新增测试方案
  * */
 export async function addNewTestPlan(data) {
-  return request(`dev/api/project/testplan`, {
+  return request(`api/project/testplan`, {
     method: 'POST',
     data: data,
   });

@@ -55,7 +55,7 @@ export default class entrustCheck extends Component {
       this.state.comment = this.props.entrustdata.comment
     }
     dispatch({
-      type: 'checkentrust/getOneEntrust',
+      type: `${namespace}/getOneEntrust`,
       payload: this.props.location.query,
     });
   }
@@ -76,6 +76,8 @@ export default class entrustCheck extends Component {
       });
     })
   }
+
+  
 
   render() {
     const {
@@ -229,13 +231,13 @@ export default class entrustCheck extends Component {
                 this.props.entrustdata.entrust.processState == "Review" ?
                   <Card>
                     <Button onClick={() => {
-                      this.review(this.props.form, "ReviewPass")
+                      this.review(this.props.entrustdata.entrust, "ReviewPass")
                     }} style={{marginLeft: 8}}
                             type="primary">
                       <FormattedMessage id="basic-form.form.agree"/>
                     </Button>
                     <Button onClick={() => {
-                      this.review(this.props.form, "ReviewDisprove")
+                      this.review(this.props.entrustdata.entrust, "ReviewDisprove")
                     }} style={{marginLeft: 8}}
                             type="primary"
                             disabled={this.props.entrustdata.entrust.processState != "Review"}>
@@ -259,5 +261,9 @@ export default class entrustCheck extends Component {
       </div>
     )
   }
+}
+
+class contentList extends Component{
+
 }
 

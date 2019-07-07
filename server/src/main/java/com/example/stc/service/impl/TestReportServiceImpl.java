@@ -30,9 +30,6 @@ public class TestReportServiceImpl implements TestReportService {
 
     @Autowired
     private ProcessUtils processUtils;
-    
-    @Autowired
-    private ProcessService processService;
 
     @Override
     public List<TestReport> findAllTestReports() {
@@ -79,11 +76,6 @@ public class TestReportServiceImpl implements TestReportService {
             record.setProcessInstanceId(testReport.getProcessInstanceId());
         }
         return testReportRepository.save(record);
-    }
-
-    @Override
-    public void deleteTestReportById(Long id) {
-        testReportRepository.deleteById(id);
     }
 
     @Override

@@ -30,9 +30,6 @@ public class TestPlanServiceImpl implements TestPlanService {
 
     @Autowired
     private ProcessUtils processUtils;
-    
-    @Autowired
-    private ProcessService processService;
 
     @Override
     public List<TestPlan> findAllTestPlans() {
@@ -79,11 +76,6 @@ public class TestPlanServiceImpl implements TestPlanService {
             record.setProcessInstanceId(testPlan.getProcessInstanceId());
         }
         return testPlanRepository.save(record);
-    }
-
-    @Override
-    public void deleteTestPlanById(Long id) {
-        testPlanRepository.deleteById(id);
     }
 
     @Override

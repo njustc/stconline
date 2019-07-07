@@ -20,10 +20,7 @@ export default {
       payload=EnArr2Str(payload)
       yield call(reviewEntrust, payload);
       if(payload.operation=="ReviewPass"){
-        // console.log("Pass")
         const res = yield call(queryEntrustState,payload)
-        // console.log("getREsult")
-        // console.log(res)
         if(res.state=="Approve"){
         console.log("get")
           const contract=yield call(addNewContract,payload)

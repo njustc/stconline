@@ -974,9 +974,6 @@ class newTestReport extends PureComponent {
           <BackTop visibilityHeight={300}/>
           <strong style={{color: 'rgba(64, 64, 64, 0.6)'}}> </strong>
         </div>
-
-
-        
             </Affix>
         </div>
 
@@ -991,39 +988,3 @@ class newTestReport extends PureComponent {
 export default newTestReport;
 
 
-// function onChange(a, b, c) {
-//   console.log(a, b, c);
-// }
-
-// ReactDOM.render(
-//   <Carousel afterChange={onChange}>
-//     <div>
-//       <h3>1</h3>
-//     </div>
-//     <div>
-//       <h3>2</h3>
-//     </div>
-//     <div>
-//       <h3>3</h3>
-//     </div>
-//     <div>
-//       <h3>4</h3>
-//     </div>
-//   </Carousel>,
-//   mountNode,
-// );
-// // <div>
-// <Affix offsetBottom={0}>
-//   <div className={style.submitBtns}>
-//   <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>{this.showDelete(this.props.form)}}>
-//     删除
-//   </Button>
-//   <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>this.save(this.props.form)}>
-//     保存
-//   </Button>
-//   <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>{this.showSubmit(this.props.form)}}>
-//     提交
-//   </Button>
-//   </div>
-// </Affix>
-// </div>

@@ -1,5 +1,6 @@
 package com.example.stc.framework.util;
 
+import com.alibaba.fastjson.JSON;
 import com.example.stc.domain.ProcessEntity;
 import com.example.stc.domain.User;
 import com.example.stc.service.UserService;
@@ -7,12 +8,16 @@ import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricActivityInstance;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import sun.rmi.runtime.Log;
 
 import java.util.Iterator;
 import java.util.List;
@@ -22,6 +27,8 @@ import java.util.List;
  */
 @Component
 public class ProcessUtils {
+
+    Logger logger = LoggerFactory.getLogger(ProcessUtils.class);
 
     @Autowired
     private RuntimeService runtimeService;
@@ -124,6 +131,12 @@ public class ProcessUtils {
         return false;
     }
 
+    /**
+     * 判断某个用户是否能够执行某个任务
+     * @param task
+     * @param userId
+     * @return
+     */
     public boolean checkUser(Task task, String userId) {
         boolean result = false;
         List identityLinkList = taskService.getIdentityLinksForTask(task.getId());
@@ -152,38 +165,90 @@ public class ProcessUtils {
     }
 
     /**
-     * 判断当前用户是否有权限操作该流程
+     * 判断当前用户是否可以对当前实例进行评审
+     * @param processInstanceId
+     * @param userId
+     * @return
+     */
+    public boolean isReviewable(String processInstanceId, String userId) {
+        boolean result = false;
+        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+        for (Task task : tasks) {
+            result |= checkUser(task, userId);
+        }
+        return result;
+    }
+
+    public boolean isCreator(ProcessEntity entity, String type) {
+        User user = authorityUtils.getLoginUser();
+        String userId = user.getUserID();
+
+        /** 创建者判断，对于创建实例的用户，在流程全程都能看到 */
+        switch (type) {
+            case "Entrust":
+                return userId.equals(entity.getUserId());
+            case "Contract":
+                return checkUser("SS", userId);
+            case "TestPlan":
+            case "TestRecord":
+            case "TestReport":
+                return checkUser("TS", userId);
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * 判断当前实例是否对当前用户可见
      * @param entity
      * @param type
      * @return
      */
     public boolean isVisible(ProcessEntity entity, String type) {
         User user = authorityUtils.getLoginUser();
+        String userId = user.getUserID();
         String processInstanceId = entity.getProcessInstanceId();
-        if (processInstanceId.equals("")) {
-            /** 尚未提交，此时能见者为：规定能够建立该流程的人 */
-            switch (type) {
-                case "Entrust": return user.getUserID().equals(entity.getUserId());
-                case "Contract": return checkUser("SS", user.getUserID());
-                case "TestPlan":
-                case "TestReport": return checkUser("TS", user.getUserID());
-                default: return false;
-            }
-        }
-        else {
-            switch (getProcessState(processInstanceId)) {
-                case "Submit":
-                case "Review":
-                    List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
-                    boolean result = false;
-                    for (Task task: tasks) {
-                        result |= checkUser(task, user.getUserID());
+
+        if (isCreator(entity, type))
+            return true;
+
+        String processState = getProcessState(processInstanceId);
+        switch (processState) {
+            case "Submit":
+                /**
+                 * 提交阶段，此时能见者为：规定能够建立该流程的人；先前的创建者判断已筛选，故此处必不为能见者
+                 */
+                return false;
+            case "Review":
+                /**
+                 * 审核阶段，此时能见者为：①当前任务的预定执行者；②历史任务的执行者（自从上一次Submit之后）
+                 */
+                if (isReviewable(processInstanceId, userId))
+                    return true;
+                List<HistoricTaskInstance> historicTaskInstances = historyService.createHistoricTaskInstanceQuery()
+                        .processInstanceId(processInstanceId)
+                        .orderByHistoricTaskInstanceStartTime()
+                        .desc().list();
+                for (HistoricTaskInstance historicTaskInstance: historicTaskInstances) {
+                    String name = historicTaskInstance.getName();
+                    if (name.contains("Submit")) {
+                        break;
                     }
-                    return result;
-                case "Approve":
-                    return (user.getUserID().equals(entity.getUserId()) || checkUser("STAFF", user.getUserID()));
-                default: return false;
-            }
+                    List<Group> groups = identityService.createGroupQuery().groupMember(userId).list();
+                    for (Group group: groups) {
+                        if (name.contains(group.getId())) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            case "Approve":
+                /**
+                 * 评审通过，此时能见者为：所有工作人员
+                 */
+                return checkUser("STAFF", userId);
+            default:
+                return false;
         }
     }
 
