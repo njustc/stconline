@@ -14,22 +14,14 @@ export default {
         // console.log('GetAllEntrust')
         console.log("???",response)
 
-        // 处理未登录情况：重定向到登陆界面
-        console.log(response)
-        if (response.status === 401) {
-          router.push("/user-login.html");
+        // console.log('_embedded' in response)
+        if (!('_embedded' in response)) {
+          console.log("put []")
+          yield put({type: 'addListData', payload: response})
+        } else {
+          yield put({type: 'addListData', payload: response._embedded.entrusts})
         }
-        else {
-          // console.log('_embedded' in response)
-          console.log("???")
-          if (!('_embedded' in response)) {
-            console.log("put []")
-            yield put({type: 'addListData', payload: response})
-          } else {
-            yield put({type: 'addListData', payload: response._embedded.entrusts})
-            console.log("???")
-          }
-        }
+
       },
       *DeleteEntrust({payload},{call,put}){
         // console.log(payload)

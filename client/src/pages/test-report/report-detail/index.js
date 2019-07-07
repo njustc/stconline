@@ -1,9 +1,9 @@
-import { Card, Table, Divider, Button, Tag ,Breadcrumb, Form, Descriptions} from 'antd';
+import { Card, Table, Divider, Button, Tag ,Breadcrumb, Form, Descriptions, Affix,BackTop,} from 'antd';
 import React from "react";
 import {connect} from "dva";
 import { FormattedMessage } from 'umi/locale';
 import {getRole} from "../../../utils/cookieUtils";
-
+import style from "../../entrust/basic-form/style.less";
 
 const namespace = 'report-detail';
 
@@ -112,6 +112,9 @@ export default class report_detail extends React.Component{
                 </Descriptions>
               </Card>
             </div>,
+
+
+
             "CUS":
             <div>
               <Card>
@@ -121,37 +124,46 @@ export default class report_detail extends React.Component{
                 </Descriptions>
               </Card>
               
-              <Button
-              style={{marginLeft: 350}}
-              type="primary"
-              onClick={() => {
-                this.review(this.props.form,"ReviewPass")
-              }}
-              >确认</Button>
-              <Button
-              style={{marginLeft: 20}}
-              type="danger"
-              onClick={() => {
-                this.review(this.props.form,"ReviewDisprove")
-              }}
-              >拒绝</Button>
+              <div>
+<Affix offsetBottom={0}>
+<div className={style.submitBtns}>
+<Button
+style={{marginLeft: 350}}
+type="primary"
+onClick={() => {
+  this.review(this.props.form,"ReviewPass")
+}}
+>确认</Button>
+<Button
+style={{marginLeft: 20}}
+type="danger"
+onClick={() => {
+  this.review(this.props.form,"ReviewDisprove")
+}}
+>拒绝</Button>
+</div>
+
+<div>
+          <BackTop visibilityHeight={300}/>
+          <strong style={{color: 'rgba(64, 64, 64, 0.6)'}}> </strong>
+        </div>
+</Affix>
+</div>
             </div>,
 
-            // "SM":
-            // <div>
-            //   <h1>市场部主任</h1>
-            //   <Button
-            //   style={{marginLeft: 350}}
-            //   type="primary"
-            //   onClick={() => {
-            //     this.review(this.props.form,"ReviewPass")
-            //   }}
-            //   >通过</Button>
-            //   <Button
-            //   style={{marginLeft: 20}}
-            //   type="danger"
-            //   >不通过</Button>
-            // </div>,
+
+
+
+
+
+
+
+
+
+
+
+
+         
             "TM":
             <div>
               <h1>测试部主任</h1>
@@ -161,21 +173,42 @@ export default class report_detail extends React.Component{
                   <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
                 </Descriptions>
               </Card>
-              <Button
-              style={{marginLeft: 350}}
-              type="primary"
-              onClick = {() => {
-                this.review(this.props.form,"ReviewPass")
-              }}
-              >通过</Button>
-              <Button
-              style={{marginLeft: 20}}
-              type="danger"
-              onClick={() => {
-                this.review(this.props.form,"ReviewDisprove")
-              }}
-              >不通过</Button>
+              <div>
+<Affix offsetBottom={0}>
+<div className={style.submitBtns}>
+<Button
+style={{marginLeft: 400}}
+type="primary"
+onClick = {() => {
+  this.review(this.props.form,"ReviewPass")
+}}
+>通过</Button>
+<Button
+style={{marginLeft: 40}}
+type="danger"
+onClick={() => {
+  this.review(this.props.form,"ReviewDisprove")
+}}
+>不通过</Button>
+</div>
+
+<div>
+          <BackTop visibilityHeight={300}/>
+          <strong style={{color: 'rgba(64, 64, 64, 0.6)'}}> </strong>
+        </div>
+</Affix>
+</div>
+           
             </div>,
+
+
+
+
+
+
+
+
+
             "QM":
             <div>
               <h1>质量部主任</h1>
@@ -185,6 +218,13 @@ export default class report_detail extends React.Component{
                   <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
                 </Descriptions>
               </Card>
+
+
+
+              <div>
+<Affix offsetBottom={0}>
+<div className={style.submitBtns}>
+
               <Button
               style={{marginLeft: 350}}
               type="primary"
@@ -199,6 +239,17 @@ export default class report_detail extends React.Component{
                 this.review(this.props.form,"ReviewDisprove")
               }}
               >不通过</Button>
+
+
+</div>
+
+<div>
+          <BackTop visibilityHeight={300}/>
+          <strong style={{color: 'rgba(64, 64, 64, 0.6)'}}> </strong>
+        </div>
+</Affix>
+</div>
+
             </div>,
           
 

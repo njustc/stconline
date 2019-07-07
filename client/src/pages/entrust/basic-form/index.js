@@ -46,13 +46,12 @@ const mapStateToProps = (state) => {
     entrustdata,
   };
 }
-const mapDispatchToProps = (dispatch) => {
-  return {}
-}
 
-@connect(mapStateToProps, mapDispatchToProps)
+
+
 
 @Form.create()
+@connect(mapStateToProps)
 class BasicForm extends PureComponent {
   state = {
     bottom: 10,
@@ -240,17 +239,18 @@ class BasicForm extends PureComponent {
         authorization: 'authorization-text',
       },
       enctype: "multipart/form-data",
-      onChange(info) {
-        if (info.file.status !== 'uploading') {
-          console.log(info.file, info.fileList);
+      onChange({ file, fileList }) {
+        if (file.status !== 'uploading') {
+          console.log(file);
+          console.log(fileList);
         }
-        if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
+        if (file.status === 'done') {
+          message.success(`${file.name} file uploaded successfully`);
+        } else if (file.status === 'error') {
+          message.error(`${file.name} file upload failed.`);
         }
       },
-
+      defaultFileList: [],
     };
 
     return (

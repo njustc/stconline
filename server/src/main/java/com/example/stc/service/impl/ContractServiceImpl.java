@@ -43,13 +43,10 @@ public class ContractServiceImpl implements ContractService{
 
     @Autowired
     private ProcessUtils processUtils;
-    
-    @Autowired
-    private ProcessService processService;
 
     @Override
     public List<Contract> findAllContracts() {
-        logger.info("findAllContracts: 查看全部合同");
+        logger.info("findAllContracts: ");
         return contractRepository.findAll();
     }
 
@@ -58,12 +55,6 @@ public class ContractServiceImpl implements ContractService{
         User curUser = authorityUtils.getLoginUser();
         logger.info("findContractsByAuthority: 当前登录者id = " + curUser.getUserID() +
                 ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
-//        // 若为用户，返回该用户全部合同
-//        if (authorityUtils.hasAuthority(Role.Customer)) {
-//            return findContractByUser(curUser.getUserID());
-//        }
-//        // 若为工作人员，返回全部合同
-//        return findAllContracts();
         List<Contract> allContracts = this.findAllContracts();
         allContracts.removeIf(contract -> !processUtils.isVisible(contract, "Contract"));
         return allContracts;
@@ -71,53 +62,19 @@ public class ContractServiceImpl implements ContractService{
 
     @Override
     public List<Contract> findContractByUser(String uid) {
-        logger.info("findContractsByUser: 查看某用户全部合同");
+        logger.info("findContractsByUser:");
         List<Contract> allContracts = this.findAllContracts();
         allContracts.removeIf(contract -> !contract.getUserId().equals(uid));
         return allContracts;
     }
 
-    /**
-     * 对于客户，检查访问的是否是本人的合同；若不是，权限异常
-     */
-    private void customerAccessCheck(Contract contract) {
-        if (authorityUtils.hasAuthority(Role.Customer)) {
-            User curUser = authorityUtils.getLoginUser();
-            if (!contract.getUserId().equals(curUser.getUserID())) {
-                logger.info("customerAccessCheck: 没有查看权限，客户只能查看自己的合同");
-                throw new AccessDeniedException("没有查看权限，客户只能查看自己的合同");
-            }
-        }
-    }
-
-    @Override
-    public Contract findContractById(Long id) {
-        Contract contract = contractRepository.findById(id)
-                .orElseThrow(() -> new ContractNotFoundException(id));
-        logger.info("findContractById: ");
-
-        this.customerAccessCheck(contract); // 若为客户，只能访问本人的合同
-
-        return contract;
-    }
-
     @Override
     public Contract findContractByPid(String pid) {
+        logger.info("findContractByPid: ");
         Contract contract = contractRepository.findByPid(pid);
         if (contract == null)
             throw new ContractNotFoundException(pid);
-        logger.info("findContractByPid: ");
-
-        this.customerAccessCheck(contract); // 若为客户，只能访问本人的合同
-
         return contract;
-    }
-
-    @Override
-    public void deleteContractById(Long id) {
-        logger.info("deleteContractById: ");
-        Contract contract = this.findContractById(id);
-        contractRepository.deleteById(id);
     }
 
     @Override
@@ -146,6 +103,7 @@ public class ContractServiceImpl implements ContractService{
         Contract contract = new Contract();
         contract.setPid(pid);
         contract.setUserId(uid);
+        contract.setProcessInstanceId("");
         contract.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
         // DEBUG：若数据库中该项目已存在，则覆盖原项目
         contractRepository.deleteByPid(pid);

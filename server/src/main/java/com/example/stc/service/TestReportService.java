@@ -30,11 +30,6 @@ public interface TestReportService extends BaseService<TestReport> {
      * 通过pid修改单个委托记录
      */
     TestReport updateTestReport(String pid, TestReport record);
-    
-    /**
-     * 通过id删除单个项目的测试报告
-     */
-    void deleteTestReportById(Long id);
 
     /**
      * 通过pid删除单个项目的测试报告

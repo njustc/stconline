@@ -3,20 +3,20 @@ import router from "umi/router";
 import {message} from "antd";
 import { EnArr2Str,EnStr2Arr} from '@/utils/utils';
 
-
 export default {
   namespace: 'checkentrust',
   state: {
-    selectedKey: '/basic-list',
     entrust: {},
   },
   effects: {
     * getOneEntrust({payload}, {call, put}) {
-      const response = yield call(getOneEntrust, payload);
-      console.log(response);
+      console.log(payload)
+      const response = yield call(getOneEntrust,payload);
       yield put({type: 'initData', payload: EnStr2Arr(response)})
     },
     * ReviewEntrust({payload},{call}) {
+      // console.log("ReviewEntrust");
+      // console.log("res",payload)
       payload=EnArr2Str(payload)
       yield call(reviewEntrust, payload);
       if(payload.operation=="ReviewPass"){
@@ -36,6 +36,7 @@ export default {
   },
   reducers: {
     initData(state, action) {
+      console.log(action.payload)
       return {
         ...state,
         entrust: action.payload,

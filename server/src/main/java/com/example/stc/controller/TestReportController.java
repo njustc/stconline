@@ -1,7 +1,10 @@
 package com.example.stc.controller;
 
 import com.example.stc.domain.TestReport;
+import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.service.TestReportService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
@@ -23,43 +26,42 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @RestController
 public class TestReportController extends BaseController {
 
+    Logger logger = LoggerFactory.getLogger(TestRecordController.class);
+
     @Autowired
     private TestReportService testReportService;
-    
-    /**
-     * 添加Link，使 TestReport -> Resource<TestReport>
-     */
-    private static Resource<TestReport> toResource(TestReport testReport) {
-        return new Resource<>(testReport
-                , linkTo(methodOn(TestReportController.class).getOneTestReport(testReport.getPid())).withSelfRel()
-                , linkTo(methodOn(TestReportController.class).getAllTestReport()).withSelfRel()
-        );
-    }
 
     /**
      * 查看全部测试报告
+     * CUS, SS, TS, TM, QM可查看
      */
-    @Secured({"ROLE_CUS", "ROLE_TS", "ROLE_TM", "ROLE_QM"})
+    @Secured({"ROLE_CUS", "ROLE_SS", "ROLE_TS", "ROLE_TM", "ROLE_QM"})
     @GetMapping(path = "/testReport")
     public @ResponseBody
     Resources<Resource<TestReport>> getAllTestReport() {
         // 依据当前登录的用户的权限查询能见的测试报告
         List<Resource<TestReport>> testReports = testReportService.findTestReportsByAuthority().stream()
-                .map(TestReportController::toResource)
+                .map(testReport -> toResource(testReport, methodOn(TestReportController.class).getAllTestReport(), null))
                 .collect(Collectors.toList());
+        logger.info("getAllTestReport: 最终查询测试报告数：" + testReports.size());
         return new Resources<>(testReports,
                 linkTo(methodOn(TestReportController.class).getAllTestReport()).withSelfRel());
     }
 
     /**
      * 查看单个测试报告
+     * CUS, SS, TS, TM, QM可查看
+     * 除TS以外仅审核之后可查看
      */
-    @Secured({"ROLE_CUS", "ROLE_TS", "ROLE_TM", "ROLE_QM"})
+    @Secured({"ROLE_CUS", "ROLE_SS", "ROLE_TS", "ROLE_TM", "ROLE_QM"})
     @GetMapping(path = "/testReport/{pid}")
     public @ResponseBody
     Resource<TestReport> getOneTestReport(@PathVariable String pid) {
         TestReport testReport = testReportService.findTestReportByPid(pid);
-        return toResource(testReport);
+        authorityUtils.stateAccessCheck(testReport, "CUS,SS,TM,QM", "Review,Approve", "查看");
+        logger.info("getOneTestReport");
+        return toResource(testReport, methodOn(TestReportController.class).getOneTestReport(pid)
+                , methodOn(TestReportController.class).getAllTestReport());
     }
 
     /**
@@ -69,12 +71,14 @@ public class TestReportController extends BaseController {
     @PostMapping(path = "/testReport/{pid}")
     public @ResponseBody
     ResponseEntity<?> addNewTestReport(@PathVariable String pid, @RequestParam String uid) throws URISyntaxException {
-        Resource<TestReport> resource = toResource(testReportService.newTestReport(pid, uid));
+        Resource<TestReport> resource = toResource(testReportService.newTestReport(pid, uid)
+                , methodOn(TestReportController.class).addNewTestReport(pid, uid), null);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
     /**
      * 修改单个测试报告
+     * 仅TS在Submit阶段可修改
      * @throws URISyntaxException
      */
     @Secured({"ROLE_TS"}) // 测试部工作人员
@@ -82,16 +86,23 @@ public class TestReportController extends BaseController {
     public @ResponseBody
     ResponseEntity<?> replaceTestReport(@PathVariable String pid, @RequestBody TestReport testReport) throws URISyntaxException {
         TestReport updatedTestReport = testReportService.updateTestReport(pid, testReport);
-        Resource<TestReport> resource = toResource(updatedTestReport);
+        authorityUtils.stateAccessCheck(testReport, "TS", "Submit", "修改");
+        logger.info("replaceTestReport");
+        Resource<TestReport> resource = toResource(updatedTestReport
+                , methodOn(TestReportController.class).replaceTestReport(pid, testReport), null);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
     /**
      * 删除单个测试报告
+     * 仅TS在Submit阶段可删除
      */
     @DeleteMapping(path = "/testReport/{pid}")
     public @ResponseBody
     ResponseEntity<?> deleteTestReport(@PathVariable String pid) {
+        TestReport testReport = testReportService.findTestReportByPid(pid);
+        authorityUtils.stateAccessCheck(testReport, "TS", "Submit", "删除");
+        logger.info("deleteTestReport");
         testReportService.deleteTestReportByPid(pid);
         return ResponseEntity.noContent().build();
     }

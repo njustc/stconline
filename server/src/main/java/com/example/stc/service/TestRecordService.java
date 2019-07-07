@@ -21,15 +21,14 @@ public interface TestRecordService extends BaseService<TestRecord> {
     List<TestRecord> findAllTestRecordsByPid(String pid);
 
     /**
+     * 通过项目ID查询该项目的全部可见测试记录
+     */
+    List<TestRecord> findAllTestRecordsByPidByAuthority(String pid);
+
+    /**
      * 通过用例ID查询单个测试记录
      */
     TestRecord findTestRecordByTestId(String testId);
-
-    /**
-     * 通过主键ID删除单个测试记录
-     * 如果不存在,就报错
-     */
-    void deleteTestRecordById(Long id);
 
     /**
      * 通过用例ID删除单个测试记录

@@ -16,22 +16,16 @@ export default {
       // console.log('GetAllContract')
       // console.log(response);
 
-      // 处理未登录情况：重定向到登陆界面
-      console.log(response.status)
-      if (response.status === 401) {
-        router.push("/user-login.html");
+      //_embedded复制粘贴的委托
+      // console.log('_embedded' in response);
+      if (!('_embedded' in response)) {
+        // console.log("put []");
+        //执行getPlanData
+        yield put({type: 'getData', payload: response});
+      } else {
+        yield put({type: 'getData', payload: response._embedded.contracts});
       }
-      else {
-        //_embedded复制粘贴的委托
-        // console.log('_embedded' in response);
-        if (!('_embedded' in response)) {
-          // console.log("put []");
-          //执行getPlanData
-          yield put({type: 'getData', payload: response});
-        } else {
-          yield put({type: 'getData', payload: response._embedded.contracts});
-        }
-      }
+
     },
 
     *queryDeleteCon({payload},{call,put}){
