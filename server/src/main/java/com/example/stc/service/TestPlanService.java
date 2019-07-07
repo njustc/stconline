@@ -31,11 +31,6 @@ public interface TestPlanService extends BaseService<TestPlan> {
      * 通过pid修改单个委托记录
      */
     TestPlan updateTestPlan(String pid, TestPlan record);
-    
-    /**
-     * 通过id删除单个项目的测试方案
-     */
-    void deleteTestPlanById(Long id);
 
     /**
      * 通过pid删除单个项目的测试方案

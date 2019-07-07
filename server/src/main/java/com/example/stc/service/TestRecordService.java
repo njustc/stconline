@@ -26,12 +26,6 @@ public interface TestRecordService extends BaseService<TestRecord> {
     TestRecord findTestRecordByTestId(String testId);
 
     /**
-     * 通过主键ID删除单个测试记录
-     * 如果不存在,就报错
-     */
-    void deleteTestRecordById(Long id);
-
-    /**
      * 通过用例ID删除单个测试记录
      */
     void deleteTestRecordByTestId(String testId);

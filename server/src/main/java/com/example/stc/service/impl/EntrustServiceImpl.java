@@ -42,9 +42,6 @@ public class EntrustServiceImpl implements EntrustService {
     @Autowired
     private ProcessUtils processUtils;
 
-    @Autowired
-    private ProcessService processService;
-
     @Override
     public List<Entrust> findAllEntrusts() {
         return entrustRepository.findAll();
@@ -55,26 +52,8 @@ public class EntrustServiceImpl implements EntrustService {
         User curUser = authorityUtils.getLoginUser();
         logger.info("findEntrustsByAuthority: 当前登录者uid = " + curUser.getUserID() +
                 ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
-//        // 若为用户，返回该用户全部委托
-//        if (authorityUtils.hasAuthority(Role.Customer)) {
-//            return findEntrustsByUser(curUser.getUserID());
-//        }
-//        // 若为工作人员，返回待审核的全部委托
-//        if (authorityUtils.hasAuthority(Role.STAFF)) {
-//            return findReviewEntrusts();
-//        }
-//        return findAllEntrusts();
         List<Entrust> allEntrusts = this.findAllEntrusts();
         allEntrusts.removeIf(entrust -> !processUtils.isVisible(entrust, "Entrust"));
-        return allEntrusts;
-    }
-
-    @Override
-    public List<Entrust> findReviewEntrusts() {
-        logger.info("findSubmitEntrusts: 仅查看待审核和已审核通过的所有委托");
-        List<Entrust> allEntrusts = this.findAllEntrusts();
-        allEntrusts.removeIf(entrust -> (entrust.getProcessState() != ProcessState.Review &&
-                entrust.getProcessState() != ProcessState.Approve));
         return allEntrusts;
     }
 
@@ -86,47 +65,13 @@ public class EntrustServiceImpl implements EntrustService {
         return allEntrusts;
     }
 
-    /**
-     * 对于客户，检查访问的是否是本人的委托；若不是则权限异常
-     */
-    private void customerAccessCheck(Entrust entrust) {
-        if (authorityUtils.hasAuthority(Role.Customer)) {
-            User curUser = authorityUtils.getLoginUser();
-            if (!entrust.getUserId().equals(curUser.getUserID())) {
-                logger.info("customerAccessCheck: 没有查看权限，客户只能查看自己的委托");
-                throw new AccessDeniedException("没有查看权限，客户只能查看自己的委托");
-            }
-        }
-    }
-
-    @Override
-    public Entrust findEntrustById(Long id) {
-        Entrust entrust = entrustRepository.findById(id)
-                .orElseThrow(() -> new EntrustNotFoundException(id));
-        logger.info("findEntrustById: ");
-
-        this.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
-
-        return entrust;
-    }
-
     @Override
     public Entrust findEntrustByPid(String pid) {
+        logger.info("findEntrustByPid: ");
         Entrust entrust = entrustRepository.findByPid(pid);
         if (entrust == null)
             throw new EntrustNotFoundException(pid);
-        logger.info("findEntrustByPid: ");
-
-        this.customerAccessCheck(entrust); // 若为客户，只能访问本人的委托
-
         return entrust;
-    }
-
-    @Override
-    public void deleteEntrustById(Long id) {
-        logger.info("deleteEntrustById: ");
-        Entrust entrust = this.findEntrustById(id); // 找到应删除的委托并检查，若为客户，只能访问本人的委托
-        entrustRepository.deleteById(id);           // 如果找不到就会报错
     }
 
     @Override

@@ -58,6 +58,8 @@ public class FileUploadController extends BaseController {
     @GetMapping("/files")
     public @ResponseBody
     List<String> getUploadFiles(@RequestParam(value = "pid") String pid) {
+        if (pid == "")
+            return new ArrayList<>();
         String filepath = UPLOADED_FOLDER + pid + "/";
         File fileDirs = new File(filepath);
         File[] files = fileDirs.listFiles();
