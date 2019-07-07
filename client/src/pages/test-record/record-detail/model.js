@@ -19,7 +19,7 @@ export default {
     * queryReviewTestRecord({payload},{call}) {
       console.log("review",payload)
       yield call(updateTestRecordProcess, payload);
-      router.push("/record-list.html")
+      router.push("/record-list.html?pid=" + payload.pid);
     },
 
   },

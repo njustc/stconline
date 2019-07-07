@@ -145,29 +145,28 @@ export default class List extends React.Component {
                     },
                   ],
                 })(<Input placeholder={formatMessage({id: '输入审批意见'})}
-                          disabled={this.props.dataDetail.detail.processState != "Review"}
+                          disabled={this.props.dataDetail.detail.processState !== "Review"}
                 />)}
               </FormItem>
 
               {
-                this.props.dataDetail.detail.processState == "Review" ?
-                  <Card>
-                    <div>
-                      <Button onClick={() => {
-                        this.review(this.props.form, "ReviewPass")
-                      }} style={{marginLeft: 8}}
-                              type="primary">
-                        <FormattedMessage id="basic-form.form.agree"/>
-                      </Button>
-                      <Button onClick={() => {
-                        this.review(this.props.form, "ReviewDisprove")
-                      }} style={{marginLeft: 8}}
-                              type="primary"
-                              disabled={this.props.dataDetail.detail.processState != "Review"}>
-                        <FormattedMessage id="basic-form.form.disagree"/>
-                      </Button>
-                    </div>
-                  </Card>
+                this.props.dataDetail.detail.processState === "Review" ?
+
+                  <div>
+                    <Button onClick={() => {
+                      this.review(this.props.form, "ReviewPass")
+                    }} style={{marginLeft: 8}}
+                            type="primary">
+                      <FormattedMessage id="basic-form.form.agree"/>
+                    </Button>
+                    <Button onClick={() => {
+                      this.review(this.props.form, "ReviewDisprove")
+                    }} style={{marginLeft: 8}}
+                            type="primary"
+                            disabled={this.props.dataDetail.detail.processState !== "Review"}>
+                      <FormattedMessage id="basic-form.form.disagree"/>
+                    </Button>
+                  </div>
                   : null
               }
             </div>,
