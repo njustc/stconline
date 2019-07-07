@@ -60,6 +60,7 @@ public class TestPlanServiceImpl implements TestPlanService {
         TestPlan testPlan = new TestPlan();
         testPlan.setPid(pid);
         testPlan.setUserId(uid);
+        testPlan.setProcessInstanceId("");
         testPlan.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
         // DEBUG：若数据库中该项目已存在，则覆盖原项目
         testPlanRepository.deleteByPid(pid);
@@ -71,6 +72,7 @@ public class TestPlanServiceImpl implements TestPlanService {
         TestPlan testPlan = testPlanRepository.findByPid(pid);
         record.setId(testPlan.getId());
         record.setPid(testPlan.getPid());
+        record.setUserId(testPlan.getUserId());
         if (record.getProcessInstanceId() == null || record.getProcessInstanceId().equals("")) {
             record.setProcessState(testPlan.getProcessState());
             record.setProcessInstanceId(testPlan.getProcessInstanceId());

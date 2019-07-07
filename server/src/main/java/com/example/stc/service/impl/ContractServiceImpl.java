@@ -103,6 +103,7 @@ public class ContractServiceImpl implements ContractService{
         Contract contract = new Contract();
         contract.setPid(pid);
         contract.setUserId(uid);
+        contract.setProcessInstanceId("");
         contract.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
         // DEBUG：若数据库中该项目已存在，则覆盖原项目
         contractRepository.deleteByPid(pid);

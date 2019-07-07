@@ -73,6 +73,7 @@ public class TestRecordServiceImpl implements TestRecordService {
     public TestRecord newTestRecord(TestRecord testRecord) {
         // 该测试用例的pid是已经填好的
         // 根据某一个算法设置testId
+        testRecord.setProcessInstanceId("");
         testRecord.setTestId(testRecord.getPid() + "-" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         // TODO: 流程引擎
         return testRecordRepository.save(testRecord);
@@ -83,6 +84,7 @@ public class TestRecordServiceImpl implements TestRecordService {
         TestRecord testRecord = testRecordRepository.findByTestId(testId);
         record.setId(testRecord.getId());
         record.setPid(testRecord.getPid());
+        record.setUserId(testRecord.getUserId());
         record.setProcessState(testRecord.getProcessState());
         record.setProcessInstanceId(testRecord.getProcessInstanceId());
         return testRecordRepository.save(record);

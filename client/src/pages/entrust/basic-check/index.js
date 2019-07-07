@@ -231,13 +231,13 @@ export default class entrustCheck extends Component {
                 this.props.entrustdata.entrust.processState == "Review" ?
                   <Card>
                     <Button onClick={() => {
-                      this.review(this.props.entrustdata.entrust, "ReviewPass")
+                      this.review(this.props.form, "ReviewPass")
                     }} style={{marginLeft: 8}}
                             type="primary">
                       <FormattedMessage id="basic-form.form.agree"/>
                     </Button>
                     <Button onClick={() => {
-                      this.review(this.props.entrustdata.entrust, "ReviewDisprove")
+                      this.review(this.props.form, "ReviewDisprove")
                     }} style={{marginLeft: 8}}
                             type="primary"
                             disabled={this.props.entrustdata.entrust.processState != "Review"}>
