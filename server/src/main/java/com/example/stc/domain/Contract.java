@@ -12,6 +12,18 @@ import javax.persistence.Column;
 public class Contract extends ProcessEntity {
 
     /**
+     * 项目名称
+     */
+    @Column(name = "PROJECT_NAME")
+    private String projectName;
+
+    /**
+     * 软件名称
+     */
+    @Column(name = "SOFTWARE_NAME")
+    private String softwareName;
+
+    /**
      * 委托方(甲方)
      */
     @Column(name = "CLIENT")
@@ -419,4 +431,19 @@ public class Contract extends ProcessEntity {
         this.contractBody = contractBody;
     }
 
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getSoftwareName() {
+        return softwareName;
+    }
+
+    public void setSoftwareName(String softwareName) {
+        this.softwareName = softwareName;
+    }
 }
