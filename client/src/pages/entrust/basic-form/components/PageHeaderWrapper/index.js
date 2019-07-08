@@ -5,7 +5,7 @@ import { PageHeader } from 'ant-design-pro';
 import styles from './index.less';
 
 const PageHeaderWrapper = ({ children, wrapperClassName, ...restProps }) => (
-  <div style={{ margin: '-24px -24px 0' }} className={wrapperClassName}>
+  <div  className={wrapperClassName}>
     <PageHeader
       home={<FormattedMessage id="basic-form.menu.home" defaultMessage="Home" />}
       key="pageheader"

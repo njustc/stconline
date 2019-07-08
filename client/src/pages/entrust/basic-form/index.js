@@ -256,7 +256,7 @@ class BasicForm extends PureComponent {
         <Breadcrumb>
           <Breadcrumb.Item href="/basic-list.html">主页</Breadcrumb.Item>
           <Breadcrumb.Item href="/basic-list.html">委托列表</Breadcrumb.Item>
-          <Breadcrumb.Item href="/basic-form.html">编辑委托</Breadcrumb.Item>
+          <Breadcrumb.Item >编辑委托</Breadcrumb.Item>
           {/*<Link to="/basic-list.html">返回</Link>*/}
         </Breadcrumb>
         <div className={style.headerTitle}>
