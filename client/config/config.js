@@ -73,7 +73,7 @@ export default {
         //contract
 
         {
-          path: '/contract_detail',
+          path: '/contract_check',
           component: './contract/contract_detail',
         },
         {

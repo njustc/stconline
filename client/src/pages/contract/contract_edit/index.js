@@ -95,7 +95,6 @@ class BasicForm extends PureComponent {
     super(props)
     this.state={
       pid:"",
-      Bottom: 0
     }
   }
 
@@ -150,6 +149,14 @@ class BasicForm extends PureComponent {
     //console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
   };
 
+  // showDelete(con) {
+  //   var that = this
+  //   confirm({
+  //     title: '您是否要废止合同',
+  //     content: ''
+  //   })
+  // }
+
   showConfirm(con) {
     var that=this
     confirm({
@@ -197,6 +204,7 @@ class BasicForm extends PureComponent {
 	<div>
 		<Breadcrumb>
 			<Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
+      <Breadcrumb.Item href="/contract_list.html">合同列表</Breadcrumb.Item>
 			<Breadcrumb.Item>合同编辑</Breadcrumb.Item>
 		</Breadcrumb>
 		<br />
@@ -358,7 +366,7 @@ class BasicForm extends PureComponent {
               })(<Input placeholder={formatMessage({ id: '这里写一写' })} />)}
             </FormItem>
 		</Card>
-		<Affix offsetBottom={this.state.Bottom}>
+		<Affix offsetBottom={0} >
       <div className={style.submitBtns}>
 		    {/* <FormItem {...submitFormLayout} style={{ marginTop: 32 }}> */}
             <Button type="primary" onClick={()=> this.showConfirm(this.props.form)}>
@@ -367,9 +375,9 @@ class BasicForm extends PureComponent {
             <Button style={{ marginLeft: 8 }} onClick={() =>this.save(this.props.form)}>
                 <FormattedMessage id="basic-form.form.save" />
             </Button>
-			      <Button style={{ marginLeft: 8 }} type="danger" /*onClick={showDeleteConfirm}*/>
-			          <FormattedMessage id="basic-form.form.delete" />
-			      </Button>
+			      {/* <Button style={{ marginLeft: 8 }} type="danger" onClick={()=> this.showDelete(this.props.form)}>
+			          <FormattedMessage id="废止" />
+			      </Button> */}
         {/* </FormItem> */}
       </div>
     </Affix>
