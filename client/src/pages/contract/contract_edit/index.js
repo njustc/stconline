@@ -214,16 +214,16 @@ class BasicForm extends PureComponent {
 		</Card>
 		<br />
       <Card bordered={false}>
-			<FormItem {...formItemLayout} label={<FormattedMessage id="contract.project_name.label" />}>
-        {getFieldDecorator('project_name',{
-          initialValue: this.props.dataEdit.editdata.pid || '',
+			<FormItem {...formItemLayout} label={<FormattedMessage id="contract.projectName.label" />}>
+        {getFieldDecorator('projectName',{
+          initialValue: this.props.dataEdit.editdata.projectName || '',
         } ,{
           rules: [{
                     required: true,
-                    message: formatMessage({ id: 'validation.project_name.required' }),
+                    message: formatMessage({ id: 'validation.projectName.required' }),
                   },
                  ],
-          })(<Input placeholder={formatMessage({ id: 'contract.project_name.placeholder' })} />)}
+          })(<Input placeholder={formatMessage({ id: 'contract.projectName.placeholder' })} />)}
       </FormItem>
       {/* 委托方甲方 */}
       <FormItem {...formItemLayout} label={<FormattedMessage id="contract.client.label" />}>
@@ -302,7 +302,7 @@ class BasicForm extends PureComponent {
       {/* 等待后端 */}
 			<FormItem>
           {getFieldDecorator('软件',{
-            initialValue: this.props.dataEdit.editdata.quality || '',
+            initialValue: this.props.dataEdit.editdata.softwareName || '',
           } 
           )(<Input style={{width:300}} />)}
       </FormItem>
@@ -398,28 +398,28 @@ class BasicForm extends PureComponent {
       <h1>3. 如受测软件在测试过程中出现的问题，导致继续进行测试会影响整体测试进度，则乙方暂停测试并以书面形式通知甲方进行整改。在整个测试过程中，整改次数限于</h1>
       {/* 等待后端 */}
       <FormItem>
-        {getFieldDecorator('price',{
-          initialValue: this.props.dataEdit.editdata.price || '',
+        {getFieldDecorator('modifyNum',{
+          initialValue: this.props.dataEdit.editdata.modifyNum || '',
         } ,{
           rules: [{
                     required: true,
-                    message: formatMessage({ id: 'validation.price.required' }),
+                    message: formatMessage({ id: 'validation.modifyNum.required' }),
                   },
                  ],
-          })(<Input placeholder={formatMessage({ id: 'contract.price.placeholder' })} />)}
+          })(<Input placeholder={formatMessage({ id: 'contract.modifyNum.placeholder' })} />)}
       </FormItem>
       <h1>次,每次不超过</h1>
       {/* 等待后端 */}
       <FormItem>
-        {getFieldDecorator('price',{
-          initialValue: this.props.dataEdit.editdata.price || '',
+        {getFieldDecorator('modifyTime',{
+          initialValue: this.props.dataEdit.editdata.modifyTime || '',
         } ,{
           rules: [{
                     required: true,
-                    message: formatMessage({ id: 'validation.price.required' }),
+                    message: formatMessage({ id: 'validation.modifyTime.required' }),
                   },
                  ],
-          })(<Input placeholder={formatMessage({ id: 'contract.price.placeholder' })} />)}
+          })(<Input placeholder={formatMessage({ id: 'contract.modifyTime.placeholder' })} />)}
       </FormItem>
       <h1>天</h1>
       <h1>4. 如因甲方原因，导致测试进度延迟、应由甲方负责,乙方不承担责任。</h1>

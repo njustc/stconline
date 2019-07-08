@@ -44,8 +44,8 @@ export default {
 	'contract.clientSignDate.placeholder': '请填写委托方--签章日期',
 
 	'contract.clientContact.label': '联系人',
-	'validation.clientContact.required': '请填写委托方--联系人',
-	'contract.clientContact.placeholder': '请填写委托方--联系人！',
+	'validation.clientContact.required': '请填写委托方--联系人！',
+	'contract.clientContact.placeholder': '请填写委托方--联系人',
 
 	'contract.clientAddr.label': '通讯地址',
 	'validation.clientAddr.required': '请填写委托方--通讯地址！',
