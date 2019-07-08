@@ -9,7 +9,6 @@ import Button from "antd/es/button";
 import styles from './style.less';
 import {readCookie, getRole} from "../../utils/cookieUtils";
 
-
 const {Tab, UserName, Password, Mobile, Captcha, Submit} = Login;
 
 @connect(({userInfo, loading}) => ({
@@ -40,16 +39,11 @@ class LoginPage extends Component {
           type,
         },
       }).then(res => {
-        // TODO: 登录成功与失败处理逻辑
-        console.log(res.status);
-        // 401
-        if (res.status === 401) {
-
-        } else {
-          router.push("/welcome")
-        }
-
-        // cookie内容
+        //TODO: 登录成功与失败处理逻辑
+        //console.log(res.status);
+        //router.push("/welcome")
+        location.replace("/welcome.html")
+        //cookie内容
       });
     }
   };
@@ -62,7 +56,8 @@ class LoginPage extends Component {
     dispatch({
       type: 'userInfo/logout',
     }).then(res => {
-      console.log(res)
+      //console.log(res)
+      location.replace("/user-login.html")
     })
   };
 
@@ -94,7 +89,7 @@ class LoginPage extends Component {
         >
           <UserName
             name="username"
-            placeholder={`${formatMessage({id: 'user-login.login.userName'})}: admin or user`}
+            placeholder={`${formatMessage({id: 'user-login.login.userName'})}`}
             rules={[
               {
                 required: true,
@@ -104,7 +99,7 @@ class LoginPage extends Component {
           />
           <Password
             name="password"
-            placeholder={`${formatMessage({id: 'user-login.login.password'})}: ant.design`}
+            placeholder={`${formatMessage({id: 'user-login.login.password'})}`}
             rules={[
               {
                 required: true,
@@ -138,7 +133,7 @@ class LoginPage extends Component {
               <FormattedMessage id="user-login.login.signup"/>
             </Link>
           </div>
-          <a href="http://localhost:8080/api/project/files?pid=p20190610010104&filename=main.py">下载文件</a>
+          <a href="http://localhost:8080/api/project/files?pid=p20190610010104&filename=testfile">下载文件</a>
         </Login>
       </div>
 

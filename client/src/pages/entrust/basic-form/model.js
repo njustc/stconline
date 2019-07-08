@@ -23,27 +23,27 @@ export default {
     *addNewEntrust({ payload }, { call ,put}) {
       payload=EnArr2Str(payload)
       const response=yield call(addNewEntrust, payload);
-      console.log("new",response)
+      // console.log("new",response)
       yield put({type:'initData',payload:EnStr2Arr(response)})
       message.success('新建成功');
     },
     
     *submitForm({ payload }, {call}) {
-      console.log("submit",payload.pid!="")
+      // console.log("submit",payload.pid!="")
       payload=EnArr2Str(payload)
-      console.log("beforesub",payload)
+      // console.log("beforesub",payload)
       if(payload.pid==""){//不存在
         const newform=yield call(addNewEntrust, payload);
         payload = newform
       }
       else{
-        console.log("save")
+        // console.log("save")
         const res=yield call(replaceEntrust, payload);
-        console.log(res)
+        // console.log(res)
         payload = res
       }
-      console.log(payload)
-      console.log(payload.processInstanceId==="")
+      // console.log(payload)
+      // console.log(payload.processInstanceId==="")
       if (payload.processInstanceId===""){
         const response=yield call(createEntrustProcess,payload)
       }

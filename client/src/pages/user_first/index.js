@@ -20,7 +20,7 @@ function callback(key) {
 
 const mapStateToProps = (state) => {
     const listdata = state[namespace];
-    console.log("输出listdata",listdata);
+    //console.log("输出listdata",listdata);
     //let p = state[namespace].process;
     //console.log("输出p",p);
     //console.log("试着输出softname",listdata.data.length);
@@ -31,13 +31,13 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch,state) => {
     return {
       onDidMount: () => {
-          console.log("???")
+          //console.log("???")
         dispatch({
           type: `${namespace}/GetAllEntrust`,
         })
       },
       getP: (pid) => {
-          console.log(pid)
+          //console.log(pid)
           dispatch({
               type: `${namespace}/GetProcess`,
               payload: pid
