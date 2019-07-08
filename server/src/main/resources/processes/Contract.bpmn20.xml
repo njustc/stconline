@@ -15,25 +15,25 @@
     <subProcess activiti:exclusive="true" id="subProcess" name="审批子流程" triggeredByEvent="false">
       <parallelGateway gatewayDirection="Unspecified" id="mApproveForkGate" name="Fork"/>
       <parallelGateway gatewayDirection="Unspecified" id="mApproveJoinGate" name="Join"/>
-      <userTask activiti:exclusive="true" id="mmContractReview" name="MM_ReviewContract" activiti:candidateGroups="SM">
+      <userTask activiti:exclusive="true" id="smContractReview" name="SM_ReviewContract" activiti:candidateGroups="SM">
         <extensionElements>
           <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
           <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
-          <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
+          <activiti:formProperty id="ReviewCosment" name="reason about pass or reject" required="true" type="string"/>
         </extensionElements>
       </userTask>
       <userTask activiti:exclusive="true" id="qmContractReview" name="QM_ReviewContract" activiti:candidateGroups="QM">
         <extensionElements>
           <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
           <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
-          <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
+          <activiti:formProperty id="ReviewCosment" name="reason about pass or reject" required="true" type="string"/>
         </extensionElements>
       </userTask>
       <startEvent id="subStart" name="子流程开始"/>
       <sequenceFlow id="_6" sourceRef="subStart" targetRef="mApproveForkGate"/>
-      <sequenceFlow id="_7" sourceRef="mApproveForkGate" targetRef="mmContractReview"/>
+      <sequenceFlow id="_7" sourceRef="mApproveForkGate" targetRef="smContractReview"/>
       <sequenceFlow id="_8" sourceRef="mApproveForkGate" targetRef="qmContractReview"/>
-      <sequenceFlow id="_9" sourceRef="mmContractReview" targetRef="mApproveJoinGate"/>
+      <sequenceFlow id="_9" sourceRef="smContractReview" targetRef="mApproveJoinGate"/>
       <sequenceFlow id="_10" sourceRef="qmContractReview" targetRef="mApproveJoinGate"/>
       <exclusiveGateway gatewayDirection="Unspecified" id="mReviewGate" name="ManagerReviewGate"/>
       <sequenceFlow id="_12" sourceRef="mApproveJoinGate" targetRef="mReviewGate"/>
@@ -45,7 +45,7 @@
         <extensionElements>
           <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
           <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
-          <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
+          <activiti:formProperty id="ReviewCosment" name="reason about pass or reject" required="true" type="string"/>
         </extensionElements>
       </userTask>
       <sequenceFlow id="_2" name="通过" sourceRef="mReviewGate" targetRef="cusContractReview">
@@ -116,7 +116,7 @@
           <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="mmContractReview" id="Shape-mmContractReview">
+      <bpmndi:BPMNShape bpmnElement="smContractReview" id="Shape-smContractReview">
         <omgdc:Bounds height="55.0" width="85.0" x="60.0" y="255.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
@@ -251,7 +251,7 @@
           <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_7" id="BPMNEdge__7" sourceElement="mApproveForkGate" targetElement="mmContractReview">
+      <bpmndi:BPMNEdge bpmnElement="_7" id="BPMNEdge__7" sourceElement="mApproveForkGate" targetElement="smContractReview">
         <omgdi:waypoint x="190.0" y="201.0"/>
         <omgdi:waypoint x="100.0" y="255.0"/>
         <omgdi:waypoint x="100.0" y="255.0"/>
@@ -267,7 +267,7 @@
           <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_9" id="BPMNEdge__9" sourceElement="mmContractReview" targetElement="mApproveJoinGate">
+      <bpmndi:BPMNEdge bpmnElement="_9" id="BPMNEdge__9" sourceElement="smContractReview" targetElement="mApproveJoinGate">
         <omgdi:waypoint x="100.0" y="310.0"/>
         <omgdi:waypoint x="100.0" y="360.0"/>
         <omgdi:waypoint x="196.0" y="360.0"/>

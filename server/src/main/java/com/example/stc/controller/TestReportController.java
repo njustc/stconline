@@ -26,13 +26,10 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @RestController
 public class TestReportController extends BaseController {
 
-    Logger logger = LoggerFactory.getLogger(EntrustController.class);
+    Logger logger = LoggerFactory.getLogger(TestRecordController.class);
 
     @Autowired
     private TestReportService testReportService;
-
-    @Autowired
-    private AuthorityUtils authorityUtils;
 
     /**
      * 查看全部测试报告
@@ -44,7 +41,7 @@ public class TestReportController extends BaseController {
     Resources<Resource<TestReport>> getAllTestReport() {
         // 依据当前登录的用户的权限查询能见的测试报告
         List<Resource<TestReport>> testReports = testReportService.findTestReportsByAuthority().stream()
-                .map(testReport -> new Resource<>(testReport))
+                .map(testReport -> toResource(testReport, methodOn(TestReportController.class).getAllTestReport(), null))
                 .collect(Collectors.toList());
         logger.info("getAllTestReport: 最终查询测试报告数：" + testReports.size());
         return new Resources<>(testReports,
@@ -63,7 +60,8 @@ public class TestReportController extends BaseController {
         TestReport testReport = testReportService.findTestReportByPid(pid);
         authorityUtils.stateAccessCheck(testReport, "CUS,SS,TM,QM", "Review,Approve", "查看");
         logger.info("getOneTestReport");
-        return toResource(testReport, methodOn(TestReportController.class).getOneTestReport(pid));
+        return toResource(testReport, methodOn(TestReportController.class).getOneTestReport(pid)
+                , methodOn(TestReportController.class).getAllTestReport());
     }
 
     /**
@@ -73,7 +71,8 @@ public class TestReportController extends BaseController {
     @PostMapping(path = "/testReport/{pid}")
     public @ResponseBody
     ResponseEntity<?> addNewTestReport(@PathVariable String pid, @RequestParam String uid) throws URISyntaxException {
-        Resource<TestReport> resource = new Resource<>(testReportService.newTestReport(pid, uid));
+        Resource<TestReport> resource = toResource(testReportService.newTestReport(pid, uid)
+                , methodOn(TestReportController.class).addNewTestReport(pid, uid), null);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
@@ -86,10 +85,11 @@ public class TestReportController extends BaseController {
     @PutMapping(path = "/testReport/{pid}")
     public @ResponseBody
     ResponseEntity<?> replaceTestReport(@PathVariable String pid, @RequestBody TestReport testReport) throws URISyntaxException {
+        TestReport updatedTestReport = testReportService.updateTestReport(pid, testReport);
         authorityUtils.stateAccessCheck(testReport, "TS", "Submit", "修改");
         logger.info("replaceTestReport");
-        TestReport updatedTestReport = testReportService.updateTestReport(pid, testReport);
-        Resource<TestReport> resource = new Resource<>(updatedTestReport);
+        Resource<TestReport> resource = toResource(updatedTestReport
+                , methodOn(TestReportController.class).replaceTestReport(pid, testReport), null);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 

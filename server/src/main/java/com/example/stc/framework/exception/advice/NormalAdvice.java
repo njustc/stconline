@@ -72,6 +72,7 @@ public class NormalAdvice {
     @ExceptionHandler({ActivitiException.class})
     @ResponseStatus(HttpStatus.CONFLICT)
     private String activitiExceptionHandler(ActivitiException e) {
+        e.printStackTrace();
         return e.getMessage();
     }
 

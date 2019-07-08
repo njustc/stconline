@@ -88,6 +88,7 @@ public class EntrustServiceImpl implements EntrustService {
         //根据某一个算法增加新的id
         entrust.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
         entrust.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
+        entrust.setProcessInstanceId("");
         return entrustRepository.save(entrust);
     }
 

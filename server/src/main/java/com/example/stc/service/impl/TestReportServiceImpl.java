@@ -60,6 +60,7 @@ public class TestReportServiceImpl implements TestReportService {
         TestReport testReport = new TestReport();
         testReport.setPid(pid);
         testReport.setUserId(uid);
+        testReport.setProcessInstanceId("");
         testReport.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
         // DEBUG：若数据库中该项目已存在，则覆盖原项目
         testReportRepository.deleteByPid(pid);
@@ -71,6 +72,7 @@ public class TestReportServiceImpl implements TestReportService {
         TestReport testReport = testReportRepository.findByPid(pid);
         record.setId(testReport.getId());
         record.setPid(testReport.getPid());
+        record.setUserId(testReport.getUserId());
         if (record.getProcessInstanceId() == null || record.getProcessInstanceId().equals("")) {
             record.setProcessState(testReport.getProcessState());
             record.setProcessInstanceId(testReport.getProcessInstanceId());

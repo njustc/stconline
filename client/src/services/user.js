@@ -1,13 +1,13 @@
 import request from '@/utils/request';
 import { stringify } from 'querystring';
-import { async } from 'q';
-export async function query() {
-  return request('/api/users');
-}
-
-export async function queryCurrent() {
-  return request('/api/currentUser');
-}
+// import { async } from 'q';
+// export async function query() {
+//   return request('/api/users');
+// }
+//
+// export async function queryCurrent() {
+//   return request('/api/currentUser');
+// }
 
 export async function queryNotices() {
   return request('/api/notices');
@@ -84,6 +84,16 @@ export async function queryEntrustState(param){
   return request('api/project/process/query',{
     method:'POST',
     data:param
+  })
+}
+
+export async function getprocess(param){
+
+  console.log("传给后端的参数:",param)
+  //return 3
+  return request(`api/project/process?pid=${param}`,{
+    method:'POST',
+    data: ''
   })
 }
 

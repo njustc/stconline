@@ -42,16 +42,10 @@ public class AuthorityUtils {
     public User getLoginUser() {
         if (!isAuthenticated())
             return null; // 未登录
-
-        logger.info("getLoginUser: Name = " + SecurityContextHolder.getContext()
-                .getAuthentication().getName());
-
         User user = userRepository.findByUsername(SecurityContextHolder.getContext()
                 .getAuthentication().getName());
-
         logger.info("getLoginUser: id = " + user.getUserID() + ", name = " + user.getUsername() +
                 ", roles = " + user.getRoles());
-
         return user;
     }
 

@@ -179,7 +179,7 @@ public class ProcessUtils {
         return result;
     }
 
-    public boolean isCreator(ProcessEntity entity, String type) {
+    private boolean isCreator(ProcessEntity entity, String type) {
         User user = authorityUtils.getLoginUser();
         String userId = user.getUserID();
 
@@ -231,6 +231,7 @@ public class ProcessUtils {
                         .desc().list();
                 for (HistoricTaskInstance historicTaskInstance: historicTaskInstances) {
                     String name = historicTaskInstance.getName();
+                    logger.info(name);
                     if (name.contains("Submit")) {
                         break;
                     }
@@ -246,7 +247,7 @@ public class ProcessUtils {
                 /**
                  * 评审通过，此时能见者为：所有工作人员
                  */
-                return checkUser("STAFF", userId);
+                return checkUser("STAFF", userId) || (userId.equals(entity.getUserId()));
             default:
                 return false;
         }

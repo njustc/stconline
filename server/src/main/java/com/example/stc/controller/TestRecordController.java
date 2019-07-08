@@ -26,13 +26,10 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @RestController
 public class TestRecordController extends BaseController {
 
-    Logger logger = LoggerFactory.getLogger(EntrustController.class);
+    Logger logger = LoggerFactory.getLogger(TestRecordController.class);
 
     @Autowired
     private TestRecordService testRecordService;
-
-    @Autowired
-    private AuthorityUtils authorityUtils;
 
     /**
      * 查看全部测试记录
@@ -43,7 +40,7 @@ public class TestRecordController extends BaseController {
     public @ResponseBody
     Resources<Resource<TestRecord>> getAllTestRecords() {
         List<Resource<TestRecord>> testRecords = testRecordService.findAllTestRecords().stream()
-                .map(testRecord -> new Resource<>(testRecord))
+                .map(testRecord -> toResource(testRecord, methodOn(TestRecordController.class).getAllTestRecords(), null))
                 .collect(Collectors.toList());
         logger.info("getAllTestRecords: 最终查询测试记录数：" + testRecords.size());
         return new Resources<>(testRecords,
@@ -59,7 +56,7 @@ public class TestRecordController extends BaseController {
     public @ResponseBody
     Resources<Resource<TestRecord>> getProjectTestRecords(@RequestParam String pid) {
         List<Resource<TestRecord>> testRecords = testRecordService.findAllTestRecordsByPidByAuthority(pid).stream()
-                .map(testRecord -> new Resource<>(testRecord))
+                .map(testRecord -> toResource(testRecord, methodOn(TestRecordController.class).getProjectTestRecords(pid), null))
                 .collect(Collectors.toList());
         logger.info("getProjectTestRecords: 最终查询测试记录数：" + testRecords.size());
         return new Resources<>(testRecords,
@@ -77,7 +74,8 @@ public class TestRecordController extends BaseController {
     ResponseEntity<?> addNewTestRecord(@RequestBody TestRecord testRecord) throws URISyntaxException {
         // testRecord参数中的TestCase是已经填好的
         logger.info("addNewTestRecord");
-        Resource<TestRecord> resource = new Resource<>(testRecordService.newTestRecord(testRecord));
+        Resource<TestRecord> resource = toResource(testRecordService.newTestRecord(testRecord)
+                , methodOn(TestRecordController.class).getProjectTestRecords(testRecord.getPid()), null);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
@@ -91,7 +89,8 @@ public class TestRecordController extends BaseController {
     Resource<TestRecord> getOneTestRecord(@PathVariable String testId) {
         logger.info("getOneTestRecord");
         TestRecord testRecord = testRecordService.findTestRecordByTestId(testId);
-        return toResource(testRecord, methodOn(TestRecordController.class).getOneTestRecord(testId));
+        return toResource(testRecord, methodOn(TestRecordController.class).getOneTestRecord(testId)
+                , methodOn(TestRecordController.class).getProjectTestRecords(testRecord.getPid()));
     }
 
     /**
@@ -103,10 +102,11 @@ public class TestRecordController extends BaseController {
     @PutMapping(path = "/testRecord/{testId}")
     public @ResponseBody
     ResponseEntity<?> replaceTestRecord(@PathVariable String testId, @RequestBody TestRecord testRecord) throws URISyntaxException {
+        TestRecord updatedTestRecord = testRecordService.updateTestRecord(testId, testRecord);
         authorityUtils.stateAccessCheck(testRecord, "TS", "Submit", "修改");
         logger.info("replaceTestRecord");
-        TestRecord updatedTestRecord = testRecordService.updateTestRecord(testId, testRecord);
-        Resource<TestRecord> resource = new Resource<>(updatedTestRecord);
+        Resource<TestRecord> resource = toResource(updatedTestRecord
+                , methodOn(TestRecordController.class).getProjectTestRecords(testRecord.getPid()), null);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
