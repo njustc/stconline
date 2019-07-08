@@ -18,10 +18,18 @@ public interface ProcessService extends BaseService<ProcessEntity> {
 
     void createTestReportProcess(String pid);
 
+    void createTestRecordProcess(String testId);
+
     void deleteProcessInstance(ProcessEntity entity);
 
-    void queryProcessState(ProcessEntity entity);
+    String queryProcessState(JSONObject entity);
 
-    void updateProcessInstance(ProcessEntity entity, String type);
+    String queryProcessState(ProcessEntity entity);
+
+    void updateProcessInstance(JSONObject object, String type);
+
+    String getProcessComment(String processInstanceId);
+
+    int queryProjectState(String pid);
 
 }

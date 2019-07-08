@@ -1,9 +1,9 @@
-import { Card, Table, Divider, Button, Tag ,Breadcrumb} from 'antd';
+import { Card, Table, Divider, Button, Tag ,Breadcrumb, Form, Descriptions, Affix,BackTop,} from 'antd';
 import React from "react";
 import {connect} from "dva";
 import { FormattedMessage } from 'umi/locale';
 import {getRole} from "../../../utils/cookieUtils";
-
+import style from "../../entrust/basic-form/style.less";
 
 const namespace = 'report-detail';
 
@@ -15,8 +15,17 @@ const mapStateToProps = (state) => {
   };
 };
 
+@Form.create()
 @connect(mapStateToProps)
 export default class report_detail extends React.Component{
+  constructor(props){
+    super(props)
+    this.state={
+      pid:"",
+      comment:""
+    }
+  }
+
   componentDidMount() {
     const {dispatch} = this.props;
     console.log(this.props.location.query)
@@ -26,16 +35,36 @@ export default class report_detail extends React.Component{
     });
   }
 
+  review = (form,operation) => {
+    const {dispatch} = this.props;
+    this.state.pid = this.props.reportdata.data.pid;
+    this.state.comment = this.props.reportdata.data.comment;
+    form.validateFields((err, value) => {
+      var checkvalue = this.props.reportdata.data;
+      checkvalue.operation = operation;
+      checkvalue.comment = value.comment;
+      dispatch({
+        type: `${namespace}/queryReviewTestReport`,
+        payload: checkvalue,
+      });
+    })
+  }
+
   render(){
     return (
       <div>
         <Breadcrumb>
-          <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
-          <Breadcrumb.Item>测试方案详情</Breadcrumb.Item>
+        <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
+          <Breadcrumb.Item href="/report-list.html">测试报告列表</Breadcrumb.Item>
+          <Breadcrumb.Item>测试报告详情</Breadcrumb.Item>
         </Breadcrumb>
+
+        <Divider/>
+        {/*<div><h2>NST-04-JS002-2011-软件项目测试方案(只读)</h2></div>*/}
 
         <Card>
           <h2>软件委托测试报告</h2>
+          <Divider/>
           <p>项目编号：<FormattedMessage id={this.props.reportdata.data.codeId || ' '}/></p>
 
           <p>软件名称：<FormattedMessage id={this.props.reportdata.data.softwareName || ' '}/></p>
@@ -74,49 +103,156 @@ export default class report_detail extends React.Component{
         {
           {
          
-            "CUS":
+            "TS":
             <div>
-              {/* <Descriptions title="客户">
-                <Descriptions.Item label="委托状态">审核未通过</Descriptions.Item>
-                <Descriptions.Item label="委托意见">重写</Descriptions.Item>
-                <Descriptions.Item label="已提交样品">a.zip</Descriptions.Item>
-              </Descriptions> */}
-              <Button
-              style={{marginLeft: 350}}
-              type="primary"
-              >确认</Button>
-              <Button
-              style={{marginLeft: 20}}
-              type="danger"
-              
-              >拒绝</Button>
+                <Card>
+                <Descriptions title="状态及意见">
+                  <Descriptions.Item label="状态">{this.props.reportdata.data.processState || ' '}</Descriptions.Item>
+                  <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
+                </Descriptions>
+              </Card>
             </div>,
 
-            "SM":
+
+
+            "CUS":
             <div>
-              <h1>市场部主任</h1>
-              <Button
-              style={{marginLeft: 350}}
-              type="primary"
-              >通过</Button>
-              <Button
-              style={{marginLeft: 20}}
-              type="danger"
-              >不通过</Button>
+              <Card>
+                <Descriptions title="状态及意见">
+                  <Descriptions.Item label="状态">{this.props.reportdata.data.processState || ' '}</Descriptions.Item>
+                  <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
+                </Descriptions>
+              </Card>
+              
+              <div>
+<Affix offsetBottom={0}>
+<div className={style.submitBtns}>
+<Button
+style={{marginLeft: 350}}
+type="primary"
+onClick={() => {
+  this.review(this.props.form,"ReviewPass")
+}}
+>确认</Button>
+<Button
+style={{marginLeft: 20}}
+type="danger"
+onClick={() => {
+  this.review(this.props.form,"ReviewDisprove")
+}}
+>拒绝</Button>
+</div>
+
+<div>
+          <BackTop visibilityHeight={300}/>
+          <strong style={{color: 'rgba(64, 64, 64, 0.6)'}}> </strong>
+        </div>
+</Affix>
+</div>
             </div>,
+
+
+
+
+
+
+
+
+
+
+
+
+
+         
+            "TM":
+            <div>
+              <h1>测试部主任</h1>
+              <Card>
+                <Descriptions title="状态及意见">
+                  <Descriptions.Item label="状态">{this.props.reportdata.data.processState || ' '}</Descriptions.Item>
+                  <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
+                </Descriptions>
+              </Card>
+              <div>
+<Affix offsetBottom={0}>
+<div className={style.submitBtns}>
+<Button
+style={{marginLeft: 400}}
+type="primary"
+onClick = {() => {
+  this.review(this.props.form,"ReviewPass")
+}}
+>通过</Button>
+<Button
+style={{marginLeft: 40}}
+type="danger"
+onClick={() => {
+  this.review(this.props.form,"ReviewDisprove")
+}}
+>不通过</Button>
+</div>
+
+<div>
+          <BackTop visibilityHeight={300}/>
+          <strong style={{color: 'rgba(64, 64, 64, 0.6)'}}> </strong>
+        </div>
+</Affix>
+</div>
+           
+            </div>,
+
+
+
+
+
+
+
+
 
             "QM":
             <div>
               <h1>质量部主任</h1>
+              <Card>
+                <Descriptions title="状态及意见">
+                  <Descriptions.Item label="状态">{this.props.reportdata.data.processState || ' '}</Descriptions.Item>
+                  <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
+                </Descriptions>
+              </Card>
+
+
+
+              <div>
+<Affix offsetBottom={0}>
+<div className={style.submitBtns}>
+
               <Button
               style={{marginLeft: 350}}
               type="primary"
+              onClick={() => {
+                this.review(this.props.form,"ReviewPass")
+              }}
               >通过</Button>
               <Button
               style={{marginLeft: 20}}
               type="danger"
+              onClick={() => {
+                this.review(this.props.form,"ReviewDisprove")
+              }}
               >不通过</Button>
+
+
+</div>
+
+<div>
+          <BackTop visibilityHeight={300}/>
+          <strong style={{color: 'rgba(64, 64, 64, 0.6)'}}> </strong>
+        </div>
+</Affix>
+</div>
+
             </div>,
+          
+
           }[getRole()[0]]
         }
 

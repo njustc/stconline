@@ -4,6 +4,7 @@
  */
 import { extend } from 'umi-request';
 import { notification } from 'antd';
+import router from "umi/router";
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -31,11 +32,16 @@ const errorHandler = error => {
   const errortext = codeMessage[response.status] || response.statusText;
   const { status, url } = response;
 
-  notification.error({
-    message: `请求错误 ${status}: ${url}`,
-    description: errortext,
-  });
-
+  // 处理未登录情况：重定向到登陆界面
+  if (response.status === 401) {
+    router.push("/user-login.html");
+  }
+  else {
+    notification.error({
+      message: `请求错误 ${status}: ${url}`,
+      description: errortext,
+    });
+  }
   return response
 };
 

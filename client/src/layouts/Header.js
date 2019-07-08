@@ -9,7 +9,7 @@ import TopNavHeader from '@/components/TopNavHeader';
 import styles from './Header.less';
 
 const { Header } = Layout;
-
+//全局页面header
 class HeaderView extends PureComponent {
   state = {
     visible: true,
@@ -70,8 +70,11 @@ class HeaderView extends PureComponent {
     }
     if (key === 'logout') {
       dispatch({
-        type: 'login/logout',
-      });
+        type: 'userInfo/logout',
+      }).then(res => {
+        console.log(res)
+      })
+      router.push("/user-login.html");
     }
   };
 

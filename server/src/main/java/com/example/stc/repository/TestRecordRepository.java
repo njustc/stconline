@@ -8,14 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface TestRecordRepository extends BaseRepository<TestRecord> {
-
-    List<TestRecord> findAllByPid(String pid);
-
+public interface TestRecordRepository extends ProcessEntityRepository<TestRecord> {
     TestRecord findByTestId(String testId);
 
     @Modifying(flushAutomatically = true)
     @Transactional
     int deleteByTestId(String testId);
+
 
 }

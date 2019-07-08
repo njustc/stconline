@@ -19,9 +19,6 @@ public class ProcessServiceImpl implements ProcessService {
     private STCProcessEngine stcProcessEngine;
 
     @Autowired
-    private AuthorityUtils authorityUtils;
-
-    @Autowired
     private EntrustService entrustService;
 
     @Autowired
@@ -33,6 +30,9 @@ public class ProcessServiceImpl implements ProcessService {
     @Autowired
     private TestReportService testReportService;
 
+    @Autowired
+    private TestRecordService testRecordService;
+
     @Override
     public void createProcessInstance(String pid, String type) {
         switch (type) {
@@ -40,6 +40,7 @@ public class ProcessServiceImpl implements ProcessService {
             case "Contract": createContractProcess(pid); break;
             case "TestPlan": createTestPlanProcess(pid); break;
             case "TestReport": createTestReportProcess(pid); break;
+            case "TestRecord": createTestRecordProcess(pid); break;
             default: throw new ActivitiException("未知流程类型。");
         }
     }
@@ -55,6 +56,7 @@ public class ProcessServiceImpl implements ProcessService {
         variable.put("EntrustID", pid);
         variable.put("ClientID", entrust.getUserId());
         entrust.setProcessInstanceId(stcProcessEngine.createProcess("Entrust", variable));
+        entrust.setProcessState(ProcessState.Review);
         entrustService.updateEntrust(pid, entrust);
         queryProcessState(entrust);
     }
@@ -70,6 +72,7 @@ public class ProcessServiceImpl implements ProcessService {
         variable.put("ContractID", pid);
         variable.put("ClientID", contract.getUserId());
         contract.setProcessInstanceId(stcProcessEngine.createProcess("Contract", variable));
+        contract.setProcessState(ProcessState.Review);
         contractService.updateContract(pid, contract);
         queryProcessState(contract);
     }
@@ -85,6 +88,7 @@ public class ProcessServiceImpl implements ProcessService {
         variable.put("TestPlanID", pid);
         variable.put("ClientID", testPlan.getUserId());
         testPlan.setProcessInstanceId(stcProcessEngine.createProcess("TestPlan", variable));
+        testPlan.setProcessState(ProcessState.Review);
         testPlanService.updateTestPlan(pid, testPlan);
         queryProcessState(testPlan);
     }
@@ -100,8 +104,20 @@ public class ProcessServiceImpl implements ProcessService {
         variable.put("TestReportID", pid);
         variable.put("ClientID", testReport.getUserId());
         testReport.setProcessInstanceId(stcProcessEngine.createProcess("TestReport", variable));
+        testReport.setProcessState(ProcessState.Review);
         testReportService.updateTestReport(pid, testReport);
         queryProcessState(testReport);
+    }
+
+    @Override
+    public void createTestRecordProcess(String testId) {
+        TestRecord testRecord = testRecordService.findTestRecordByTestId(testId);
+        Map<String, Object> variable = new HashMap<String, Object>();
+        variable.put("TestReportID", testId);
+        testRecord.setProcessInstanceId(stcProcessEngine.createProcess("TestRecord", variable));
+        testRecord.setProcessState(ProcessState.Review);
+        testRecordService.updateTestRecord(testId, testRecord);
+        queryProcessState(testRecord);
     }
 
     /**
@@ -118,35 +134,91 @@ public class ProcessServiceImpl implements ProcessService {
     /**
      * 查询流程状态
      * @param entity
+     * @return
      */
     @Override
-    public void queryProcessState(ProcessEntity entity) {
-        entity.setProcessState(stcProcessEngine.getProcessState(entity.getProcessInstanceId()));
+    public String queryProcessState(JSONObject entity) {
+        return queryProcessState(entity.toJavaObject(ProcessEntity.class));
+    }
+
+    @Override
+    public String queryProcessState(ProcessEntity entity) {
+        String processState = stcProcessEngine.getProcessState(entity.getProcessInstanceId());
+        return processState;
     }
 
     /**
      * 更新流程实例
-     * @param entity
+     * @param object
      */
     @Override
-    public void updateProcessInstance(ProcessEntity entity, String type) {
+    public void updateProcessInstance(JSONObject object, String type) {
+        ProcessEntity entity = object.toJavaObject(ProcessEntity.class);
         stcProcessEngine.updateProcess(entity);
-        save(entity, type);
-    }
 
-    /**
-     * 保存comment
-     * @param entity
-     * @param type
-     */
-    private void save(ProcessEntity entity, String type) {
+        /**
+         * 保存process状态
+         */
+        String pid = entity.getPid();
+        String userId = entity.getUserId();
+        String comment = entity.getComment();
+        String processState = queryProcessState(entity);
+        String testId = object.getString("testId");
         switch (type) {
-            case "Entrust": entrustService.saveComment(entity.getPid(), entity.getComment()); break;
-            case "Contract": contractService.saveComment(entity.getPid(), entity.getComment()); break;
-            case "TestPlan": testPlanService.saveComment(entity.getPid(), entity.getComment()); break;
-            case "TestReport": testReportService.saveComment(entity.getPid(), entity.getComment()); break;
-            default: throw new ActivitiException("未知流程类型。");
+            case "Entrust": entrustService.updateProcessState(pid, processState, comment); break;
+            case "Contract": contractService.updateProcessState(pid, processState, comment); break;
+            case "TestPlan": testPlanService.updateProcessState(pid, processState, comment); break;
+            case "TestReport": testReportService.updateProcessState(pid, processState, comment); break;
+            case "TestRecord": testRecordService.updateProcessState(testId, processState, comment); break;
+            default: break;
+        }
+
+        if (queryProcessState(entity).equals("Approve")) {
+            /**
+             * 根据type创建流水线的下一个实体
+             */
+            switch (type) {
+                case "Entrust": contractService.newContract(pid, userId); break;
+                case "Contract": testPlanService.newTestPlan(pid, userId); break;
+                case "TestPlan": testReportService.newTestReport(pid, userId); break;
+                default: break;
+            }
         }
     }
 
+    /**
+     * 获取评审意见
+     * @param processInstanceId
+     * @return 评审意见
+     */
+    @Override
+    public String getProcessComment(String processInstanceId) {
+        return stcProcessEngine.getComment(processInstanceId);
+    }
+
+    /**
+     * 获取项目状态
+     * @param pid
+     * @return 项目状态
+     */
+    @Override
+    public int queryProjectState(String pid) {
+        Entrust entrust = entrustService.findEntrustByPid(pid);
+        if (!queryProcessState(entrust).equals("Approve"))
+            return 1;
+
+        Contract contract = contractService.findContractByPid(pid);
+        if (!queryProcessState(contract).equals("Approve"))
+            return 2;
+
+        TestPlan testPlan = testPlanService.findTestPlanByPid(pid);
+        if (!queryProcessState(testPlan).equals("Approve"))
+            return 3;
+
+        TestReport testReport = testReportService.findTestReportByPid(pid);
+        if (!queryProcessState(testReport).equals("Approve"))
+            return 4;
+
+        return 5;
+    }
 }

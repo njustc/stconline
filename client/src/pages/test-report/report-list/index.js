@@ -46,8 +46,7 @@ export default class ReportList extends Component {
   {<Link to={{pathname: './report-detail', query: {pid: key.pid}}}>查看项目详情</Link>}
   <Divider type="vertical"/>
   {<Link to={{pathname: '../../report-edit', query: {pid: key.pid}}}>编辑</Link>}
-  <Divider type="vertical"/>
-  <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
+  
 </span>
   ),
 
@@ -55,8 +54,7 @@ export default class ReportList extends Component {
     <span>
   {<Link to={{pathname: './report-detail', query: {pid: key.pid}}}>查看项目详情</Link> }
   <Divider type="vertical"/>
-  <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
-  <Divider type="vertical"/>
+  
 </span>
   ),
 
@@ -67,8 +65,16 @@ export default class ReportList extends Component {
  
   <Divider type="vertical"/>
 </span>
+  ),
+  
+  "TM":(key) => (
+    <span>
+  {<Link to={{pathname: './report-detail', query: {pid: key.pid}}}>查看项目详情</Link> }
+  <Divider type="vertical"/>
+ 
+  <Divider type="vertical"/>
+</span>
   )
-
 
 
 }
@@ -86,6 +92,40 @@ export default class ReportList extends Component {
       dataIndex: 'pid',
       key: 'pid',
       render: text => <a href="javascript:;">{text}</a>,
+    },
+
+    //softwareName
+    {
+      title: '软件名称',
+      dataIndex: 'softwareName',
+      key: 'softwareName',
+      render: text => <a href="javascript:;">{text}</a>,
+    },
+    //clientCompany
+    {
+      title: '委托单位',
+      dataIndex: 'clientCompany',
+      key: 'clientCompany',
+      render: text => <a href="javascript:;">{text}</a>,
+    },
+
+    {
+      title: '状态',
+      key: 'processState',
+      dataIndex: 'processState',
+      render: processState => {
+        var color = processState === 'Review' ? 'geekblue' : 'green'
+        if (processState === 'Submit') {
+          color = 'grey'
+        }
+        return (
+          <Tag color={color} key={processState}>
+            {processState}
+          </Tag>
+        );
+      }
+
+    
     },
     {
       title: '操作',
@@ -130,16 +170,12 @@ export default class ReportList extends Component {
     return (
       <div>
         <Breadcrumb>
-          <Breadcrumb.Item hr="/report-list.html">测试报告列表</Breadcrumb.Item>
+          <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
+          <Breadcrumb.Item>测试报告列表</Breadcrumb.Item>
         </Breadcrumb>
         {/* <div class="" */}
         <Table style={{marginTop: 50}} columns={this.columns} dataSource={(!this.props.listdata.data.length)?data:this.props.listdata.data}/>
-        <Button
-          style={{marginLeft: 400}}
-          type="primary"
-          href="/report-edit.html">
-          新建测试报告
-        </Button>
+      
       </div>
     );
   }

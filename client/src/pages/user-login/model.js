@@ -1,5 +1,5 @@
 import {setAuthority} from './utils/authority';
-import {userLogin, getFakeCaptcha} from './service';
+import {userLogin, getFakeCaptcha, userLogout} from './service';
 
 export default {
   namespace: 'userInfo',
@@ -16,6 +16,9 @@ export default {
     * login({payload}, {call, put}) {
       const response = yield call(userLogin, payload);
       return response;
+    },
+    * logout({payload}, {call, put}) {
+      yield call(userLogout, payload)
     },
 
     * getCaptcha({payload}, {call}) {

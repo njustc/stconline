@@ -1,6 +1,5 @@
 package com.example.stc.framework.exception.advice;
 
-import com.example.stc.framework.exception.FunctionNotFoundException;
 import com.example.stc.framework.exception.ParamMissingException;
 import org.activiti.engine.ActivitiException;
 import org.springframework.http.HttpStatus;
@@ -73,6 +72,7 @@ public class NormalAdvice {
     @ExceptionHandler({ActivitiException.class})
     @ResponseStatus(HttpStatus.CONFLICT)
     private String activitiExceptionHandler(ActivitiException e) {
+        e.printStackTrace();
         return e.getMessage();
     }
 

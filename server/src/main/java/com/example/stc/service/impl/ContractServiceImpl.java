@@ -1,6 +1,8 @@
 package com.example.stc.service.impl;
 
+import com.example.stc.activiti.ProcessService;
 import com.example.stc.activiti.ProcessState;
+import com.example.stc.activiti.STCProcessEngine;
 import com.example.stc.domain.Contract;
 import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
@@ -9,8 +11,7 @@ import com.example.stc.framework.exception.UserNotFoundException;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.DateUtils;
 import com.example.stc.framework.util.ProcessUtils;
-import com.example.stc.repository.ContractRepository;
-import com.example.stc.repository.UserRepository;
+import com.example.stc.repository.*;
 import com.example.stc.service.ContractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,15 @@ public class ContractServiceImpl implements ContractService{
     private ContractRepository contractRepository;
 
     @Autowired
+    private TestPlanRepository testPlanRepository;
+
+    @Autowired
+    private TestRecordRepository testRecordRepository;
+
+    @Autowired
+    private TestReportRepository testReportRepository;
+
+    @Autowired
     private AuthorityUtils authorityUtils;
 
     @Autowired
@@ -36,8 +46,8 @@ public class ContractServiceImpl implements ContractService{
 
     @Override
     public List<Contract> findAllContracts() {
-        logger.info("findAllContracts: 查看全部合同");
-        return setState(contractRepository.findAll());
+        logger.info("findAllContracts: ");
+        return contractRepository.findAll();
     }
 
     @Override
@@ -45,66 +55,26 @@ public class ContractServiceImpl implements ContractService{
         User curUser = authorityUtils.getLoginUser();
         logger.info("findContractsByAuthority: 当前登录者id = " + curUser.getUserID() +
                 ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
-//        // 若为用户，返回该用户全部合同
-//        if (authorityUtils.hasAuthority(Role.Customer)) {
-//            return findContractByUser(curUser.getUserID());
-//        }
-//        // 若为工作人员，返回全部合同
-//        return findAllContracts();
         List<Contract> allContracts = this.findAllContracts();
         allContracts.removeIf(contract -> !processUtils.isVisible(contract, "Contract"));
-        return setState(allContracts);
+        return allContracts;
     }
 
     @Override
     public List<Contract> findContractByUser(String uid) {
-        logger.info("findContractsByUser: 查看某用户全部合同");
+        logger.info("findContractsByUser:");
         List<Contract> allContracts = this.findAllContracts();
         allContracts.removeIf(contract -> !contract.getUserId().equals(uid));
-        return setState(allContracts);
-    }
-
-    /**
-     * 对于客户，检查访问的是否是本人的合同；若不是，权限异常
-     */
-    private void customerAccessCheck(Contract contract) {
-        if (authorityUtils.hasAuthority(Role.Customer)) {
-            User curUser = authorityUtils.getLoginUser();
-            if (!contract.getUserId().equals(curUser.getUserID())) {
-                logger.info("customerAccessCheck: 没有查看权限，客户只能查看自己的合同");
-                throw new AccessDeniedException("没有查看权限，客户只能查看自己的合同");
-            }
-        }
-    }
-
-    @Override
-    public Contract findContractById(Long id) {
-        Contract contract = contractRepository.findById(id)
-                .orElseThrow(() -> new ContractNotFoundException(id));
-        logger.info("findContractById: ");
-
-        this.customerAccessCheck(contract); // 若为客户，只能访问本人的合同
-
-        return setState(contract);
+        return allContracts;
     }
 
     @Override
     public Contract findContractByPid(String pid) {
+        logger.info("findContractByPid: ");
         Contract contract = contractRepository.findByPid(pid);
         if (contract == null)
             throw new ContractNotFoundException(pid);
-        logger.info("findContractByPid: ");
-
-        this.customerAccessCheck(contract); // 若为客户，只能访问本人的合同
-
-        return setState(contract);
-    }
-
-    @Override
-    public void deleteContractById(Long id) {
-        logger.info("deleteContractById: ");
-        Contract contract = this.findContractById(id);
-        contractRepository.deleteById(id);
+        return contract;
     }
 
     @Override
@@ -112,6 +82,11 @@ public class ContractServiceImpl implements ContractService{
         logger.info("deleteContractByPid: ");
         Contract contract = this.findContractByPid(pid);
         contractRepository.deleteByPid(pid);
+        // 同时删除对应的委托，测试方案，测试记录，测试报告
+        contractRepository.deleteByPid(pid);
+        testPlanRepository.deleteByPid(pid);
+        testReportRepository.deleteByPid(pid);
+        testRecordRepository.deleteByPid(pid);
     }
 
     @Override
@@ -119,7 +94,7 @@ public class ContractServiceImpl implements ContractService{
         logger.info("newContract: ");
         contract.setUserId(authorityUtils.getLoginUser().getUserID());
         contract.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
-        return setState(contractRepository.save(contract));
+        return contractRepository.save(contract);
     }
 
     @Override
@@ -128,8 +103,11 @@ public class ContractServiceImpl implements ContractService{
         Contract contract = new Contract();
         contract.setPid(pid);
         contract.setUserId(uid);
+        contract.setProcessInstanceId("");
         contract.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
-        return setState(contractRepository.save(contract));
+        // DEBUG：若数据库中该项目已存在，则覆盖原项目
+        contractRepository.deleteByPid(pid);
+        return contractRepository.save(contract);
     }
 
     @Override
@@ -142,27 +120,18 @@ public class ContractServiceImpl implements ContractService{
         record.setId(contract.getId());
         record.setPid(pid);
         record.setUserId(contract.getUserId());
-        record.setProcessState(contract.getProcessState());
-        record.setProcessInstanceId(contract.getProcessInstanceId());
-        return setState(contractRepository.save(record));
+        if (record.getProcessInstanceId() == null || record.getProcessInstanceId().equals("")) {
+            record.setProcessState(contract.getProcessState());
+            record.setProcessInstanceId(contract.getProcessInstanceId());
+        }
+        return contractRepository.save(record);
     }
 
     @Override
-    public void saveComment(String pid, String comment) {
+    public Contract updateProcessState(String pid, String processState, String comment) {
         Contract contract = this.findContractByPid(pid);
+        contract.setProcessState(processState);
         contract.setComment(comment);
-        this.updateContract(contract.getPid(), contract);
-    }
-
-    public List<Contract> setState(List<Contract> contracts) {
-        for (Contract contract: contracts) {
-            contract.setProcessState(processUtils.getProcessState(contract.getProcessInstanceId()));
-        }
-        return contracts;
-    }
-
-    public Contract setState(Contract contract) {
-        contract.setProcessState(processUtils.getProcessState(contract.getProcessInstanceId()));
-        return contract;
+        return this.updateContract(pid, contract);
     }
 }

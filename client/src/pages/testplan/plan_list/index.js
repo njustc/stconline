@@ -119,23 +119,29 @@ export default class List extends React.Component{
   userLinkMapper= {
     "QM": (key) => (
       <span>
-  {/*{key.processState === 'ToReview' ? <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>审核</Link> :*/}
-  {/*  <span></span>}*/}
         <Divider type="vertical"/>
         {<Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
   </span>
     ),
 
-    "TS": (key) => (
-
+    "TM": (key) => (
       <span>
-        {key.processState === 'Submit' ? <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link> :
-        <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
         <Divider type="vertical"/>
-        {/*<a href="/plan_edit.html">编辑</a>*/}
-        {<Link to={{pathname: '../../plan_edit', query: {pid: key.pid}}}>编辑</Link>}
+        {<Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
         <Divider type="vertical"/>
-        <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
+        {key.processState === 'Approve' ?<Link to={{pathname: './record-list', query: {pid: key.pid}}}>查看测试记录</Link>:null}
+
+  </span>
+    ),
+
+
+    "TS": (key) => (
+      <span>
+        {<Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
+        <Divider type="vertical"/>
+        {key.processState === 'Approve' ? <Link to={{pathname: './record-list', query: {pid: key.pid}}}>查看测试记录</Link>:null}
+        <Divider type="vertical"/>
+        {key.processState === 'Submit' ? <Link to={{pathname: '../../plan_edit', query: {pid: key.pid}}}>编辑</Link>:null}
     </span>
     ),
   };
@@ -151,17 +157,17 @@ export default class List extends React.Component{
       key: 'pid',
       render: text => <a href="javascript:;">{text}</a>,
     },
-    {
-      title: '编辑人员',
-      dataIndex: 'author',
-      key: 'author',
-    },
+    // {
+    //   title: '编辑人员',
+    //   dataIndex: 'author',
+    //   key: 'author',
+    // },
     {
       title: '状态',
       key: 'processState',
       dataIndex: 'processState',
       render: processState => {
-        var color = processState === 'Review' ? 'geekblue' : 'green'
+        var color = processState === 'Review' ? 'geekblue' : 'green';
         if (processState === 'Submit') {
           color = 'grey'
         }
@@ -171,38 +177,11 @@ export default class List extends React.Component{
           </Tag>
         );
       }
-
-      // render: processState => {
-      //   var color = processState === 'Approve' ? 'purple' : 'green';
-      //   if (processState === 'ToReview') {
-      //     color = 'orange';
-      //   }
-      //   if (processState === 'ToSubmit') {
-      //     color = 'blue';
-      //   }
-      //   return (
-      //     <Tag color={color} key={processState}>
-      //       {processState}
-      //     </Tag>
-      //   );
-      // }
     },
     {
       title: '操作',
       key: 'action',
       render: this.link()
-      //   (key) => (
-      //
-      //   <span>
-      //   {key.processState == 'Submit' ? <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link> :
-      //     <Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
-      //     <Divider type="vertical"/>
-      //     {/*<a href="/plan_edit.html">编辑</a>*/}
-      //     {<Link to={{pathname: '../../plan_edit', query: {pid: key.pid}}}>编辑</Link>}
-      //     <Divider type="vertical"/>
-      //     <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
-      // </span>
-      // ),
     },
   ];
 

@@ -19,4 +19,8 @@ public enum ProcessState {
     public String getName() {
         return name;
     }
+
+    public String getName(int index) {
+        return (ProcessState.values()[index]).getName();
+    }
 }

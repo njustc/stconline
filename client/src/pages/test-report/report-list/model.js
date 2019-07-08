@@ -1,4 +1,5 @@
 import { getAlltestReport, deleteTestReport} from '@/services/testReport';
+import router from "umi/router";
 
 export default {
   namespace:'test-report',
@@ -11,14 +12,15 @@ export default {
     *GetAlltestReport(_, {call,put}) {
       const response = yield call(getAlltestReport)
       // console.log(response)
+
       // console.log('_embedded' in response)
-      if(!('_embedded' in response)){
+      if (!('_embedded' in response)) {
         // console.log("put []")
-        yield put({type:'addListData', payload: response})
+        yield put({type: 'addListData', payload: response})
+      } else {
+        yield put({type: 'addListData', payload: response._embedded.testReports})
       }
-      else{
-        yield put({type:'addListData', payload: response._embedded.testReports})
-      }
+
     },
     *DeleteTestReport({payload},{call,put}){
       yield call(deleteTestReport, {pid:payload.pid})

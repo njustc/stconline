@@ -1,0 +1,86 @@
+{
+  "cusa": {
+    "id": 1,
+    "userid": "u20190609235901",
+    "username": "CUSA",
+    "password": "$2a$10$8Abi3J5mBkt56T7D9gt.geulQbsdP0Vm3ScwiR.7KbYcoCGu5UzMy",
+    "roles": "CUS,USER"
+  },
+  "cusb": {
+    "id": 2,
+    "userid": "u20190609235902",
+    "username": "CUSB",
+    "password": "$2a$10$ZgVEAigy6ThCL8omHD2wP.v6JmWcMyMg6GNDqff3AFFZKbVuaN2ni",
+    "roles": "CUS,USER"
+  },
+  "cusc": {
+    "id": 3,
+    "userid": "u20190609235903",
+    "username": "CUSC",
+    "password": "$2a$10$6l33U7F7cjQAE195sh2sr.9zDQEdFlD62TKAny4pzhfF/8IflYPcK",
+    "roles": "CUS,USER"
+  },
+  "ssa": {
+    "id": 11,
+    "userid": "u20190609235911",
+    "username": "SSA",
+    "password": "$2a$10$IqcgtoVcKYWSbWm8qgHPAukbAY5ckeHlYOOWUSUf7uQ7kflCdoq9W",
+    "roles": "SS,STAFF,USER"
+  },
+  "ssb": {
+    "id": 12,
+    "userid": "u20190609235912",
+    "username": "SSB",
+    "password": "$2a$10$yicg4parlvccAlZF5YuUBukgN1lvBsSrZEG3x7cZzySzmbTsGyrN6",
+    "roles": "SS,STAFF,USER"
+  },
+  "tsa": {
+    "id": 21,
+    "userid": "u20190609235921",
+    "username": "TSA",
+    "password": "$2a$10$aYX7pelQ8quDWK9oUmGf9uDMyA/69YW9W3lOVyLqPJYc8m0sRvZDC",
+    "roles": "TS,STAFF,USER"
+  },
+  "tsb": {
+    "id": 22,
+    "userid": "u20190609235922",
+    "username": "TSB",
+    "password": "$2a$10$ADZhPAEFjKQwRaXpzsX0iudNRGYZNyJyVtvSwYfydhuSK0f7y6.qC",
+    "roles": "TS,STAFF,USER"
+  },
+  "sma": {
+    "id": 31,
+    "userid": "u20190609235931",
+    "username": "SMA",
+    "password": "$2a$10$vwjMP/wk3Y784K1b4DYdIuOPxmQa0BoQmXOyuOP4keEhHrHoFWZV.",
+    "roles": "SM,STAFF,USER"
+  },
+  "tma": {
+    "id": 41,
+    "userid": "u20190609235941",
+    "username": "TMA",
+    "password": "$2a$10$JcDZImu1LBuauLLJsyGpiuN1zXYimgGTlpXGUPmM.ljrjfKgc.tny",
+    "roles": "TM,STAFF,USER"
+  },
+  "qma": {
+    "id": 51,
+    "userid": "u20190609235951",
+    "username": "QMA",
+    "password": "$2a$10$8JQTL3a0SiiHIdL5su8cmebzsTsY/MrRpmqpi8w2MP5ICO8MFRiiK",
+    "roles": "QM,STAFF,USER"
+  },
+  "admin": {
+    "id": 0,
+    "userid": "u20190609235900",
+    "username": "admin",
+    "password": "$2a$10$N1UDFDHAAIaZa/GkSPInLO/WPTY9mY.5BiKEZreAmU7sccBkKfMs2",
+    "roles": "ADMIN"
+  },
+  "boss": {
+    "id": 99,
+    "userid": "u20190609235999",
+    "username": "BOSS",
+    "password": "$2a$10$swEZoj6b1JAogCMQhLvus.4pOGCLM8.ykawX1e7v8b12tDQ2idzzK",
+    "roles": "USER,ADMIN,CUS,STAFF,SS,SM,TS,TM,QM"
+  }
+}

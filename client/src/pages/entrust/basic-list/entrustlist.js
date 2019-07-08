@@ -64,6 +64,7 @@ const data = [];
 export default class EntrustList extends Component {
   componentDidMount() {
     this.props.onDidMount();
+    console.log("这里是不是没输出啊",this.props);
   }
 
   userLinkMaper = {
@@ -78,14 +79,14 @@ export default class EntrustList extends Component {
 
     "CUS": (key) => (
       <span>
-  {key.processState === 'Submit' ? <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link> :
-    <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link>}
-        <Divider type="vertical"/>
-        {}
-        {key.processState === 'Submit' ? <Link to={{pathname: '../../basic-form', query: {pid: key.pid}}}>编辑</Link> :
-          <span/>}
-        <Divider type="vertical"/>
-  <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>
+    <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link>
+    <Divider type="vertical"/>
+    {key.processState === 'Submit' ? <Link to={{pathname: '../../basic-form', query: {pid: key.pid}}}>编辑</Link> :
+    <span/>}
+    <Divider type="vertical"/>
+    {key.processState != 'Approve' ? <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>:
+    <span></span>}
+  
   </span>
     )
   }

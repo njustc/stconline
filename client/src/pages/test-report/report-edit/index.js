@@ -18,8 +18,17 @@ import {
   message,
   Row,
   Col,
-  Table
+  Table,
+  Affix,
+
+
+  BackTop,
+  Divider
 } from 'antd';
+
+// const { Carousel } = antd;
+
+import style from "../../entrust/basic-form/style.less";
 import PageHeaderWrapper from './components/PageHeaderWrapper';
 import styles from './style.less';
 import moment from 'moment';
@@ -246,12 +255,13 @@ const mapDispatchToProps=(dispatch)=>{
     }
   }
 }
-@connect(mapStateToProps,mapDispatchToProps)
 
-@connect(({ loading }) => ({
-  submitting: loading.effects[`${namespace}/SubmitTestReport`],
-}))
+
+// @connect(({ loading }) => ({
+//   submitting: loading.effects[`${namespace}/SubmitTestReport`],
+// }))
 @Form.create()
+@connect(mapStateToProps)
 class newTestReport extends PureComponent {
   constructor(props){
     super(props)
@@ -270,47 +280,127 @@ class newTestReport extends PureComponent {
     });
   }
 
-  handleSubmit = e => {
-    const { dispatch, form } = this.props;
-    e.preventDefault();
-    form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        dispatch({
-          type: 'basicForm/submitRegularForm',//TODO
-          payload: values,
-        });
-      }
+ 
+
+//123456
+  showSubmit(form) {
+    var that = this;
+    confirm({
+      title: '您是否要提交测试报告?',
+      content: '测试报告提交后进入审核状态，不可编辑',
+      okText: '确认提交',
+      okType: 'primary',
+      cancelText: '取消',
+      onOk() {
+        console.log("submitPlan");
+        that.submitReport(form);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
     });
+  }
+
+  submitReport=(form)=> {
+    const { dispatch } = this.props;
+    //console.log("123")
+    this.state.pid=this.props.dataReport.reportdata.pid;
+    form.validateFields((err,value) => {
+      //console.log(this.props.dataEdit.editdata);
+      //新建
+      value.pid=this.state.pid;
+      value.processInstanceId=this.props.dataReport.reportdata.processInstanceId||"";
+      value.processState=this.props.dataReport.reportdata.processState||"";
+      // value.comment=this.props.dataEdit.editdata.comment;
+      //console.log("submitPlan",value);
+      console.log("777")
+      dispatch({
+        type: `${namespace}/querySubmitReport`,
+        payload: value,
+      });
+    })
   };
 
-  submit = () => {
-    this.setState({
-      visible: true,
-      current: undefined,
+//123456
+  showSubmit(form) {
+    var that = this;
+    confirm({
+      title: '您是否要提交测试报告?',
+      content: '测试报告提交后进入审核状态，不可编辑',
+      okText: '确认提交',
+      okType: 'primary',
+      cancelText: '取消',
+      onOk() {
+        console.log("submitPlan");
+        that.submitReport(form);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
     });
-    dispatch({
-      type: 'basicForm/saveForm',//TODO:save
-      payload: values,
-    });
+  }
+
+  submitReport=(form)=> {
+    const { dispatch } = this.props;
+    //console.log("123")
+    this.state.pid=this.props.dataReport.reportdata.pid;
+    form.validateFields((err,value) => {
+      //console.log(this.props.dataEdit.editdata);
+      //新建
+      value.pid=this.state.pid;
+      value.processInstanceId=this.props.dataReport.reportdata.processInstanceId||"";
+      value.processState=this.props.dataReport.reportdata.processState||"";
+      // value.comment=this.props.dataEdit.editdata.comment;
+      //console.log("submitPlan",value);
+      console.log("777")
+      dispatch({
+        type: `${namespace}/querySubmitReport`,
+        payload: value,
+      });
+    })
   };
+
+
+
+
+  // addReport=(form)=>{
+  //   const { dispatch } = this.props;
+  //   this.state.pid=this.props.dataReport.reportdata.pid;
+  //   form.validateFields((err,value) => {
+  //     //新建
+  //     value.pid=this.state.pid;
+  //     // 补充新建属性
+  //     value.processInstanceId="";
+  //     value.processState="ToSubmit";
+  //     value.comment="";
+  //     //补充完毕
+  //     dispatch({
+  //       type: `${namespace}/queryAddPlan`,
+  //       payload: value,
+  //     });
+  //   })
+  // };
+
+
+
 
   saveForm=(form)=>{
-    console.log(form)
+    console.log(666)
     
     const { dispatch } = this.props;  
     this.state.pid = this.props.dataReport.reportdata.pid;
     form.validateFields((err,value) => {
       value.pid=this.state.pid
-      value.processInstanceID = this.props.dataReport.reportdata.processInstanceID;
+      value.processInstanceID = this.props.dataReport.reportdata.processInstanceId;
       value.processState = this.props.dataReport.reportdata.processState;
-      //console.log("验证走到这里与否");
+      console.log("验证走到这里与否");
       dispatch({
         type: `${namespace}/queryReplaceReport`,
         payload: value,
       });
       //console.log("finish save")
     })
-  }
+  };
 
   save=(form)=>{
     const { dispatch } = this.props;
@@ -325,6 +415,8 @@ class newTestReport extends PureComponent {
       this.saveForm(form)
     }
   };
+
+
 
 
   //删除
@@ -360,7 +452,7 @@ class newTestReport extends PureComponent {
         console.log('Cancel');
       },
     });
-  }
+  };
 
   render() {
     const {submitting} = this.props;
@@ -413,17 +505,26 @@ class newTestReport extends PureComponent {
     };
 
     return (
+      <div className={style.editBody}>
       <Breadcrumb>
-        <PageHeaderWrapper
+      <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
+          <Breadcrumb.Item href="/report-list.html">测试报告列表</Breadcrumb.Item>
+          <Breadcrumb.Item>测试报告编辑</Breadcrumb.Item>
+      </Breadcrumb>
+      <Divider/>
+        {/* <PageHeaderWrapper
           title={<FormattedMessage id="new-test-report.basic.title2"/>}
           content={<FormattedMessage id="new-test-report.basic.description"/>}
         >
-          <Form onSubmit={this.handleSubmit}>
-          <Card bordered={false}>
+          </PageHeaderWrapper> */}
+        <div className={style.formBody}>
+          <Form className={style.antForm}>
+          {/* <Form onSubmit={this.handleSubmit}> */}
+            <Card bordered={false}>
             <Row>
               <Col span={12} style={{display:"block"}}>
-              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.itemNumber"/>}>
-                  {getFieldDecorator('itemNumber', {
+              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.codeId"/>}>
+                  {getFieldDecorator('codeId', {
                     initialValue: this.props.dataReport.reportdata.codeId || '',
                   }, {
                     rules: [
@@ -446,8 +547,8 @@ class newTestReport extends PureComponent {
                     ],
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
-              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.samplingDate"/>}>
-                  {getFieldDecorator('samplingDate', {
+              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.sampleDate"/>}>
+                  {getFieldDecorator('sampleDate', {
                     initialValue: this.props.dataReport.reportdata.sampleDate|| '',
                   }, {
                     rules: [
@@ -472,8 +573,8 @@ class newTestReport extends PureComponent {
                 </FormItem>
               </Col>
               <Col span={12} style={{display:"block"}}>
-              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.unitc"/>}>
-                  {getFieldDecorator('unitc', {
+              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.clientCompany"/>}>
+                  {getFieldDecorator('clientCompany', {
                     initialValue: this.props.dataReport.reportdata.clientCompany || '',
                   }, {
                     rules: [
@@ -508,9 +609,9 @@ class newTestReport extends PureComponent {
                     ],
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
-              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.testBasic"/>}>
-                  {getFieldDecorator('testBasic', {
-                    initialValue: this.props.dataReport.reportdata.testBasis || '',
+              <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.softwareName"/>}>
+                  {getFieldDecorator('softwareName', {
+                    initialValue: this.props.dataReport.reportdata.softwareName || '',
                   }, {
                     rules: [
                       {
@@ -526,13 +627,13 @@ class newTestReport extends PureComponent {
               <Col span={12} style={{display:"block"}}>
               <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.sampleList"/>}>
                 <Row>
-                  <Col span={8} style={{display:"block"}}>
+                  {/* <Col span={8} style={{display:"block"}}>
                     <Upload {...softwaresampleuploadprops}>
                       <Button>
                         <FormattedMessage id="new-test-report.softwareSample"/>
                       </Button>
                     </Upload>
-                  </Col>
+                  </Col> */}
                   <Col span={8} style={{display:"block"}}>
                       <Upload {...softwaredocumentsuploadprops}>
                         <Button>
@@ -544,8 +645,8 @@ class newTestReport extends PureComponent {
               </FormItem>
               <Row>
                 <Col span={12} style={{display:"block"}}>
-                    <FormItem {...formItemLayout1} label={<FormattedMessage id="new-test-report.testDominator"/>}>
-                      {getFieldDecorator('testDominator', {
+                    <FormItem {...formItemLayout1} label={<FormattedMessage id="new-test-report.tester"/>}>
+                      {getFieldDecorator('tester', {
                         initialValue: this.props.dataReport.reportdata.tester || '',
                       }, {
                         rules: [
@@ -559,8 +660,8 @@ class newTestReport extends PureComponent {
                     
                 </Col>
                 <Col span={12} style={{display:"block"}}>
-                    <FormItem {...formItemLayout2} label={<FormattedMessage id="new-test-report.date"/>}>
-                      {getFieldDecorator('date', {
+                    <FormItem {...formItemLayout2} label={<FormattedMessage id="new-test-report.testerDate"/>}>
+                      {getFieldDecorator('testerDate', {
                         initialValue: this.props.dataReport.reportdata.testDate || '',
                       }, {
                         rules: [
@@ -590,8 +691,8 @@ class newTestReport extends PureComponent {
                     
                 </Col>
                 <Col span={12} style={{display:"block"}}>
-                    <FormItem {...formItemLayout2} label={<FormattedMessage id="new-test-report.date"/>}>
-                      {getFieldDecorator('date-auditor', {
+                    <FormItem {...formItemLayout2} label={<FormattedMessage id="new-test-report.auditorDate"/>}>
+                      {getFieldDecorator('auditorDate', {
                         initialValue: this.props.dataReport.reportdata.auditorDate || '',
                       }, {
                         rules: [
@@ -622,8 +723,8 @@ class newTestReport extends PureComponent {
                     
                 </Col>
                 <Col span={12} style={{display:"block"}}>
-                    <FormItem {...formItemLayout2} label={<FormattedMessage id="new-test-report.date"/>}>
-                      {getFieldDecorator('date-approver', {
+                    <FormItem {...formItemLayout2} label={<FormattedMessage id="new-test-report.approverDate"/>}>
+                      {getFieldDecorator('approverDate', {
                         initialValue: this.props.dataReport.reportdata.approverDate || '',
                       }, {
                         rules: [
@@ -645,7 +746,7 @@ class newTestReport extends PureComponent {
               <FormItem {...formItemLayout} label={<FormattedMessage id="new-test-report.unitc-contact"/>}>
               </FormItem>
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.phone.label"/>}>
-                  {getFieldDecorator('unitc-phone', {
+                  {getFieldDecorator('clientTel', {
                     initialValue: this.props.dataReport.reportdata.clientTel || '',
                   }, {
                     rules: [
@@ -657,7 +758,7 @@ class newTestReport extends PureComponent {
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.fax.label"/>}>
-                  {getFieldDecorator('unitc-fax', {
+                  {getFieldDecorator('clientFax', {
                     initialValue: this.props.dataReport.reportdata.clientFax || '',
                   }, {
                     rules: [
@@ -669,7 +770,7 @@ class newTestReport extends PureComponent {
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.address.label"/>}>
-                  {getFieldDecorator('unitc-address', {
+                  {getFieldDecorator('clientAddr', {
                     initialValue: this.props.dataReport.reportdata.clientAddr || '',
                   }, {
                     rules: [
@@ -681,7 +782,7 @@ class newTestReport extends PureComponent {
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.postcode.label"/>}>
-                  {getFieldDecorator('unitc-postcode', {
+                  {getFieldDecorator('clientPostCode', {
                     initialValue: this.props.dataReport.reportdata.clientPostCode|| '',
                   }, {
                     rules: [
@@ -693,7 +794,7 @@ class newTestReport extends PureComponent {
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.contactor.label"/>}>
-                  {getFieldDecorator('unitc-contactor', {
+                  {getFieldDecorator('clientContact', {
                     initialValue: this.props.dataReport.reportdata.clientContact || '',
                   }, {
                     rules: [
@@ -705,7 +806,7 @@ class newTestReport extends PureComponent {
                   })(<Input placeholder={formatMessage({id: 'new-test-report.basic.input'})}/>)}
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.email.label"/>}>
-                  {getFieldDecorator('unitc-email', {
+                  {getFieldDecorator('clientEmail', {
                     initialValue: this.props.dataReport.reportdata.clientEmail || '',
                   }, {
                     rules: [
@@ -723,7 +824,7 @@ class newTestReport extends PureComponent {
               </FormItem>
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.phone.label"/>}>
                   {getFieldDecorator('unitt-phone', {
-                    initialValue: this.props.dataReport.reportdata.auditor || '',
+                     initialValue: '86-25-89683186',
                   }, {
                     rules: [
                       {
@@ -735,7 +836,7 @@ class newTestReport extends PureComponent {
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.fax.label"/>}>
                   {getFieldDecorator('unitt-fax', {
-                    initialValue: this.props.dataReport.reportdata.auditor || '',
+                    initialValue:  '86-25-89683186',
                   }, {
                     rules: [
                       {
@@ -747,7 +848,7 @@ class newTestReport extends PureComponent {
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.address.label"/>}>
                   {getFieldDecorator('unitt-address', {
-                    initialValue: this.props.dataReport.reportdata.auditor || '',
+                    initialValue: '江苏省南京市栖霞区仙林大道163号',
                   }, {
                     rules: [
                       {
@@ -759,7 +860,7 @@ class newTestReport extends PureComponent {
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.postcode.label"/>}>
                   {getFieldDecorator('unitt-postcode', {
-                    initialValue: this.props.dataReport.reportdata.auditor || '',
+                    initialValue:  '210023',
                   }, {
                     rules: [
                       {
@@ -771,7 +872,7 @@ class newTestReport extends PureComponent {
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.contactor.label"/>}>
                   {getFieldDecorator('unitt-contactor', {
-                    initialValue: this.props.dataReport.reportdata.auditor || '',
+                    initialValue: '',
                   }, {
                     rules: [
                       {
@@ -783,7 +884,7 @@ class newTestReport extends PureComponent {
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.email.label"/>}>
                   {getFieldDecorator('unitt-email', {
-                    initialValue: this.props.dataReport.reportdata.auditor || '',
+                    initialValue:  '@nju.edu.cn',
                   }, {
                     rules: [
                       {
@@ -858,29 +959,32 @@ class newTestReport extends PureComponent {
             <Table columns={columnsForEfficiencyTest} dataSource={dataForEfficiencyTest} pagination={ false } size="default " />
             {/* now */}
             <br/>
-              <Row>
-              <Col span={24} style={{ textAlign: 'right' }}>
-                {/* <Button type="primary" htmlType="submit">
-                  返回
-                </Button> */}
-                <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>{this.showDelete(this.props.form)}}>
-                  删除
-                </Button>
-                <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>this.save(this.props.form)}>
-                  保存
-                </Button>
-                <Button type="primary" style={{ marginLeft: 8 }} onClick={this.handleReset}>
-                  提交
-                </Button>
-              </Col>
-            </Row>
+           
           </Card>
-         </Form>
-        
-        </PageHeaderWrapper>
-      </Breadcrumb>
+          <div>
+            <Affix offsetBottom={0}>
+            <div className={style.submitBtns}>
+            <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>{this.showSubmit(this.props.form)}}>提交</Button>
+            <Button style={{ marginLeft: 8 }} onClick={()=>this.save(this.props.form)}>保存</Button>
+            <Button type="danger" style={{ marginLeft: 8 }} onClick={()=>{this.showDelete(this.props.form)}}>删除</Button>
+            </div>
+
+
+            <div>
+          <BackTop visibilityHeight={300}/>
+          <strong style={{color: 'rgba(64, 64, 64, 0.6)'}}> </strong>
+        </div>
+            </Affix>
+        </div>
+
+          </Form>
+        </div>
+      </div>
+      
     );
   }
 }
 
 export default newTestReport;
+
+

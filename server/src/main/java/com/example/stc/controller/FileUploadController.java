@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,10 +28,14 @@ public class FileUploadController extends BaseController {
 
     private Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
-    /** 上传文件的保存路径 */
+    /**
+     * 上传文件的保存路径
+     */
     private static String UPLOADED_FOLDER = "files/";
 
-    /** 保存文件 */
+    /**
+     * 保存文件
+     */
     private void saveUploadedFiles(String pid, List<MultipartFile> files) throws IOException {
         // 建立文件夹
         String filepath = UPLOADED_FOLDER + pid + "/";
@@ -46,22 +52,54 @@ public class FileUploadController extends BaseController {
         }
     }
 
-    /** 文件上传 */
-    @PostMapping("/files/{pid}")
-    public ResponseEntity<?> uploadFileMulti(@PathVariable String pid, @RequestBody MultipartFile[] files) {
+    /**
+     * 已上传文件查询
+     */
+    @GetMapping("/files")
+    public @ResponseBody
+    List<String> getUploadFiles(@RequestParam(value = "pid") String pid) {
+        logger.info("getUploadFiles: ");
+        if (pid == "")
+            return new ArrayList<>();
+        String filepath = UPLOADED_FOLDER + pid + "/";
+        File fileDirs = new File(filepath);
+        File[] files = fileDirs.listFiles();
+        List<String> fileList = new ArrayList<>();
+        // 若files == null，说明该路径不存在，即从未上传文件
+        if (files != null) {
+            for (File file : files) {
+                if (!file.isDirectory()) {
+                    String filename = file.getName();
+                    fileList.add(filename);
+                    logger.info("get File " + filename);
+                }
+            }
+        }
+        return fileList;
+    }
+
+    /**
+     * 文件上传
+     */
+    @PostMapping("/files")
+    public @ResponseBody
+    ResponseEntity<?> uploadFileMulti(@RequestParam(value = "pid") String pid,
+                                             HttpServletRequest request) {
+        List<MultipartFile> files = ((MultipartHttpServletRequest) request)
+                .getFiles("file");
 
         logger.info("Multiple File Upload");
 
-        String filenames = Arrays.stream(files).map(x -> x.getOriginalFilename())
+        String filenames = files.stream().map(x -> x.getOriginalFilename())
                 .filter(x -> !StringUtils.isEmpty(x)).collect(Collectors.joining(" , "));
-
+//        String filenames = files.getName();
         logger.info("Get Upload Filenames: " + filenames);
 
         if (StringUtils.isEmpty(filenames)) {
             return new ResponseEntity("File Not Found, Please Select a File", HttpStatus.OK);
         }
         try {
-            saveUploadedFiles(pid, Arrays.asList(files));
+            saveUploadedFiles(pid, files);
             logger.info("Upload Success");
 
         } catch (IOException e) {
@@ -70,9 +108,29 @@ public class FileUploadController extends BaseController {
         return new ResponseEntity("Upload Success - " + filenames, HttpStatus.OK);
     }
 
-    /** 文件下载 */
+    /**
+     * 文件删除
+     */
+    @DeleteMapping("/files/{pid}/{filename}")
+    public @ResponseBody
+    String deleteFile(@PathVariable String pid, @PathVariable String filename) {
+        // 删除的文件所在位置
+        String filepath = UPLOADED_FOLDER + pid + "/";
+        File file = new File(filepath + filename);
+
+        logger.info("File Delete From" + filepath + filename);
+
+        if (file.delete())
+            return "Delete Success";
+        else return "Delete Failed - File Not Found";
+    }
+
+    /**
+     * 文件下载
+     */
     @GetMapping("/files/{pid}/{filename}")
-    public String downloadFile(@PathVariable String pid, @PathVariable String filename,
+    public @ResponseBody
+    String downloadFile(@PathVariable String pid, @PathVariable String filename,
                                HttpServletRequest request, HttpServletResponse response) {
         // 下载所在源文件
         String filepath = UPLOADED_FOLDER + pid + "/";
@@ -111,4 +169,6 @@ public class FileUploadController extends BaseController {
         logger.info("Download Failed - File Not Found");
         return "Download Failed - File Not Found";
     }
+
+
 }
