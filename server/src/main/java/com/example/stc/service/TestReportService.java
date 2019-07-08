@@ -17,6 +17,11 @@ public interface TestReportService extends BaseService<TestReport> {
     List<TestReport> findTestReportsByAuthority();
 
     /**
+     * 获取全部待办的测试报告
+     */
+    List<TestReport> findToDoTestReportsByAuthority();
+
+    /**
      * 通过pid获取单个项目的测试报告
      */
     TestReport findTestReportByPid(String pid);

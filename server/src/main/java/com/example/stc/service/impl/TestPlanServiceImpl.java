@@ -47,6 +47,16 @@ public class TestPlanServiceImpl implements TestPlanService {
     }
 
     @Override
+    public List<TestPlan> findToDoTestPlansByAuthority() {
+        User curUser = authorityUtils.getLoginUser();
+        logger.info("findToDoTestPlansByAuthority: 当前登录者id = " + curUser.getUserID() +
+                ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
+        List<TestPlan> allTestPlans = this.findAllTestPlans();
+        allTestPlans.removeIf(testPlan -> !processUtils.isTodo(testPlan, "TestPlan"));
+        return allTestPlans;
+    }
+
+    @Override
     public TestPlan findTestPlanByPid(String pid) {
         TestPlan testPlan = testPlanRepository.findByPid(pid);
         if (testPlan == null)

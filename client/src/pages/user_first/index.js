@@ -164,13 +164,19 @@ export default class Carousels extends React.Component{
                     {/* <p><FormattedMessage id={(!this.props.listdata.data.length)? "未命名":this.props.listdata.data[0].softwareName}/></p> 
                     <br /> */}
                     <Collapse onChange={callback}>
-                    <Panel header={(!this.props.listdata.data.length)? "未有项目":this.props.listdata.data[0].softwareName} disabled={(!this.props.listdata.data.length)}>
-                    <Steps current={(!(this.props.listdata.data.length>0))? 0: this.props.listdata.pstate1.state-1} size="small">
-                        <Step title="委托" description="这是委托的描述." />
-                        <Step title="合同" description="这是合同的描述." />
-                        <Step title="测试方案" description="这是测试方案的描述." />
-                        <Step title="测试报告" description="这是测试报告的描述." />
-                        <Step title="结项" description="这是结项的描述." />
+                    <Panel header={(!this.props.listdata.data.length)? "未有项目":this.props.listdata.data[0].softwareName} 
+>
+                    <Steps current={(!(this.props.listdata.data.length>0))? 0: this.props.listdata.pstate1.state-1} 
+                    size="small"
+                    disabled={(!this.props.listdata.data.length)}
+                    style={{
+                        padding:'1%'
+                    }}>
+                        <Step title="委托" description="" />
+                        <Step title="合同" description="" />
+                        <Step title="测试方案" description="" />
+                        <Step title="测试报告" description="" />
+                        <Step title="结项" description="" />
                     </Steps>
                     </Panel>
                     <Divider />

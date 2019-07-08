@@ -61,6 +61,16 @@ public class ContractServiceImpl implements ContractService{
     }
 
     @Override
+    public List<Contract> findToDoContractsByAuthority() {
+        User curUser = authorityUtils.getLoginUser();
+        logger.info("findToDoContractsByAuthority: 当前登录者id = " + curUser.getUserID() +
+                ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
+        List<Contract> allContracts = this.findAllContracts();
+        allContracts.removeIf(contract -> !processUtils.isTodo(contract, "Contract"));
+        return allContracts;
+    }
+
+    @Override
     public List<Contract> findContractByUser(String uid) {
         logger.info("findContractsByUser:");
         List<Contract> allContracts = this.findAllContracts();

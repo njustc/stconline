@@ -23,6 +23,11 @@ public interface EntrustService extends BaseService<Entrust> {
     List<Entrust> findEntrustsByAuthority();
 
     /**
+     * 获取待办委托
+     */
+    List<Entrust> findToDoEntrustsByAuthority();
+
+    /**
      * 获取某用户全部委托
      */
     List<Entrust> findEntrustsByUser(String uid);
