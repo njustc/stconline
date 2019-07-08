@@ -116,7 +116,7 @@ export default class ReportList extends Component {
       render: processState => {
         var color = processState === 'Review' ? 'geekblue' : 'green'
         if (processState === 'Submit') {
-          color = 'grey'
+          color = 'gold'
         }
         return (
           <Tag color={color} key={processState}>
