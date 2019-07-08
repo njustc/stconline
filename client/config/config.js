@@ -57,6 +57,13 @@ export default {
           component: './Welcome',
         },
         {
+          name:'项目列表',
+          icon: 'smile',
+          path: '/user_first',
+          component: './user_first',
+          authority:['CUS'],
+        },
+        {
           path: 'basic-form',
           component: './entrust/basic-form',
         },
@@ -159,13 +166,7 @@ export default {
           path: '/user-login',
           component: './user-login',
         },
-        {
-          name:'新用户第一眼',
-          icon: 'smile',
-          path: '/user_first',
-          component: './user_first',
-          authority:['CUS'],
-        },
+
       ],
     },
   ],
