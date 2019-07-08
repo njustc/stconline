@@ -209,7 +209,7 @@ export default class Detail extends Component{
                 ],
                 })(<Input placeholder={formatMessage({id: "输入审批意见"})} 
                 //当processState是review的时候是可编辑的
-                disabled={this.props.dataCheck.check.processState!="Review"}
+                disabled={this.props.dataCheck.check.processState!="Review" || this.props.dataCheck.checked == 1}
                 />)}
               </FormItem>
 
