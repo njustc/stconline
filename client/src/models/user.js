@@ -1,4 +1,5 @@
 import { query as queryUsers, queryCurrent } from '@/services/user';
+import {userLogout} from "../pages/user-login/service";
 
 export default {
   namespace: 'user',
@@ -22,6 +23,9 @@ export default {
         type: 'saveCurrentUser',
         payload: response,
       });
+    },
+    * logout({payload}, {call, put}) {
+      yield call(userLogout, payload)
     },
   },
 
