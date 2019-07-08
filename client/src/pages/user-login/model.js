@@ -35,7 +35,7 @@ export default {
         type: payload.type,
       };
     },
-    //更新用户信息
+    // 更新用户信息
     flushUserInfo(state, {payload}) {
       this.state = payload;
     }
