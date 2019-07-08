@@ -97,3 +97,18 @@ export async function getprocess(param){
   })
 }
 
+export async function deleteFile(pid, filename) {
+  return request(`api/project/files?pid=${pid}&filename=${filename}`,{
+    method:'DELETE',
+    data: { pid, filename }
+  })
+}
+
+export async function getFilenames(pid) {
+  return request(`api/project/files/name?pid=${pid}`,{
+    method:'GET',
+    data: { pid }
+  })
+}
+
+

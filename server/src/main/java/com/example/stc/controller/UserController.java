@@ -48,7 +48,6 @@ public class UserController {
     /**
      * 用户登录
      */
-//    @Secured(value = "USER")
     @PostMapping("/api/login")
     public String userLogin(HttpServletRequest req,
                             HttpServletResponse response,

@@ -58,6 +58,16 @@ public class EntrustServiceImpl implements EntrustService {
     }
 
     @Override
+    public List<Entrust> findToDoEntrustsByAuthority() {
+        User curUser = authorityUtils.getLoginUser();
+        logger.info("findToDoEntrustsByAuthority: 当前登录者uid = " + curUser.getUserID() +
+                ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
+        List<Entrust> allEntrusts = this.findAllEntrusts();
+        allEntrusts.removeIf(entrust -> !processUtils.isTodo(entrust, "Entrust"));
+        return allEntrusts;
+    }
+
+    @Override
     public List<Entrust> findEntrustsByUser(String uid) {
         logger.info("findEntrustsByUser: 查看用户" + uid + "的全部委托");
         List<Entrust> allEntrusts = this.findAllEntrusts();

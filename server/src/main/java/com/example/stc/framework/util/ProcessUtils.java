@@ -253,4 +253,24 @@ public class ProcessUtils {
         }
     }
 
+    /**
+     * 判断某个实体是否为当前用户的待办事项
+     * @param entity
+     * @param type
+     * @return
+     */
+    public boolean isTodo(ProcessEntity entity, String type) {
+        User user = authorityUtils.getLoginUser();
+        String userId = user.getUserID();
+        String processInstanceId = entity.getProcessInstanceId();
+        String processState = getProcessState(processInstanceId);
+
+        switch (processState) {
+            case "Approve": return false;
+            case "Review": return isReviewable(processInstanceId, userId);
+            case "Submit": return isCreator(entity, type);
+            default: return false;
+        }
+    }
+
 }
