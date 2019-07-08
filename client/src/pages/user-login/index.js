@@ -8,7 +8,7 @@ import styles from './style.less';
 import {readCookie, getRole} from "../../utils/cookieUtils";
 import router from 'umi/router';
 import Button from "antd/es/button";
-
+import {routerRedux} from 'dva/router'
 
 const {Tab, UserName, Password, Mobile, Captcha, Submit} = Login;
 
@@ -41,14 +41,9 @@ class LoginPage extends Component {
         },
       }).then(res => {
         //TODO: 登录成功与失败处理逻辑
-        console.log(res.status);
-        //401
-        if (res.status === 401) {
-
-        } else {
-          router.push("/welcome")
-        }
-
+        //console.log(res.status);
+        //router.push("/welcome")
+        location.replace("/welcome.html")
         //cookie内容
       });
     }
@@ -62,7 +57,8 @@ class LoginPage extends Component {
     dispatch({
       type: 'userInfo/logout',
     }).then(res => {
-      console.log(res)
+      //console.log(res)
+      location.replace("/user-login.html")
     })
   };
 
@@ -94,7 +90,7 @@ class LoginPage extends Component {
         >
           <UserName
             name="username"
-            placeholder={`${formatMessage({id: 'user-login.login.userName'})}: admin or user`}
+            placeholder={`${formatMessage({id: 'user-login.login.userName'})}`}
             rules={[
               {
                 required: true,
@@ -104,7 +100,7 @@ class LoginPage extends Component {
           />
           <Password
             name="password"
-            placeholder={`${formatMessage({id: 'user-login.login.password'})}: ant.design`}
+            placeholder={`${formatMessage({id: 'user-login.login.password'})}`}
             rules={[
               {
                 required: true,

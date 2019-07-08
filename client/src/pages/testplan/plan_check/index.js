@@ -149,7 +149,9 @@ export default class List extends React.Component {
                       <Button onClick={() => {
                         this.review(this.props.form, "ReviewPass")
                       }} style={{marginLeft: 8}}
-                              type="primary">
+                              type="primary"
+                              // disabled={this.props.dataCheck.check.}
+                      >
                         <FormattedMessage id="basic-form.form.agree"/>
                       </Button>
                       <Button onClick={() => {

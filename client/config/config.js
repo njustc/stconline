@@ -42,6 +42,8 @@ export default {
     {
       path: '/',
       component: '../layouts/BasicLayout',
+      Routes:['src/utils/Authorized'],
+      //authority:['CUS'],
       routes: [
         {
           path: '/',
@@ -50,8 +52,8 @@ export default {
         // dashboard
         {
           path: '/welcome',
-          name: 'welcome',
-          icon: 'smile',
+          // name: 'welcome',
+          // icon: 'smile',
           component: './Welcome',
         },
         {
@@ -67,6 +69,7 @@ export default {
           icon: 'pie-chart',
           path: '/basic-list',
           component: './entrust/basic-list/entrustlist',
+          authority:['CUS','SS','SM'],
         },
 
 
@@ -86,6 +89,7 @@ export default {
           component: './contract/contract_list',
           icon: 'pie-chart',
           name: '合同列表',
+          authority:['CUS','SS','SM','QM'],
         },
 
         //testplan
@@ -101,6 +105,7 @@ export default {
           icon: 'pie-chart',
           path: '/plan_list',
           component: './testplan/plan_list',
+          authority:['CUS','QM','TM','TS'],
         },
         {
           //name: '测试方案编辑',
@@ -115,6 +120,7 @@ export default {
           icon: 'pie-chart',
           path: '/report-list',
           component: './test-report/report-list',
+          authority:['CUS','QM','TM','TS'],
         },
         {
           //测试报告详情
@@ -129,7 +135,7 @@ export default {
 
         //test-record
         {
-          //测试记录列表
+          // 测试记录列表
           // name: '测试记录列表',
           // icon: 'pie-chart',
           path: '/record-list',
@@ -148,8 +154,8 @@ export default {
 
         //user-login
         {
-          name: '登陆',
-          icon: 'smile',
+          // name: '登陆',
+          // icon: 'smile',
           path: '/user-login',
           component: './user-login',
         },
@@ -157,7 +163,8 @@ export default {
           name:'新用户第一眼',
           icon: 'smile',
           path: '/user_first',
-          component: './user_first'
+          component: './user_first',
+          authority:['CUS'],
         },
       ],
     },
