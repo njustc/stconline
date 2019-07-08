@@ -89,7 +89,6 @@ class BasicForm extends PureComponent {
       value.processInstanceId = ""
 
       value.comment = ""
-      console.log("new value", value)
       //补充完毕
       dispatch({
         type: 'entrustForm/addNewEntrust',
@@ -175,7 +174,6 @@ class BasicForm extends PureComponent {
         that.submit(form)
       },
       onCancel() {
-        console.log('Cancel');
       },
     });
   }
@@ -1310,8 +1308,8 @@ class BasicForm extends PureComponent {
                     band files
                   </p>
                 </Dragger>
-                <Affix offsetBottom={0}
-                       onChange={affixed => console.log(affixed)}>
+                <Affix offsetBottom={0}>
+                       {/* onChange={affixed => console.log(affixed)} */}
                   <div className={style.submitBtns}>
                     <Button type="primary" onClick={() => {
                       this.showConfirm(this.props.form)
