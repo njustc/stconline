@@ -112,7 +112,7 @@ export default class List extends React.Component {
         // console.log('OK');
       },
       onCancel() {
-        console.log('Cancel');
+        //console.log('Cancel');
       },
     });
   }

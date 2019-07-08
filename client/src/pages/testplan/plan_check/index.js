@@ -84,7 +84,7 @@ export default class List extends React.Component {
       var checkvalue = this.props.dataCheck.check;
       checkvalue.operation = operation;
       checkvalue.comment = value.comment;
-      console.log("checkvalue", checkvalue);
+      //console.log("checkvalue", checkvalue);
       dispatch({
         type: `${namespace}/queryReviewTestPlan`,
         payload: checkvalue,
