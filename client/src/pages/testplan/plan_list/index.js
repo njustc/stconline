@@ -156,16 +156,16 @@ export default class List extends React.Component {
 
   columns = [
     {
-      title: '方案ID',
+      title: '项目编号',
       dataIndex: 'pid',
       key: 'pid',
       render: text => <a href="javascript:;">{text}</a>,
     },
-    // {
-    //   title: '编辑人员',
-    //   dataIndex: 'author',
-    //   key: 'author',
-    // },
+    {
+      title: '编辑人员',
+      dataIndex: 'author',
+      key: 'author',
+    },
     {
       title: '状态',
       key: 'processState',
