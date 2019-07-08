@@ -14,6 +14,10 @@ const { Step } = Steps;
 const { Panel } = Collapse;
 const namespace = 'user_first';
 
+function callback(key) {
+    console.log(key);
+}
+
 const mapStateToProps = (state) => {
     const listdata = state[namespace];
     console.log("输出listdata",listdata);
@@ -96,7 +100,40 @@ export default class Carousels extends React.Component{
     //     });
     //     return res;
     // }
-        
+    
+    // userLinkMapper= {
+    //     "QM": (key) => (
+    //       <span>
+    //         <Divider type="vertical"/>
+    //         {<Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
+    //   </span>
+    //     ),
+    
+    //     "TM": (key) => (
+    //       <span>
+    //         <Divider type="vertical"/>
+    //         {<Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
+    //         <Divider type="vertical"/>
+    //         {key.processState === 'Approve' ?<Link to={{pathname: './record-list', query: {pid: key.pid}}}>查看测试记录</Link>:null}
+    
+    //   </span>
+    //     ),
+    
+    
+    //     "TS": (key) => (
+    //       <span>
+    //         {<Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
+    //         <Divider type="vertical"/>
+    //         {key.processState === 'Approve' ? <Link to={{pathname: './record-list', query: {pid: key.pid}}}>查看测试记录</Link>:null}
+    //         <Divider type="vertical"/>
+    //         {key.processState === 'Submit' ? <Link to={{pathname: '../../plan_edit', query: {pid: key.pid}}}>编辑</Link>:null}
+    //     </span>
+    //     ),
+    //   };
+    
+    //   link(){
+    //     return this.userLinkMapper[getRole()[0]]
+    // }
 
     render(){
         return (
@@ -125,39 +162,45 @@ export default class Carousels extends React.Component{
                 bordered={false}
                 extra={<Link to="/welcome">全部项目</Link>}
                 >
-                     {/* dataSource={(!this.props.listdata.data.length) ? data : this.props.listdata.data} */}
-                    <p><FormattedMessage id={(!this.props.listdata.data.length)? "未命名":this.props.listdata.data[0].softwareName}/></p> 
-                    <br />
-                        <Steps current={(!this.props.listdata.data.length)? 0: this.props.listdata.pstate1.state-1} size="small">
-                            <Step title="委托" description="这是委托的描述." />
-                            <Step title="合同" description="这是合同的描述." />
-                            <Step title="测试方案" description="这是测试方案的描述." />
-                            <Step title="测试报告" description="这是测试报告的描述." />
-                            <Step title="结项" description="这是结项的描述." />
-                        </Steps>
-                        <Divider />
-                        <p><FormattedMessage id={(!this.props.listdata.data.length)? "未命名":this.props.listdata.data[1].softwareName}/></p>
-                        <br />
-                        <Steps current={(!this.props.listdata.data.length)? 0: this.props.listdata.pstate2.state-1} size="small">
-                            <Step title="委托" description="这是委托的描述." />
-                            <Step title="合同" description="这是合同的描述." />
-                            <Step title="测试方案" description="这是测试方案的描述." />
-                            <Step title="测试报告" description="这是测试报告的描述." />
-                            <Step title="结项" description="这是结项的描述." />
-                        </Steps>
-                        <Divider />
-                        <p><FormattedMessage id={(!this.props.listdata.data.length)? "未命名":this.props.listdata.data[2].softwareName}/></p>
-                        <br />
-                        <Steps current={(!this.props.listdata.data.length)? 0: this.props.listdata.pstate3.state-1} size="small">
-                            <Step title="委托" description="这是委托的描述." />
-                            <Step title="合同" description="这是合同的描述." />
-                            <Step title="测试方案" description="这是测试方案的描述." />
-                            <Step title="测试报告" description="这是测试报告的描述." />
-                            <Step title="结项" description="这是结项的描述." />
-                        </Steps>
+                    {/* <p><FormattedMessage id={(!this.props.listdata.data.length)? "未命名":this.props.listdata.data[0].softwareName}/></p> 
+                    <br /> */}
+                    <Collapse onChange={callback}>
+                    <Panel header={(!this.props.listdata.data.length)? "未有项目":this.props.listdata.data[0].softwareName} disabled={(!this.props.listdata.data.length)}>
+                    <Steps current={(!(this.props.listdata.data.length>0))? 0: this.props.listdata.pstate1.state-1} size="small">
+                        <Step title="委托" description="这是委托的描述." />
+                        <Step title="合同" description="这是合同的描述." />
+                        <Step title="测试方案" description="这是测试方案的描述." />
+                        <Step title="测试报告" description="这是测试报告的描述." />
+                        <Step title="结项" description="这是结项的描述." />
+                    </Steps>
+                    </Panel>
+                    <Divider />
+                    <Panel header={(!(this.props.listdata.data.length>1))? "未有项目":this.props.listdata.data[1].softwareName} disabled={(!(this.props.listdata.data.length>1))}>
+                    <Steps current={(!(this.props.listdata.data.length>1))? 0: this.props.listdata.pstate2.state-1} size="small">
+                        <Step title="委托" description="这是委托的描述." />
+                        <Step title="合同" description="这是合同的描述." />
+                        <Step title="测试方案" description="这是测试方案的描述." />
+                        <Step title="测试报告" description="这是测试报告的描述." />
+                        <Step title="结项" description="这是结项的描述." />
+                    </Steps>
+                    </Panel>
+                    <Divider />
+                    <Panel header={(!(this.props.listdata.data.length>2))? "未有项目":this.props.listdata.data[2].softwareName} disabled={(!(this.props.listdata.data.length>2))}>
+                    <Steps current={(!(this.props.listdata.data.length>2))? 0: this.props.listdata.pstate3.state-1} size="small">
+                        <Step title="委托" description="这是委托的描述." />
+                        <Step title="合同" description="这是合同的描述." />
+                        <Step title="测试方案" description="这是测试方案的描述." />
+                        <Step title="测试报告" description="这是测试报告的描述." />
+                        <Step title="结项" description="这是结项的描述." />
+                    </Steps>
+                    </Panel>
+                    </Collapse>
                 </Card>
-
             </div>
         )
     }
 };
+
+//合同的客户同意、不同意
+//SSA不能删合同，，把删除按钮隐藏
+//编辑页面的删除按钮删掉
