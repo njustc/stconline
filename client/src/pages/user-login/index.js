@@ -133,7 +133,7 @@ class LoginPage extends Component {
               <FormattedMessage id="user-login.login.signup"/>
             </Link>
           </div>
-          <a href="http://localhost:8080/api/project/files?pid=p20190610010104&filename=main.py">下载文件</a>
+          <a href="http://localhost:8080/api/project/files?pid=p20190610010104&filename=testfile">下载文件</a>
         </Login>
       </div>
 
