@@ -41,28 +41,20 @@ export default {
   routes: [
     {
       path: '/',
-      redirect: '/user-login',
-    },
-    {
-      path: '/',
       component: '../layouts/BasicLayout',
       Routes:['src/utils/Authorized'],
       //authority:['CUS'],
       routes: [
-
+        {
+          path: '/',
+          redirect: '/user-login',
+        },
         // dashboard
         {
           path: '/welcome',
           // name: 'welcome',
           // icon: 'smile',
           component: './Welcome',
-        },
-        {
-          name:'项目列表',
-          icon: 'smile',
-          path: '/user_first',
-          component: './user_first',
-          authority:['CUS'],
         },
         {
           path: 'basic-form',
@@ -167,7 +159,13 @@ export default {
           path: '/user-login',
           component: './user-login',
         },
-
+        {
+          name:'新用户第一眼',
+          icon: 'smile',
+          path: '/user_first',
+          component: './user_first',
+          authority:['CUS'],
+        },
       ],
     },
   ],

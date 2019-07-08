@@ -118,9 +118,12 @@ export default class ReportList extends Component {
         if (processState === 'Submit') {
           color = 'gold'
         }
+        var content = processState ==='Review'?"待审核":"已通过"
+        if (processState==='Submit'){
+          content='待提交'}
         return (
           <Tag color={color} key={processState}>
-            {processState}
+            {content}
           </Tag>
         );
       }
