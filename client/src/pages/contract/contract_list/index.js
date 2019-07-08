@@ -49,7 +49,7 @@ class List extends React.Component{
            {key.processState == 'Submit' ?   <Link to={{pathname: './contract_edit', query: {pid: key.pid}}}>编辑</Link> : ""}
           <Divider type="vertical"/>     
           {/*<a href="/plan_edit.html">编辑</a>*/}
-          <Link to={{pathname: './contract_detail', query: {pid: key.pid}}}>查看详情</Link>
+          <Link to={{pathname: './contract_check', query: {pid: key.pid}}}>查看详情</Link>
           <Divider type="vertical"/>
           {/* <Divider type="vertical"/>
           <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this,key)}>废止</span> */}
@@ -58,7 +58,7 @@ class List extends React.Component{
     "CUS":(key)=>(
       <span>
         <Divider type="vertical"/>
-        <Link to={{pathname: './contract_detail',query: {pid: key.pid}}}>查看详情</Link>
+        <Link to={{pathname: './contract_check',query: {pid: key.pid}}}>查看详情</Link>
         <Divider type="vertical"/>
         {key.processState == 'Review' ? <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this,key)}>废止</span> : ""}
         <Divider type="vertical"/>
@@ -67,7 +67,7 @@ class List extends React.Component{
     "SM":(key)=>(
       <span>
         <Divider type="vertical"/>
-        <Link to={{pathname: './contract_detail',query: {pid:key.pid}}}>查看详情</Link>
+        <Link to={{pathname: './contract_check',query: {pid:key.pid}}}>查看详情</Link>
         <Divider type="vertical"/>
         {key.processState == 'Review' ? <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this,key)}>废止</span> : ""}
         <Divider type="vertical"/>
@@ -76,7 +76,7 @@ class List extends React.Component{
     "QM":(key)=>(
       <span>
         <Divider type="vertical"/>
-        <Link to={{pathname: './contract_detail',query: {pid:key.pid}}}>查看详情</Link>
+        <Link to={{pathname: './contract_check',query: {pid:key.pid}}}>查看详情</Link>
         <Divider type="vertical"/>
         {key.processState == 'Review' ? <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this,key)}>废止</span> : ""}
         <Divider type="vertical"/>
@@ -86,32 +86,40 @@ class List extends React.Component{
 
   columns = [
     {
-      title: '方案ID',
+      title: '项目编号',
       dataIndex: 'pid',
       key: 'pid',
       render: text => <a href="javascript:;">{text}</a>,
     },
     {
-      title: '受托方',
-      dataIndex: 'assignee',
-      key: 'assignee',
+      title: '软件名称',
+      dataIndex: 'softwareName',
+      key: 'softwareName',
+    },
+    {
+      title: '委托方',
+      dataIndex: 'client',
+      key: 'client',
     },
     {
       title: '状态',
       key: 'processState',
       dataIndex: 'processState',
       render: processState => {
-        var color = processState === 'Approve' ? 'green' : 'geekblue';
+        var color = 'gold';
+        var res = "待提交";
         if (processState === 'Review') {
           color = 'geekblue';
+          res = "待审核";
         }
-        if (processState === 'Submit') {
-          color = 'grey';
+        if (processState === 'Approve') {
+          color = 'green';
+          res = "已通过";
         }
         return (
           //console.log(processState);
           <Tag color={color} key={processState}>
-            {processState}
+            {res}
           </Tag>
         );
       }
@@ -141,9 +149,11 @@ class List extends React.Component{
   showDeleteConfirm(key) {
     var that = this;
     confirm({
-      title: '您是否需要删除本合同?',
-      content: `合同ID： ${key.pid}   受托方: ${key.assignee}`,
-      okText: '确认删除',
+      title: '您是否要废止本合同?',
+      content: `
+      对应委托会被一同被删除
+      合同ID： ${key.pid}   受托方: ${key.assignee}`,
+      okText: '确认废止',
       okType: 'danger',
       concelText: '取消',
       onOk() {

@@ -1,8 +1,9 @@
-import {Card ,Breadcrumb ,Button ,Descriptions,Form, Input} from 'antd';
+import {Card ,Breadcrumb ,Button ,Descriptions,Form, Input, Popover, Affix} from 'antd';
 import React , {Component} from 'react';
 import {connect} from "dva";
 import { FormattedMessage,formatMessage } from 'umi/locale';
 import {getRole} from "../../../utils/cookieUtils";
+import style from './style.less';
 
 const namespace='contractDetail';
 const FormItem = Form.Item;
@@ -76,8 +77,10 @@ export default class Detail extends Component{
       <div>
         <Breadcrumb>
           <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
+          <Breadcrumb.Item href="/contract_list.html">合同列表</Breadcrumb.Item>
           <Breadcrumb.Item>合同详情</Breadcrumb.Item>
         </Breadcrumb>
+        <br />
         <Card>
           <h2>软件委托测试合同</h2>
         </Card>
@@ -124,7 +127,7 @@ export default class Detail extends Component{
             "SM":
             <div>
               <h1>市场部主任</h1>
-              <FormItem label={<FormattedMessage id="审批意见"/>}>
+              <FormItem label={<FormattedMessage id=" 审批意见"/>}>
                 {getFieldDecorator('comment', {
                   initialValue: this.props.dataCheck.check.comment || "",
                 },{
@@ -139,54 +142,67 @@ export default class Detail extends Component{
                 disabled={this.props.dataCheck.check.processState!="Review" || this.props.dataCheck.checked == 1 }
                 />)}
               </FormItem>
-
+              <Affix offsetBottom={0} >
+              <div>
               {
                 //当状态是Review，并且checked=0的时候出现按钮，否则隐藏
                 this.props.dataCheck.check.processState=="Review" && this.props.dataCheck.checked == 0?(
-                <div>
+                <div className={style.submitBtns}>
                   <Button onClick={() => {
                     this.review(this.props.form,"ReviewPass")
                   }}
-                  style={{marginLeft: 8}}
+                  style={{marginLeft: 250}}
                   type="primary">
                     <FormattedMessage id="同意" />
                   </Button>
+                  <Popover content="不同意会让合同重新编辑，不会影响委托" title="注意">
                   <Button onClick={() => {
                     this.review(this.props.form,"ReviewDisprove")
-                  }}>
+                  }}
+                  style={{marginLeft: 400}}
+                  >
                     <FormattedMessage id="不同意" />
                   </Button>
+                  </Popover>
                 </div>)
                 :null
               }
+              </div>
+              </Affix>
             </div>,
 
             "CUS":
-            <div>
+            <div >
               <Descriptions title="客户">
                 <Descriptions.Item label="委托状态">{this.props.dataCheck.check.processState || ' '}</Descriptions.Item>
                 <Descriptions.Item label="委托意见">{this.props.dataCheck.check.comment || ''}</Descriptions.Item>
                 <Descriptions.Item label="已提交样品">这里好像还没做好</Descriptions.Item>
               </Descriptions>
+              <Affix offsetBottom={0} >
+              <div>
               {
                 //当状态是Review的时候出现按钮，否则隐藏
                 this.props.dataCheck.check.processState=="Review"?
-                <div>
+                <div className={style.submitBtns}>
                   <Button onClick={() => {
                     this.review(this.props.form,"ReviewPass")
                   }}
-                  style={{marginLeft: 8}}
+                  style={{marginLeft: 250}}
                   type="primary">
                     <FormattedMessage id="同意" />
                   </Button>
                   <Button onClick={() => {
                     this.review(this.props.form,"ReviewDisprove")
-                  }}>
-                    <FormattedMessage id="废止" />
+                  }}
+                  style={{marginLeft: 400}}
+                  >
+                    <FormattedMessage id="不同意" />
                   </Button>
                 </div>
                 :null
               }
+              </div>
+              </Affix>
             </div>,
 
             "SS":
@@ -196,8 +212,8 @@ export default class Detail extends Component{
 
             "QM":
             <div>
-              <h1>质量部主任</h1>
-              <FormItem label={<FormattedMessage id="审批意见"/>}>
+              <h1>  质量部主任</h1>
+              <FormItem label={<FormattedMessage id=" 审批意见"/>}>
                 {getFieldDecorator('comment', {
                   initialValue: this.props.dataCheck.check.comment || "",
                 },{
@@ -212,26 +228,30 @@ export default class Detail extends Component{
                 disabled={this.props.dataCheck.check.processState!="Review" || this.props.dataCheck.checked == 1}
                 />)}
               </FormItem>
-
+              <Affix offsetBottom={0} >
+              <div>
               {
                 //当状态是Review的时候出现按钮，否则隐藏
                 this.props.dataCheck.check.processState=="Review" && this.props.dataCheck.checked == 0?
-                <div>
+                <div className={style.submitBtns}>
                   <Button onClick={() => {
                     this.review(this.props.form,"ReviewPass")
                   }}
-                  style={{marginLeft: 8}}
+                  style={{marginLeft: 250}}
                   type="primary">
                     <FormattedMessage id="同意" />
                   </Button>
                   <Button onClick={() => {
                     this.review(this.props.form,"ReviewDisprove")
-                  }}>
+                  }}
+                  style={{marginLeft: 400}}>
                     <FormattedMessage id="不同意" />
                   </Button>
                 </div>
                 :null
               }
+              </div>
+              </Affix>
             </div>,
           }[getRole()[0]]
         }
