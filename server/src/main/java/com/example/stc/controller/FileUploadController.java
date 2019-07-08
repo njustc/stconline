@@ -55,7 +55,7 @@ public class FileUploadController extends BaseController {
     /**
      * 已上传文件查询
      */
-    @GetMapping("/files")
+    @GetMapping("/files/name")
     public @ResponseBody
     List<String> getUploadFiles(@RequestParam(value = "pid") String pid) {
         logger.info("getUploadFiles: ");
@@ -84,7 +84,7 @@ public class FileUploadController extends BaseController {
     @PostMapping("/files")
     public @ResponseBody
     ResponseEntity<?> uploadFileMulti(@RequestParam(value = "pid") String pid,
-                                             HttpServletRequest request) {
+                                      HttpServletRequest request) {
         List<MultipartFile> files = ((MultipartHttpServletRequest) request)
                 .getFiles("file");
 
@@ -111,9 +111,9 @@ public class FileUploadController extends BaseController {
     /**
      * 文件删除
      */
-    @DeleteMapping("/files/{pid}/{filename}")
+    @DeleteMapping("/files")
     public @ResponseBody
-    String deleteFile(@PathVariable String pid, @PathVariable String filename) {
+    String deleteFile(@RequestParam String pid, @RequestParam String filename) {
         // 删除的文件所在位置
         String filepath = UPLOADED_FOLDER + pid + "/";
         File file = new File(filepath + filename);
@@ -128,10 +128,11 @@ public class FileUploadController extends BaseController {
     /**
      * 文件下载
      */
-    @GetMapping("/files/{pid}/{filename}")
+    @GetMapping("/files")
     public @ResponseBody
-    String downloadFile(@PathVariable String pid, @PathVariable String filename,
-                               HttpServletRequest request, HttpServletResponse response) {
+    String downloadFile(@RequestParam String pid,
+                        @RequestParam String filename,
+                        HttpServletRequest request, HttpServletResponse response) {
         // 下载所在源文件
         String filepath = UPLOADED_FOLDER + pid + "/";
         File file = new File(filepath + filename);
