@@ -966,7 +966,7 @@ class newTestReport extends PureComponent {
             <div className={style.submitBtns}>
             <Button type="primary" style={{ marginLeft: 8 }} onClick={()=>{this.showSubmit(this.props.form)}}>提交</Button>
             <Button style={{ marginLeft: 8 }} onClick={()=>this.save(this.props.form)}>保存</Button>
-            <Button type="danger" style={{ marginLeft: 8 }} onClick={()=>{this.showDelete(this.props.form)}}>删除</Button>
+            {/* <Button type="danger" style={{ marginLeft: 8 }} onClick={()=>{this.showDelete(this.props.form)}}>删除</Button> */}
             </div>
 
 
