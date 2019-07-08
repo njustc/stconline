@@ -9,7 +9,6 @@ const namespace = 'report-detail';
 
 const mapStateToProps = (state) => {
   const reportdata = state[namespace];
-  console.log(reportdata.data);
   return {
     reportdata,
   };
@@ -28,7 +27,6 @@ export default class report_detail extends React.Component{
 
   componentDidMount() {
     const {dispatch} = this.props;
-    console.log(this.props.location.query)
     dispatch({
       type: `${namespace}/GetOneTestReport`,
       payload: this.props.location.query,
@@ -127,8 +125,7 @@ export default class report_detail extends React.Component{
                 //当状态是Review的时候出现按钮，否则隐藏
                 this.props.reportdata.data.processState=="Review"?(
               <div>
-<Affix offsetBottom={0}>
-<div className={style.submitBtns}>
+
 <Button
 style={{marginLeft: 350}}
 type="primary"
@@ -143,13 +140,7 @@ onClick={() => {
   this.review(this.props.form,"ReviewDisprove")
 }}
 >拒绝</Button>
-</div>
 
-<div>
-          <BackTop visibilityHeight={300}/>
-          <strong style={{color: 'rgba(64, 64, 64, 0.6)'}}> </strong>
-        </div>
-</Affix>
 </div>
                 )
 :null}
@@ -180,8 +171,8 @@ onClick={() => {
               {
               this.props.reportdata.data.processState=="Review" && this.props.reportdata.checked == 0?(
               <div>
-<Affix offsetBottom={0}>
-<div className={style.submitBtns}>
+
+
 <Button
 style={{marginLeft: 400}}
 type="primary"
@@ -196,13 +187,10 @@ onClick={() => {
   this.review(this.props.form,"ReviewDisprove")
 }}
 >不通过</Button>
-</div>
 
-<div>
-          <BackTop visibilityHeight={300}/>
-          <strong style={{color: 'rgba(64, 64, 64, 0.6)'}}> </strong>
-        </div>
-</Affix>
+
+
+
 </div>
               ):null
               }
@@ -231,8 +219,8 @@ onClick={() => {
   this.props.reportdata.data.processState=="Review" && this.props.reportdata.checked == 0?(
 
               <div>
-<Affix offsetBottom={0}>
-<div className={style.submitBtns}>
+
+
 
               <Button
               style={{marginLeft: 350}}
@@ -250,13 +238,9 @@ onClick={() => {
               >不通过</Button>
 
 
-</div>
 
-<div>
-          <BackTop visibilityHeight={300}/>
-          <strong style={{color: 'rgba(64, 64, 64, 0.6)'}}> </strong>
-        </div>
-</Affix>
+
+
 </div>
   ):null}
             </div>,
