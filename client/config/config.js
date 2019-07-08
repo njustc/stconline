@@ -41,14 +41,15 @@ export default {
   routes: [
     {
       path: '/',
+      redirect: '/user-login',
+    },
+    {
+      path: '/',
       component: '../layouts/BasicLayout',
       Routes:['src/utils/Authorized'],
       //authority:['CUS'],
       routes: [
-        {
-          path: '/',
-          redirect: '/user-login',
-        },
+
         // dashboard
         {
           path: '/welcome',
