@@ -189,14 +189,14 @@ export default class Detail extends Component{
                   }}
                   style={{marginLeft: 250}}
                   type="primary">
-                    <FormattedMessage id="同意" />
+                    <FormattedMessage id="确认" />
                   </Button>
                   <Button onClick={() => {
                     this.review(this.props.form,"ReviewDisprove")
                   }}
                   style={{marginLeft: 400}}
                   >
-                    <FormattedMessage id="不同意" />
+                    <FormattedMessage id="拒绝" />
                   </Button>
                 </div>
                 :null
