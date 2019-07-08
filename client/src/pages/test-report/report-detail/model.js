@@ -11,7 +11,7 @@ export default {
   effects: {
     *GetOneTestReport({payload}, {call, put}) {
       const response = yield call(getOneTestReport, payload);
-      console.log(response)
+      console.log("123",response)
       yield put({type: 'getReportData', payload: response})
     },
     * queryReviewTestReport({payload},{call}) {

@@ -45,7 +45,7 @@ export default class ReportList extends Component {
   
   {<Link to={{pathname: './report-detail', query: {pid: key.pid}}}>查看项目详情</Link>}
   <Divider type="vertical"/>
-  {<Link to={{pathname: '../../report-edit', query: {pid: key.pid}}}>编辑</Link>}
+  {key.processState === 'Submit' ? <Link to={{pathname: '../../report-edit', query: {pid: key.pid}}}>编辑</Link>:null}
   
 </span>
   ),
