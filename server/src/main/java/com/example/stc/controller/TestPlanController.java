@@ -54,6 +54,23 @@ public class TestPlanController extends BaseController {
     }
 
     /**
+     * 查看全部待办测试方案
+     * CUS, TS, TM, QM可查看
+     */
+    @Secured({"ROLE_CUS", "ROLE_TS", "ROLE_TM", "ROLE_QM"})
+    @GetMapping(path = "/testplan/todo")
+    public @ResponseBody
+    Resources<Resource<TestPlan>> getAllToDoTestPlan() {
+        // 依据当前登录的用户的权限查询能见的测试方案
+        List<Resource<TestPlan>> testPlans = testPlanService.findToDoTestPlansByAuthority().stream()
+                .map(testPlan -> toResource(testPlan, methodOn(TestPlanController.class).getAllTestPlan(), null))
+                .collect(Collectors.toList());
+        logger.info("getAllToDoTestPlan: 最终查询测试方案数：" + testPlans.size());
+        return new Resources<>(testPlans,
+                linkTo(methodOn(TestPlanController.class).getAllToDoTestPlan()).withSelfRel());
+    }
+
+    /**
      * 查看单个测试方案
      * CUS, TS, TM, QM可查看
      * TM, QM仅审核阶段之后可查看

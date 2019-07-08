@@ -49,6 +49,23 @@ public class TestReportController extends BaseController {
     }
 
     /**
+     * 查看全部待办测试报告
+     * CUS, SS, TS, TM, QM可查看
+     */
+    @Secured({"ROLE_CUS", "ROLE_SS", "ROLE_TS", "ROLE_TM", "ROLE_QM"})
+    @GetMapping(path = "/testReport/todo")
+    public @ResponseBody
+    Resources<Resource<TestReport>> getAllToDoTestReport() {
+        // 依据当前登录的用户的权限查询能见的测试报告
+        List<Resource<TestReport>> testReports = testReportService.findToDoTestReportsByAuthority().stream()
+                .map(testReport -> toResource(testReport, methodOn(TestReportController.class).getAllTestReport(), null))
+                .collect(Collectors.toList());
+        logger.info("getAllToDoTestReport: 最终查询测试报告数：" + testReports.size());
+        return new Resources<>(testReports,
+                linkTo(methodOn(TestReportController.class).getAllToDoTestReport()).withSelfRel());
+    }
+
+    /**
      * 查看单个测试报告
      * CUS, SS, TS, TM, QM可查看
      * 除TS以外仅审核之后可查看

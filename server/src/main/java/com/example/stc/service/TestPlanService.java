@@ -18,6 +18,11 @@ public interface TestPlanService extends BaseService<TestPlan> {
     List<TestPlan> findTestPlansByAuthority();
 
     /**
+     * 获取全部待办的测试方案
+     */
+    List<TestPlan> findToDoTestPlansByAuthority();
+
+    /**
      * 通过pid获取单个项目的测试方案
      */
     TestPlan findTestPlanByPid(String pid);

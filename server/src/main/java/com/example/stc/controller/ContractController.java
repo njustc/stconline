@@ -54,6 +54,22 @@ public class ContractController extends BaseController {
     }
 
     /**
+     * 查看全部待办合同
+     * CUS, SS, SM, QM可随时查看
+     */
+    @Secured({"ROLE_CUS", "ROLE_SS", "ROLE_SM", "ROLE_QM"})
+    @GetMapping(path = "/contract/todo")
+    public @ResponseBody
+    Resources<Resource<Contract>> getAllToDoContract() {
+        List<Resource<Contract>> contracts = contractService.findToDoContractsByAuthority().stream()
+                .map(contract -> toResource(contract, methodOn(ContractController.class).getAllContract(), null))
+                .collect(Collectors.toList());
+        logger.info("getAllToDoContract: 最终查询合同数：" + contracts.size());
+        return new Resources<>(contracts,
+                linkTo(methodOn(ContractController.class).getAllToDoContract()).withSelfRel());
+    }
+
+    /**
      * 查看某一用户全部合同
      * 专门用于 STAFF 角色查询某一个用户的合同列表
      */
