@@ -64,7 +64,6 @@ const data = [];
 export default class EntrustList extends Component {
   componentDidMount() {
     this.props.onDidMount();
-    console.log("这里是不是没输出啊",this.props);
   }
 
   userLinkMaper = {
@@ -78,14 +77,14 @@ export default class EntrustList extends Component {
     ),
 
     "CUS": (key) => (
-      <span>
+    <span>
     <Link to={{pathname: './basic-check', query: {pid: key.pid}}}>查看项目详情</Link>
     <Divider type="vertical"/>
     {key.processState === 'Submit' ? <Link to={{pathname: '../../basic-form', query: {pid: key.pid}}}>编辑</Link> :
     <span/>}
     <Divider type="vertical"/>
-    {key.processState != 'Approve' ? <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>:
-    <span></span>}
+    {key.processState == 'Submit' ? <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this, key)}>删除</span>:
+    <span>   </span>}
   
   </span>
     )
@@ -94,9 +93,21 @@ export default class EntrustList extends Component {
 
   columns = [
     {
-      title: '委托ID',
+      title: '项目编号',
       dataIndex: 'pid',
       key: 'pid',
+      render: text => <a href="javascript:">{text}</a>,
+    },
+    {
+      title: '软件名称',
+      dataIndex: 'softwareName',
+      key: 'softwareName',
+      render: text => <a href="javascript:">{text}</a>,
+    },
+    {
+      title: '委托单位',
+      dataIndex: 'companyCh',
+      key: 'companyCh',
       render: text => <a href="javascript:">{text}</a>,
     },
     {
@@ -105,15 +116,17 @@ export default class EntrustList extends Component {
       dataIndex: 'processState',
       render: processState => {
         var color = processState === 'Review' ? 'geekblue' : 'green'
-        if (processState === '委托审核未通过') {
-          color = 'volcano'
+        if (processState==='Submit'){
+          // color='volcano'
+          color='gold'
         }
-        if (processState === 'Submit') {
-          color = 'grey'
+        var content = processState ==='Review'?"待审核":"已通过"
+        if (processState==='Submit'){
+          content='待提交'
         }
         return (
           <Tag color={color} key={processState}>
-            {processState}
+            {content}
           </Tag>
         );
       }
@@ -161,7 +174,7 @@ export default class EntrustList extends Component {
                              className={style.curmbItem}
             >主页
             </Breadcrumb.Item>
-            <Breadcrumb.Item href="/basic-list.html"
+            <Breadcrumb.Item 
                              className={style.curmbItem}
             >委托列表
             </Breadcrumb.Item>

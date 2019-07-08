@@ -1,3 +1,4 @@
+
 // ref: https://umijs.org/config/
 import {primaryColor} from '../src/defaultSettings';
 
@@ -41,15 +42,14 @@ export default {
   routes: [
     {
       path: '/',
-      redirect: '/user-login',
-    },
-    {
-      path: '/',
       component: '../layouts/BasicLayout',
       Routes:['src/utils/Authorized'],
       //authority:['CUS'],
       routes: [
-
+        {
+          path: '/',
+          redirect: '/user-login',
+        },
         // dashboard
         {
           path: '/welcome',
@@ -84,7 +84,7 @@ export default {
         //contract
 
         {
-          path: '/contract_detail',
+          path: '/contract_check',
           component: './contract/contract_detail',
         },
         {

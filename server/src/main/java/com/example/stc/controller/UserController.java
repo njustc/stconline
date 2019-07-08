@@ -141,4 +141,12 @@ public class UserController {
         return user;
     }
 
+    /**
+     * 获取当前登录用户
+     */
+    @GetMapping("/api/currentUser")
+    public User getCurrentUser() {
+        return userService.getCurrentUser();
+    }
+
 }
