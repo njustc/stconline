@@ -214,7 +214,6 @@ export default class List extends React.Component {
                 </Descriptions>
               </Card>
           }[getRole()[0]]
-
         }
 
       </div>

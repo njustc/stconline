@@ -43,29 +43,43 @@ class List extends React.Component{
   };
 
   userMap={
-    "SS":(key) => (
+    "SS":(key)=>(
         <span>
+           <Divider type="vertical"/>
+           {key.processState == 'Submit' ?   <Link to={{pathname: './contract_edit', query: {pid: key.pid}}}>编辑</Link> : ""}
+          <Divider type="vertical"/>     
+          {/*<a href="/plan_edit.html">编辑</a>*/}
           <Link to={{pathname: './contract_detail', query: {pid: key.pid}}}>查看详情</Link>
           <Divider type="vertical"/>
-          {/*<a href="/plan_edit.html">编辑</a>*/}
-          <Link to={{pathname: '../../contract_edit', query: {pid: key.pid}}}>编辑</Link>
-          <Divider type="vertical"/>
-          <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this,key)}>废止</span>
+          {/* <Divider type="vertical"/>
+          <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this,key)}>废止</span> */}
         </span>
     ),
-    "CUS":(key) => (
+    "CUS":(key)=>(
       <span>
+        <Divider type="vertical"/>
         <Link to={{pathname: './contract_detail',query: {pid: key.pid}}}>查看详情</Link>
+        <Divider type="vertical"/>
+        {key.processState == 'Review' ? <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this,key)}>废止</span> : ""}
+        <Divider type="vertical"/>
       </span>
     ),
     "SM":(key)=>(
       <span>
+        <Divider type="vertical"/>
         <Link to={{pathname: './contract_detail',query: {pid:key.pid}}}>查看详情</Link>
+        <Divider type="vertical"/>
+        {key.processState == 'Review' ? <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this,key)}>废止</span> : ""}
+        <Divider type="vertical"/>
       </span>
     ),
     "QM":(key)=>(
       <span>
+        <Divider type="vertical"/>
         <Link to={{pathname: './contract_detail',query: {pid:key.pid}}}>查看详情</Link>
+        <Divider type="vertical"/>
+        {key.processState == 'Review' ? <span style={{color: 'red', cursor: 'pointer'}} onClick={this.showDeleteConfirm.bind(this,key)}>废止</span> : ""}
+        <Divider type="vertical"/>
       </span>
     )
   }

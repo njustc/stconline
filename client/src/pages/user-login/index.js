@@ -4,11 +4,10 @@ import {formatMessage, FormattedMessage} from 'umi/locale';
 import Link from 'umi/link';
 import {Checkbox, Alert, Icon, Skeleton, Upload, message} from 'antd';
 import {Login} from 'ant-design-pro';
-import styles from './style.less';
-import {readCookie, getRole} from "../../utils/cookieUtils";
 import router from 'umi/router';
 import Button from "antd/es/button";
-import {routerRedux} from 'dva/router'
+import styles from './style.less';
+import {readCookie, getRole} from "../../utils/cookieUtils";
 
 const {Tab, UserName, Password, Mobile, Captcha, Submit} = Login;
 
@@ -120,8 +119,11 @@ class LoginPage extends Component {
           <Submit loading={submitting}>
             <FormattedMessage id="user-login.login.login"/>
           </Submit>
-          <Button style={{width: '100%'}}
-                  onClick={this.handleLogout}>登出</Button>
+          <Button
+            style={{width: '100%'}}
+            onClick={this.handleLogout}
+          >登出
+          </Button>
           <div className={styles.other}>
             <FormattedMessage id="user-login.login.sign-in-with"/>
             <Icon type="alipay-circle" className={styles.icon} theme="outlined"/>
@@ -131,6 +133,7 @@ class LoginPage extends Component {
               <FormattedMessage id="user-login.login.signup"/>
             </Link>
           </div>
+          <a href="http://localhost:8080/api/project/files?pid=p20190610010104&filename=main.py">下载文件</a>
         </Login>
       </div>
 

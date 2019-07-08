@@ -123,7 +123,9 @@ export default class report_detail extends React.Component{
                   <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
                 </Descriptions>
               </Card>
-              
+              {
+                //当状态是Review的时候出现按钮，否则隐藏
+                this.props.reportdata.data.processState=="Review"?(
               <div>
 <Affix offsetBottom={0}>
 <div className={style.submitBtns}>
@@ -149,6 +151,8 @@ onClick={() => {
         </div>
 </Affix>
 </div>
+                )
+:null}
             </div>,
 
 
@@ -173,6 +177,8 @@ onClick={() => {
                   <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
                 </Descriptions>
               </Card>
+              {
+              this.props.reportdata.data.processState=="Review" && this.props.reportdata.checked == 0?(
               <div>
 <Affix offsetBottom={0}>
 <div className={style.submitBtns}>
@@ -198,7 +204,8 @@ onClick={() => {
         </div>
 </Affix>
 </div>
-           
+              ):null
+              }
             </div>,
 
 
@@ -220,6 +227,8 @@ onClick={() => {
               </Card>
 
 
+{
+  this.props.reportdata.data.processState=="Review" && this.props.reportdata.checked == 0?(
 
               <div>
 <Affix offsetBottom={0}>
@@ -249,7 +258,7 @@ onClick={() => {
         </div>
 </Affix>
 </div>
-
+  ):null}
             </div>,
           
 
