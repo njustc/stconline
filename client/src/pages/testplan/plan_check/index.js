@@ -158,7 +158,6 @@ export default class List extends React.Component {
                       <Button onClick={() => {
                         this.review(this.props.form, "ReviewDisprove")
                       }} style={{marginLeft: 8}}
-                              type="primary"
                               disabled={this.props.dataCheck.check.processState != "Review"}>
                         <FormattedMessage id="basic-form.form.disagree"/>
                       </Button>
@@ -198,7 +197,7 @@ export default class List extends React.Component {
                       <Button onClick={() => {
                         this.review(this.props.form, "ReviewDisprove")
                       }} style={{marginLeft: 8}}
-                              type="primary"
+                              // type="danger"
                               // disabled={this.props.dataCheck.check.processState != "Review"}
                         >
                         <FormattedMessage id="basic-form.form.disagree"/>

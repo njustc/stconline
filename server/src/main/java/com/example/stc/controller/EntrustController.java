@@ -54,6 +54,20 @@ public class EntrustController extends BaseController {
                 linkTo(methodOn(EntrustController.class).getAllEntrust()).withSelfRel());
     }
 
+    /** 查看待办事项 */
+    @Secured({"ROLE_CUS", "ROLE_SS"})
+    @GetMapping(path = "/entrust/todo")
+    public @ResponseBody
+    Resources<Resource<Entrust>> getAllToDoEntrust() {
+        // 依据当前登录的用户的权限查询待办的委托
+        List<Resource<Entrust>> entrusts = entrustService.findToDoEntrustsByAuthority().stream()
+                .map(entrust -> toResource(entrust, methodOn(EntrustController.class).getAllEntrust(), null))
+                .collect(Collectors.toList());
+        logger.info("getAllToDoEntrust: 最终查询委托数：" + entrusts.size());
+        return new Resources<>(entrusts,
+                linkTo(methodOn(EntrustController.class).getAllToDoEntrust()).withSelfRel());
+    }
+
     /**
      * 查看某一用户全部委托
      */
