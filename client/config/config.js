@@ -1,3 +1,4 @@
+
 // ref: https://umijs.org/config/
 import {primaryColor} from '../src/defaultSettings';
 
@@ -76,14 +77,14 @@ export default {
           icon: 'pie-chart',
           path: '/basic-list',
           component: './entrust/basic-list/entrustlist',
-          authority:['CUS','SS','SM'],
+          authority:['CUS','SS'],
         },
 
 
         //contract
 
         {
-          path: '/contract_detail',
+          path: '/contract_check',
           component: './contract/contract_detail',
         },
         {

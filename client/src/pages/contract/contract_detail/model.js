@@ -11,9 +11,9 @@ export default {
   effects: {
     //派发一个queryGetOneContract的action
     * queryGetOneContract({payload}, {call, put}) {
-      console.log("=================ssssss=====================");
+      //console.log("=================ssssss=====================");
       const response = yield call(getOneContract, payload);
-      console.log("get res",typeof response._links.self.length == "undefined");
+      //console.log("get res",typeof response._links.self.length == "undefined");
       //true = undifined = 审核过了 = 置1
       if(typeof response._links.self.length == "undefined"){
         //console.log("执行到了赋值部分")

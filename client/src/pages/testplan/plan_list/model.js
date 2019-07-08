@@ -58,7 +58,7 @@ export default {
       // console.log(response)
       const list=yield call(getAllTestPlan);
       if(!('_embedded' in list)){
-        console.log("put []");
+        //console.log("put []");
         yield put({type:'getPlanData',payload: list})
       }
       else{

@@ -37,7 +37,7 @@ export async function deleteTestPlan({pid}) {
  * 修改测试方案
  * */
 export async function replaceTestPlan(params) {
-  console.log(params);
+  //console.log(params);
   return request(`api/project/testplan/${params.pid}`, {
     method: 'PUT',
     data: params,
@@ -55,7 +55,7 @@ export async function submitTestPlan({pid}) {
 }
 
 export async function updateTestPlanProcess(params) {
-  console.log(typeof(params),params)
+  //console.log(typeof(params),params)
   return request(`api/project/process/update?type=TestPlan`, {
     method: 'POST',
     data: params

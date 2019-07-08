@@ -85,7 +85,6 @@ class BasicForm extends PureComponent {
       value.processInstanceId = ""
 
       value.comment = ""
-      console.log("new value", value)
       //补充完毕
       dispatch({
         type: 'entrustForm/addNewEntrust',
@@ -171,7 +170,6 @@ class BasicForm extends PureComponent {
         that.submit(form)
       },
       onCancel() {
-        console.log('Cancel');
       },
     });
   }
@@ -271,7 +269,7 @@ class BasicForm extends PureComponent {
         <Breadcrumb>
           <Breadcrumb.Item href="/basic-list.html">主页</Breadcrumb.Item>
           <Breadcrumb.Item href="/basic-list.html">委托列表</Breadcrumb.Item>
-          <Breadcrumb.Item href="/basic-form.html">编辑委托</Breadcrumb.Item>
+          <Breadcrumb.Item >编辑委托</Breadcrumb.Item>
           {/*<Link to="/basic-list.html">返回</Link>*/}
         </Breadcrumb>
         <div className={style.headerTitle}>
@@ -1327,8 +1325,8 @@ class BasicForm extends PureComponent {
                 <a hidden={ state.curFilename === "" } href={'http://localhost:8080/api/project/files?pid=' + state.pid + '&filename=' + state.curFilename}>
                   下载文件 {state.curFilename}</a>
 
-                <Affix offsetBottom={0}
-                       onChange={affixed => console.log(affixed)}>
+                <Affix offsetBottom={0}>
+                       {/* onChange={affixed => console.log(affixed)} */}
                   <div className={style.submitBtns}>
                     <Button type="primary" onClick={() => {
                       this.showConfirm(this.props.form)

@@ -1,4 +1,5 @@
 import { query as queryUsers, queryCurrent } from '@/services/user';
+import {userLogout} from "../pages/user-login/service";
 
 export default {
   namespace: 'user',
@@ -16,13 +17,16 @@ export default {
         payload: response,
       });
     },
-    // *fetchCurrent(_, { call, put }) {
-    //   const response = yield call(queryCurrent);
-    //   yield put({
-    //     type: 'saveCurrentUser',
-    //     payload: response,
-    //   });
-    // },
+    *fetchCurrent(_, { call, put }) {
+      const response = yield call(queryCurrent);
+      yield put({
+        type: 'saveCurrentUser',
+        payload: response,
+      });
+    },
+    * logout({payload}, {call, put}) {
+      yield call(userLogout, payload)
+    },
   },
 
   reducers: {

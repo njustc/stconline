@@ -11,12 +11,7 @@ export default {
     effects:{
       *GetAllEntrust(_,{call,put}){
         const response=yield call(getAllEntrust)
-        // console.log('GetAllEntrust')
-        console.log("???",response)
-
-        // console.log('_embedded' in response)
         if (!('_embedded' in response)) {
-          console.log("put []")
           yield put({type: 'addListData', payload: response})
         } else {
           yield put({type: 'addListData', payload: response._embedded.entrusts})
@@ -29,10 +24,7 @@ export default {
         // console.log(response)
        const list=yield call(getAllEntrust)
         // console.log('GetAllEntrust')
-        console.log(list)
-        console.log('_embedded' in list)
         if(!('_embedded' in list)){
-          console.log("put []")
           yield put({type:'addListData',payload: list})
         }
         else{

@@ -51,7 +51,7 @@ const mapDispatchToProps = (dispatch) => {
 // };
 
 @connect(mapStateToProps,mapDispatchToProps)
-export default class List extends React.Component{
+export default class List extends React.Component {
   // constructor(props){
   //   super(props);
   //   this.counter=100;
@@ -97,9 +97,10 @@ export default class List extends React.Component{
   componentDidMount() {
     this.props.onDidMount();
   }
+
   showDeleteConfirm(key) {
     // console.log(key.pid)
-    var that=this;
+    var that = this;
     confirm({
       title: '您是否要删除本方案?',
       content: `测试方案ID:${key.pid}  编辑人员:${key.author}`,
@@ -107,16 +108,16 @@ export default class List extends React.Component{
       okType: 'danger',
       cancelText: '取消',
       onOk() {
-        that.props.queryDeletePlan({pid:key.pid})
+        that.props.queryDeletePlan({pid: key.pid})
         // console.log('OK');
       },
       onCancel() {
-        console.log('Cancel');
+        //console.log('Cancel');
       },
     });
   }
 
-  userLinkMapper= {
+  userLinkMapper = {
     "QM": (key) => (
       <span>
         <Divider type="vertical"/>
@@ -129,7 +130,8 @@ export default class List extends React.Component{
         <Divider type="vertical"/>
         {<Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
         <Divider type="vertical"/>
-        {key.processState === 'Approve' ?<Link to={{pathname: './record-list', query: {pid: key.pid}}}>查看测试记录</Link>:null}
+        {key.processState === 'Approve' ?
+          <Link to={{pathname: './record-list', query: {pid: key.pid}}}>查看测试记录</Link> : null}
 
   </span>
     ),
@@ -139,41 +141,45 @@ export default class List extends React.Component{
       <span>
         {<Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
         <Divider type="vertical"/>
-        {key.processState === 'Approve' ? <Link to={{pathname: './record-list', query: {pid: key.pid}}}>查看测试记录</Link>:null}
+        {key.processState === 'Submit' ?
+          <Link to={{pathname: '../../plan_edit', query: {pid: key.pid}}}>编辑</Link> : null}
         <Divider type="vertical"/>
-        {key.processState === 'Submit' ? <Link to={{pathname: '../../plan_edit', query: {pid: key.pid}}}>编辑</Link>:null}
-    </span>
+        {key.processState === 'Approve' ?
+          <Link to={{pathname: './record-list', query: {pid: key.pid}}}>查看测试记录</Link> : null}
+      </span>
     ),
   };
 
-  link(){
+  link() {
     return this.userLinkMapper[getRole()[0]]
   }
 
   columns = [
     {
-      title: '方案ID',
+      title: '项目编号',
       dataIndex: 'pid',
       key: 'pid',
       render: text => <a href="javascript:;">{text}</a>,
     },
-    // {
-    //   title: '编辑人员',
-    //   dataIndex: 'author',
-    //   key: 'author',
-    // },
+    {
+      title: '编辑人员',
+      dataIndex: 'author',
+      key: 'author',
+    },
     {
       title: '状态',
       key: 'processState',
       dataIndex: 'processState',
       render: processState => {
+        var content = processState === 'Review' ? '待审核' : '已通过';
         var color = processState === 'Review' ? 'geekblue' : 'green';
         if (processState === 'Submit') {
-          color = 'grey'
+          color = 'gold';
+          content = '待提交';
         }
         return (
           <Tag color={color} key={processState}>
-            {processState}
+            {content}
           </Tag>
         );
       }
@@ -194,7 +200,7 @@ export default class List extends React.Component{
         </Breadcrumb>
         <br/>
 
-        <Table columns={this.columns} dataSource={(!this.props.dataList.length)?data:this.props.dataList}/>
+        <Table columns={this.columns} dataSource={(!this.props.dataList.length) ? data : this.props.dataList}/>
 
         {/*<div>*/}
         {/*  <Button onClick={*/}
