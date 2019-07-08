@@ -173,6 +173,8 @@ onClick={() => {
                   <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
                 </Descriptions>
               </Card>
+              {
+              this.props.reportdata.data.processState=="Review" && this.props.reportdata.checked == 0?(
               <div>
 <Affix offsetBottom={0}>
 <div className={style.submitBtns}>
@@ -198,7 +200,8 @@ onClick={() => {
         </div>
 </Affix>
 </div>
-           
+              ):null
+              }
             </div>,
 
 

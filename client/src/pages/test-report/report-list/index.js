@@ -72,7 +72,7 @@ export default class ReportList extends Component {
   {<Link to={{pathname: './report-detail', query: {pid: key.pid}}}>查看项目详情</Link> }
   <Divider type="vertical"/>
  
-  <Divider type="vertical"/>
+  {/* <Divider type="vertical"/> */}
 </span>
   )
 
