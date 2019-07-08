@@ -23,15 +23,11 @@ import {
   BackTop,
   Affix
 } from 'antd';
-import Link from 'umi/link'
 import PageHeaderWrapper from './components/PageHeaderWrapper';
 import style from './style.less';
-import moment from 'moment';
-import {func} from 'prop-types';
+import { deleteFile, getFilenames } from '@/services/user';
 
 const FormItem = Form.Item;
-const {Option} = Select;
-const {RangePicker} = DatePicker;
 const {TextArea} = Input;
 const confirm = Modal.confirm;
 const namespace = 'entrustForm';
@@ -48,8 +44,6 @@ const mapStateToProps = (state) => {
 }
 
 
-
-
 @Form.create()
 @connect(mapStateToProps)
 class BasicForm extends PureComponent {
@@ -60,10 +54,12 @@ class BasicForm extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      pid: ""
+      pid: "",
+      curFilename: ""
     }
+    this.changeFile = this.changeFile.bind(this);
   }
-  
+
   componentDidMount() {
     const {dispatch} = this.props;
     if (this.props.location.query.pid) {
@@ -203,6 +199,10 @@ class BasicForm extends PureComponent {
     });
   }
 
+  changeFile(name) {
+    this.setState({curFilename: name});
+  }
+
   render() {
     const {submitting} = this.props;
     const {
@@ -228,6 +228,10 @@ class BasicForm extends PureComponent {
       },
     };
 
+    const changeFile = (name) => {
+      this.changeFile(name);
+    }
+
     // 文件上传
     const uploadProps = {
       name: 'file',
@@ -237,18 +241,27 @@ class BasicForm extends PureComponent {
         authorization: 'authorization-text',
       },
       enctype: "multipart/form-data",
-      onChange({ file, fileList }) {
+      onChange({file, fileList}) {
         if (file.status !== 'uploading') {
-          console.log(file);
-          console.log(fileList);
+          // console.log(Array.from(getFilenames(state.pid)));
         }
         if (file.status === 'done') {
           message.success(`${file.name} file uploaded successfully`);
+          // console.log(file);
+          // console.log(fileList);
         } else if (file.status === 'error') {
           message.error(`${file.name} file upload failed.`);
         }
       },
-      defaultFileList: [],
+      onPreview(file) {
+        changeFile(file.name);
+        console.log(state.curFilename);
+      },
+      onRemove(file) {
+        changeFile("");
+        deleteFile(state.pid, file.name);
+      },
+      // defaultFileList: Array.from(getFilenames(state.pid)),
     };
 
     return (
@@ -256,7 +269,7 @@ class BasicForm extends PureComponent {
         <Breadcrumb>
           <Breadcrumb.Item href="/basic-list.html">主页</Breadcrumb.Item>
           <Breadcrumb.Item href="/basic-list.html">委托列表</Breadcrumb.Item>
-          <Breadcrumb.Item href="/basic-form.html">编辑委托</Breadcrumb.Item>
+          <Breadcrumb.Item >编辑委托</Breadcrumb.Item>
           {/*<Link to="/basic-list.html">返回</Link>*/}
         </Breadcrumb>
         <div className={style.headerTitle}>
@@ -445,7 +458,7 @@ class BasicForm extends PureComponent {
               >
                 <div>
                   {getFieldDecorator('testBasis', {
-                    initialValue: this.props.entrustdata.data.testBasis ||[ 'basic-form.radio.basis1'],
+                    initialValue: this.props.entrustdata.data.testBasis || ['basic-form.radio.basis1'],
                   })(
                     <Checkbox.Group style={{width: '100%'}}>
                       <Row>
@@ -600,13 +613,13 @@ class BasicForm extends PureComponent {
                   ],
                 })(<Input placeholder={formatMessage({id: 'form.softscale_code_number.placeholder'})}/>)}
               </FormItem>
- <h3>软件类型</h3>
+              <h3>软件类型</h3>
               <FormItem
                 {...formItemLayout}
                 label={<FormattedMessage id="basic-form.radio.system"/>}
               >
                 <div>
-                 
+
                   {getFieldDecorator('softwareType', {
                     initialValue: this.props.entrustdata.data.softwareType || 'basic-form.radio.system1',
                   })(
@@ -926,7 +939,7 @@ class BasicForm extends PureComponent {
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.radio.softarch"/>}>
                 <div>
                   {getFieldDecorator('serverSoftFrame', {
-                      initialValue: this.props.entrustdata.data.serverSoftFrame ||['basic-form.checkbox.softarch1'],
+                      initialValue: this.props.entrustdata.data.serverSoftFrame || ['basic-form.checkbox.softarch1'],
                     }
                   )(
                     <Checkbox.Group style={{width: '100%'}}>
@@ -1308,6 +1321,10 @@ class BasicForm extends PureComponent {
                     band files
                   </p>
                 </Dragger>
+
+                <a hidden={ state.curFilename === "" } href={'http://localhost:8080/api/project/files?pid=' + state.pid + '&filename=' + state.curFilename}>
+                  下载文件 {state.curFilename}</a>
+
                 <Affix offsetBottom={0}>
                        {/* onChange={affixed => console.log(affixed)} */}
                   <div className={style.submitBtns}>

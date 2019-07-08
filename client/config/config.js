@@ -77,7 +77,7 @@ export default {
           icon: 'pie-chart',
           path: '/basic-list',
           component: './entrust/basic-list/entrustlist',
-          authority:['CUS','SS','SM'],
+          authority:['CUS','SS'],
         },
 
 

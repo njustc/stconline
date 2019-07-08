@@ -222,13 +222,12 @@ export default class EditPlan extends React.Component {
           <Breadcrumb.Item>测试方案编辑</Breadcrumb.Item>
         </Breadcrumb>
 
-        {/*/!*<div className={style.headerTitle}>*!/*/}
-        {/*/!*  <PageHeaderWrapper*!/*/}
-        {/*/!*    title={<FormattedMessage id="测试方案"/>}*!/*/}
-        {/*/!*  >*!/*/}
-        {/*/!*  </PageHeaderWrapper>*!/*/}
-        {/*</div>*/}
-        <Divider/>
+        <div className={style.headerTitle}>
+          <PageHeaderWrapper
+            title={<FormattedMessage id="测试方案"/>}
+          >
+          </PageHeaderWrapper>
+        </div>
         <div className={style.formBody}>
           <Form className={style.antForm}>
             <div>

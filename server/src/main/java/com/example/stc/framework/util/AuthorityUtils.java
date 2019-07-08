@@ -31,6 +31,8 @@ public class AuthorityUtils {
 
     /** 判断当前是否有用户登录 */
     public boolean isAuthenticated() {
+        if (SecurityContextHolder.getContext().getAuthentication() == null)
+            return false;
         boolean isAuth = SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
         if (!isAuth)
             logger.info("Not Authenticated");
