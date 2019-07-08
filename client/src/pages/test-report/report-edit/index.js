@@ -352,7 +352,7 @@ class newTestReport extends PureComponent {
       value.processState=this.props.dataReport.reportdata.processState||"";
       // value.comment=this.props.dataEdit.editdata.comment;
       //console.log("submitPlan",value);
-      console.log("777")
+    
       dispatch({
         type: `${namespace}/querySubmitReport`,
         payload: value,
@@ -385,7 +385,7 @@ class newTestReport extends PureComponent {
 
 
   saveForm=(form)=>{
-    console.log(666)
+  
     
     const { dispatch } = this.props;  
     this.state.pid = this.props.dataReport.reportdata.pid;
@@ -393,7 +393,7 @@ class newTestReport extends PureComponent {
       value.pid=this.state.pid
       value.processInstanceID = this.props.dataReport.reportdata.processInstanceId;
       value.processState = this.props.dataReport.reportdata.processState;
-      console.log("验证走到这里与否");
+      
       dispatch({
         type: `${namespace}/queryReplaceReport`,
         payload: value,
@@ -404,14 +404,13 @@ class newTestReport extends PureComponent {
 
   save=(form)=>{
     const { dispatch } = this.props;
-    console.log("save",this.props.dataReport.reportdata);
+   
     this.state.pid=this.props.dataReport.reportdata.pid;
     if (this.state.pid=="") {
       //this.addReport(form)
     }
     else {
-      console.log("报告已存在");
-      console.log(this.state.pid);
+     
       this.saveForm(form)
     }
   };
