@@ -11,6 +11,7 @@ const mapStateToProps = (state) => {
   const dataCheck = state[namespace];
   //console.log("============datacheck===========")
   console.log("输出合同详情的dataCheck",dataCheck);
+  //console.log("输出length",typeof dataCheck.check._links == "undefined")
   //console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!")
   return {
     dataCheck,
@@ -134,14 +135,14 @@ export default class Detail extends Component{
                   },
                 ],
                 })(<Input placeholder={formatMessage({id: "输入审批意见"})} 
-                //当processState是review的时候是可编辑的
-                // disabled={this.props.dataCheck.check.processState!="Review"}
+                //当processState是review 并且 checked=0 的时候是可编辑的
+                disabled={this.props.dataCheck.check.processState!="Review" || this.props.dataCheck.checked == 1 }
                 />)}
               </FormItem>
 
               {
-                //当状态是Review的时候出现按钮，否则隐藏
-                //this.props.dataCheck.check.processState=="Submit"?
+                //当状态是Review，并且checked=0的时候出现按钮，否则隐藏
+                this.props.dataCheck.check.processState=="Review" && this.props.dataCheck.checked == 0?(
                 <div>
                   <Button onClick={() => {
                     this.review(this.props.form,"ReviewPass")
@@ -155,8 +156,8 @@ export default class Detail extends Component{
                   }}>
                     <FormattedMessage id="不同意" />
                   </Button>
-                </div>
-                //:null
+                </div>)
+                :null
               }
             </div>,
 
@@ -169,7 +170,7 @@ export default class Detail extends Component{
               </Descriptions>
               {
                 //当状态是Review的时候出现按钮，否则隐藏
-                //this.props.dataCheck.check.processState=="Submit"?
+                this.props.dataCheck.check.processState=="Review"?
                 <div>
                   <Button onClick={() => {
                     this.review(this.props.form,"ReviewPass")
@@ -184,13 +185,13 @@ export default class Detail extends Component{
                     <FormattedMessage id="废止" />
                   </Button>
                 </div>
-                //:null
+                :null
               }
             </div>,
 
             "SS":
             <div>
-              <h1>市场部员工：好像员工也不应该在详情页面看到啥</h1>
+               
             </div>,
 
             "QM":
@@ -208,13 +209,13 @@ export default class Detail extends Component{
                 ],
                 })(<Input placeholder={formatMessage({id: "输入审批意见"})} 
                 //当processState是review的时候是可编辑的
-                // disabled={this.props.dataCheck.check.processState!="Review"}
+                disabled={this.props.dataCheck.check.processState!="Review"}
                 />)}
               </FormItem>
 
               {
                 //当状态是Review的时候出现按钮，否则隐藏
-                //this.props.dataCheck.check.processState=="Submit"?
+                this.props.dataCheck.check.processState=="Review" && this.props.dataCheck.checked == 0?
                 <div>
                   <Button onClick={() => {
                     this.review(this.props.form,"ReviewPass")
@@ -229,7 +230,7 @@ export default class Detail extends Component{
                     <FormattedMessage id="不同意" />
                   </Button>
                 </div>
-                //:null
+                :null
               }
             </div>,
           }[getRole()[0]]

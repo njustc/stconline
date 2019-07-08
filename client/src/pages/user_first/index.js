@@ -158,9 +158,8 @@ export default class Carousels extends React.Component{
                 <br />
 
                 <Card 
-                title="进行中的项目"
+                title="近期的项目"
                 bordered={false}
-                extra={<Link to="/welcome">全部项目</Link>}
                 >
                     {/* <p><FormattedMessage id={(!this.props.listdata.data.length)? "未命名":this.props.listdata.data[0].softwareName}/></p> 
                     <br /> */}
