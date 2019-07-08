@@ -130,7 +130,7 @@ export default class List extends React.Component {
         <Divider type="vertical"/>
         {<Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
         <Divider type="vertical"/>
-        {key.processState === '已通过' ?
+        {key.processState === 'Approve' ?
           <Link to={{pathname: './record-list', query: {pid: key.pid}}}>查看测试记录</Link> : null}
 
   </span>
@@ -141,10 +141,10 @@ export default class List extends React.Component {
       <span>
         {<Link to={{pathname: './plan_check', query: {pid: key.pid}}}>查看详情</Link>}
         <Divider type="vertical"/>
-        {key.processState === '待提交' ?
+        {key.processState === 'Submit' ?
           <Link to={{pathname: '../../plan_edit', query: {pid: key.pid}}}>编辑</Link> : null}
         <Divider type="vertical"/>
-        {key.processState === '已通过' ?
+        {key.processState === 'Approve' ?
           <Link to={{pathname: './record-list', query: {pid: key.pid}}}>查看测试记录</Link> : null}
       </span>
     ),
@@ -171,13 +171,15 @@ export default class List extends React.Component {
       key: 'processState',
       dataIndex: 'processState',
       render: processState => {
-        var color = processState === '待审核' ? 'geekblue' : 'green';
-        if (processState === '待提交') {
-          color = 'gold'
+        var content = processState === 'Review' ? '待审核' : '已通过';
+        var color = processState === 'Review' ? 'geekblue' : 'green';
+        if (processState === 'Submit') {
+          color = 'gold';
+          content = '待提交';
         }
         return (
           <Tag color={color} key={processState}>
-            {processState}
+            {content}
           </Tag>
         );
       }
