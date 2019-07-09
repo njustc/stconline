@@ -16,7 +16,9 @@ import {
   Breadcrumb,
   Affix,
   Spin,
-  Divider
+  Divider,
+  Row,
+  Col
 } from 'antd';
 import style from './style.less';
 import moment from 'moment';
@@ -277,8 +279,12 @@ class BasicForm extends PureComponent {
 			{/* <FormItem {...formItemLayout} label={<FormattedMessage id="contract.sign_data.label" />}>
 				<DatePicker defaultValue={moment(this.props.dataEdit.editdata.signData, dateFormat)} format={dateFormat} />
       </FormItem> */}
+      <div><Row>
+      <Col span={12}>
       <h1>本合同由作为委托方的</h1>
+      </Col>
       {/* 委托方（甲方)client */}
+      <Col span={24}>
       <FormItem>
         {getFieldDecorator('client',{
           initialValue: this.props.dataEdit.editdata.client || '',
@@ -288,8 +294,10 @@ class BasicForm extends PureComponent {
                     message: formatMessage({ id: 'validation.client.required' }),
                   },
                  ],
-          })(<Input placeholder={formatMessage({ id: 'contract.client.placeholder' })} />)}
-      </FormItem>                      
+  })(<Input placeholder={formatMessage({ id: 'contract.client.placeholder' })} style={{width:300}} />)}
+      </FormItem>
+      </Col>
+      </Row></div>
       <h1>（以下简称“甲方”）与作为受托方的南京大学计算机软件新技术国家重点实验室（以下简称“乙方”）在平等自愿的基础上，依据《中华人民共和国合同法》有关规定就项目的执行，经友好协商后订立。</h1>
 
     </Card>
@@ -301,17 +309,17 @@ class BasicForm extends PureComponent {
 			<h1>乙方按照国家软件质量测试标准和测试规范，完成甲方委托的软件</h1>
       {/* 等待后端 */}
 			<FormItem>
-          {getFieldDecorator('软件',{
+          {getFieldDecorator('softwareName',{
             initialValue: this.props.dataEdit.editdata.softwareName || '',
           } 
-          )(<Input style={{width:300}} />)}
+          )(<Input placeholder={formatMessage({ id: 'contract.softwareName.placeholder' })} style={{width:300}} />)}
       </FormItem>
 			<h1>(下称受测软件)的质量特性</h1>
       <FormItem>
-          {getFieldDecorator('质量特性',{
+          {getFieldDecorator('quality',{
             initialValue: this.props.dataEdit.editdata.quality || '',
           } 
-          )(<Input style={{width:300}} />)}
+          )(<Input placeholder={formatMessage({ id: 'contract.quality.placeholder' })} style={{width:300}} />)}
       </FormItem>
 			<h1>，进行测试，并出具相应的测试报告。</h1>
 		</Card>
@@ -353,7 +361,7 @@ class BasicForm extends PureComponent {
                     message: formatMessage({ id: 'validation.price.required' }),
                   },
                  ],
-          })(<Input placeholder={formatMessage({ id: 'contract.price.placeholder' })} />)}
+          })(<Input placeholder={formatMessage({ id: 'contract.price.placeholder' })} style={{width:300}}/>)}
       </FormItem>
       <h1>(¥</h1>
         <FormItem>
@@ -365,7 +373,7 @@ class BasicForm extends PureComponent {
                     message: formatMessage({ id: 'validation.price.required' }),
                   },
                  ],
-          })(<Input placeholder={formatMessage({ id: 'contract.price.placeholder' })} />)}
+          })(<Input placeholder={formatMessage({ id: 'contract.price.placeholder' })} style={{width:300}}/>)}
       </FormItem>
       <h1>元)</h1>
     </Card>
@@ -391,7 +399,7 @@ class BasicForm extends PureComponent {
                     message: formatMessage({ id: 'validation.finishTime.required' }),
                   },
                  ],
-          })(<Input placeholder={formatMessage({ id: 'contract.finishTime.placeholder' })} />)}
+          })(<Input placeholder={formatMessage({ id: 'contract.finishTime.placeholder' })} style={{width:300}}/>)}
       </FormItem>
       <h1>个自然日内完成。</h1>
       <h1>2. 经甲乙双方同意，可对测试进度作适当修改，并以修改后的测试进度作为本合同执行的期限。</h1>
@@ -406,7 +414,7 @@ class BasicForm extends PureComponent {
                     message: formatMessage({ id: 'validation.modifyNum.required' }),
                   },
                  ],
-          })(<Input placeholder={formatMessage({ id: 'contract.modifyNum.placeholder' })} />)}
+          })(<Input placeholder={formatMessage({ id: 'contract.modifyNum.placeholder' })} style={{width:300}}/>)}
       </FormItem>
       <h1>次,每次不超过</h1>
       {/* 等待后端 */}
@@ -419,7 +427,7 @@ class BasicForm extends PureComponent {
                     message: formatMessage({ id: 'validation.modifyTime.required' }),
                   },
                  ],
-          })(<Input placeholder={formatMessage({ id: 'contract.modifyTime.placeholder' })} />)}
+          })(<Input placeholder={formatMessage({ id: 'contract.modifyTime.placeholder' })} style={{width:300}}/>)}
       </FormItem>
       <h1>天</h1>
       <h1>4. 如因甲方原因，导致测试进度延迟、应由甲方负责,乙方不承担责任。</h1>
@@ -536,14 +544,14 @@ class BasicForm extends PureComponent {
       </FormItem>
       <FormItem label={<FormattedMessage id="contract.clientFax.label" />}>
         {getFieldDecorator('clientFax',{
-          initialValue: this.props.dataEdit.editdata.clientFax || '',
+          initialValue: "62661627",
         } ,{
           rules: [{
                     required: true,
                     message: formatMessage({ id: 'validation.clientFax.required' }),
                   },
                  ],
-          })(<Input placeholder={formatMessage({ id: 'contract.clientFax.placeholder' })} />)}
+          })(<Input disabled={true} placeholder={formatMessage({ id: 'contract.clientFax.placeholder' })} />)}
       </FormItem>
       <FormItem label={<FormattedMessage id="contract.clientBank.label" />}>
         {getFieldDecorator('clientBank',{
@@ -583,14 +591,14 @@ class BasicForm extends PureComponent {
 			<h1>受托方</h1>
 			<FormItem label={<FormattedMessage id="contract.assigneeCompanyName.label" />}>
         {getFieldDecorator('assigneeCompanyName',{
-          initialValue: this.props.dataEdit.editdata.assigneeCompanyName || '',
+          initialValue: "南京大学计算机软件新技术国家重点实验室",
         } ,{
           rules: [{
                     required: true,
                     message: formatMessage({ id: 'validation.assigneeCompanyName.required' }),
                   },
                  ],
-          })(<Input placeholder={formatMessage({ id: 'contract.assigneeCompanyName.placeholder' })} />)}
+          })(<Input disabled={true} placeholder={formatMessage({ id: 'contract.assigneeCompanyName.placeholder' })} />)}
       </FormItem>
       <FormItem label={<FormattedMessage id="contract.assigneeAuthRepre.label" />}>
         {getFieldDecorator('assigneeAuthRepre',{
@@ -671,36 +679,36 @@ class BasicForm extends PureComponent {
       </FormItem>
       <FormItem label={<FormattedMessage id="contract.assigneeBank.label" />}>
         {getFieldDecorator('assigneeBank',{
-          initialValue: this.props.dataEdit.editdata.assigneeBank || '',
+          initialValue: "中国工商银行股份有限公司南京汉口路分理处",
         } ,{
           rules: [{
                     required: true,
                     message: formatMessage({ id: 'validation.assigneeBank.required' }),
                   },
                  ],
-          })(<Input placeholder={formatMessage({ id: 'contract.assigneeBank.placeholder' })} />)}
+          })(<Input disabled = {true} placeholder={formatMessage({ id: 'contract.assigneeBank.placeholder' })} />)}
       </FormItem>
       <FormItem label={<FormattedMessage id="contract.assigneeBankName.label" />}>
         {getFieldDecorator('assigneeBankName',{
-          initialValue: this.props.dataEdit.editdata.assigneeBankName || '',
+          initialValue: "南京大学",
         } ,{
           rules: [{
                     required: true,
                     message: formatMessage({ id: 'validation.assigneeBankName.required' }),
                   },
                  ],
-          })(<Input placeholder={formatMessage({ id: 'contract.assigneeBankName.placeholder' })} />)}
+          })(<Input disabled='true' placeholder={formatMessage({ id: 'contract.assigneeBankName.placeholder' })} />)}
       </FormItem>
       <FormItem label={<FormattedMessage id="contract.assigneeUserName.label" />}>
         {getFieldDecorator('assigneeUserName',{
-          initialValue: this.props.dataEdit.editdata.assigneeUserName || '',
+          initialValue: 43010113090141656,
         } ,{
           rules: [{
                     required: true,
                     message: formatMessage({ id: 'validation.assigneeUserName.required' }),
                   },
                  ],
-          })(<Input placeholder={formatMessage({ id: 'contract.assigneeUserName.placeholder' })} />)}
+          })(<Input disabled={true} placeholder={formatMessage({ id: 'contract.assigneeUserName.placeholder' })} />)}
       </FormItem>
 		</Card>
 		<Affix offsetBottom={0} >

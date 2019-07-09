@@ -1,7 +1,19 @@
 export default {
-	'contract.project_name.label':'项目名称',
-	'validation.project_name.required': '请填写项目名称！',
-	'contract.project_name.placeholder':'请填写项目名称',
+	'contract.projectName.label':'项目名称',
+	'validation.projectName.required': '请填写项目名称！',
+	'contract.projectName.placeholder':'请填写项目名称',
+
+	'contract.softwareName.label':'软件名称',
+	'validation.softwareName.required': '请填写软件名称！',
+	'contract.softwareName.placeholder':'请填写软件名称',
+
+	'contract.modifyNum.label':'整改次数限制',
+	'validation.modifyNum.required': '请填写整改次数限制！',
+	'contract.modifyNum.placeholder':'请填写整改次数限制',
+
+	'contract.modifyTime.label':'整改时间限制',
+	'validation.modifyTime.required': '请填写整改时间限制！',
+	'contract.modifyTime.placeholder':'请填写整改时间限制',
 
 	'contract.client.label':'委托方（甲方）',
 	'validation.client.required': '请填写委托方（甲方）！',
@@ -115,5 +127,4 @@ export default {
 	'validation.assigneePostCode.required': '请填写受托方--邮编！',
 	'contract.assigneePostCode.placeholder': '请填写受托方--邮编',
 	
-	'contract.sign_data.label': '签订日期',
 };
