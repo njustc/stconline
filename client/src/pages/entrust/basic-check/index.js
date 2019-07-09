@@ -31,8 +31,9 @@ const {TextArea} = Input;
 
 const mapStateToProps = (state) => {
   const entrustdata = state[namespace];
+  const fileState = state['file'];
   return {
-    entrustdata,
+    entrustdata, fileState
   };
 };
 
@@ -45,6 +46,8 @@ export default class entrustCheck extends Component {
       pid: "",
       comment: ""
     }
+    this.fileListInit = this.fileListInit.bind(this);
+
   }
 
   componentDidMount() {
@@ -58,6 +61,7 @@ export default class entrustCheck extends Component {
       type: `${namespace}/getOneEntrust`,
       payload: this.props.location.query,
     });
+    this.fileListInit(this.props.location.query.pid);
   }
 
   //审核
@@ -77,13 +81,33 @@ export default class entrustCheck extends Component {
     })
   }
 
+  fileListInit(pid) {
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'file/fetchFileList',
+      payload: {
+        pid
+      }
+    });
+  }
+
+  deleteFile(pid, filename) {
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'file/deleteFile',
+      payload: {
+        pid, filename
+      }
+    });
+  }
 
   render() {
     const {
       form: {getFieldDecorator, getFieldValue},
       entrustdata
     } = this.props;
-
+    const files = this.props.fileState.fileList;
+    const {pid} = this.props.location.query;
     const typeList = (entrustdata.entrust.testType || []).map((item, index) => {
         return (
           <span><b> {index + 1}</b>.<FormattedMessage id={item || ' '}/><br/></span>
@@ -94,6 +118,34 @@ export default class entrustCheck extends Component {
     //     return (<span><b> {index + 1}</b>.<FormattedMessage id={item || ' '}/><br/></span>)
     //   }
     // );
+    //文件列表
+    const fileList = (files || []).map((file, i) => {
+      return (
+        <Card hoverable={true}
+        >
+          <div className={style.fileDiv}>
+            <div className={style.txt}>
+              <span>{file.name}</span>
+            </div>
+            <Button.Group>
+              <Button type="dashed"
+                      icon="download"
+                      href={file.url}
+                      style={{color: 'rgb(64,169,255)'}}
+              />
+              <Button type="danger"
+                      icon="close"
+                      onClick={() => {
+                        this.deleteFile(pid, file.name);
+                        this.fileListInit(pid);
+                      }}
+              />
+            </Button.Group>
+          </div>
+        </Card>
+
+      )
+    });
     return (
       <div>
         <Breadcrumb>
@@ -266,6 +318,9 @@ export default class entrustCheck extends Component {
               </Card>
           }[getRole()[0]]
         }
+        <div className={style.fileList}>
+          {fileList}
+        </div>
       </div>
     )
   }

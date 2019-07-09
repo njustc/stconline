@@ -260,7 +260,7 @@ class BasicForm extends PureComponent {
 
     const fileListInit = () => {
       this.fileListInit(state.pid);
-    }
+    };
 
     //文件列表
     const fileList = (files || []).map((file, i) => {
@@ -287,8 +287,6 @@ class BasicForm extends PureComponent {
             </Button.Group>
           </div>
         </Card>
-
-
       )
     });
 
