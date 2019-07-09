@@ -14,7 +14,7 @@ files
 .settings
 .springBeans
 .sts4-cache
-
+.vs
 ### IntelliJ IDEA ###
 .idea
 *.iws

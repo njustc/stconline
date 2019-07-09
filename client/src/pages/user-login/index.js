@@ -41,7 +41,13 @@ class LoginPage extends Component {
         //TODO: 登录成功与失败处理逻辑
         //console.log(res.status);
         //router.push("/welcome")
-        location.replace("/welcome.html")
+        const role = getRole()[0]
+        if (role === "CUS") {
+          location.replace("/user_first.html")
+        }
+        else {
+          location.replace("/welcome.html")
+        }
         //cookie内容
       });
     }
