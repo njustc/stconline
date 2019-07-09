@@ -12,7 +12,8 @@ import {
   message,
   Form,
   Descriptions,
-  BackTop
+  BackTop,
+  Collapse
 } from 'antd';
 import {formatMessage, FormattedMessage} from 'umi/locale';
 import {connect} from 'dva';
@@ -121,8 +122,7 @@ export default class entrustCheck extends Component {
     //文件列表
     const fileList = (files || []).map((file, i) => {
       return (
-        <Card hoverable={true}
-        >
+        <div>
           <div className={style.fileDiv}>
             <div className={style.txt}>
               <span>{file.name}</span>
@@ -142,9 +142,9 @@ export default class entrustCheck extends Component {
               />
             </Button.Group>
           </div>
-        </Card>
-
-      )
+          <Divider/>
+        </div>
+      );
     });
     return (
       <div>
@@ -318,9 +318,13 @@ export default class entrustCheck extends Component {
               </Card>
           }[getRole()[0]]
         }
-        <div className={style.fileList}>
-          {fileList}
-        </div>
+        <Collapse bordered={false} defaultActiveKey={['1']}>
+          <Collapse.Panel header="已上传文件" key="1">
+            <div className={style.fileList}>
+              {fileList}
+            </div>
+          </Collapse.Panel>
+        </Collapse>
       </div>
     )
   }
