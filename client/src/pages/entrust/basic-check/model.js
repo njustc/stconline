@@ -13,25 +13,22 @@ export default {
   },
   effects: {
     * getOneEntrust({payload}, {call, put}) {
-      console.log(payload)
+      // console.log(payload)
       const response = yield call(getOneEntrust, payload);
-      yield put({type: 'initData', payload: EnStr2Arr(response)})
+      const entrust= EnStr2Arr(response)
+      console.log("ent",entrust)
+      yield put({type: 'initData', payload: entrust})
     },
     * ReviewEntrust({payload}, {call}) {
-      // console.log("ReviewEntrust");
-      // console.log("res",payload)
       payload = EnArr2Str(payload)
       yield call(reviewEntrust, payload);
       if (payload.operation == "ReviewPass") {
         const res = yield call(queryEntrustState, payload)
         if (res.state == "Approve") {
-          console.log("get")
           const contract = yield call(addNewContract, payload)
-          console.log(contract)
-          alert("已创建对应的合同")
         }
       }
-
+      payload=EnStr2Arr(payload)
       router.push("/basic-list.html")
     },
 
