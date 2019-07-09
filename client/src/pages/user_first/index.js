@@ -143,7 +143,7 @@ export default class Carousels extends React.Component{
                     <Col span={2}>
                     <Avatar
                         size={64}
-                        icon="user"
+                        src='https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
                      />
                      </Col>
                      <Col span={18}>
@@ -164,11 +164,9 @@ export default class Carousels extends React.Component{
                     {/* <p><FormattedMessage id={(!this.props.listdata.data.length)? "未命名":this.props.listdata.data[0].softwareName}/></p> 
                     <br /> */}
                     <Collapse onChange={callback}>
-                    <Panel header={(!this.props.listdata.data.length)? "未有项目":this.props.listdata.data[0].softwareName} 
->
+                    <Panel header={(!this.props.listdata.data.length)? "未有项目":this.props.listdata.data[0].softwareName} disabled={(!this.props.listdata.data.length)}>
                     <Steps current={(!(this.props.listdata.data.length>0))? 0: this.props.listdata.pstate1.state-1} 
                     size="small"
-                    disabled={(!this.props.listdata.data.length)}
                     style={{
                         padding:'1%'
                     }}>
@@ -181,22 +179,30 @@ export default class Carousels extends React.Component{
                     </Panel>
                     <Divider />
                     <Panel header={(!(this.props.listdata.data.length>1))? "未有项目":this.props.listdata.data[1].softwareName} disabled={(!(this.props.listdata.data.length>1))}>
-                    <Steps current={(!(this.props.listdata.data.length>1))? 0: this.props.listdata.pstate2.state-1} size="small">
-                        <Step title="委托" description="这是委托的描述." />
-                        <Step title="合同" description="这是合同的描述." />
-                        <Step title="测试方案" description="这是测试方案的描述." />
-                        <Step title="测试报告" description="这是测试报告的描述." />
-                        <Step title="结项" description="这是结项的描述." />
+                    <Steps current={(!(this.props.listdata.data.length>1))? 0: this.props.listdata.pstate2.state-1} 
+                    size="small"
+                    style={{
+                        padding:'1%'
+                    }}>
+                        <Step title="委托" description="" />
+                        <Step title="合同" description="" />
+                        <Step title="测试方案" description="" />
+                        <Step title="测试报告" description="" />
+                        <Step title="结项" description="" />
                     </Steps>
                     </Panel>
                     <Divider />
                     <Panel header={(!(this.props.listdata.data.length>2))? "未有项目":this.props.listdata.data[2].softwareName} disabled={(!(this.props.listdata.data.length>2))}>
-                    <Steps current={(!(this.props.listdata.data.length>2))? 0: this.props.listdata.pstate3.state-1} size="small">
-                        <Step title="委托" description="这是委托的描述." />
-                        <Step title="合同" description="这是合同的描述." />
-                        <Step title="测试方案" description="这是测试方案的描述." />
-                        <Step title="测试报告" description="这是测试报告的描述." />
-                        <Step title="结项" description="这是结项的描述." />
+                    <Steps current={(!(this.props.listdata.data.length>2))? 0: this.props.listdata.pstate3.state-1} 
+                    size="small"
+                    style={{
+                        padding:'1%'
+                    }}>
+                        <Step title="委托" description="" />
+                        <Step title="合同" description="" />
+                        <Step title="测试方案" description="" />
+                        <Step title="测试报告" description="" />
+                        <Step title="结项" description="" />
                     </Steps>
                     </Panel>
                     </Collapse>
