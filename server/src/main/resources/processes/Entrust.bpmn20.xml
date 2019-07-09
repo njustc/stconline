@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1559029209409" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
   <process id="Entrust" isClosed="false" isExecutable="true" name="委托" processType="None">
-    <startEvent id="start" name="开始">
+    <startEvent id="start" name="Start">
       <extensionElements>
         <activiti:formProperty id="EntrustID" name="ID of entrust" required="true" type="string"/>
       </extensionElements>
@@ -18,9 +18,9 @@
         <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
       </extensionElements>
     </userTask>
-    <endEvent id="end" name="结束"/>
+    <endEvent id="end" name="End"/>
     <sequenceFlow id="fSubmitToReview" sourceRef="submitEntrust" targetRef="reviewEntrust"/>
-    <exclusiveGateway gatewayDirection="Unspecified" id="approveGate" name="是否通过"/>
+    <exclusiveGateway gatewayDirection="Unspecified" id="approveGate" name="ReviewGate"/>
     <sequenceFlow id="fReviewToApprove" sourceRef="reviewEntrust" targetRef="approveGate"/>
     <sequenceFlow id="fApproveToEnd" name="通过" sourceRef="approveGate" targetRef="end">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ReviewResult == 'ReviewPass'}]]></conditionExpression>

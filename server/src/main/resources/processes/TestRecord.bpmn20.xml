@@ -18,7 +18,7 @@
         <activiti:formProperty id="taskType" name="Submit" type="string" value="Submit"/>
       </extensionElements>
     </userTask>
-    <exclusiveGateway gatewayDirection="Unspecified" id="tmReviewGate" name="TMReviewGate"/>
+    <exclusiveGateway gatewayDirection="Unspecified" id="tmReviewGate" name="TM_ReviewGate"/>
     <endEvent id="end" name="End"/>
     <sequenceFlow id="_7" sourceRef="start" targetRef="tmReviewTestRecord"/>
     <sequenceFlow id="_8" sourceRef="tmReviewTestRecord" targetRef="tmReviewGate"/>

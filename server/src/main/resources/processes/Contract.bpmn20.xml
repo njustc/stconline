@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1561274924704" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
   <process id="Contract" isClosed="false" isExecutable="true" name="合同" processType="None">
-    <startEvent id="start" name="开始">
+    <startEvent id="start" name="Start">
       <extensionElements>
         <activiti:formProperty id="ContractID" name="ID of contract" required="true" type="string"/>
       </extensionElements>
     </startEvent>
-    <endEvent id="end" name="结束"/>
+    <endEvent id="end" name="End"/>
     <userTask activiti:exclusive="true" id="submitContract" name="SS_Submit" activiti:candidateGroups="SS">
       <extensionElements>
         <activiti:formProperty id="taskType" name="Submit" type="string" value="Submit"/>
       </extensionElements>
     </userTask>
-    <subProcess activiti:exclusive="true" id="subProcess" name="审批子流程" triggeredByEvent="false">
+    <subProcess activiti:exclusive="true" id="subProcess" name="Sub_Review" triggeredByEvent="false">
       <parallelGateway gatewayDirection="Unspecified" id="mApproveForkGate" name="Fork"/>
       <parallelGateway gatewayDirection="Unspecified" id="mApproveJoinGate" name="Join"/>
       <userTask activiti:exclusive="true" id="smContractReview" name="SM_ReviewContract" activiti:candidateGroups="SM">
         <extensionElements>
           <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
           <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
-          <activiti:formProperty id="ReviewCosment" name="reason about pass or reject" required="true" type="string"/>
+          <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
         </extensionElements>
       </userTask>
       <userTask activiti:exclusive="true" id="qmContractReview" name="QM_ReviewContract" activiti:candidateGroups="QM">
         <extensionElements>
           <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
           <activiti:formProperty id="ReviewResult" name="Do you approve this request?" required="true" type="string"/>
-          <activiti:formProperty id="ReviewCosment" name="reason about pass or reject" required="true" type="string"/>
+          <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
         </extensionElements>
       </userTask>
       <startEvent id="subStart" name="子流程开始"/>

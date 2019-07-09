@@ -126,8 +126,6 @@ public class ProcessUtils {
             if (group1.getId().equals(curGroup.getId()))
                 return true;
         }
-
-        System.out.println("用户不在" + group +"组内");
         return false;
     }
 
@@ -231,7 +229,6 @@ public class ProcessUtils {
                         .desc().list();
                 for (HistoricTaskInstance historicTaskInstance: historicTaskInstances) {
                     String name = historicTaskInstance.getName();
-                    logger.info(name);
                     if (name.contains("Submit")) {
                         break;
                     }
