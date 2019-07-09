@@ -131,21 +131,19 @@ public class DataBaseReset {
         entrustRepository.deleteAll();
         System.out.println("\nReset All Entrusts:");
         JSONObject entrustJson = getJson("entrust.json");
-        saveEntrust(entrustJson, "p20190610010101", users.get(1).getUserID(), "ABCDE软件"); // CUSA
-        saveEntrust(entrustJson, "p20190610010102", users.get(1).getUserID(), "Hello软件"); // CUSA
-        saveEntrust(entrustJson, "p20190610010103", users.get(1).getUserID(), "World软件"); // CUSA
-        saveEntrust(entrustJson, "p20190610010104", users.get(1).getUserID(), "ABCDE软件"); // CUSA
-        saveEntrust(entrustJson, "p20190610010105", users.get(1).getUserID(), "Hello软件"); // CUSA
-        saveEntrust(entrustJson, "p20190610010106", users.get(1).getUserID(), "World软件"); // CUSA
-        saveEntrust(entrustJson, "p20190610010107", users.get(1).getUserID(), "ABCDE软件"); // CUSA
-        saveEntrust(entrustJson, "p20190610010108", users.get(1).getUserID(), "Hello软件"); // CUSA
-        saveEntrust(entrustJson, "p20190610010109", users.get(1).getUserID(), "World软件"); // CUSA
-        saveEntrust(entrustJson, "p20190610010110", users.get(1).getUserID(), "ABCDE软件"); // CUSA
-        saveEntrust(entrustJson, "p20190610010111", users.get(1).getUserID(), "Hello软件"); // CUSA
-        saveEntrust(entrustJson, "p20190610010112", users.get(1).getUserID(), "World软件"); // CUSA
+        saveEntrust(entrustJson, "p20190708202100", users.get(1).getUserID(), "ABCDE软件"); // CUSA
+        saveEntrust(entrustJson, "p20190708202101", users.get(1).getUserID(), "Hello软件"); // CUSA
+        saveEntrust(entrustJson, "p20190708202102", users.get(1).getUserID(), "World软件"); // CUSA
+        saveEntrust(entrustJson, "p20190708202103", users.get(1).getUserID(), "STC软件"); // CUSA
+        saveEntrust(entrustJson, "p20190708202104", users.get(2).getUserID(), "ABCDE软件"); // CUSA
+        saveEntrust(entrustJson, "p20190708202105", users.get(2).getUserID(), "Hello软件"); // CUSA
+        saveEntrust(entrustJson, "p20190708202106", users.get(2).getUserID(), "World软件"); // CUSA
+        saveEntrust(entrustJson, "p20190708202107", users.get(2).getUserID(), "STC软件"); // CUSA
+        saveEntrust(entrustJson, "p20190708202108", users.get(3).getUserID(), "ABCDE软件"); // CUSA
+        saveEntrust(entrustJson, "p20190708202109", users.get(3).getUserID(), "Hello软件"); // CUSA
+        saveEntrust(entrustJson, "p20190708202110", users.get(3).getUserID(), "World软件"); // CUSA
+        saveEntrust(entrustJson, "p20190708202111", users.get(3).getUserID(), "STC软件"); // CUSA
 
-        saveEntrust(entrustJson, "p20190610010113", users.get(2).getUserID(), "Game软件"); // CUSB
-        saveEntrust(entrustJson, "p20190610010114", users.get(2).getUserID(), "LittleBird软件"); // CUSB
         // 清空其他数据库
         contractRepository.deleteAll();
         testPlanRepository.deleteAll();

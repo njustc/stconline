@@ -12,7 +12,7 @@ export default {
     effects:{
       *GetAllEntrust(_,{call,put}){
         const response=yield call(getAllEntrust)
-        console.log('GetAllEntrust')
+        //console.log('GetAllEntrust')
         // console.log(response)
         // 处理未登录情况：重定向到登陆界面
         //console.log("我也不知道这是啥但是输出看看",response)
@@ -51,41 +51,40 @@ export default {
             else{
               console.log("成功输出0")
             }
-
           }
         }
       },
       *GetProcess(payload,{call,put}){
-        console.log("传给model的参数:",payload)
+        //console.log("传给model的参数:",payload)
         const res = yield call(getprocess, payload)
-        console.log("返回的结果:",res)
+        //console.log("返回的结果:",res)
         yield put({type: 'addP', payload: res});
       }
     },
     reducers:{
       addListData(state,action){
-        console.log("这是不是不输出啊")
+        //console.log("这是不是不输出啊")
         return{
           ...state,
           data:action.payload,
         }
       },
       addP1(state,action){
-        console.log("看看action1",action)
+        //console.log("看看action1",action)
         return{
           ...state,
           pstate1:action.payload
         }
       },
       addP2(state,action){
-        console.log("看看action2",action)
+        //console.log("看看action2",action)
         return{
           ...state,
           pstate2:action.payload
         }
       },
       addP3(state,action){
-        console.log("看看action3",action)
+        //console.log("看看action3",action)
         return{
           ...state,
           pstate3:action.payload

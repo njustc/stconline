@@ -14,7 +14,7 @@
         <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
       </extensionElements>
     </userTask>
-    <exclusiveGateway gatewayDirection="Unspecified" id="tmReviewGate" name="TMReviewGate"/>
+    <exclusiveGateway gatewayDirection="Unspecified" id="tmReviewGate" name="TM_ReviewGate"/>
     <userTask activiti:exclusive="true" id="qmReviewReport" name="QM_ReviewReport" activiti:candidateGroups="QM">
       <extensionElements>
         <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
@@ -22,7 +22,7 @@
         <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
       </extensionElements>
     </userTask>
-    <exclusiveGateway gatewayDirection="Unspecified" id="qmReviewGate" name="QMReviewGate"/>
+    <exclusiveGateway gatewayDirection="Unspecified" id="qmReviewGate" name="QM_ReviewGate"/>
     <userTask activiti:assignee="${ClientID}" activiti:exclusive="true" id="cusReviewReport" name="CUS_ReviewReport">
       <extensionElements>
         <activiti:formProperty id="taskType" name="Review" type="string" value="Review"/>
@@ -30,8 +30,8 @@
         <activiti:formProperty id="ReviewComment" name="reason about pass or reject" required="true" type="string"/>
       </extensionElements>
     </userTask>
-    <exclusiveGateway gatewayDirection="Unspecified" id="cusReviewGate" name="CUSReviewGate"/>
-    <userTask activiti:exclusive="true" id="tsSubmitReport" name="TSSubmitReport" activiti:candidateGroups="TS">
+    <exclusiveGateway gatewayDirection="Unspecified" id="cusReviewGate" name="CUS_ReviewGate"/>
+    <userTask activiti:exclusive="true" id="tsSubmitReport" name="TS_SubmitReport" activiti:candidateGroups="TS">
       <extensionElements>
         <activiti:formProperty id="taskType" name="Submit" type="string" value="Submit"/>
       </extensionElements>

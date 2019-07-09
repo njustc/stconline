@@ -20,7 +20,7 @@ function callback(key) {
 
 const mapStateToProps = (state) => {
     const listdata = state[namespace];
-    console.log("输出listdata",listdata);
+    //console.log("输出listdata",listdata);
     //let p = state[namespace].process;
     //console.log("输出p",p);
     //console.log("试着输出softname",listdata.data.length);
@@ -31,13 +31,13 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch,state) => {
     return {
       onDidMount: () => {
-          console.log("???")
+          //console.log("???")
         dispatch({
           type: `${namespace}/GetAllEntrust`,
         })
       },
       getP: (pid) => {
-          console.log(pid)
+          //console.log(pid)
           dispatch({
               type: `${namespace}/GetProcess`,
               payload: pid
@@ -140,58 +140,71 @@ export default class Carousels extends React.Component{
             <div>
                 <Card title="工作台">
                 <Row>
-                    <Col span={2}>
+                    <Col span={3}>
                     <Avatar
                         size={64}
-                        icon="user"
+                        src='https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
                      />
                      </Col>
-                     <Col span={18}>
+                     <Col span={12}>
                     <div>你好，{getRole()[0]}，今天也是努力搬砖的一天呢</div>
                     <iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=99" width="160" height="36" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
                     </Col>
-                    <h1>南京大学软件测试中心</h1>
-                    <Avatar src="http://ise.nju.edu.cn/author/admin/avatar_hu65273352f63401a5ced919c03e133798_24423_250x250_fill_q90_lanczos_center.jpg" />
+                    <Col span={4}>
+                    <h1>南京大学计算机系</h1>
+                    </Col>
+                    <Avatar size = 'large' src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1562667040758&di=aa96df6f6968abfb82e47917abc12ec3&imgtype=0&src=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_png%2Fj9L86C5IO6ibciaA50hmu7NVUdVkSsyZ3TsEUdhpjarWw4CIxu2O25tYdxQkru5mcu8ibVGsPwTmodFOhCbFSRS2g%2F640%3Fwx_fmt%3Dpng" />
                 </Row>
                 </Card>
                 <br />
                 <br />
 
                 <Card 
-                title="进行中的项目"
+                title="近期的项目"
                 bordered={false}
-                extra={<Link to="/welcome">全部项目</Link>}
                 >
                     {/* <p><FormattedMessage id={(!this.props.listdata.data.length)? "未命名":this.props.listdata.data[0].softwareName}/></p> 
                     <br /> */}
                     <Collapse onChange={callback}>
                     <Panel header={(!this.props.listdata.data.length)? "未有项目":this.props.listdata.data[0].softwareName} disabled={(!this.props.listdata.data.length)}>
-                    <Steps current={(!(this.props.listdata.data.length>0))? 0: this.props.listdata.pstate1.state-1} size="small">
-                        <Step title="委托" description="这是委托的描述." />
-                        <Step title="合同" description="这是合同的描述." />
-                        <Step title="测试方案" description="这是测试方案的描述." />
-                        <Step title="测试报告" description="这是测试报告的描述." />
-                        <Step title="结项" description="这是结项的描述." />
+                    <Steps current={(!(this.props.listdata.data.length>0))? 0: this.props.listdata.pstate1.state-1} 
+                    size="small"
+                    style={{
+                        padding:'1%'
+                    }}>
+                        <Step title="委托" description="" />
+                        <Step title="合同" description="" />
+                        <Step title="测试方案" description="" />
+                        <Step title="测试报告" description="" />
+                        <Step title="结项" description="" />
                     </Steps>
                     </Panel>
                     <Divider />
                     <Panel header={(!(this.props.listdata.data.length>1))? "未有项目":this.props.listdata.data[1].softwareName} disabled={(!(this.props.listdata.data.length>1))}>
-                    <Steps current={(!(this.props.listdata.data.length>1))? 0: this.props.listdata.pstate2.state-1} size="small">
-                        <Step title="委托" description="这是委托的描述." />
-                        <Step title="合同" description="这是合同的描述." />
-                        <Step title="测试方案" description="这是测试方案的描述." />
-                        <Step title="测试报告" description="这是测试报告的描述." />
-                        <Step title="结项" description="这是结项的描述." />
+                    <Steps current={(!(this.props.listdata.data.length>1))? 0: this.props.listdata.pstate2.state-1} 
+                    size="small"
+                    style={{
+                        padding:'1%'
+                    }}>
+                        <Step title="委托" description="" />
+                        <Step title="合同" description="" />
+                        <Step title="测试方案" description="" />
+                        <Step title="测试报告" description="" />
+                        <Step title="结项" description="" />
                     </Steps>
                     </Panel>
                     <Divider />
                     <Panel header={(!(this.props.listdata.data.length>2))? "未有项目":this.props.listdata.data[2].softwareName} disabled={(!(this.props.listdata.data.length>2))}>
-                    <Steps current={(!(this.props.listdata.data.length>2))? 0: this.props.listdata.pstate3.state-1} size="small">
-                        <Step title="委托" description="这是委托的描述." />
-                        <Step title="合同" description="这是合同的描述." />
-                        <Step title="测试方案" description="这是测试方案的描述." />
-                        <Step title="测试报告" description="这是测试报告的描述." />
-                        <Step title="结项" description="这是结项的描述." />
+                    <Steps current={(!(this.props.listdata.data.length>2))? 0: this.props.listdata.pstate3.state-1} 
+                    size="small"
+                    style={{
+                        padding:'1%'
+                    }}>
+                        <Step title="委托" description="" />
+                        <Step title="合同" description="" />
+                        <Step title="测试方案" description="" />
+                        <Step title="测试报告" description="" />
+                        <Step title="结项" description="" />
                     </Steps>
                     </Panel>
                     </Collapse>

@@ -8,8 +8,6 @@ import router from 'umi/router';
 import Button from "antd/es/button";
 import styles from './style.less';
 import {readCookie, getRole} from "../../utils/cookieUtils";
-
-
 const {Tab, UserName, Password, Mobile, Captcha, Submit} = Login;
 
 @connect(({userInfo, loading}) => ({
@@ -40,16 +38,17 @@ class LoginPage extends Component {
           type,
         },
       }).then(res => {
-        // TODO: 登录成功与失败处理逻辑
-        console.log(res.status);
-        // 401
-        if (res.status === 401) {
-
-        } else {
-          router.push("/welcome")
+        //TODO: 登录成功与失败处理逻辑
+        //console.log(res.status);
+        //router.push("/welcome")
+        const role = getRole()[0]
+        if (role === "CUS") {
+          location.replace("/user-first.html")
         }
-
-        // cookie内容
+        else {
+          location.replace("/welcome.html")
+        }
+        //cookie内容
       });
     }
   };
@@ -62,7 +61,8 @@ class LoginPage extends Component {
     dispatch({
       type: 'userInfo/logout',
     }).then(res => {
-      console.log(res)
+      //console.log(res)
+      location.replace("/user-login.html")
     })
   };
 
@@ -92,9 +92,15 @@ class LoginPage extends Component {
             this.loginForm = form;
           }}
         >
+
+          <img src="http://ise.nju.edu.cn/author/admin/avatar_hu65273352f63401a5ced919c03e133798_24423_250x250_fill_q90_lanczos_center.jpg"/>
+          {/*<div>*/}
+          {/*  <img src={require('src/assets/timg.jpeg')} />*/}
+          {/*</div>*/}
+          <br/>
           <UserName
             name="username"
-            placeholder={`${formatMessage({id: 'user-login.login.userName'})}: admin or user`}
+            placeholder={`${formatMessage({id: 'user-login.login.userName'})}`}
             rules={[
               {
                 required: true,
@@ -104,7 +110,7 @@ class LoginPage extends Component {
           />
           <Password
             name="password"
-            placeholder={`${formatMessage({id: 'user-login.login.password'})}: ant.design`}
+            placeholder={`${formatMessage({id: 'user-login.login.password'})}`}
             rules={[
               {
                 required: true,
@@ -113,32 +119,34 @@ class LoginPage extends Component {
             ]}
             onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
           />
-          <div>
-            <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
-              <FormattedMessage id="user-login.login.remember-me"/>
-            </Checkbox>
-            <a style={{float: 'right'}} href="">
-              <FormattedMessage id="user-login.login.forgot-password"/>
-            </a>
-          </div>
+          <a href="http://keysoftlab.nju.edu.cn/_upload/article/6c/9a/b64d969d4332a2fb45563890bd7f/5aefef9e-50c1-4ba3-96ae-f4ba96384b05.pdf">下载文件</a>
+
+          {/*<div>*/}
+          {/*  <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>*/}
+          {/*    <FormattedMessage id="user-login.login.remember-me"/>*/}
+          {/*  </Checkbox>*/}
+          {/*  <a style={{float: 'right'}} href="">*/}
+          {/*    <FormattedMessage id="user-login.login.forgot-password"/>*/}
+          {/*  </a>*/}
+          {/*</div>*/}
           <Submit loading={submitting}>
             <FormattedMessage id="user-login.login.login"/>
           </Submit>
-          <Button
-            style={{width: '100%'}}
-            onClick={this.handleLogout}
-          >登出
-          </Button>
-          <div className={styles.other}>
-            <FormattedMessage id="user-login.login.sign-in-with"/>
-            <Icon type="alipay-circle" className={styles.icon} theme="outlined"/>
-            <Icon type="taobao-circle" className={styles.icon} theme="outlined"/>
-            <Icon type="weibo-circle" className={styles.icon} theme="outlined"/>
-            <Link className={styles.register} to="/user/register">
-              <FormattedMessage id="user-login.login.signup"/>
-            </Link>
-          </div>
-          <a href="http://localhost:8080/api/project/files?pid=p20190610010104&filename=main.py">下载文件</a>
+          {/*<Button*/}
+          {/*  style={{width: '100%'}}*/}
+          {/*  onClick={this.handleLogout}*/}
+          {/*>登出*/}
+          {/*</Button>*/}
+          {/*<div className={styles.other}>*/}
+          {/*  <FormattedMessage id="user-login.login.sign-in-with"/>*/}
+          {/*  <Icon type="alipay-circle" className={styles.icon} theme="outlined"/>*/}
+          {/*  <Icon type="taobao-circle" className={styles.icon} theme="outlined"/>*/}
+          {/*  <Icon type="weibo-circle" className={styles.icon} theme="outlined"/>*/}
+          {/*  <Link className={styles.register} to="/user/register">*/}
+          {/*    <FormattedMessage id="user-login.login.signup"/>*/}
+          {/*  </Link>*/}
+          {/*</div>*/}
+          {/*<a href="http://keysoftlab.nju.edu.cn/_upload/article/6c/9a/b64d969d4332a2fb45563890bd7f/5aefef9e-50c1-4ba3-96ae-f4ba96384b05.pdf">下载文件</a>*/}
         </Login>
       </div>
 

@@ -84,7 +84,7 @@ export default class List extends React.Component {
       var checkvalue = this.props.dataCheck.check;
       checkvalue.operation = operation;
       checkvalue.comment = value.comment;
-      console.log("checkvalue", checkvalue);
+      //console.log("checkvalue", checkvalue);
       dispatch({
         type: `${namespace}/queryReviewTestPlan`,
         payload: checkvalue,
@@ -127,6 +127,7 @@ export default class List extends React.Component {
         {
           {
             "QM": <div class="qmSpace">
+              <h1>质量部主任</h1>
               <FormItem label={<FormattedMessage id="审批意见"/>}>
                 {getFieldDecorator('comment', {
                   initialValue: this.props.dataCheck.check.comment || '无',
@@ -138,24 +139,25 @@ export default class List extends React.Component {
                     },
                   ],
                 })(<Input placeholder={formatMessage({id: '输入审批意见'})}
-                          disabled={this.props.dataCheck.check.processState != "Review"}
+                          disabled={this.props.dataCheck.check.processState != "Review" || this.props.dataCheck.checked == 1}
                 />)}
               </FormItem>
 
               {
-                this.props.dataCheck.check.processState == "Review" ?
+                this.props.dataCheck.check.processState == "Review" && this.props.dataCheck.checked == 0?
                   <Card>
                     <div>
                       <Button onClick={() => {
                         this.review(this.props.form, "ReviewPass")
                       }} style={{marginLeft: 8}}
-                              type="primary">
+                              type="primary"
+                              // disabled={this.props.dataCheck.check.}
+                      >
                         <FormattedMessage id="basic-form.form.agree"/>
                       </Button>
                       <Button onClick={() => {
                         this.review(this.props.form, "ReviewDisprove")
                       }} style={{marginLeft: 8}}
-                              type="primary"
                               disabled={this.props.dataCheck.check.processState != "Review"}>
                         <FormattedMessage id="basic-form.form.disagree"/>
                       </Button>
@@ -166,6 +168,7 @@ export default class List extends React.Component {
             </div>,
 
             "TM": <div class="tmSpace">
+              <h1>测试部主任</h1>
               <FormItem label={<FormattedMessage id="审批意见"/>}>
                 {getFieldDecorator('comment', {
                   initialValue: this.props.dataCheck.check.comment || '无',
@@ -177,12 +180,12 @@ export default class List extends React.Component {
                     },
                   ],
                 })(<Input placeholder={formatMessage({id: '输入审批意见'})}
-                          disabled={this.props.dataCheck.check.processState != "Review"}
+                          disabled={this.props.dataCheck.check.processState != "Review"|| this.props.dataCheck.checked == 1}
                 />)}
               </FormItem>
 
               {
-                this.props.dataCheck.check.processState == "Review" ?
+                this.props.dataCheck.check.processState == "Review" && this.props.dataCheck.checked == 0?
                   <Card>
                     <div>
                       <Button onClick={() => {
@@ -194,8 +197,9 @@ export default class List extends React.Component {
                       <Button onClick={() => {
                         this.review(this.props.form, "ReviewDisprove")
                       }} style={{marginLeft: 8}}
-                              type="primary"
-                              disabled={this.props.dataCheck.check.processState != "Review"}>
+                              // type="danger"
+                              // disabled={this.props.dataCheck.check.processState != "Review"}
+                        >
                         <FormattedMessage id="basic-form.form.disagree"/>
                       </Button>
                     </div>

@@ -72,4 +72,6 @@ public interface UserService extends BaseService<User> {
     List<User> findAllUsers();
 
     String userLogout(HttpServletResponse response, HttpServletRequest request);
+
+    User getCurrentUser();
 }

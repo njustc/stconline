@@ -47,6 +47,16 @@ public class TestReportServiceImpl implements TestReportService {
     }
 
     @Override
+    public List<TestReport> findToDoTestReportsByAuthority() {
+        User curUser = authorityUtils.getLoginUser();
+        logger.info("findToDoTestReportsByAuthority: 当前登录者id = " + curUser.getUserID() +
+                ", name = " + curUser.getUsername() + ", roles = " + curUser.getRoles());
+        List<TestReport> allTestReports = this.findAllTestReports();
+        allTestReports.removeIf(testReport -> !processUtils.isTodo(testReport, "TestReport"));
+        return allTestReports;
+    }
+
+    @Override
     public TestReport findTestReportByPid(String pid) {
         TestReport testReport = testReportRepository.findByPid(pid);
         if (testReport == null)

@@ -72,7 +72,7 @@ export default class ReportList extends Component {
   {<Link to={{pathname: './report-detail', query: {pid: key.pid}}}>查看项目详情</Link> }
   <Divider type="vertical"/>
  
-  <Divider type="vertical"/>
+  {/* <Divider type="vertical"/> */}
 </span>
   )
 
@@ -116,11 +116,14 @@ export default class ReportList extends Component {
       render: processState => {
         var color = processState === 'Review' ? 'geekblue' : 'green'
         if (processState === 'Submit') {
-          color = 'grey'
+          color = 'gold'
         }
+        var content = processState ==='Review'?"待审核":"已通过"
+        if (processState==='Submit'){
+          content='待提交'}
         return (
           <Tag color={color} key={processState}>
-            {processState}
+            {content}
           </Tag>
         );
       }

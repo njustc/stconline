@@ -11,7 +11,7 @@ export default {
 
   effects: {
     * queryReplacePlan({payload}, {call, put}) {
-      console.log("replacePlan");
+      //console.log("replacePlan");
       yield call(replaceTestPlan, payload);
       const response = yield call(getOneTestPlan, payload);
       yield put({type: 'updateData', payload: response});
@@ -25,10 +25,10 @@ export default {
     },
 
     * querySubmitPlan({payload}, {call, put}) {
-      console.log("submit", payload);
+      //console.log("submit", payload);
       if (payload.pid !== "") {
         //添加属性
-        console.log("replaceTestPlan");
+        //console.log("replaceTestPlan");
         const response = yield call(replaceTestPlan, payload);
         payload = response;
       } else {
@@ -36,11 +36,11 @@ export default {
         payload = newform;
       }
       if (payload.processInstanceId === "") {
-        console.log("create");
+        //console.log("create");
         yield call(createTestPlanProcess, payload);
       }
       else {
-        console.log("update");
+        //console.log("update");
         yield call(updateTestPlanProcess, payload);
       }
       router.push("/plan_list.html")
@@ -54,7 +54,7 @@ export default {
     },
 
     * queryDeletePlan({payload}, {call}) {
-      console.log("play", payload);
+      //console.log("play", payload);
       if (payload.pid != "") {
         yield call(deleteTestPlan, {pid: payload.pid})
       }

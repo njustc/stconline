@@ -20,6 +20,11 @@ public interface ContractService extends BaseService<Contract>{
     List<Contract> findContractsByAuthority();
 
     /**
+     * 获取待办合同
+     */
+    List<Contract> findToDoContractsByAuthority();
+
+    /**
      * 获取某用户全部合同
      */
     List<Contract> findContractByUser(String uid);

@@ -10,6 +10,14 @@ export default {
   },
 
   effects: {
+    // *returnRecordList() {
+    //   router.push("/record-list.html?pid=" + payload.pid);
+    // },
+    *returnRecordList({payload}){
+      //debugger
+      console.log(payload);
+      router.push("/record-list.html?pid=" + payload.dataEdit.editdata.pid);        
+    },
     * queryReplaceRecord({payload}, {call, put}) {
       console.log(payload);
       yield call(replaceTestRecord, payload);
@@ -50,13 +58,11 @@ export default {
       router.push("/record-list.html?pid=" + payload.pid);
 
     },
-
     * queryGetOneRecord({payload}, {call, put}) {
       // console.log(payload);
       const response = yield call(getOneTestRecord, payload);
       yield put({type: 'updateData', payload: response});
     },
-
     * queryDeleteRecord({payload}, {call}) {
       console.log("delete", payload);
       if (payload.testId !== "") {

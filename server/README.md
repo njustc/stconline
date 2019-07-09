@@ -28,7 +28,7 @@ docker-compose up -d
 
 ```
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
-14da45c29d6c        mysql:5.7.21        "docker-entrypoint.s…"   14 minutes ago      Up 14 minutes       0.0.0.0:3306->3306/tcp   mysql
+14da45c29d6c        mysql:5.7.21        "docker-entrypoint.s…"   14 minutes ago      Up 14 minutes       0.0.0.0:33306->3306/tcp   mysql
 ```
 
 说明容器启动成功，可以进行进一步的操作. 否则需要查看挂载目录是否正常、docker-compose是否正确安装

@@ -48,7 +48,6 @@ public class UserController {
     /**
      * 用户登录
      */
-//    @Secured(value = "USER")
     @PostMapping("/api/login")
     public String userLogin(HttpServletRequest req,
                             HttpServletResponse response,
@@ -139,6 +138,14 @@ public class UserController {
         user.addRole(Role.Admin.str());
         userService.newUser(user);
         return user;
+    }
+
+    /**
+     * 获取当前登录用户
+     */
+    @GetMapping("/api/currentUser")
+    public User getCurrentUser() {
+        return userService.getCurrentUser();
     }
 
 }

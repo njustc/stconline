@@ -151,5 +151,10 @@ public class UserServiceImpl implements UserService {
             cookieUtils.deleteCookie("roles", response);
         }
     }
+
+    @Override
+    public User getCurrentUser() {
+        return authorityUtils.getLoginUser();
+    }
 }
 

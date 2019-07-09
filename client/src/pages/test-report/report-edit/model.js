@@ -53,16 +53,20 @@ export default {
         payload = newform;
       }
       console.log(payload)
+      
       if (payload.processInstanceId === "") {
         console.log("create");
         yield call(createTestReportProcess, payload);
-        console.log(payload)
+
       }
       else {
         console.log("update");
         yield call(updateTestReportProcess, payload);
       }
-      router.push("/report-list.html")
+      
+      location.replace("/report-list.html");
+      //router.push("/report-list.html")
+      console.log("888")
 
     },
 

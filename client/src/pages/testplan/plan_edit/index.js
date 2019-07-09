@@ -16,7 +16,7 @@ import {
   Breadcrumb,
   Affix, Divider, BackTop
 } from 'antd';
-import style from "../../entrust/basic-form/style.less";
+import style from "./style.less";
 import PageHeaderWrapper from "../../entrust/basic-form/components/PageHeaderWrapper";
 
 const FormItem = Form.Item;
@@ -27,7 +27,7 @@ const namespace='testplanEdit';
 
 const mapStateToProps = (state) => {
   const dataEdit = state[namespace];
-  console.log(dataEdit);
+  //console.log(dataEdit);
   return {
     dataEdit,
   };
@@ -69,7 +69,7 @@ export default class EditPlan extends React.Component {
     } else {
       this.state.pid = this.props.dataEdit.editdata.pid
     }
-    if (this.state.pid != "") {
+    if (this.state.pid !== "") {
       dispatch({
         type: `${namespace}/queryGetOnePlan`,
         payload: this.props.location.query,
@@ -98,13 +98,13 @@ export default class EditPlan extends React.Component {
   savePlan = (form) => {
     const {dispatch} = this.props;
     this.state.pid = this.props.dataEdit.editdata.pid;
-    console.log("saveform", this.props.dataEdit.editdata);
+    //console.log("saveform", this.props.dataEdit.editdata);
     form.validateFields((err, value) => {
       //保存
       value.pid = this.state.pid;
       value.processInstanceId = this.props.dataEdit.editdata.processInstanceId;
       value.processState = this.props.dataEdit.editdata.processState;
-      console.log("value", value);
+      //console.log("value", value);
       // value.comment = this.props.dataEdit.editdata.comment;
       dispatch({
         type: `${namespace}/queryReplacePlan`,
@@ -116,13 +116,13 @@ export default class EditPlan extends React.Component {
   //保存
   save = (form) => {
     const {dispatch} = this.props;
-    console.log("save", this.props.dataEdit.editdata);
+    //console.log("save", this.props.dataEdit.editdata);
     this.state.pid = this.props.dataEdit.editdata.pid;
     if (this.state.pid == "") {
       this.addPlan(form)
     } else {
-      console.log("报告已存在");
-      console.log(this.state.pid);
+      //console.log("报告已存在");
+      //console.log(this.state.pid);
       this.savePlan(form)
     }
   };
@@ -133,13 +133,13 @@ export default class EditPlan extends React.Component {
     const {dispatch} = this.props;
     this.state.pid = this.props.dataEdit.editdata.pid;
     form.validateFields((err, value) => {
-      console.log(this.props.dataEdit.editdata);
+      //console.log(this.props.dataEdit.editdata);
       //新建
       value.pid = this.state.pid;
       value.processInstanceId = this.props.dataEdit.editdata.processInstanceId || "";
       value.processState = this.props.dataEdit.editdata.processState || "";
       // value.comment=this.props.dataEdit.editdata.comment;
-      console.log("submitPlan", value);
+      //console.log("submitPlan", value);
       dispatch({
         type: `${namespace}/querySubmitPlan`,
         payload: value,
@@ -156,11 +156,11 @@ export default class EditPlan extends React.Component {
       okType: 'primary',
       cancelText: '取消',
       onOk() {
-        console.log("submitPlan");
+        //console.log("submitPlan");
         that.submitPlan(form);
       },
       onCancel() {
-        console.log('Cancel');
+        //console.log('Cancel');
       },
     });
   }
@@ -192,7 +192,7 @@ export default class EditPlan extends React.Component {
         })
       },
       onCancel() {
-        console.log('Cancel');
+        //console.log('Cancel');
       },
     });
   }
@@ -222,13 +222,12 @@ export default class EditPlan extends React.Component {
           <Breadcrumb.Item>测试方案编辑</Breadcrumb.Item>
         </Breadcrumb>
 
-        {/*/!*<div className={style.headerTitle}>*!/*/}
-        {/*/!*  <PageHeaderWrapper*!/*/}
-        {/*/!*    title={<FormattedMessage id="测试方案"/>}*!/*/}
-        {/*/!*  >*!/*/}
-        {/*/!*  </PageHeaderWrapper>*!/*/}
-        {/*</div>*/}
-        <Divider/>
+        <div className={style.headerTitle}>
+          <PageHeaderWrapper
+            title={<FormattedMessage id="测试方案"/>}
+          >
+          </PageHeaderWrapper>
+        </div>
         <div className={style.formBody}>
           <Form className={style.antForm}>
             <div>
@@ -321,28 +320,29 @@ export default class EditPlan extends React.Component {
                   })(<Input placeholder={formatMessage({id: 'testplan.staff.placeholder'})}/>)}
                 </FormItem>
               </div>
-              <div>
-                <Affix offsetBottom={0}>
-                  <div className={style.submitBtns}>
-                    <Button onClick={() => {
-                      this.showSubmit(this.props.form)
-                    }} style={{marginLeft: 8}}
-                            type="primary"
-                      // disabled={this.props.dataEdit.editdata.processState != "Submit"}
-                    >
-                      <FormattedMessage id="plan_edit.form.submit"/>
-                    </Button>
+              {/*<div>*/}
+                {/*<Affix offsetBottom={0}*/}
+                {/*onChange={affixed => console.log(affixed)}>*/}
+                <div className={style.submitBtns}>
+                  <Button onClick={() => {
+                    this.showSubmit(this.props.form)
+                  }} style={{marginLeft: 8}}
+                          type="primary"
+                    // disabled={this.props.dataEdit.editdata.processState != "Submit"}
+                  >
+                    <FormattedMessage id="plan_edit.form.submit"/>
+                  </Button>
 
-                    <Button onClick={() => {
-                      this.save(this.props.form)
-                    }} style={{marginLeft: 8}}
-                      // disabled={this.props.dataEdit.editdata.processState != "Submit"}
-                    >
-                      <FormattedMessage id="plan_edit.form.save"/>
-                    </Button>
-                  </div>
-                </Affix>
-              </div>
+                  <Button onClick={() => {
+                    this.save(this.props.form)
+                  }} style={{marginLeft: 8}}
+                    // disabled={this.props.dataEdit.editdata.processState != "Submit"}
+                  >
+                    <FormattedMessage id="plan_edit.form.save"/>
+                  </Button>
+                </div>
+                {/*</Affix>*/}
+              {/*</div>*/}
             </div>
           </Form>
         </div>

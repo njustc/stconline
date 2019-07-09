@@ -18,7 +18,7 @@ export async function getAlltestReport() {
 }
 
 export async function deleteTestReport(params) {
-  console.log(params.pid);
+  //console.log(params.pid);
   return request(`api/project/testReport/${params.pid}`,{
     method: 'DELETE',
   });
@@ -32,7 +32,7 @@ export async function replaceTestReport(params) {
 }
 
 export async function addNewTestReport(params) {
-  console.log("addnew",params)
+  //console.log("addnew",params)
   return request('api/project/testReport', {
     method: 'POST',
     data: params,
@@ -72,7 +72,7 @@ export async function createTestReportProcess(params) {
 }
 
 export async function updateTestReportProcess(params) {
-  console.log(typeof(params),params)
+  //console.log(typeof(params),params)
   return request(`api/project/process/update?type=TestReport`, {
     method: 'POST',
     data: params

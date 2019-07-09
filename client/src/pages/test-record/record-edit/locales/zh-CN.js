@@ -54,5 +54,5 @@ export default {
   'record-edit.form.submit':'提交',
   'record-edit.form.save':'保存',
   'record-edit.form.delete':'删除',
-
+  'record-edit.form.return':'返回'
 };

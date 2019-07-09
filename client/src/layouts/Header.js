@@ -70,11 +70,13 @@ class HeaderView extends PureComponent {
     }
     if (key === 'logout') {
       dispatch({
-        type: 'userInfo/logout',
+        type: 'user/logout',
       }).then(res => {
         console.log(res)
+        location.replace("/user-login.html");
       })
-      router.push("/user-login.html");
+      // location.replace("/user-login.html");
+      // router.push("/user-login.html");
     }
   };
 
