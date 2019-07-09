@@ -18,7 +18,7 @@ export async function getFilenames({pid}) {
  * */
 
 export async function fileDownload({pid, filename}) {
-  return request('api/project/file', {
+  return request('api/project/files', {
     method: 'GET',
     params: {
       pid, filename
@@ -30,7 +30,7 @@ export async function fileDownload({pid, filename}) {
  * 文件删除
  * */
 export async function fileDelete({pid, filename}) {
-  return request('api/project/file', {
+  return request('api/project/files', {
     method: 'DELETE',
     params: {
       pid, filename
@@ -42,7 +42,7 @@ export async function fileDelete({pid, filename}) {
  * 文件上传
  * */
 export async function fileUpload({pid}) {
-  return request('api/project/file', {
+  return request('api/project/files', {
     method: 'POST',
     params: {
       pid

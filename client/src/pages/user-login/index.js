@@ -46,7 +46,7 @@ class LoginPage extends Component {
           location.replace("/user-first.html")
         }
         else {
-          location.replace("/welcome.html")
+          location.replace("/staff-first.html")
         }
         //cookie内容
       });
@@ -93,7 +93,7 @@ class LoginPage extends Component {
           }}
         >
 
-          <img src="http://ise.nju.edu.cn/author/admin/avatar_hu65273352f63401a5ced919c03e133798_24423_250x250_fill_q90_lanczos_center.jpg"/>
+          <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1562687762685&di=628eddb2e06b3b76d564250771be406e&imgtype=0&src=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_png%2Fj9L86C5IO6ibciaA50hmu7NVUdVkSsyZ3TsEUdhpjarWw4CIxu2O25tYdxQkru5mcu8ibVGsPwTmodFOhCbFSRS2g%2F640%3Fwx_fmt%3Dpng"/>
           {/*<div>*/}
           {/*  <img src={require('src/assets/timg.jpeg')} />*/}
           {/*</div>*/}

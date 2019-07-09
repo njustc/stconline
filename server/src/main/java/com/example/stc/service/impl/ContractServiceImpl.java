@@ -4,12 +4,14 @@ import com.example.stc.activiti.ProcessService;
 import com.example.stc.activiti.ProcessState;
 import com.example.stc.activiti.STCProcessEngine;
 import com.example.stc.domain.Contract;
+import com.example.stc.domain.Entrust;
 import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
 import com.example.stc.framework.exception.ContractNotFoundException;
 import com.example.stc.framework.exception.UserNotFoundException;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.DateUtils;
+import com.example.stc.framework.util.FileUtils;
 import com.example.stc.framework.util.ProcessUtils;
 import com.example.stc.repository.*;
 import com.example.stc.service.ContractService;
@@ -28,6 +30,9 @@ public class ContractServiceImpl implements ContractService{
 
     @Autowired
     private ContractRepository contractRepository;
+
+    @Autowired
+    private EntrustRepository entrustRepository;
 
     @Autowired
     private TestPlanRepository testPlanRepository;
@@ -92,8 +97,9 @@ public class ContractServiceImpl implements ContractService{
         logger.info("deleteContractByPid: ");
         Contract contract = this.findContractByPid(pid);
         contractRepository.deleteByPid(pid);
-        // 同时删除对应的委托，测试方案，测试记录，测试报告
-        contractRepository.deleteByPid(pid);
+        // 同时删除对应的委托，文件，测试方案，测试记录，测试报告
+        entrustRepository.deleteByPid(pid);
+        FileUtils.deleteAllFiles(pid);
         testPlanRepository.deleteByPid(pid);
         testReportRepository.deleteByPid(pid);
         testRecordRepository.deleteByPid(pid);
@@ -115,6 +121,12 @@ public class ContractServiceImpl implements ContractService{
         contract.setUserId(uid);
         contract.setProcessInstanceId("");
         contract.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
+        // 设置软件名和委托单位
+        Entrust entrust = entrustRepository.findByPid(contract.getPid());
+        if (entrust != null) {
+            contract.setSoftwareName(entrust.getSoftwareName());
+            contract.setClient(entrust.getCompanyCh());
+        }
         // DEBUG：若数据库中该项目已存在，则覆盖原项目
         contractRepository.deleteByPid(pid);
         return contractRepository.save(contract);

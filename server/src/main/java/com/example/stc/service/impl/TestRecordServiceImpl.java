@@ -74,7 +74,7 @@ public class TestRecordServiceImpl implements TestRecordService {
     public TestRecord newTestRecord(TestRecord testRecord) {
         // 该测试用例的pid是已经填好的
         // 根据某一个算法设置testId
-        testRecord.setTestId(testRecord.getPid() + "-" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
+        testRecord.setTestId(testRecord.getPid() + "-" + dateUtils.dateToStr(new Date(), "yyMMddHHmmssSSS"));
         testRecord.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
         testRecord.setProcessInstanceId("");
         return testRecordRepository.save(testRecord);

@@ -85,3 +85,8 @@ export async function updateTestReportProcess(params) {
 //     data: ""
 //   });
 // }
+
+//待办事项
+export async function getToDoTestReport() {
+  return request(`api/project/testReport/todo`);
+}

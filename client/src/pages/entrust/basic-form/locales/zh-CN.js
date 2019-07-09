@@ -78,6 +78,7 @@ export default {
   'basic-form.radio.opsystem1': 'Windows',
   'basic-form.radio.opsystem2': 'Linux',
   'basic-form.radio.opsystem3': '其他',
+  'basic-form.radio.opsystem.required': '请选择操作系统',
 
   // 硬件架构
   'basic-form.checkbox.architecture': '架构',
@@ -130,6 +131,7 @@ export default {
   'basic-form.harddisk.placeholder': '请输入硬盘要求',
 
   'basic-form.hardframe.label':"架构",
+  'basic-form.hardframe.required':"请输入您的架构",
   
 
   'basic-form.hardInStorage.label':'内存要求' ,
@@ -248,6 +250,7 @@ export default {
   'basic-form.others.SecLev.public':"无机密",
   'basic-form.others.SecLev.partially-public':"秘密",
   'basic-form.others.SecLev.private':"机密",
+  'basic-form.others.SecLev.required':'未选择',
 
   'basic-form.others.viruses.label':"查杀病毒",
   'basic-form.others.viruses.complete':"已完成",
@@ -256,6 +259,7 @@ export default {
   'basic-form.others.tsample.label':"材料检查(多选)",
   'basic-form.others.tsample.code':"源代码",
   'basic-form.others.tsample.exe':"可执行文件",
+  'basic-form.others.tsample.required':"请选择要检查的材料",
 
   'basic-form.others.reqword.label':"需求文档",
   'basic-form.others.reqword.plan':"项目计划任务书",
@@ -327,6 +331,7 @@ export default {
   'validation.client_signature_time.required': '请填写日期',
 
   'basic-form.radio.softarch':'构架',
+  'basic-form.radio.softarch.required':'请输入构架',
 
   'basic-form.usermemEx.label':'硬盘要求',
   'basic-form.usermemEx.placeholder': ' ',

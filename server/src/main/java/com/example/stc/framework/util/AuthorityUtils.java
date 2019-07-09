@@ -29,6 +29,9 @@ public class AuthorityUtils {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ProcessUtils processUtils;
+
     /** 判断当前是否有用户登录 */
     public boolean isAuthenticated() {
         if (SecurityContextHolder.getContext().getAuthentication() == null)
@@ -91,7 +94,7 @@ public class AuthorityUtils {
             String[] stateStrs = states.split(",");
             boolean isState = false;
             for (String state: stateStrs) {
-                if (state.equals(entity.getProcessState().getName()))
+                if (state.equals(processUtils.getProcessState(entity.getProcessInstanceId())))
                     isState = true;
             }
             if (isState)
