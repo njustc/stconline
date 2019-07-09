@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, Steps, Collapse, Row, Col, Divider, Avatar, Tag} from 'antd'
+import {Card, Steps, Collapse, Row, Col, Divider, Avatar, Tag, Table} from 'antd'
 import 'antd/dist/antd.css'
 import {getRole} from "../../utils/cookieUtils";
 import {connect} from 'dva';
@@ -21,43 +21,14 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch,state) => {
   return {
     onDidMount: () => {
-      const role = getRole()[0];
       dispatch({
-        type: `${namespace}/InitTSWorkplace`,
-        payload: role,
+        type: `${namespace}/InitWorkplace`,
+        payload: getRole()[0],
       })
     },
-    getP: (pid) => {
-      dispatch({
-        type: `${namespace}/GetProcess`,
-        payload: pid
-      })
-      return 3;
-    }
   }
 };
 const data = [];
-
-// const getProcess = (dispatch) => {
-//     return {
-//         getP: (pid) => {
-//             dispatch({
-//                 type: `${namespace}/GetProcess`,
-//                 payload: pid
-//             });
-//         },
-//     };
-// };
-// const getP = (dispatch) => {
-//     var res = 3;
-//     //const dispatch = this.props;
-//     //console.log("输出dispatch:",this.props)
-//     dispatch({
-//         type: `${namespace}/GetProcess`,
-//         payload: pid
-//     });
-//     return res;
-// }
 
 let pro = 0;
 
@@ -270,52 +241,117 @@ export default class Sworkplace extends React.Component{
         <br />
         <br />
 
-        <Card
-          title="近期的项目"
-          bordered={false}
-        >
-          {/* <p><FormattedMessage id={(!this.props.listdata.data.length)? "未命名":this.props.listdata.data[0].softwareName}/></p>
-                    <br /> */}
-          <Collapse onChange={callback}>
-            <Panel header={(!this.props.listdata.data.length)? "未有项目":this.props.listdata.data[0].softwareName} disabled={(!this.props.listdata.data.length)}>
-              <Steps current={(!(this.props.listdata.data.length>0))? 0: this.props.listdata.pstate1.state-1}
-                     size="small"
-                     style={{
-                       padding:'1%'
-                     }}>
-              </Steps>
-            </Panel>
+        {
+          {
+            "TS":
+              <Card
+                title="待办事项"
+                bordered={false}
+              >
 
-            {/*<Divider />*/}
-            {/*<Panel header={(!(this.props.listdata.data.length>1))? "未有项目":this.props.listdata.data[1].softwareName} disabled={(!(this.props.listdata.data.length>1))}>*/}
-            {/*  <Steps current={(!(this.props.listdata.data.length>1))? 0: this.props.listdata.pstate2.state-1}*/}
-            {/*         size="small"*/}
-            {/*         style={{*/}
-            {/*           padding:'1%'*/}
-            {/*         }}>*/}
-            {/*    <Step title="委托" description="" />*/}
-            {/*    <Step title="合同" description="" />*/}
-            {/*    <Step title="测试方案" description="" />*/}
-            {/*    <Step title="测试报告" description="" />*/}
-            {/*    <Step title="结项" description="" />*/}
-            {/*  </Steps>*/}
-            {/*</Panel>*/}
-            {/*<Divider />*/}
-            {/*<Panel header={(!(this.props.listdata.data.length>2))? "未有项目":this.props.listdata.data[2].softwareName} disabled={(!(this.props.listdata.data.length>2))}>*/}
-            {/*  <Steps current={(!(this.props.listdata.data.length>2))? 0: this.props.listdata.pstate3.state-1}*/}
-            {/*         size="small"*/}
-            {/*         style={{*/}
-            {/*           padding:'1%'*/}
-            {/*         }}>*/}
-            {/*    <Step title="委托" description="" />*/}
-            {/*    <Step title="合同" description="" />*/}
-            {/*    <Step title="测试方案" description="" />*/}
-            {/*    <Step title="测试报告" description="" />*/}
-            {/*    <Step title="结项" description="" />*/}
-            {/*  </Steps>*/}
-            {/*</Panel>*/}
-          </Collapse>
-        </Card>
+                <Collapse onChange={callback}>
+
+                  <Panel header={(!(this.props.listdata.planData.length)) ? "无待办方案" : "待办方案"}
+                         disabled={(!this.props.listdata.planData.length)}>
+                    <Table columns={this.planColumns}
+                           dataSource={(!this.props.listdata.planData.length) ? data : this.props.listdata.planData}/>
+                  </Panel>
+                  <Panel header={(!(this.props.listdata.reportData.length)) ? "无待办报告" : "待办报告"}
+                         disabled={(!this.props.listdata.reportData.length)}>
+                    <Table columns={this.reportColumns}
+                           dataSource={(!this.props.listdata.reportData.length) ? data : this.props.listdata.reportData}/>
+                  </Panel>
+
+
+                </Collapse>
+              </Card>
+            ,
+            "TM":
+              <Card
+                title="待办事项"
+                bordered={false}
+              >
+
+                <Collapse onChange={callback}>
+
+                  <Panel header={(!(this.props.listdata.planData.length)) ? "无待办方案" : "待办方案"}
+                         disabled={(!this.props.listdata.planData.length)}>
+                    <Table columns={this.planColumns}
+                           dataSource={(!this.props.listdata.planData.length) ? data : this.props.listdata.planData}/>
+                  </Panel>
+                  <Panel header={(!(this.props.listdata.reportData.length)) ? "无待办报告" : "待办报告"}
+                         disabled={(!this.props.listdata.reportData.length)}>
+                    <Table columns={this.reportColumns}
+                           dataSource={(!this.props.listdata.reportData.length) ? data : this.props.listdata.reportData}/>
+                  </Panel>
+
+
+                </Collapse>
+              </Card>
+            ,
+            "SS":
+              <Card
+              title="待办事项"
+              bordered={false}
+            >
+
+              <Collapse onChange={callback}>
+                <Panel header={(!(this.props.listdata.entrustData.length)) ? "无待办委托" : "待办委托"}
+                       disabled={(!this.props.listdata.entrustData.length)}>
+                  <Table columns={this.entrustColumns}
+                         dataSource={(!this.props.listdata.entrustData.length) ? data : this.props.listdata.entrustData}/>
+                </Panel>
+                <Panel header={(!(this.props.listdata.contractData.length)) ? "无待办合同" : "待办合同"}
+                       disabled={(!this.props.listdata.contractData.length)}>
+                  <Table columns={this.contractColumns}
+                         dataSource={(!this.props.listdata.contractData.length) ? data : this.props.listdata.contractData}/>
+                </Panel>
+              </Collapse>
+            </Card>
+            ,
+            "SM":
+              <Card
+                title="待办事项"
+                bordered={false}
+              >
+                <Collapse onChange={callback}>
+                  <Panel header={(!(this.props.listdata.contractData.length)) ? "无待办合同" : "待办合同"}
+                         disabled={(!this.props.listdata.contractData.length)}>
+                    <Table columns={this.contractColumns}
+                           dataSource={(!this.props.listdata.contractData.length) ? data : this.props.listdata.contractData}/>
+                  </Panel>
+                </Collapse>
+              </Card>
+            ,
+            "QM":
+              <Card
+                title="待办事项"
+                bordered={false}
+              >
+
+                <Collapse onChange={callback}>
+                  <Panel header={(!(this.props.listdata.contractData.length)) ? "无待办合同" : "待办合同"}
+                         disabled={(!this.props.listdata.contractData.length)}>
+                    <Table columns={this.contractColumns}
+                           dataSource={(!this.props.listdata.contractData.length) ? data : this.props.listdata.contractData}/>
+                  </Panel>
+                  <Panel header={(!(this.props.listdata.planData.length)) ? "无待办方案" : "测试方案"}
+                         disabled={(!this.props.listdata.planData.length)}>
+                    <Table columns={this.planColumns}
+                           dataSource={(!this.props.listdata.planData.length) ? data : this.props.listdata.planData}/>
+                  </Panel>
+                  <Panel header={(!(this.props.listdata.reportData.length)) ? "无待办报告" : "测试报告"}
+                         disabled={(!this.props.listdata.reportData.length)}>
+                    <Table columns={this.reportColumns}
+                           dataSource={(!this.props.listdata.reportData.length) ? data : this.props.listdata.reportData}/>
+                  </Panel>
+
+
+                </Collapse>
+              </Card>
+            ,
+          }[getRole()[0]]
+        }
       </div>
     )
   }
