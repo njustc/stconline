@@ -3,11 +3,13 @@ package com.example.stc.service.impl;
 import com.example.stc.activiti.ProcessService;
 import com.example.stc.activiti.ProcessState;
 import com.example.stc.activiti.STCProcessEngine;
+import com.example.stc.domain.Entrust;
 import com.example.stc.domain.TestReport;
 import com.example.stc.domain.User;
 import com.example.stc.framework.exception.TestReportNotFoundException;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.ProcessUtils;
+import com.example.stc.repository.EntrustRepository;
 import com.example.stc.repository.TestReportRepository;
 import com.example.stc.service.TestReportService;
 import org.slf4j.Logger;
@@ -24,6 +26,9 @@ public class TestReportServiceImpl implements TestReportService {
 
     @Autowired
     private TestReportRepository testReportRepository;
+
+    @Autowired
+    private EntrustRepository entrustRepository;
 
     @Autowired
     private AuthorityUtils authorityUtils;
@@ -72,6 +77,12 @@ public class TestReportServiceImpl implements TestReportService {
         testReport.setUserId(uid);
         testReport.setProcessInstanceId("");
         testReport.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
+        // 设置软件名和委托单位
+        Entrust entrust = entrustRepository.findByPid(testReport.getPid());
+        if (entrust != null) {
+            testReport.setSoftwareName(entrust.getSoftwareName());
+            testReport.setClientCompany(entrust.getCompanyCh());
+        }
         // DEBUG：若数据库中该项目已存在，则覆盖原项目
         testReportRepository.deleteByPid(pid);
         return testReportRepository.save(testReport);
