@@ -21,7 +21,8 @@ import {
   Col,
   Divider,
   BackTop,
-  Affix
+  Affix,
+  Collapse,
 } from 'antd';
 import PageHeaderWrapper from './components/PageHeaderWrapper';
 import style from './style.less';
@@ -30,7 +31,7 @@ const FormItem = Form.Item;
 const {TextArea} = Input;
 const confirm = Modal.confirm;
 const namespace = 'entrustForm';
-
+const {Panel} = Collapse
 
 const Dragger = Upload.Dragger;
 
@@ -262,11 +263,33 @@ class BasicForm extends PureComponent {
     }
 
     //文件列表
-    const fileList = (files || []).map(file => {
-      return (<div>
-        <a href={file.url}>{file.name}</a>
-        <Button type="link" onClick={() => { deleteFile(file.name); fileListInit(); } }>删除</Button>
-      </div>)
+    const fileList = (files || []).map((file, i) => {
+      return (
+        <Card hoverable={true}
+          // style={{height: 50}}
+        >
+          <div className={style.fileDiv}>
+            <div className={style.txt}>
+              <span>{file.name}</span>
+            </div>
+            <Button.Group>
+              <Button type="dashed"
+                      icon="download" href={file.url}
+                      style={{color: 'rgb(64,169,255)'}}
+              />
+              <Button type="danger"
+                      icon="close"
+                      onClick={() => {
+                        deleteFile(file.name);
+                        fileListInit();
+                      }}
+              />
+            </Button.Group>
+          </div>
+        </Card>
+
+
+      )
     });
 
     // 文件上传
@@ -1364,7 +1387,9 @@ class BasicForm extends PureComponent {
                 <a hidden={state.curFilename === ""}
                    href={'http://localhost:8080/api/project/files?pid=' + state.pid + '&filename=' + state.curFilename}>
                   下载文件 {state.curFilename}</a>
-                {fileList}
+                <div className={style.fileList}>
+                  {fileList}
+                </div>
                 <Affix offsetBottom={0}>
                   {/* onChange={affixed => console.log(affixed)} */}
                   <div className={style.submitBtns}>
