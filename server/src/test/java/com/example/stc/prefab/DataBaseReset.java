@@ -116,7 +116,7 @@ public class DataBaseReset {
         entrust.setServerHardFrame("\"\"");
         entrust.setServerSoftFrame("\"\"");
         entrust.setSoftwareType("basic-form.radio.system1");
-        entrust.setTestBasis("\"basic-form.radio.basis1\"");
+        entrust.setTestBasis("[\"basic-form.radio.basis1\"]");
         entrust.setTestSpecification("[\"basic-form.radio.target2\",\"basic-form.radio.target5\",\"basic-form.radio.target4\",\"basic-form.radio.target1\",\"basic-form.radio.target7\"]");
         entrust.setTestType("[\"basic-form.radio.confirm\"]");
         entrust.setUnitProperty("basic-form.radio.domestic");

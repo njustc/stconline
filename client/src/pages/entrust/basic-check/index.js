@@ -163,13 +163,6 @@ export default class entrustCheck extends Component {
                       href={file.url}
                       style={{color: 'rgb(64,169,255)'}}
               />
-              <Button type="danger"
-                      icon="close"
-                      onClick={() => {
-                        this.deleteFile(pid, file.name);
-                        this.fileListInit(pid);
-                      }}
-              />
             </Button.Group>
           </div>
           <Divider/>
