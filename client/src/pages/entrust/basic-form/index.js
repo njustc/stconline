@@ -254,8 +254,13 @@ class BasicForm extends PureComponent {
         }
       },
       onPreview(file) {
-        changeFile(file.name);
-        console.log(state.curFilename);
+        if (file.status === 'error') {
+          changeFile("");
+        }
+        else {
+          changeFile(file.name);
+          // console.log(state.curFilename);
+        }
       },
       onRemove(file) {
         changeFile("");
