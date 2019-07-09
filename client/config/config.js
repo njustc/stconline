@@ -60,8 +60,8 @@ export default {
         {
           name:'项目列表',
           icon: 'smile',
-          path: '/user_first',
-          component: './user_first',
+          path: '/user-first',
+          component: './user-first',
           authority:['CUS'],
         },
         {
@@ -139,6 +139,7 @@ export default {
           //测试报告编辑
           path: '/report-edit',
           component: './test-report/report-edit',
+          authority:['CUS','QM','TM','TS'],
         },
 
         //test-record
@@ -184,7 +185,7 @@ export default {
   lessLoaderOptions: {javascriptEnabled: true},
   proxy: {
     '/api': {
-      target: 'http://114.212.134.100:8080',
+      target: 'http://localhost:8080',
       changeOrigin: true,
     },
   },

@@ -43,7 +43,7 @@ class LoginPage extends Component {
         //router.push("/welcome")
         const role = getRole()[0]
         if (role === "CUS") {
-          location.replace("/user_first.html")
+          location.replace("/user-first.html")
         }
         else {
           location.replace("/welcome.html")
@@ -132,11 +132,11 @@ class LoginPage extends Component {
           <Submit loading={submitting}>
             <FormattedMessage id="user-login.login.login"/>
           </Submit>
-          <Button
-            style={{width: '100%'}}
-            onClick={this.handleLogout}
-          >登出
-          </Button>
+          {/*<Button*/}
+          {/*  style={{width: '100%'}}*/}
+          {/*  onClick={this.handleLogout}*/}
+          {/*>登出*/}
+          {/*</Button>*/}
           {/*<div className={styles.other}>*/}
           {/*  <FormattedMessage id="user-login.login.sign-in-with"/>*/}
           {/*  <Icon type="alipay-circle" className={styles.icon} theme="outlined"/>*/}

@@ -1,82 +1,88 @@
-import { message } from 'antd';
+import {message} from 'antd';
 import router from 'umi/router';
-import { replaceEntrust,getOneEntrust ,deleteEntrust ,updateEntrustProcess,addNewEntrust,createEntrustProcess} from '@/services/user';
-import { EnArr2Str,EnStr2Arr} from '@/utils/utils';
+import {
+  addNewEntrust,
+  createEntrustProcess,
+  deleteEntrust,
+  getOneEntrust,
+  replaceEntrust,
+  updateEntrustProcess
+} from '@/services/user';
+import {EnArr2Str, EnStr2Arr} from '@/utils/utils';
 
 export default {
   namespace: 'entrustForm',
 
   state: {
-    data:{},
-    pid:""
-},
+    data: {},
+    pid: ""
+  },
 
   effects: {
-    *replaceEntrust({ payload }, { call ,put}) {
-      payload=EnArr2Str(payload)
+    * replaceEntrust({payload}, {call, put}) {
+      payload = EnArr2Str(payload)
       yield call(replaceEntrust, payload);
-      const response=yield call(getOneEntrust, payload);
-      yield put({type:'initData',payload:EnStr2Arr(response)})
+      const response = yield call(getOneEntrust, payload);
+      yield put({type: 'initData', payload: EnStr2Arr(response)})
       message.success('保存成功');
     },
 
-    *addNewEntrust({ payload }, { call ,put}) {
-      payload=EnArr2Str(payload)
-      const response=yield call(addNewEntrust, payload);
+    * addNewEntrust({payload}, {call, put}) {
+      payload = EnArr2Str(payload)
+      const response = yield call(addNewEntrust, payload);
       // console.log("new",response)
-      yield put({type:'initData',payload:EnStr2Arr(response)})
+      yield put({type: 'initData', payload: EnStr2Arr(response)})
       message.success('新建成功');
     },
-    
-    *submitForm({ payload }, {call}) {
+
+    * submitForm({payload}, {call}) {
       // console.log("submit",payload.pid!="")
-      payload=EnArr2Str(payload)
+      payload = EnArr2Str(payload)
       // console.log("beforesub",payload)
-      if(payload.pid==""){//不存在
-        const newform=yield call(addNewEntrust, payload);
-        payload = newform
-      }
-      else{
+      if (payload.pid === "") {//不存在
+        payload = yield call(addNewEntrust, payload)
+      } else {
         // console.log("save")
-        const res=yield call(replaceEntrust, payload);
+        const res = yield call(replaceEntrust, payload);
         // console.log(res)
         payload = res
       }
       // console.log(payload)
       // console.log(payload.processInstanceId==="")
-      if (payload.processInstanceId===""){
-        const response=yield call(createEntrustProcess,payload)
-      }
-      else{
-        const response=yield call(updateEntrustProcess, payload);
+      if (payload.processInstanceId === "") {
+        const response = yield call(createEntrustProcess, payload)
+      } else {
+        const response = yield call(updateEntrustProcess, payload);
       }
 
       router.push("/basic-list.html")
       message.success('提交成功');
     },
 
-    *getOneEntrust({ payload }, { call , put}) {
-      const response=yield call(getOneEntrust, payload);
-      yield put({type:'initData',payload:EnStr2Arr(response)}) 
+    * getOneEntrust({payload}, {call, put}) {
+      const response = yield call(getOneEntrust, payload);
+      yield put({type: 'initData', payload: EnStr2Arr(response)})
     },
 
-    *deleteEntrust({payload},{call,put}){
-      console.log("play",payload)
-      if (payload.pid!="") {
-        const response=yield call(deleteEntrust,{pid:payload.pid})
+    * deleteEntrust({payload}, {call, put}) {
+      console.log("play", payload)
+      if (payload.pid != "") {
+        const response = yield call(deleteEntrust, {pid: payload.pid})
       }
 
       router.push("/basic-list.html")
       message.success('删除成功');
     },
+
+
   },
-  reducers:{
-    initData(state,action){
+  reducers: {
+    initData(state, action) {
       // console.log(action.payload)
-      return{
+      return {
         ...state,
-        data:action.payload,
-        pid:action.payload.pid
+        data: action.payload,
+        pid: action.payload.pid
       }
     },
   }

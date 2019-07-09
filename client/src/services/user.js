@@ -104,11 +104,6 @@ export async function deleteFile(pid, filename) {
   })
 }
 
-export async function getFilenames(pid) {
-  return request(`api/project/files/name?pid=${pid}`,{
-    method:'GET',
-    data: { pid }
-  })
-}
+
 
 

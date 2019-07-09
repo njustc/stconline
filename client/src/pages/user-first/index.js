@@ -140,18 +140,20 @@ export default class Carousels extends React.Component{
             <div>
                 <Card title="工作台">
                 <Row>
-                    <Col span={2}>
+                    <Col span={3}>
                     <Avatar
                         size={64}
                         src='https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
                      />
                      </Col>
-                     <Col span={18}>
+                     <Col span={12}>
                     <div>你好，{getRole()[0]}，今天也是努力搬砖的一天呢</div>
                     <iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=99" width="160" height="36" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
                     </Col>
-                    <h1>南京大学软件测试中心</h1>
-                    <Avatar src="http://ise.nju.edu.cn/author/admin/avatar_hu65273352f63401a5ced919c03e133798_24423_250x250_fill_q90_lanczos_center.jpg" />
+                    <Col span={4}>
+                    <h1>南京大学计算机系</h1>
+                    </Col>
+                    <Avatar size = 'large' src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1562667040758&di=aa96df6f6968abfb82e47917abc12ec3&imgtype=0&src=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_png%2Fj9L86C5IO6ibciaA50hmu7NVUdVkSsyZ3TsEUdhpjarWw4CIxu2O25tYdxQkru5mcu8ibVGsPwTmodFOhCbFSRS2g%2F640%3Fwx_fmt%3Dpng" />
                 </Row>
                 </Card>
                 <br />

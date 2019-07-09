@@ -64,7 +64,7 @@ public class FileUploadController extends BaseController {
     public @ResponseBody
     List<FileDetail> getUploadFiles(@RequestParam(value = "pid") String pid) {
         logger.info("getUploadFiles: ");
-        if (pid == "")
+        if (pid.equals(""))
             return new ArrayList<>();
         String filepath = UPLOAD_FOLDER + pid + "/";
         File fileDirs = new File(filepath);
@@ -184,7 +184,9 @@ public class FileUploadController extends BaseController {
         return "Download Failed - File Not Found";
     }
 
-    /** 文件名转uid（一个随意的算法） */
+    /**
+     * 文件名转uid（一个随意的算法）
+     */
     private String randomUid(int index) {
         int rand = (int) (Math.random() * Integer.MAX_VALUE);
         StringBuilder sb = new StringBuilder("rd-upload-");

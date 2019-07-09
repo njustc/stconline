@@ -195,7 +195,7 @@ export default class Detail extends Component{
                   <Button onClick={() => {
                     this.review(this.props.form,"ReviewPass")
                   }}
-                  style={{marginLeft: 250}}
+                  style={{marginLeft: 50}}
                   type="primary">
                     <FormattedMessage id="同意" />
                   </Button>
@@ -203,7 +203,7 @@ export default class Detail extends Component{
                   <Button onClick={() => {
                     this.review(this.props.form,"ReviewDisprove")
                   }}
-                  style={{marginLeft: 400}}
+                  style={{marginLeft: 20}}
                   >
                     <FormattedMessage id="不同意" />
                   </Button>
@@ -220,7 +220,6 @@ export default class Detail extends Component{
               <Descriptions title="客户">
                 <Descriptions.Item label="委托状态">{this.props.dataCheck.check.processState || ' '}</Descriptions.Item>
                 <Descriptions.Item label="委托意见">{this.props.dataCheck.check.comment || ''}</Descriptions.Item>
-                <Descriptions.Item label="已提交样品">这里好像还没做好</Descriptions.Item>
               </Descriptions>
               <Affix offsetBottom={0} >
               <div>
@@ -231,14 +230,14 @@ export default class Detail extends Component{
                   <Button onClick={() => {
                     this.review(this.props.form,"ReviewPass")
                   }}
-                  style={{marginLeft: 250}}
+                  style={{marginLeft: 50}}
                   type="primary">
                     <FormattedMessage id="确认" />
                   </Button>
                   <Button onClick={() => {
                     this.review(this.props.form,"ReviewDisprove")
                   }}
-                  style={{marginLeft: 400}}
+                  style={{marginLeft: 20}}
                   >
                     <FormattedMessage id="拒绝" />
                   </Button>
@@ -281,14 +280,14 @@ export default class Detail extends Component{
                   <Button onClick={() => {
                     this.review(this.props.form,"ReviewPass")
                   }}
-                  style={{marginLeft: 250}}
+                  style={{marginLeft: 50}}
                   type="primary">
                     <FormattedMessage id="同意" />
                   </Button>
                   <Button onClick={() => {
                     this.review(this.props.form,"ReviewDisprove")
                   }}
-                  style={{marginLeft: 400}}>
+                  style={{marginLeft: 20}}>
                     <FormattedMessage id="不同意" />
                   </Button>
                 </div>
