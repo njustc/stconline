@@ -863,17 +863,6 @@ class BasicForm extends PureComponent {
               <h2>服务器端</h2>
               <Divider/>
               <h3>硬件</h3>
-              <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.hardmem.label"/>}>
-                {getFieldDecorator('serverSystem', {
-                  initialValue: this.props.entrustdata.data.serverSystem || '',
-                  rules: [
-                    {
-                      required: true,
-                      message: formatMessage({id: 'basic-form.hardmem.required'}),
-                    },
-                  ],
-                })(<Input placeholder={formatMessage({id: 'basic-form.hardmem.placeholder'})}/>)}
-              </FormItem>
 
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.hardframe.label"/>}>
                 <div>
@@ -935,7 +924,7 @@ class BasicForm extends PureComponent {
 
               <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.hardother.label"/>}>
                 {getFieldDecorator('serverHardOther', {
-                  initialValue: this.props.entrustdata.data.serverOther || '',
+                  initialValue: this.props.entrustdata.data.serverHardOther || '',
                   rules: [
                     {
                       required: true,
@@ -1038,7 +1027,7 @@ class BasicForm extends PureComponent {
                 </div>
               </FormItem>
 
-              <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.softmiddle.label"/>}>
+              <FormItem {...formItemLayout} label={<FormattedMessage id="其它支撑软件"/>}>
                 {getFieldDecorator('serverSupport', {
                   initialValue: this.props.entrustdata.data.serverSupport || '',
                   rules: [
@@ -1154,8 +1143,8 @@ class BasicForm extends PureComponent {
                 <h2>委托单位信息</h2>
                 <Divider/>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.phone.label"/>}>
-                  {getFieldDecorator('infoPhone', {
-                    initialValue: this.props.entrustdata.data.infoTE || '',
+                  {getFieldDecorator('infoTEL', {
+                    initialValue: this.props.entrustdata.data.infoTEL || '',
                     rules: [
                       {
                         required: true,
@@ -1209,8 +1198,8 @@ class BasicForm extends PureComponent {
                   })(<Input/>)}
                 </FormItem>
                 <FormItem {...formItemLayout} label={<FormattedMessage id="basic-form.cusInfo.tel.label"/>}>
-                  {getFieldDecorator('infoTEL', {
-                    initialValue: this.props.entrustdata.data.infoTEL || '',
+                  {getFieldDecorator('infoPhone', {
+                    initialValue: this.props.entrustdata.data.infoPhone || '',
                     rules: [
                       {
                         required: true,
