@@ -201,6 +201,16 @@ export default class EditRecord extends React.Component {
     });
   }
 
+  returnlist = (value) => {
+    console.log("开始返回的操作");
+    console.log(value);
+    const {dispatch} = this.props;
+    dispatch({
+      type: `${namespace}/returnRecordList`,
+      payload: value,
+    })
+  }
+
   render() {
     const {
       form: {getFieldDecorator},
@@ -218,10 +228,13 @@ export default class EditRecord extends React.Component {
       },
     };
 
+    //const listhtml = "record_list.html?pid=" + this.props.pid;
+
     return (
       <div className={style.editBody}>
         <Breadcrumb>
           <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
+          <Breadcrumb.Item>测试记录列表</Breadcrumb.Item>
           <Breadcrumb.Item>测试记录编辑</Breadcrumb.Item>
         </Breadcrumb>
 
@@ -440,6 +453,12 @@ export default class EditRecord extends React.Component {
                     }} style={{marginLeft: 8}}
                             type="danger">
                       <FormattedMessage id="record-edit.form.delete"/>
+                    </Button>
+
+                    <Button 
+                    onClick= {() => {this.returnlist(this.props)}}
+                    style={{marginLeft: 8}}>
+                      <FormattedMessage id="record-edit.form.return"/>
                     </Button>
                   </div>
                 </Affix>
