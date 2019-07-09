@@ -60,7 +60,7 @@ class BasicForm extends PureComponent {
       curFilename: "",
     };
     this.changeFile = this.changeFile.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.fileListInit = this.fileListInit.bind(this);
   }
 
   componentDidMount() {
@@ -75,6 +75,7 @@ class BasicForm extends PureComponent {
         type: 'entrustForm/getOneEntrust',
         payload: this.props.location.query,
       });
+      this.fileListInit(this.state.pid);
     }
   }
 
@@ -209,12 +210,12 @@ class BasicForm extends PureComponent {
     this.setState({curFilename: name});
   }
 
-  handleClick() {
+  fileListInit(pid) {
     const {dispatch} = this.props;
     dispatch({
       type: 'file/fetchFileList',
       payload: {
-        pid: 'p20190610010104'
+        pid
       }
     });
   }
@@ -249,8 +250,10 @@ class BasicForm extends PureComponent {
       this.changeFile(name);
     };
     //文件列表
-    const fileList = files.map(file => {
-      return (<div>{file.name}</div>)
+    const fileList = (files || []).map(file => {
+      return (<div>
+        <a href={file.url}>{file.name}</a>
+      </div>)
     });
     // 文件上传
     const uploadProps = {
@@ -273,8 +276,7 @@ class BasicForm extends PureComponent {
       onPreview(file) {
         if (file.status === 'error') {
           changeFile("");
-        }
-        else {
+        } else {
           changeFile(file.name);
           // console.log(state.curFilename);
         }
@@ -288,9 +290,6 @@ class BasicForm extends PureComponent {
 
     return (
       <div className={style.editBody}>
-        <Button onClick={this.handleClick}>测试
-          {fileList}
-        </Button>
         <Breadcrumb>
           <Breadcrumb.Item href="/basic-list.html">主页</Breadcrumb.Item>
           <Breadcrumb.Item href="/basic-list.html">委托列表</Breadcrumb.Item>
@@ -1350,7 +1349,7 @@ class BasicForm extends PureComponent {
                 <a hidden={state.curFilename === ""}
                    href={'http://localhost:8080/api/project/files?pid=' + state.pid + '&filename=' + state.curFilename}>
                   下载文件 {state.curFilename}</a>
-
+                {fileList}
                 <Affix offsetBottom={0}>
                   {/* onChange={affixed => console.log(affixed)} */}
                   <div className={style.submitBtns}>
