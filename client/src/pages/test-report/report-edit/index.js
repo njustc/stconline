@@ -240,21 +240,21 @@ const dataForEfficiencyTest = [
 
 const mapStateToProps=(state)=>{
   const dataReport=state[namespace];
-  console.log(dataReport)
+  //console.log(dataReport)
   return{
     dataReport,
   };
 }
-const mapDispatchToProps=(dispatch)=>{
-  return {
-    DeleteEntrust:(params)=>{
-      dispatch({
-        type:`${namespace}/DeleteTestReport`,
-        payload:params
-      })
-    }
-  }
-}
+// const mapDispatchToProps=(dispatch)=>{
+//   return {
+//     DeleteEntrust:(params)=>{
+//       dispatch({
+//         type:`${namespace}/DeleteTestReport`,
+//         payload:params
+//       })
+//     }
+//   }
+// }
 
 
 // @connect(({ loading }) => ({

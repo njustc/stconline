@@ -139,6 +139,7 @@ export default {
           //测试报告编辑
           path: '/report-edit',
           component: './test-report/report-edit',
+          authority:['CUS','QM','TM','TS'],
         },
 
         //test-record
