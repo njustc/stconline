@@ -15,6 +15,7 @@ files
 .springBeans
 .sts4-cache
 .vs
+.DS_Store
 ### IntelliJ IDEA ###
 .idea
 *.iws
