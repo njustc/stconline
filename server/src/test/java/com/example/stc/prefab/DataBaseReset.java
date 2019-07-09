@@ -7,6 +7,7 @@ import com.example.stc.activiti.ProcessState;
 import com.example.stc.domain.Contract;
 import com.example.stc.domain.Entrust;
 import com.example.stc.domain.User;
+import com.example.stc.framework.util.DateUtils;
 import com.example.stc.repository.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -41,6 +43,9 @@ public class DataBaseReset {
 
     @Autowired
     private TestRecordRepository testRecordRepository;
+
+    @Autowired
+    private DateUtils dateUtils;
 
     private JSONObject getJson(String filename) {
         String path = "target/classes/prefab/" + filename;
@@ -83,21 +88,24 @@ public class DataBaseReset {
         userRepository.save(user);
     }
 
-    private void saveEntrust(JSONObject entrustJson, String pid, String uid, String name) {
+    private void saveEntrust(JSONObject entrustJson, String uid, String name) {
         Entrust entrust = JSON.toJavaObject(entrustJson, Entrust.class);
         assertThat(entrust).isNotNull();
-        entrust.setPid(pid);
+        String pid;
+        do {
+            pid = "p" + dateUtils.dateToStr(new Date(), "yyMMddHHmmssSSS");
+            entrust.setPid(pid);
+        } while (entrustRepository.findByPid(pid) != null);
         entrust.setUserId(uid);
         entrust.setSoftwareName(name);
         entrust.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
         System.out.println("Save " + entrust.getSoftwareName() + ": pid = " + entrust.getPid() +
                 ", userId = " + entrust.getUserId());
-        // TODO：修正多选框后注释此行
         debugEntrust(entrust);
         entrustRepository.save(entrust);
     }
 
-    // 以免多选框出问题，无bug情况不应使用此方法
+    // 以免多选框出问题
     private void debugEntrust(Entrust entrust) {
         entrust.setAntiVirus("basic-form.others.viruses.complete");
         entrust.setCheckSample("\"\"");
@@ -131,18 +139,18 @@ public class DataBaseReset {
         entrustRepository.deleteAll();
         System.out.println("\nReset All Entrusts:");
         JSONObject entrustJson = getJson("entrust.json");
-        saveEntrust(entrustJson, "p20190708202100", users.get(1).getUserID(), "ABCDE软件"); // CUSA
-        saveEntrust(entrustJson, "p20190708202101", users.get(1).getUserID(), "Hello软件"); // CUSA
-        saveEntrust(entrustJson, "p20190708202102", users.get(1).getUserID(), "World软件"); // CUSA
-        saveEntrust(entrustJson, "p20190708202103", users.get(1).getUserID(), "STC软件"); // CUSA
-        saveEntrust(entrustJson, "p20190708202104", users.get(2).getUserID(), "ABCDE软件"); // CUSA
-        saveEntrust(entrustJson, "p20190708202105", users.get(2).getUserID(), "Hello软件"); // CUSA
-        saveEntrust(entrustJson, "p20190708202106", users.get(2).getUserID(), "World软件"); // CUSA
-        saveEntrust(entrustJson, "p20190708202107", users.get(2).getUserID(), "STC软件"); // CUSA
-        saveEntrust(entrustJson, "p20190708202108", users.get(3).getUserID(), "ABCDE软件"); // CUSA
-        saveEntrust(entrustJson, "p20190708202109", users.get(3).getUserID(), "Hello软件"); // CUSA
-        saveEntrust(entrustJson, "p20190708202110", users.get(3).getUserID(), "World软件"); // CUSA
-        saveEntrust(entrustJson, "p20190708202111", users.get(3).getUserID(), "STC软件"); // CUSA
+        saveEntrust(entrustJson, users.get(1).getUserID(), "ABCDE软件"); // CUSA
+        saveEntrust(entrustJson, users.get(1).getUserID(), "Hello软件"); // CUSA
+        saveEntrust(entrustJson, users.get(1).getUserID(), "World软件"); // CUSA
+        saveEntrust(entrustJson, users.get(1).getUserID(), "STC软件"); // CUSA
+        saveEntrust(entrustJson, users.get(2).getUserID(), "ABCDE软件"); // CUSA
+        saveEntrust(entrustJson, users.get(2).getUserID(), "Hello软件"); // CUSA
+        saveEntrust(entrustJson, users.get(2).getUserID(), "World软件"); // CUSA
+        saveEntrust(entrustJson, users.get(2).getUserID(), "STC软件"); // CUSA
+        saveEntrust(entrustJson, users.get(3).getUserID(), "ABCDE软件"); // CUSA
+        saveEntrust(entrustJson, users.get(3).getUserID(), "Hello软件"); // CUSA
+        saveEntrust(entrustJson, users.get(3).getUserID(), "World软件"); // CUSA
+        saveEntrust(entrustJson, users.get(3).getUserID(), "STC软件"); // CUSA
 
         // 清空其他数据库
         contractRepository.deleteAll();

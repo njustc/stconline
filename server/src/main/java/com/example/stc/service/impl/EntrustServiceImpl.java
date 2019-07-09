@@ -96,7 +96,11 @@ public class EntrustServiceImpl implements EntrustService {
         logger.info("newEntrust: ");
         entrust.setUserId(authorityUtils.getLoginUser().getUserID());
         //根据某一个算法增加新的id
-        entrust.setPid("p" + dateUtils.dateToStr(new Date(), "yyyyMMddHHmmss"));
+        String pid;
+        do {
+            pid = "p" + dateUtils.dateToStr(new Date(), "yyMMddHHmmssSSS");
+            entrust.setPid(pid);
+        } while (entrustRepository.findByPid(pid) != null);
         entrust.setProcessState(ProcessState.Submit); // 待提交（未进入流程）
         entrust.setProcessInstanceId("");
         return entrustRepository.save(entrust);
