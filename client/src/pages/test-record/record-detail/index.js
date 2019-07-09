@@ -91,6 +91,16 @@ export default class List extends React.Component {
     })
   }
 
+  returnlist = (value) => {
+    console.log("开始返回的操作");
+    console.log(value);
+    const {dispatch} = this.props;
+    dispatch({
+      type: `${namespace}/returnRecordList`,
+      payload: value,
+    })
+  }
+
   render() {
     const {
       form: {getFieldDecorator, getFieldValue},
@@ -100,7 +110,7 @@ export default class List extends React.Component {
       <div>
         <Breadcrumb>
           <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
-          <Breadcrumb.Item href="/record-list.html">测试记录列表</Breadcrumb.Item>
+          <Breadcrumb.Item>测试记录列表</Breadcrumb.Item>
           <Breadcrumb.Item>测试方案详情</Breadcrumb.Item>
         </Breadcrumb>
 
@@ -166,18 +176,32 @@ export default class List extends React.Component {
                             disabled={this.props.dataDetail.detail.processState !== "Review"}>
                       <FormattedMessage id="basic-form.form.disagree"/>
                     </Button>
+                    <Button 
+                    onClick= {() => {this.returnlist(this.props)}}
+                    style={{marginLeft: 8}}>
+                      返回
+                    </Button>
                   </div>
                   : null
               }
             </div>,
 
             "TS":
+            <div>
               <Card>
                 <Descriptions title="状态及意见">
                   <Descriptions.Item label="状态">{this.props.dataDetail.detail.processState || ' '}</Descriptions.Item>
                   <Descriptions.Item label="意见">{this.props.dataDetail.detail.comment || ' '}</Descriptions.Item>
                 </Descriptions>
               </Card>
+              <div>
+              <Button 
+              onClick= {() => {this.returnlist(this.props)}}
+              style={{marginLeft: 8}}>
+                返回
+              </Button>
+              </div>
+            </div>
           }[getRole()[0]]
         }
 

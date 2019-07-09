@@ -10,6 +10,14 @@ export default {
   },
 
   effects: {
+    // *returnRecordList() {
+    //   router.push("/record-list.html?pid=" + payload.pid);
+    // },
+    *returnRecordList({payload}){
+      //debugger
+      console.log(payload);
+      router.push("/record-list.html?pid=" + payload.dataEdit.editdata.pid);        
+    },
     * queryReplaceRecord({payload}, {call, put}) {
       console.log(payload);
       yield call(replaceTestRecord, payload);
