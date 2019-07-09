@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,6 +57,7 @@ public class FileUploadController extends BaseController {
     /**
      * 已上传文件查询
      */
+    @Secured({"ROLE_CUS", "ROLE_SS"})
     @GetMapping("/files/name")
     public @ResponseBody
     List<FileDetail> getUploadFiles(@RequestParam(value = "pid") String pid) {
@@ -90,6 +92,7 @@ public class FileUploadController extends BaseController {
     /**
      * 文件上传
      */
+    @Secured({"ROLE_CUS"})
     @PostMapping("/files")
     public @ResponseBody
     ResponseEntity<?> uploadFileMulti(@RequestParam(value = "pid") String pid,
@@ -120,6 +123,7 @@ public class FileUploadController extends BaseController {
     /**
      * 文件删除
      */
+    @Secured({"ROLE_CUS"})
     @DeleteMapping("/files")
     public @ResponseBody
     String deleteFile(@RequestParam String pid, @RequestParam String filename) {
@@ -137,6 +141,7 @@ public class FileUploadController extends BaseController {
     /**
      * 文件下载
      */
+    @Secured({"ROLE_CUS", "ROLE_SS"})
     @GetMapping("/files")
     public @ResponseBody
     String downloadFile(@RequestParam String pid,
