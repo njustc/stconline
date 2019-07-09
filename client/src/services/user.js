@@ -104,6 +104,9 @@ export async function deleteFile(pid, filename) {
   })
 }
 
-
+//待办事项
+export async function getToDoEntrust() {
+  return request(`api/project/entrust/todo`);
+}
 
 

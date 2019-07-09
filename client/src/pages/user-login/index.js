@@ -46,7 +46,7 @@ class LoginPage extends Component {
           location.replace("/user-first.html")
         }
         else {
-          location.replace("/welcome.html")
+          location.replace("/staff-first.html")
         }
         //cookie内容
       });

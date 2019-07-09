@@ -22,12 +22,12 @@ const mapDispatchToProps = (dispatch) => {
         type: `${namespace}/queryInitPlans`,
       });
     },
-    queryAddPlan:(newPlan)=>{
-      dispatch({
-        type:`${namespace}/queryAddPlan`,
-        payload:newPlan,
-      });
-    },
+    // queryAddPlan:(newPlan)=>{
+    //   dispatch({
+    //     type:`${namespace}/queryAddPlan`,
+    //     payload:newPlan,
+    //   });
+    // },
     queryDeletePlan:(params)=>{
       dispatch({
         type:`${namespace}/queryDeletePlan`,

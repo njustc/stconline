@@ -57,6 +57,13 @@ export default {
           // icon: 'smile',
           component: './Welcome',
         },
+        { //待办事项
+          name:'项目列表',
+          icon:'smile',
+          path:'/staff-first',
+          component:'./staff-first',
+          authority:['TS','TM','SS','SM','QM'],
+        },
         {
           name:'项目列表',
           icon: 'smile',

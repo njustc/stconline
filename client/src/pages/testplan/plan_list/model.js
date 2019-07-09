@@ -47,12 +47,12 @@ export default {
       }
 
     },
-    *queryAddPlan({payload},{call,put}) {
-      const response = yield call(addNewTestPlan, payload);
-      //console.log(response);
-      //执行addNewPlan
-      yield put({type: 'addNewPlan', payload: response});
-    },
+    // *queryAddPlan({payload},{call,put}) {
+    //   const response = yield call(addNewTestPlan, payload);
+    //   //console.log(response);
+    //   //执行addNewPlan
+    //   yield put({type: 'addNewPlan', payload: response});
+    // },
     *queryDeletePlan({payload},{call,put}){
       yield call(deleteTestPlan,{pid:payload.pid})
       // console.log(response)
@@ -69,15 +69,15 @@ export default {
   },
   //响应action并修改state
   reducers:{
-    addNewPlan(state, { payload: newPlan }) {
-      const nextCounter = state.counter + 1;
-      const newPlanWithId = {...newPlan, id: nextCounter};
-      const nextData = state.data.concat(newPlanWithId);
-      return {
-        data: nextData,
-        counter: nextCounter,
-      };
-    },
+    // addNewPlan(state, { payload: newPlan }) {
+    //   const nextCounter = state.counter + 1;
+    //   const newPlanWithId = {...newPlan, id: nextCounter};
+    //   const nextData = state.data.concat(newPlanWithId);
+    //   return {
+    //     data: nextData,
+    //     counter: nextCounter,
+    //   };
+    // },
     getPlanData(state,action){
       return{
         ...state,
