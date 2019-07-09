@@ -262,7 +262,7 @@ export default class EditRecord extends React.Component {
                   }, {
                     rules: [
                       {
-                        required: true,
+                        required: true, 
                         message: formatMessage({id: 'validation.designnotes.required'}),
                       },
                     ],

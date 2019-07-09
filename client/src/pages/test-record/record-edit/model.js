@@ -50,13 +50,11 @@ export default {
       router.push("/record-list.html?pid=" + payload.pid);
 
     },
-
     * queryGetOneRecord({payload}, {call, put}) {
       // console.log(payload);
       const response = yield call(getOneTestRecord, payload);
       yield put({type: 'updateData', payload: response});
     },
-
     * queryDeleteRecord({payload}, {call}) {
       console.log("delete", payload);
       if (payload.testId !== "") {
