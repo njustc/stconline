@@ -14,20 +14,20 @@ import {
   Descriptions,
   BackTop
 } from 'antd';
-import { formatMessage, FormattedMessage } from 'umi/locale';
-import { connect } from 'dva';
-import React, { Component } from 'react'
+import {formatMessage, FormattedMessage} from 'umi/locale';
+import {connect} from 'dva';
+import React, {Component} from 'react'
 import moment from 'moment';
 import Link from 'umi/link';
-import { getRole } from "../../../utils/cookieUtils";
-import { func } from 'prop-types';
+import {getRole} from "../../../utils/cookieUtils";
+import {func} from 'prop-types';
 import style from './style.less'
 
 
 const namespace = 'checkentrust';
-const { RangePicker } = DatePicker;
+const {RangePicker} = DatePicker;
 const FormItem = Form.Item;
-const { TextArea } = Input;
+const {TextArea} = Input;
 
 const mapStateToProps = (state) => {
   const entrustdata = state[namespace];
@@ -48,7 +48,7 @@ export default class entrustCheck extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
     if (this.props.location.query.comment) {
       this.state.comment = this.props.location.query.comment
     } else {
@@ -62,13 +62,13 @@ export default class entrustCheck extends Component {
 
   //审核
   review = (form, operation) => {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
     this.state.pid = this.props.entrustdata.entrust.pid;
     this.state.comment = this.props.entrustdata.entrust.comment;
     form.validateFields((err, value) => {
-      var entrust = this.props.entrustdata.entrust
-      entrust.operation = operation
-      entrust.comment = value.comment
+      const entrust = this.props.entrustdata.entrust;
+      entrust.operation = operation;
+      entrust.comment = value.comment;
       console.log("en", entrust);
       dispatch({
         type: `${namespace}/ReviewEntrust`,
@@ -77,18 +77,29 @@ export default class entrustCheck extends Component {
     })
   }
 
-  
 
   render() {
     const {
-      form: { getFieldDecorator, getFieldValue },
+      form: {getFieldDecorator, getFieldValue},
+      entrustdata
     } = this.props;
+
+    const typeList = (entrustdata.entrust.testType || []).map((item, index) => {
+        return (
+          <span><b> {index + 1}</b>.<FormattedMessage id={item || ' '}/><br/></span>
+        )
+      }
+    );
+    // const basisList = (entrustdata.entrust.testBasis || []).map((item, index) => {
+    //     return (<span><b> {index + 1}</b>.<FormattedMessage id={item || ' '}/><br/></span>)
+    //   }
+    // );
     return (
       <div>
         <Breadcrumb>
           <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
           <Breadcrumb.Item href="/basic-list.html">委托列表</Breadcrumb.Item>
-          <Breadcrumb.Item >委托详情</Breadcrumb.Item>
+          <Breadcrumb.Item>委托详情</Breadcrumb.Item>
         </Breadcrumb>
         <div><h2>NST-04-JS002-2011-软件项目委托测试申请表(只读)</h2></div>
         <Card style={{width: '100%'}}
@@ -97,15 +108,12 @@ export default class entrustCheck extends Component {
           <div className={style.mainCard}>
             <div>
               <h2>基本信息</h2>
-              {/* <p style={{display:'flex',justifyItems:'row'}}>测试类型：<span>{(this.props.entrustdata.entrust.testType).map((item,index)=>{
-                      return (
-                          <span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>
-                      )}
-                  )
-                }
+              <p style={{display: 'flex', justifyItems: 'row'}}>测试类型：<span>{
+                typeList
+              }
               </span>
-                </p> */}
-              
+              </p>
+
               <p>软件名称：<FormattedMessage id={this.props.entrustdata.entrust.softwareName || ' '}/></p>
               <p>版本号：<FormattedMessage id={this.props.entrustdata.entrust.version || ' '}/></p>
               <p>委托单位（英文）：<FormattedMessage id={this.props.entrustdata.entrust.companyEn || ' '}/></p>
@@ -114,16 +122,16 @@ export default class entrustCheck extends Component {
               <p>单位性质：<FormattedMessage id={this.props.entrustdata.entrust.unitProperty || ' '}/></p>
               <p>软件用户对象描述：<FormattedMessage id={this.props.entrustdata.entrust.userDescription || ' '}/></p>
               <p>主要功能及用途简介：<FormattedMessage id={this.props.entrustdata.entrust.funcDescription || ' '}/></p>
-              {/* <p style={{display:'flex',justifyItems:'row'}}>测试依据(多选)：
-              <span>{
-                (this.props.entrustdata.entrust.testBasis||[]).map((item,index)=>{
-                  return (<span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>)}
-                  )}</span></p>
-              <p style={{display:'flex',justifyItems:'row'}}>需要测试的技术指标(多选)：<span>{
-                (this.props.entrustdata.entrust.testSpecification||[]).map((item,index)=>{
-                  return (<span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>)}
-                  )}</span></p>  */}
-            
+              <p style={{display: 'flex', justifyItems: 'row'}}>测试依据(多选)：
+                {/*<span>{basisList}</span>*/}
+
+              </p>
+              <p style={{display: 'flex', justifyItems: 'row'}}>需要测试的技术指标(多选)：<span>{
+                (this.props.entrustdata.entrust.testSpecification || []).map((item, index) => {
+                    return (<span><b> {index + 1}</b>.<FormattedMessage id={item || ' '}/><br/></span>)
+                  }
+                )}</span></p>
+
             </div>
             <Divider/>
             <div>
@@ -263,7 +271,7 @@ export default class entrustCheck extends Component {
   }
 }
 
-class contentList extends Component{
+class contentList extends Component {
 
 }
 

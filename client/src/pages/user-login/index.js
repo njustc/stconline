@@ -132,11 +132,11 @@ class LoginPage extends Component {
           <Submit loading={submitting}>
             <FormattedMessage id="user-login.login.login"/>
           </Submit>
-          <Button
-            style={{width: '100%'}}
-            onClick={this.handleLogout}
-          >登出
-          </Button>
+          {/*<Button*/}
+          {/*  style={{width: '100%'}}*/}
+          {/*  onClick={this.handleLogout}*/}
+          {/*>登出*/}
+          {/*</Button>*/}
           {/*<div className={styles.other}>*/}
           {/*  <FormattedMessage id="user-login.login.sign-in-with"/>*/}
           {/*  <Icon type="alipay-circle" className={styles.icon} theme="outlined"/>*/}

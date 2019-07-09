@@ -25,7 +25,7 @@ import {
 } from 'antd';
 import PageHeaderWrapper from './components/PageHeaderWrapper';
 import style from './style.less';
-import { deleteFile, getFilenames } from '@/services/user';
+import {deleteFile, getFilenames} from '@/services/user';
 
 const FormItem = Form.Item;
 const {TextArea} = Input;
@@ -38,10 +38,12 @@ const Dragger = Upload.Dragger;
 
 const mapStateToProps = (state) => {
   const entrustdata = state[namespace];
+  const fileState = state['file'];
   return {
     entrustdata,
+    fileState
   };
-}
+};
 
 
 @Form.create()
@@ -52,12 +54,13 @@ class BasicForm extends PureComponent {
   };
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       pid: "",
-      curFilename: ""
-    }
+      curFilename: "",
+    };
     this.changeFile = this.changeFile.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -67,22 +70,33 @@ class BasicForm extends PureComponent {
     } else {
       this.state.pid = this.props.entrustdata.pid
     }
-    if (this.state.pid != "") {
+    if (this.state.pid !== "") {
       dispatch({
         type: 'entrustForm/getOneEntrust',
         payload: this.props.location.query,
-      })
+      });
     }
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const {dispatch} = this.props;
+    const {pid} = this.state;
+    // dispatch({
+    //   type: 'file/fetchFileList',
+    //   payload: {
+    //     pid: 'p20190708202103'
+    //   }
+    // })
   }
 
   addForm = (form) => {
     const {dispatch} = this.props;
-    this.state.pid = this.props.entrustdata.pid
+    this.state.pid = this.props.entrustdata.pid;
     form.validateFields((err, value) => {
       //新建
-      value.pid = this.state.pid
+      value.pid = this.state.pid;
       // 补充新建属性
-      value.processInstanceId = ""
+      value.processInstanceId = "";
 
       value.comment = ""
       //补充完毕
@@ -95,25 +109,25 @@ class BasicForm extends PureComponent {
 
   saveForm = (form) => {
     const {dispatch} = this.props;
-    this.state.pid = this.props.entrustdata.pid
+    this.state.pid = this.props.entrustdata.pid;
     form.validateFields((err, value) => {
       //保存
-      value.pid = this.state.pid
-      value.processInstanceId = this.props.entrustdata.data.processInstanceId
-      value.processState = this.props.entrustdata.data.processState
-      value.comment = this.props.entrustdata.data.comment
+      value.pid = this.state.pid;
+      value.processInstanceId = this.props.entrustdata.data.processInstanceId;
+      value.processState = this.props.entrustdata.data.processState;
+      value.comment = this.props.entrustdata.data.comment;
       dispatch({
         type: 'entrustForm/replaceEntrust',
         payload: value,
       });
     })
-  }
+  };
 
   //保存
   save = (form) => {
     const {dispatch} = this.props;
-    this.state.pid = this.props.entrustdata.pid
-    if (this.state.pid == "") {
+    this.state.pid = this.props.entrustdata.pid;
+    if (this.state.pid === "") {
       this.addForm(form)
     } else {
       this.saveForm(form)
@@ -150,15 +164,7 @@ class BasicForm extends PureComponent {
 
 
   showConfirm(form) {
-    // console.log("f",form)
-    // console.log("this",t)
-    var that = this
-    // form.validateFields((err,value)=>{
-    //   console.log(err)
-    //   if(!err){
-
-    //   }
-    // })
+    const that = this;
     confirm({
       title: '您是否要提交委托?',
       content: '委托提交后进入审核状态，不可编辑',
@@ -175,7 +181,7 @@ class BasicForm extends PureComponent {
   }
 
   showDelete(form) {
-    var that = this
+    const that = this;
     confirm({
       title: '您是否要删除本委托?',
       content: '委托删除后无法恢复',
@@ -203,12 +209,23 @@ class BasicForm extends PureComponent {
     this.setState({curFilename: name});
   }
 
+  handleClick() {
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'file/fetchFileList',
+      payload: {
+        pid: 'p20190610010104'
+      }
+    });
+  }
+
   render() {
     const {submitting} = this.props;
     const {
       form: {getFieldDecorator, getFieldValue},
     } = this.props;
     const state = this.state;
+    const files = this.props.fileState.fileList;
     const formItemLayout = {
       labelCol: {
         xs: {span: 24},
@@ -230,8 +247,11 @@ class BasicForm extends PureComponent {
 
     const changeFile = (name) => {
       this.changeFile(name);
-    }
-
+    };
+    //文件列表
+    const fileList = files.map(file => {
+      return (<div>{file.name}</div>)
+    });
     // 文件上传
     const uploadProps = {
       name: 'file',
@@ -243,12 +263,9 @@ class BasicForm extends PureComponent {
       enctype: "multipart/form-data",
       onChange({file, fileList}) {
         if (file.status !== 'uploading') {
-          // console.log(Array.from(getFilenames(state.pid)));
         }
         if (file.status === 'done') {
           message.success(`${file.name} file uploaded successfully`);
-          // console.log(file);
-          // console.log(fileList);
         } else if (file.status === 'error') {
           message.error(`${file.name} file upload failed.`);
         }
@@ -263,18 +280,21 @@ class BasicForm extends PureComponent {
         }
       },
       onRemove(file) {
+
         changeFile("");
         deleteFile(state.pid, file.name);
       },
-      // defaultFileList: Array.from(getFilenames(state.pid)),
     };
 
     return (
       <div className={style.editBody}>
+        <Button onClick={this.handleClick}>测试
+          {fileList}
+        </Button>
         <Breadcrumb>
           <Breadcrumb.Item href="/basic-list.html">主页</Breadcrumb.Item>
           <Breadcrumb.Item href="/basic-list.html">委托列表</Breadcrumb.Item>
-          <Breadcrumb.Item >编辑委托</Breadcrumb.Item>
+          <Breadcrumb.Item>编辑委托</Breadcrumb.Item>
           {/*<Link to="/basic-list.html">返回</Link>*/}
         </Breadcrumb>
         <div className={style.headerTitle}>
@@ -1327,11 +1347,12 @@ class BasicForm extends PureComponent {
                   </p>
                 </Dragger>
 
-                <a hidden={ state.curFilename === "" } href={'http://localhost:8080/api/project/files?pid=' + state.pid + '&filename=' + state.curFilename}>
+                <a hidden={state.curFilename === ""}
+                   href={'http://localhost:8080/api/project/files?pid=' + state.pid + '&filename=' + state.curFilename}>
                   下载文件 {state.curFilename}</a>
 
                 <Affix offsetBottom={0}>
-                       {/* onChange={affixed => console.log(affixed)} */}
+                  {/* onChange={affixed => console.log(affixed)} */}
                   <div className={style.submitBtns}>
                     <Button type="primary" onClick={() => {
                       this.showConfirm(this.props.form)
