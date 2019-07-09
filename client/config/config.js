@@ -60,8 +60,8 @@ export default {
         {
           name:'项目列表',
           icon: 'smile',
-          path: '/user_first',
-          component: './user_first',
+          path: '/user-first',
+          component: './user-first',
           authority:['CUS'],
         },
         {
