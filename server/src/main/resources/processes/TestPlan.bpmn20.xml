@@ -25,8 +25,8 @@
         <activiti:formProperty id="taskType" name="Submit" type="string" value="Submit"/>
       </extensionElements>
     </userTask>
-    <exclusiveGateway gatewayDirection="Unspecified" id="QMReviewGate" name="QMReviewGate"/>
-    <exclusiveGateway gatewayDirection="Unspecified" id="TMApproveGate" name="TMApproveGate"/>
+    <exclusiveGateway gatewayDirection="Unspecified" id="QMReviewGate" name="QM_ReviewGate"/>
+    <exclusiveGateway gatewayDirection="Unspecified" id="TMApproveGate" name="TM_ApproveGate"/>
     <endEvent id="end" name="End"/>
     <sequenceFlow id="_9" sourceRef="start" targetRef="QMTestPlanReview"/>
     <sequenceFlow id="_10" sourceRef="QMTestPlanReview" targetRef="QMReviewGate"/>

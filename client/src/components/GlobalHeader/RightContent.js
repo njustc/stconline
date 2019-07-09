@@ -169,7 +169,17 @@ export default class GlobalHeaderRight extends PureComponent {
             </span>
           </HeaderDropdown>
         ) : (
-          <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
+          <HeaderDropdown overlay={menu}>
+            <span className={`${styles.action} ${styles.account}`}>
+              <Avatar
+                size="small"
+                className={styles.avatar}
+                src='https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
+                alt="avatar"
+              />
+              <span className={styles.name}>{"未登录"}</span>
+            </span>
+          </HeaderDropdown>
         )}
         <SelectLang className={styles.action} />
       </div>
