@@ -43,7 +43,7 @@ class LoginPage extends Component {
         //router.push("/welcome")
         const role = getRole()[0]
         if (role === "CUS") {
-          location.replace("/user_first.html")
+          location.replace("/user-first.html")
         }
         else {
           location.replace("/welcome.html")
