@@ -7,7 +7,13 @@ export default {
   namespace: 'checkentrust',
   state: {
     entrust: {
-      testType: [],
+      testType: [], 
+      testBasis:[],
+      testSpecification:[],
+      clientSystem:[],
+      serverHardFrame:[],
+      serverSoftFrame:[],
+      checkSample:[]
 
     },
   },
