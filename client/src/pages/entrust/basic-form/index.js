@@ -328,6 +328,19 @@ class BasicForm extends PureComponent {
       showUploadList: false
     };
 
+    const FileDragger = (state.pid == null || state.pid === "") ? null : (
+      <Dragger {...uploadProps}>
+        <p className="提交栏">
+          <Icon type="inbox"/>
+        </p>
+        <p className="ant-upload-text">点击或者拖拽文件到这里进行上传</p>
+        <p className="ant-upload-hint">
+          Support for a single or bulk upload. Strictly prohibit from uploading company data or other
+          band files
+        </p>
+      </Dragger>
+    );
+
     return (
       <div className={style.editBody}>
         <Breadcrumb>
@@ -1371,18 +1384,10 @@ class BasicForm extends PureComponent {
                   </div>
 
                 </FormItem>
-                {/*文件上传*/}
-                <Dragger {...uploadProps}>
-                  <p className="提交栏">
-                    <Icon type="inbox"/>
-                  </p>
-                  <p className="ant-upload-text">点击或者拖拽文件到这里进行上传</p>
-                  <p className="ant-upload-hint">
-                    Support for a single or bulk upload. Strictly prohibit from uploading company data or other
-                    band files
-                  </p>
-                </Dragger>
 
+                <div>
+                  {FileDragger}
+                </div>
                 <a hidden={state.curFilename === ""}
                    href={'http://localhost:8080/api/project/files?pid=' + state.pid + '&filename=' + state.curFilename}>
                   下载文件 {state.curFilename}</a>
