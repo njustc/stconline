@@ -78,7 +78,7 @@ export default {
   },
   reducers: {
     initData(state, action) {
-      // console.log(action.payload)
+      console.log(action.payload)
       return {
         ...state,
         data: action.payload,

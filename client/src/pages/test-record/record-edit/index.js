@@ -377,7 +377,7 @@ export default class EditRecord extends React.Component {
                   })(<Input placeholder={formatMessage({id: 'testrecord.realresult.placeholder'})}/>)}
                 </FormItem>
                 {/*是否与预期结果一致*/}
-                <FormItem {...formItemLayout} label={<FormattedMessage id="testrecord.isconsistent.label"/>}>
+                {/* <FormItem {...formItemLayout} label={<FormattedMessage id="testrecord.isconsistent.label"/>}>
                   {getFieldDecorator('isConsistent', {
                     initialValue: this.props.dataEdit.editdata.isConsistent || '',
                   }, {
@@ -388,7 +388,29 @@ export default class EditRecord extends React.Component {
                       },
                     ],
                   })(<Input placeholder={formatMessage({id: 'testrecord.isconsistent.placeholder'})}/>)}
-                </FormItem>
+                </FormItem> */}
+
+              <FormItem
+                {...formItemLayout}
+                label={<FormattedMessage id="testrecord.isconsistent.label"/>}
+              >
+                <div>
+                  {getFieldDecorator('isConsistent', {
+                    initialValue: this.props.dataEdit.editdata.isConsistent || 'basic-form.radio.system1',
+                  })(
+                    <Radio.Group>
+                      <Radio value='true'>
+                        <FormattedMessage id="是"/>
+                      </Radio>
+                      <Radio value='false'>
+                        <FormattedMessage id="否"/>
+                      </Radio>
+                    </Radio.Group>
+                  )}
+                </div>
+              </FormItem>
+
+
                 {/*相关bug编号*/}
                 <FormItem {...formItemLayout} label={<FormattedMessage id="testrecord.bugid.label"/>}>
                   {getFieldDecorator('bugId', {
