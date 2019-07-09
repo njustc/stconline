@@ -156,18 +156,36 @@ export default class List extends React.Component {
       key: 'testId',
       render: text => <a href="javascript:;">{text}</a>,
     },
+    // {
+    //   title: '状态',
+    //   key: 'processState',
+    //   dataIndex: 'processState',
+    //   render: processState => {
+    //     var color = processState === 'Review' ? 'geekblue' : 'green';
+    //     if (processState === 'Submit') {
+    //       color = 'grey'
+    //     }
+    //     return (
+    //       <Tag color={color} key={processState}>
+    //         {processState}
+    //       </Tag>
+    //     );
+    //   }
+    // },
     {
       title: '状态',
       key: 'processState',
       dataIndex: 'processState',
       render: processState => {
+        var content = processState === 'Review' ? '待审核' : '已通过';
         var color = processState === 'Review' ? 'geekblue' : 'green';
         if (processState === 'Submit') {
-          color = 'grey'
+          color = 'gold';
+          content = '待提交';
         }
         return (
           <Tag color={color} key={processState}>
-            {processState}
+            {content}
           </Tag>
         );
       }
