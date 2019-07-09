@@ -119,6 +119,8 @@ class LoginPage extends Component {
             ]}
             onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
           />
+          <a href="http://keysoftlab.nju.edu.cn/_upload/article/6c/9a/b64d969d4332a2fb45563890bd7f/5aefef9e-50c1-4ba3-96ae-f4ba96384b05.pdf">下载文件</a>
+
           {/*<div>*/}
           {/*  <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>*/}
           {/*    <FormattedMessage id="user-login.login.remember-me"/>*/}
@@ -144,7 +146,7 @@ class LoginPage extends Component {
           {/*    <FormattedMessage id="user-login.login.signup"/>*/}
           {/*  </Link>*/}
           {/*</div>*/}
-          {/*<a href="http://localhost:8080/api/project/files?pid=p20190610010104&filename=testfile">下载文件</a>*/}
+          {/*<a href="http://keysoftlab.nju.edu.cn/_upload/article/6c/9a/b64d969d4332a2fb45563890bd7f/5aefef9e-50c1-4ba3-96ae-f4ba96384b05.pdf">下载文件</a>*/}
         </Login>
       </div>
 
