@@ -54,19 +54,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .cors()
                 .and()
-
                 .formLogin() // 转到的登录界面信息(若注释掉下行，则使用Spring默认登录界面)
-                //.loginPage("/login") // 自己的登录界面
                 .defaultSuccessUrl("/api/project/entrust")
-
                 .and()
                 .authorizeRequests() // 定义需要保护和不需要保护的URL
-                .antMatchers("/*", "*", "/").permitAll()
                 .antMatchers("/api/register/**", "/api/login").permitAll()
                 .antMatchers("/api/project/**").hasRole(Role.USER.str())
                 // TODO: 其他针对角色拦截的URL
                 .anyRequest().authenticated() // 任何请求,登录后可以访问
-
                 .and().csrf().disable();
     }
 
