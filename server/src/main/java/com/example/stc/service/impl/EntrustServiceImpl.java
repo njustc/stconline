@@ -3,12 +3,14 @@ package com.example.stc.service.impl;
 import com.example.stc.activiti.ProcessService;
 import com.example.stc.activiti.ProcessState;
 import com.example.stc.activiti.STCProcessEngine;
+import com.example.stc.controller.FileUploadController;
 import com.example.stc.domain.Entrust;
 import com.example.stc.domain.Role;
 import com.example.stc.domain.User;
 import com.example.stc.framework.exception.EntrustNotFoundException;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.DateUtils;
+import com.example.stc.framework.util.FileUtils;
 import com.example.stc.framework.util.ProcessUtils;
 import com.example.stc.repository.EntrustRepository;
 import com.example.stc.repository.UserRepository;
@@ -19,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -88,6 +91,8 @@ public class EntrustServiceImpl implements EntrustService {
     public void deleteEntrustByPid(String pid) {
         logger.info("deleteEntrustByPid: ");
         Entrust entrust = this.findEntrustByPid(pid); // 找到应删除的委托并检查，若为客户，只能访问本人的委托
+        // 删掉该委托的所有文件
+        FileUtils.deleteAllFiles(pid);
         entrustRepository.deleteByPid(pid);
     }
 

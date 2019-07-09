@@ -1,6 +1,7 @@
 package com.example.stc.controller;
 
 import com.example.stc.domain.FileDetail;
+import com.example.stc.framework.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -29,11 +30,6 @@ public class FileUploadController extends BaseController {
     private Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
     /**
-     * 上传文件的保存路径
-     */
-    private static String UPLOAD_FOLDER = "files/";
-
-    /**
      * 上传URL（前半部分）
      */
     private static String UPLOAD_URL_HALF = "http://localhost:8080/api/project/files?pid=";
@@ -43,7 +39,7 @@ public class FileUploadController extends BaseController {
      */
     private void saveUploadedFiles(String pid, List<MultipartFile> files) throws IOException {
         // 建立文件夹
-        String filepath = UPLOAD_FOLDER + pid + "/";
+        String filepath = FileUtils.UPLOAD_FOLDER + pid + "/";
         File fileDirs = new File(filepath);
         if (!fileDirs.exists()) {
             fileDirs.mkdirs();
@@ -66,7 +62,7 @@ public class FileUploadController extends BaseController {
         logger.info("getUploadFiles: ");
         if (pid.equals(""))
             return new ArrayList<>();
-        String filepath = UPLOAD_FOLDER + pid + "/";
+        String filepath = FileUtils.UPLOAD_FOLDER + pid + "/";
         File fileDirs = new File(filepath);
         File[] files = fileDirs.listFiles();
         List<FileDetail> fileList = new ArrayList<>();
@@ -79,7 +75,7 @@ public class FileUploadController extends BaseController {
                     String uploadURL = UPLOAD_URL_HALF + pid + "&filename=" + filename;
                     FileDetail fileDetail = new FileDetail();
                     fileDetail.setName(filename);
-                    fileDetail.setUid(randomUid(index));
+                    fileDetail.setUid(FileUtils.randomUid(index));
                     fileDetail.setStatus("done");
                     fileDetail.setUrl(uploadURL);
                     fileList.add(fileDetail);
@@ -128,7 +124,7 @@ public class FileUploadController extends BaseController {
     public @ResponseBody
     String deleteFile(@RequestParam String pid, @RequestParam String filename) {
         // 删除的文件所在位置
-        String filepath = UPLOAD_FOLDER + pid + "/";
+        String filepath = FileUtils.UPLOAD_FOLDER + pid + "/";
         File file = new File(filepath + filename);
 
         logger.info("File Delete From" + filepath + filename);
@@ -147,7 +143,7 @@ public class FileUploadController extends BaseController {
                         @RequestParam String filename,
                         HttpServletRequest request, HttpServletResponse response) {
         // 下载所在源文件
-        String filepath = UPLOAD_FOLDER + pid + "/";
+        String filepath = FileUtils.UPLOAD_FOLDER + pid + "/";
         File file = new File(filepath + filename);
 
         logger.info("File Download From" + filepath + filename);
@@ -182,18 +178,6 @@ public class FileUploadController extends BaseController {
         }
         logger.info("Download Failed - File Not Found");
         return "Download Failed - File Not Found";
-    }
-
-    /**
-     * 文件名转uid（一个随意的算法）
-     */
-    private String randomUid(int index) {
-        int rand = (int) (Math.random() * Integer.MAX_VALUE);
-        StringBuilder sb = new StringBuilder("rd-upload-");
-        sb.append(rand);
-        sb.append("-");
-        sb.append(index);
-        return new String(sb);
     }
 
 }

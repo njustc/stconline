@@ -11,6 +11,7 @@ import com.example.stc.framework.exception.ContractNotFoundException;
 import com.example.stc.framework.exception.UserNotFoundException;
 import com.example.stc.framework.util.AuthorityUtils;
 import com.example.stc.framework.util.DateUtils;
+import com.example.stc.framework.util.FileUtils;
 import com.example.stc.framework.util.ProcessUtils;
 import com.example.stc.repository.*;
 import com.example.stc.service.ContractService;
@@ -96,8 +97,9 @@ public class ContractServiceImpl implements ContractService{
         logger.info("deleteContractByPid: ");
         Contract contract = this.findContractByPid(pid);
         contractRepository.deleteByPid(pid);
-        // 同时删除对应的委托，测试方案，测试记录，测试报告
-        contractRepository.deleteByPid(pid);
+        // 同时删除对应的委托，文件，测试方案，测试记录，测试报告
+        entrustRepository.deleteByPid(pid);
+        FileUtils.deleteAllFiles(pid);
         testPlanRepository.deleteByPid(pid);
         testReportRepository.deleteByPid(pid);
         testRecordRepository.deleteByPid(pid);
