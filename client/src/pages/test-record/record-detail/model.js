@@ -9,6 +9,11 @@ export default {
     counter: 0,
   },
   effects: {
+    *returnRecordList({payload}){
+      //debugger
+      console.log(payload);
+      router.push("/record-list.html?pid=" + payload.dataDetail.detail.pid);        
+    },
     //派发一个queryGetOnePlan的action
     * queryGetOneRecord({payload}, {call, put}) {
       const response = yield call(getOneTestRecord, payload);
