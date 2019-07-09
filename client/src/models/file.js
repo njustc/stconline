@@ -1,4 +1,4 @@
-import {getFilenames} from "../services/fileService";
+import {getFilenames, fileDelete} from "../services/fileService";
 
 export default {
   namespace: 'file',
@@ -10,6 +10,15 @@ export default {
   effects: {
     //文件列表获取
     * fetchFileList({payload}, {call, put}) {
+      const response = yield call(getFilenames, payload);
+      yield put({
+        type: 'updateFiles',
+        payload: response
+      })
+    },
+    //文件删除
+    * deleteFile({payload}, {call, put}) {
+      yield call(fileDelete, payload);
       const response = yield call(getFilenames, payload);
       yield put({
         type: 'updateFiles',

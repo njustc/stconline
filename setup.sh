@@ -1,5 +1,10 @@
 #! /bin/bash
 mvn clean
-docker exec -i mysql mysql -uroot -pmysql njustc < server/framework.sql
+cd server
+docker-compose up -d
+docker exec -i mysql mysql -uroot -pmysql njustc < framework.sql
+cd ..
 mvn package
-java -jar server/target/stc.jar
+cd server/target/
+java -jar stc.jar
+cd ../../

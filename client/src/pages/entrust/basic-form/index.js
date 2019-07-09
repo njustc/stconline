@@ -25,7 +25,6 @@ import {
 } from 'antd';
 import PageHeaderWrapper from './components/PageHeaderWrapper';
 import style from './style.less';
-import {deleteFile, getFilenames} from '@/services/user';
 
 const FormItem = Form.Item;
 const {TextArea} = Input;
@@ -82,12 +81,6 @@ class BasicForm extends PureComponent {
   componentDidUpdate(prevProps, prevState, snapshot) {
     const {dispatch} = this.props;
     const {pid} = this.state;
-    // dispatch({
-    //   type: 'file/fetchFileList',
-    //   payload: {
-    //     pid: 'p20190708202103'
-    //   }
-    // })
   }
 
   addForm = (form) => {
@@ -220,6 +213,16 @@ class BasicForm extends PureComponent {
     });
   }
 
+  deleteFile(pid, filename) {
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'file/deleteFile',
+      payload: {
+        pid, filename
+      }
+    });
+  }
+
   render() {
     const {submitting} = this.props;
     const {
@@ -249,12 +252,23 @@ class BasicForm extends PureComponent {
     const changeFile = (name) => {
       this.changeFile(name);
     };
+
+    const deleteFile = (name) => {
+      this.deleteFile(state.pid, name);
+    }
+
+    const fileListInit = () => {
+      this.fileListInit(state.pid);
+    }
+
     //文件列表
     const fileList = (files || []).map(file => {
       return (<div>
         <a href={file.url}>{file.name}</a>
+        <Button type="link" onClick={() => { deleteFile(file.name); fileListInit(); } }>删除</Button>
       </div>)
     });
+
     // 文件上传
     const uploadProps = {
       name: 'file',
@@ -269,23 +283,24 @@ class BasicForm extends PureComponent {
         }
         if (file.status === 'done') {
           message.success(`${file.name} file uploaded successfully`);
+          fileListInit();
         } else if (file.status === 'error') {
           message.error(`${file.name} file upload failed.`);
         }
       },
-      onPreview(file) {
-        if (file.status === 'error') {
-          changeFile("");
-        } else {
-          changeFile(file.name);
-          // console.log(state.curFilename);
-        }
-      },
-      onRemove(file) {
-
-        changeFile("");
-        deleteFile(state.pid, file.name);
-      },
+      // onPreview(file) {
+      //   if (file.status === 'error') {
+      //     changeFile("");
+      //   } else {
+      //     changeFile(file.name);
+      //     // console.log(state.curFilename);
+      //   }
+      // },
+      // onRemove(file) {
+      //   changeFile("");
+      //   deleteFile(state.pid, file.name);
+      // },
+      showUploadList: false
     };
 
     return (

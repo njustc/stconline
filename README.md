@@ -47,6 +47,13 @@
 
 #### 2.0 
 
+##### 前置环境要求
+
+- maven
+- jdk 8 (不可以为jdk11 12 )
+- docker , docker-compose
+- npm 或 cpmn
+
 傻瓜版 单条指令  **测试 + 部署 + 运行**
 
 在bash环境下，根目录下运行
