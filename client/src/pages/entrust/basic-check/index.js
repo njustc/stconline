@@ -53,11 +53,6 @@ export default class entrustCheck extends Component {
 
   componentDidMount() {
     const {dispatch} = this.props;
-    if (this.props.location.query.comment) {
-      this.state.comment = this.props.location.query.comment
-    } else {
-      this.state.comment = this.props.entrustdata.comment
-    }
     dispatch({
       type: `${namespace}/getOneEntrust`,
       payload: this.props.location.query,
@@ -102,6 +97,16 @@ export default class entrustCheck extends Component {
     });
   }
 
+  // renderList(list){
+  //   var res=(list).map((item, index) => {
+  //         return (
+  //           <span><b> {index + 1}</b>.<FormattedMessage id={item || ' '}/><br/></span>
+  //         )
+  //       }
+  //     );
+  //     return res;
+  // }
+
   render() {
     const {
       form: {getFieldDecorator, getFieldValue},
@@ -109,16 +114,41 @@ export default class entrustCheck extends Component {
     } = this.props;
     const files = this.props.fileState.fileList;
     const {pid} = this.props.location.query;
-    const typeList = (entrustdata.entrust.testType || []).map((item, index) => {
+    const entrust = this.props.entrustdata.entrust
+    console.log(entrust)
+    
+
+    const typeList = (entrust.testType|| []).map((item, index) => {
         return (
           <span><b> {index + 1}</b>.<FormattedMessage id={item || ' '}/><br/></span>
         )
       }
     );
-    // const basisList = (entrustdata.entrust.testBasis || []).map((item, index) => {
-    //     return (<span><b> {index + 1}</b>.<FormattedMessage id={item || ' '}/><br/></span>)
-    //   }
-    // );
+    const basisList = (entrust.testBasis || []).map((item, index) => {
+        return (<span><b> {index + 1}</b>.<FormattedMessage id={item || ' '}/><br/></span>)
+      }
+    );
+    const ssfLIst = (entrust.serverSoftFrame || []).map((item, index) => {
+      return (<span><b> {index + 1}</b>.<FormattedMessage id={item || ' '}/><br/></span>)
+    }
+  );
+    const speList = (entrust.testSpecification || []).map((item, index) => {
+      return (<span><b> {index + 1}</b>.<FormattedMessage id={item || ' '}/><br/></span>)
+    }
+  );
+    const csList = (entrust.clientSystem|| []).map((item, index) => {
+      return (<span><b> {index + 1}</b>.<FormattedMessage id={item || ' '}/><br/></span>)
+    }
+    );
+    const shfList = (entrust.serverHardFrame || []).map((item, index) => {
+      return (<span><b> {index + 1}</b>.<FormattedMessage id={item || ' '}/><br/></span>)
+    }
+    );
+    const chksList = (entrustdata.entrust.checkSample || []).map((item, index) => {
+      return (<span><b> {index + 1}</b>.<FormattedMessage id={item || ' '}/><br/></span>)
+    }
+    );
+    chksList
     //文件列表
     const fileList = (files || []).map((file, i) => {
       return (
@@ -132,13 +162,6 @@ export default class entrustCheck extends Component {
                       icon="download"
                       href={file.url}
                       style={{color: 'rgb(64,169,255)'}}
-              />
-              <Button type="danger"
-                      icon="close"
-                      onClick={() => {
-                        this.deleteFile(pid, file.name);
-                        this.fileListInit(pid);
-                      }}
               />
             </Button.Group>
           </div>
@@ -160,12 +183,8 @@ export default class entrustCheck extends Component {
           <div className={style.mainCard}>
             <div>
               <h2>基本信息</h2>
-              <p style={{display: 'flex', justifyItems: 'row'}}>测试类型：<span>{
-                typeList
-              }
-              </span>
-              </p>
-
+              <p style={{display: 'flex', justifyItems: 'row'}}>测试类型：<span>{typeList}</span></p>
+              {/* <p style={{display: 'flex', justifyItems: 'row'}}>测试类型：<span>{this.renderList(this.props.entrustdata.entrust.testType)}</span></p> */}
               <p>软件名称：<FormattedMessage id={this.props.entrustdata.entrust.softwareName || ' '}/></p>
               <p>版本号：<FormattedMessage id={this.props.entrustdata.entrust.version || ' '}/></p>
               <p>委托单位（英文）：<FormattedMessage id={this.props.entrustdata.entrust.companyEn || ' '}/></p>
@@ -175,14 +194,10 @@ export default class entrustCheck extends Component {
               <p>软件用户对象描述：<FormattedMessage id={this.props.entrustdata.entrust.userDescription || ' '}/></p>
               <p>主要功能及用途简介：<FormattedMessage id={this.props.entrustdata.entrust.funcDescription || ' '}/></p>
               <p style={{display: 'flex', justifyItems: 'row'}}>测试依据(多选)：
-                {/*<span>{basisList}</span>*/}
+                <span>{basisList}</span>
 
               </p>
-              <p style={{display: 'flex', justifyItems: 'row'}}>需要测试的技术指标(多选)：<span>{
-                (this.props.entrustdata.entrust.testSpecification || []).map((item, index) => {
-                    return (<span><b> {index + 1}</b>.<FormattedMessage id={item || ' '}/><br/></span>)
-                  }
-                )}</span></p>
+              <p style={{display: 'flex', justifyItems: 'row'}}>需要测试的技术指标(多选)：<span>{speList}</span></p>
 
             </div>
             <Divider/>
@@ -197,19 +212,12 @@ export default class entrustCheck extends Component {
             <Divider/>
             <div>
               <h2>客户端</h2>
-              {/* <p style={{display:'flex',justifyItems:'row'}}>操作系统(多选)：<span>{
-                (this.props.entrustdata.entrust.clientSystem||[]).map((item,index)=>{
-                  return (<span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>)}
-                  )}
-              </span></p> */}
+              <p style={{display:'flex',justifyItems:'row'}}>操作系统(多选)：<span>{csList}              </span></p>
               <p>内存要求：<FormattedMessage id={this.props.entrustdata.entrust.clientInStorage || ' '}/></p>
               <p>硬盘要求：<FormattedMessage id={this.props.entrustdata.entrust.clientExStorage || ' '}/></p>
               <p>其他要求：<FormattedMessage id={this.props.entrustdata.entrust.clientOther || ' '}/></p>
               <h2>服务器端 硬件</h2>
-              {/* <p style={{display:'flex',justifyItems:'row'}}>架构(多选)：<span>{
-                (this.props.entrustdata.entrust.serverHardFrame||[]).map((item,index)=>{
-                return (<span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>)}
-                )}</span></p> */}
+              <p style={{display:'flex',justifyItems:'row'}}>架构(多选)：<span>{shfList}</span></p>
               <p>内存要求：<FormattedMessage id={this.props.entrustdata.entrust.serverInStorage || ' '}/></p>
               <p>硬盘要求：<FormattedMessage id={this.props.entrustdata.entrust.serverExStorage || ' '}/></p>
               <p>其他要求：<FormattedMessage id={this.props.entrustdata.entrust.serverHardOther || ' '}/></p>
@@ -220,10 +228,7 @@ export default class entrustCheck extends Component {
               <p>操作系统：<FormattedMessage id={this.props.entrustdata.entrust.serverSystem || ' '}/></p>
               <p>版本：<FormattedMessage id={this.props.entrustdata.entrust.serverSoftVersion || ' '}/></p>
               <p>编程语言：<FormattedMessage id={this.props.entrustdata.entrust.serverLanguage || ' '}/></p>
-              {/* <p style={{display:'flex',justifyItems:'row'}}>软件架构(多选)：<span>{
-                (this.props.entrustdata.entrust.serverSoftFrame||[]).map((item,index)=>{
-                  return (<span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>)}
-                  )}</span></p> */}
+              <p style={{display:'flex',justifyItems:'row'}}>软件架构(多选)：<span>{ssfLIst}</span></p>
               <p>数据库：<FormattedMessage id={this.props.entrustdata.entrust.serverDataBase || ' '}/></p>
               <p>中间件：<FormattedMessage id={this.props.entrustdata.entrust.serverSoftMidW || ' '}/></p>
               <p>其他支撑软件<FormattedMessage id={this.props.entrustdata.entrust.serverSupport || ' '}/></p>
@@ -233,14 +238,14 @@ export default class entrustCheck extends Component {
             <div>
               <h2>样品和数量</h2>
               <p>软件介质：<FormattedMessage id={this.props.entrustdata.entrust.sampleType || ' '}/></p>
-              <p>提交的样品处理选择：<FormattedMessage id={this.props.entrustdata.entrust.sampleChocie || ' '}/></p>
+              <p>提交的样品处理选择：<FormattedMessage id={this.props.entrustdata.entrust.sampleChoice || ' '}/></p>
               <p>希望测试完成时间：<FormattedMessage id={this.props.entrustdata.entrust.expectedDeadline || ' '}/>
               </p>
             </div>
             <Divider/>
             <div>
               <h2>委托单位信息</h2>
-              <p>电话：<FormattedMessage id={this.props.entrustdata.entrust.infoTE || ' '}/></p>
+              <p>电话：<FormattedMessage id={this.props.entrustdata.entrust.infoTEL || ' '}/></p>
               <p>传真：<FormattedMessage id={this.props.entrustdata.entrust.infoFAX || ' '}/></p>
               <p>地址：<FormattedMessage id={this.props.entrustdata.entrust.infoAddr || ' '}/></p>
               <p>邮编：<FormattedMessage id={this.props.entrustdata.entrust.infoPostcode || ' '}/></p>
@@ -251,17 +256,8 @@ export default class entrustCheck extends Component {
               <p>密级：<FormattedMessage id={this.props.entrustdata.entrust.encryptionLev || ' '}/></p>
               <p>查杀病毒：<FormattedMessage id={this.props.entrustdata.entrust.antiVirus || ' '}/></p>
               <p>编程语言：<FormattedMessage id={this.props.entrustdata.entrust.serverLanguage || ' '}/></p>
-              {/* <p style={{display:'flex',justifyItems:'row'}}>材料检查(多选)：<span>
-              {
-                (this.props.entrustdata.entrust.checkSample||[]).map((item,index)=>{
-                  return (
-                  <span><b> {index+1}</b>.<FormattedMessage id={item||' '}/><br/></span>)}
-                  )
-              }</span>
-                </p> */}
-              <p>重述：<FormattedMessage id={this.props.entrustdata.entrust.reqword || ' '}/></p>
-              <p>用户文档：<FormattedMessage id={this.props.entrustdata.entrust.userDocumentation || ' '}/></p>
-              <p>操作文档：<FormattedMessage id={this.props.entrustdata.entrust.operationDocument || ' '}/></p>
+              <p style={{display:'flex',justifyItems:'row'}}>材料检查(多选)：<span>{chksList}</span>
+                </p>
             </div>
             <div>
               <BackTop visibilityHeight={300}/>
