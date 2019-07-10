@@ -335,12 +335,12 @@ export default class Sworkplace extends React.Component{
                     <Table columns={this.contractColumns}
                            dataSource={(!this.props.listdata.contractData.length) ? data : this.props.listdata.contractData}/>
                   </Panel>
-                  <Panel header={(!(this.props.listdata.planData.length)) ? "无待办方案" : "测试方案"}
+                  <Panel header={(!(this.props.listdata.planData.length)) ? "无待办方案" : "待办方案"}
                          disabled={(!this.props.listdata.planData.length)}>
                     <Table columns={this.planColumns}
                            dataSource={(!this.props.listdata.planData.length) ? data : this.props.listdata.planData}/>
                   </Panel>
-                  <Panel header={(!(this.props.listdata.reportData.length)) ? "无待办报告" : "测试报告"}
+                  <Panel header={(!(this.props.listdata.reportData.length)) ? "无待办报告" : "待办报告"}
                          disabled={(!this.props.listdata.reportData.length)}>
                     <Table columns={this.reportColumns}
                            dataSource={(!this.props.listdata.reportData.length) ? data : this.props.listdata.reportData}/>

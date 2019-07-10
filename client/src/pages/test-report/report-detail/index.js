@@ -16,12 +16,12 @@ const mapStateToProps = (state) => {
 
 @Form.create()
 @connect(mapStateToProps)
-export default class report_detail extends React.Component{
-  constructor(props){
+export default class report_detail extends React.Component {
+  constructor(props) {
     super(props)
-    this.state={
-      pid:"",
-      comment:""
+    this.state = {
+      pid: "",
+      comment: ""
     }
   }
 
@@ -33,7 +33,7 @@ export default class report_detail extends React.Component{
     });
   }
 
-  review = (form,operation) => {
+  review = (form, operation) => {
     const {dispatch} = this.props;
     this.state.pid = this.props.reportdata.data.pid;
     this.state.comment = this.props.reportdata.data.comment;
@@ -48,11 +48,11 @@ export default class report_detail extends React.Component{
     })
   }
 
-  render(){
+  render() {
     return (
       <div>
         <Breadcrumb>
-        <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
+          <Breadcrumb.Item href="/welcome.html">主页</Breadcrumb.Item>
           <Breadcrumb.Item href="/report-list.html">测试报告列表</Breadcrumb.Item>
           <Breadcrumb.Item>测试报告详情</Breadcrumb.Item>
         </Breadcrumb>
@@ -70,7 +70,7 @@ export default class report_detail extends React.Component{
           <p>委托单位：<FormattedMessage id={this.props.reportdata.data.clientCompany || ' '}/></p>
           <p>测试类别：<FormattedMessage id={this.props.reportdata.data.testType || ' '}/></p>
           <p>报告日期：<FormattedMessage id={this.props.reportdata.data.reportDate || ' '}/></p>
-          
+
           <p>样品名称：<FormattedMessage id={this.props.reportdata.data.sampleName || ' '}/></p>
           <p>采样日期：<FormattedMessage id={this.props.reportdata.data.sampleDate || ' '}/></p>
           <p>测试日期：<FormattedMessage id={this.props.reportdata.data.testDate || ' '}/></p>
@@ -97,154 +97,127 @@ export default class report_detail extends React.Component{
         {/* <Card>
           <h1>二、双方的主要义务</h1>
         </Card> */}
-        <br />
+        <br/>
         {
           {
-         
-            "TS":
-            <div>
-                <Card>
-                <Descriptions title="状态及意见">
-                  <Descriptions.Item label="状态">{this.props.reportdata.data.processState || ' '}</Descriptions.Item>
-                  <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
-                </Descriptions>
-              </Card>
-            </div>,
 
+            "TS":
+              <div>
+                <Card>
+                  <Descriptions title="状态及意见">
+                    <Descriptions.Item label="状态">{this.props.reportdata.data.processState || ' '}</Descriptions.Item>
+                    <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
+                  </Descriptions>
+                </Card>
+              </div>,
 
 
             "CUS":
-            <div>
-              <Card>
-                <Descriptions title="状态及意见">
-                  <Descriptions.Item label="状态">{this.props.reportdata.data.processState || ' '}</Descriptions.Item>
-                  <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
-                </Descriptions>
-              </Card>
-              {
-                //当状态是Review的时候出现按钮，否则隐藏
-                this.props.reportdata.data.processState=="Review"?(
               <div>
+                <Card>
+                  <Descriptions title="状态及意见">
+                    <Descriptions.Item label="状态">{this.props.reportdata.data.processState || ' '}</Descriptions.Item>
+                    <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
+                  </Descriptions>
+                </Card>
+                {
+                  //当状态是Review的时候出现按钮，否则隐藏
+                  this.props.reportdata.data.processState == "Review" ? (
+                      <div>
 
-<Button
-style={{marginLeft: 350}}
-type="primary"
-onClick={() => {
-  this.review(this.props.form,"ReviewPass")
-}}
->确认</Button>
-<Button
-style={{marginLeft: 20}}
-type="danger"
-onClick={() => {
-  this.review(this.props.form,"ReviewDisprove")
-}}
->拒绝</Button>
+                        <Button
+                          style={{marginLeft: 350}}
+                          type="primary"
+                          onClick={() => {
+                            this.review(this.props.form, "ReviewPass")
+                          }}
+                        >确认</Button>
+                        <Button
+                          style={{marginLeft: 20}}
+                          type="danger"
+                          onClick={() => {
+                            this.review(this.props.form, "ReviewDisprove")
+                          }}
+                        >拒绝</Button>
 
-</div>
-                )
-:null}
-            </div>,
-
-
+                      </div>
+                    )
+                    : null}
+              </div>,
 
 
-
-
-
-
-
-
-
-
-
-         
             "TM":
-            <div>
-              <h1>测试部主任</h1>
-              <Card>
-                <Descriptions title="状态及意见">
-                  <Descriptions.Item label="状态">{this.props.reportdata.data.processState || ' '}</Descriptions.Item>
-                  <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
-                </Descriptions>
-              </Card>
-              {
-              this.props.reportdata.data.processState=="Review" && this.props.reportdata.checked == 0?(
               <div>
+                <h1>测试部主任</h1>
+                <Card>
+                  <Descriptions title="状态及意见">
+                    <Descriptions.Item label="状态">{this.props.reportdata.data.processState || ' '}</Descriptions.Item>
+                    <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
+                  </Descriptions>
+                </Card>
+                {
+                  this.props.reportdata.data.processState == "Review" && this.props.reportdata.checked == 0 ? (
+                    <div>
+                      <Card>
 
+                      <Button
+                        style={{marginLeft: 8}}
+                        type="primary"
+                        onClick={() => {
+                          this.review(this.props.form, "ReviewPass")
+                        }}
+                      >通过</Button>
+                      <Button
+                        style={{marginLeft: 8}}
+                        onClick={() => {
+                          this.review(this.props.form, "ReviewDisprove")
+                        }}
+                      >不通过</Button>
 
-<Button
-style={{marginLeft: 400}}
-type="primary"
-onClick = {() => {
-  this.review(this.props.form,"ReviewPass")
-}}
->通过</Button>
-<Button
-style={{marginLeft: 40}}
-type="danger"
-onClick={() => {
-  this.review(this.props.form,"ReviewDisprove")
-}}
->不通过</Button>
-
-
-
-
-</div>
-              ):null
-              }
-            </div>,
-
-
-
-
-
-
-
+                    </Card>
+                    </div>
+                  ) : null
+                }
+              </div>,
 
 
             "QM":
-            <div>
-              <h1>质量部主任</h1>
-              <Card>
-                <Descriptions title="状态及意见">
-                  <Descriptions.Item label="状态">{this.props.reportdata.data.processState || ' '}</Descriptions.Item>
-                  <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
-                </Descriptions>
-              </Card>
-
-
-{
-  this.props.reportdata.data.processState=="Review" && this.props.reportdata.checked == 0?(
-
               <div>
+                <h1>质量部主任</h1>
+                <Card>
+                  <Descriptions title="状态及意见">
+                    <Descriptions.Item label="状态">{this.props.reportdata.data.processState || ' '}</Descriptions.Item>
+                    <Descriptions.Item label="意见">{this.props.reportdata.data.comment || ' '}</Descriptions.Item>
+                  </Descriptions>
+                </Card>
 
 
+                {
+                  this.props.reportdata.data.processState == "Review" && this.props.reportdata.checked == 0 ? (
 
-              <Button
-              style={{marginLeft: 350}}
-              type="primary"
-              onClick={() => {
-                this.review(this.props.form,"ReviewPass")
-              }}
-              >通过</Button>
-              <Button
-              style={{marginLeft: 20}}
-              type="danger"
-              onClick={() => {
-                this.review(this.props.form,"ReviewDisprove")
-              }}
-              >不通过</Button>
+                    <div>
 
 
+                      <Button
+                        style={{marginLeft: 350}}
+                        type="primary"
+                        onClick={() => {
+                          this.review(this.props.form, "ReviewPass")
+                        }}
+                      >通过</Button>
+                      <Button
+                        style={{marginLeft: 20}}
+                        type="danger"
+                        onClick={() => {
+                          this.review(this.props.form, "ReviewDisprove")
+                        }}
+                      >不通过</Button>
 
 
+                    </div>
+                  ) : null}
+              </div>,
 
-</div>
-  ):null}
-            </div>,
-          
 
           }[getRole()[0]]
         }
