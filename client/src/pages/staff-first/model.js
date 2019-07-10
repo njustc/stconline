@@ -32,7 +32,6 @@ export default {
           yield put({type: 'updateReportData',payload: resReport._embedded.testReports});
         }
 
-        yield put({type: 'updateReportData',payload: resReport});
       }
       if (payload === "SS") {
         const resEntrust = yield call(getToDoEntrust);
