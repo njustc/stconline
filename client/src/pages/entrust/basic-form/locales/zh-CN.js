@@ -243,7 +243,7 @@ export default {
 
   'basic-form.cusInfo.url.label':"网址",
   'basic-form.cusInfo.url.required':"请输入贵单位的网址",
-  'basic-form.cusInfo.url.placeholder':"这个网址是指单位的官网吗？",
+  'basic-form.cusInfo.url.placeholder':"贵单位的网址",
 
 
   'basic-form.others.SecLev.label':"密级",
@@ -289,7 +289,7 @@ export default {
   'basic-form.date.required': '请选择日期',
   'basic-form.date.label': '希望测试完成时间',
   'basic-form.placeholder.start': '开始日期',
-  'basic-form.placeholder.end': '结束日期',
+  'basic-form.date.placeholder': '希望测试完成时间',
 
   'form.Confirmation.label': '确认意见',
   'form.Confirmation.radio.one': '测试所需材料不全，未达到受理条件。',
