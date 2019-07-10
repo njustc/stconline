@@ -185,7 +185,6 @@ export default class EditRecord extends React.Component {
       okType: 'danger',
       cancelText: '取消',
       onOk() {
-        that.state.pid = that.props.dataEdit.editdata.pid || "";
         that.state.testId = that.props.dataEdit.editdata.testId || "";
         form.validateFields((err, value) => {
           //新建
