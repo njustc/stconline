@@ -23,8 +23,8 @@ export function getAuthority(str) {
   // return authority || ['admin'];
 }
 
-export function setAuthority(authority) {
-  return localStorage.setItem('antd-pro-authority',JSON.stringify(getRole()[0]));
-  // const proAuthority = typeof authority === 'string' ? [authority] : authority;
-  // return localStorage.setItem('antd-pro-authority', JSON.stringify(proAuthority));
-}
+// export function setAuthority(authority) {
+//   return localStorage.setItem('antd-pro-authority',JSON.stringify(getRole()[0]));
+//   // const proAuthority = typeof authority === 'string' ? [authority] : authority;
+//   // return localStorage.setItem('antd-pro-authority', JSON.stringify(proAuthority));
+// }
